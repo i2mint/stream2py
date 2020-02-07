@@ -3,13 +3,6 @@ so you get an idea of what stream2py is designed for,
 and get inspiration for other things to do. 
 
 
-# Stream iterator
-
-From a stream get:
-- An object that behaves like an (unbounded) iterator, fed by a stream.
-- An object that behaves like an (unbounded) list, but without access to stuff that's not in the buffer anymore.
-- An object that behaves like an (unbounded) list, with access to all the data since the stream was turned on -- sourcing the data from the buffer if present, or from stored data if not.
-
 # Get audio segments when ever I chose
 
 In a nutshell:
@@ -45,14 +38,6 @@ it will grab a bigger recent chunk of data and save it in a file
 The condition could be as complex as a event or outlier detection, 
 or be a very simple acoustic event such as a burst 
 (useful for recording potential breakage, gunshots, sneezes etc.). 
-
-# Store streams with precise timestamps
-
-
-# Grab any range of data that's in the buffer, with various range border units
-
-# Give me data I don't have yet: Both pull and push options
-
 
 
 
