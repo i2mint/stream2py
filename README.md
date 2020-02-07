@@ -29,6 +29,15 @@ We also address the problem of impermanence.
 
 Think of the streams that different sensors such as audio, vibration, video offer, or even "industrial" signals such as wifi, can bus data, PLC, etc. They happen, and they're gone. Sure, they usually have buffers, but these are typically just big enough to get the data from high frequency reads -- not enough to have the time for some more involved analysis that smart systems require. 
 
+We address this problem by 
+
+## Multi readers
+
+It often happens that you want to do more than one thing with a stream. 
+Say store it, visualize it in real time, and direct it to a analysis pipeline. 
+In order for this to be possible with no hiccups, some things need to be taken care of. 
+We did, so you don't have to.
+
 ## Timestamp correctly
 
 In our extensive experience with people (the write code to store stream data), 
@@ -50,4 +59,6 @@ For example, if we want to align with some other timestamped data,
 or use these timestamps to determine if there's gaps or overlaps between the segments 
 we've acquired.
 
-Anyway, stream2py will give you the tools to tackle that problem properly.
+Point is, stream2py will give you the tools to tackle that problem properly. 
+It does so by having the stream2py buffers mentioned above keep data flow statistics that readers can then use to 
+more precisely timestamp what they read.
