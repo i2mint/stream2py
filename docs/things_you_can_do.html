@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Get audio segments when ever I chose &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Documentation" href="api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <p>This document lists a few things you can easily do with stream2py,
+so you get an idea of what stream2py is designed for,
+and get inspiration for other things to do.</p>
+<div class="section" id="get-audio-segments-when-ever-i-chose">
+<h1>Get audio segments when ever I chose<a class="headerlink" href="#get-audio-segments-when-ever-i-chose" title="Permalink to this headline">¶</a></h1>
+<p>In a nutshell:</p>
+<ul class="simple">
+<li><p>I launch the system</p></li>
+<li><p>I can grab an segment of the most recent audio by hitting a key</p></li>
+</ul>
+<p>Details and options</p>
+<ul class="simple">
+<li><p>I specify a what audio source I want to use (if there’s not an obvious single choice).</p></li>
+<li><p>I can specify the sample rate (but there’s a default one)</p></li>
+<li><p>I get my audio in the form of a numpy array of sample (and could specify what type (int16, int32, float32, float64)</p></li>
+<li><p>I can choose a chunk size, or just determine a size in advance so I don’t have to specify it every time</p></li>
+<li><p>I can have the audio be saved in timestamped files, with a choice of timestamp and audio file formats, specified in advance</p></li>
+</ul>
+<div class="section" id="potential-applications">
+<h2>Potential applications<a class="headerlink" href="#potential-applications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="record-an-audio-event-after-it-occured">
+<h3>Record an audio event… after it occured<a class="headerlink" href="#record-an-audio-event-after-it-occured" title="Permalink to this headline">¶</a></h3>
+<p>Say you want to record sneezes as they happen in your open space office. You can record timestamped audio continuously,
+and when you hear a sneeze, quickly jot down the time, and go find and extract that sound later.
+Or… you can be less silly, and instead click a button, and only then will the audio be recorded.
+The problem is, a sneeze’s life is short.
+A lot of time passes between the moment the sneeze is born, and ides,
+and moment you notice, and go find that button to click.
+But that’s alright, you have a buffer, and can record as much of the “recent past”
+as the buffer allows.</p>
+</div>
+<div class="section" id="triggering-audio-recording-automatically">
+<h3>Triggering audio recording automatically.<a class="headerlink" href="#triggering-audio-recording-automatically" title="Permalink to this headline">¶</a></h3>
+<p>A process (buffer reader) takes timestamped chunks off of the buffer automatically and regularly,
+analyzes them, and if certain conditions are met,
+it will grab a bigger recent chunk of data and save it in a file
+(so as to save the event along with a bit more context).
+The condition could be as complex as a event or outlier detection,
+or be a very simple acoustic event such as a burst
+(useful for recording potential breakage, gunshots, sneezes etc.).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get audio segments when ever I chose</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#potential-applications">Potential applications</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API Documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/things_you_can_do.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
