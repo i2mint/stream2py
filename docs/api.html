@@ -124,6 +124,73 @@ Not necessary if read is a blocking function that always returns a data point.</
 </dd></dl>
 
 <dl class="class">
+<dt id="stream2py.StreamBuffer">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.</code><code class="sig-name descname">StreamBuffer</code><a class="headerlink" href="#stream2py.StreamBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles starting and stopping SourceReader and making BufferReaders</p>
+<dl class="method">
+<dt id="stream2py.StreamBuffer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">source_reader: stream2py.source_reader.SourceReader</em>, <em class="sig-param">*</em>, <em class="sig-param">maxlen: int</em>, <em class="sig-param">sleep_time_on_read_none_s: Union[int</em>, <em class="sig-param">float</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.StreamBuffer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: option to auto restart source on read exception</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_reader</strong> – instance of a SourceReader subclass</p></li>
+<li><p><strong>maxlen</strong> – max number of read data points to store in buffer before data starts dropping off the queue</p></li>
+<li><p><strong>sleep_time_on_read_none_s</strong> – Seconds to sleep when reading None from source_reader. None to use defaults.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.StreamBuffer.is_running">
+<em class="property">property </em><code class="sig-name descname">is_running</code><a class="headerlink" href="#stream2py.StreamBuffer.is_running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if stop event has been set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.StreamBuffer.mk_reader">
+<code class="sig-name descname">mk_reader</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; stream2py.buffer_reader.BufferReader<a class="headerlink" href="#stream2py.StreamBuffer.mk_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a BufferReader instance for the currently running  StreamBuffer.
+Reader must be made after start() to have data from said start.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>BufferReader instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.StreamBuffer.source_reader_info">
+<em class="property">property </em><code class="sig-name descname">source_reader_info</code><a class="headerlink" href="#stream2py.StreamBuffer.source_reader_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict with important source info set by SourceReader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.StreamBuffer.start">
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.StreamBuffer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and start reading from source_reader into buffer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.StreamBuffer.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.StreamBuffer.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop reading and close source_reader</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="stream2py.BufferReader">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.</code><code class="sig-name descname">BufferReader</code><a class="headerlink" href="#stream2py.BufferReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reader that is constructed from StreamBuffer.mk_reader()</p>

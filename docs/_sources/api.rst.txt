@@ -3,13 +3,15 @@ API Documentation
 
 Classes
 -------
-..  autoclass:: stream2py.SourceReader
+.. autoclass:: stream2py.SourceReader
     :members:
 
-..  autoclass:: stream2py.StreamBuffer() .. the extra () replaces the signature in the generated docs with its content
+.. comment:: the extra () replaces the signature in the generated docs with its content
+.. autoclass:: stream2py.StreamBuffer()
     :members:
 
-    .. automethod:: __init__  .. all dunder methods are hidden by default
+    .. comment:: all dunder methods are hidden by default
+    .. automethod:: __init__
 
-..  autoclass:: stream2py.BufferReader()
+.. autoclass:: stream2py.BufferReader()
     :members:
