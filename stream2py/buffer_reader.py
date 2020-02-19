@@ -6,7 +6,54 @@ from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
 
 class BufferReader:
-    """Reader that is constructed from StreamBuffer.mk_reader()"""
+    """Reader that is constructed from StreamBuffer.mk_reader()
+
+    >>> from stream2py import StreamBuffer, BufferReader
+    >>> from stream2py.examples.source_reader import SimpleCounterString
+    >>>
+    >>> source_reader = SimpleCounterString(start=0, stop=100)
+    >>> stream_buffer = StreamBuffer(source_reader=source_reader, maxlen=100)
+    >>> stream_buffer.start()
+    >>>
+    >>> buffer_reader = stream_buffer.mk_reader()
+    >>> isinstance(buffer_reader, BufferReader)
+    True
+    >>> buffer_reader.is_stopped
+    False
+    >>> buffer_reader.last_item == None  # None until value is seen
+    True
+    >>> buffer_reader.next() # get first item
+    's0'
+    >>> buffer_reader.last_item # check last_item cursor
+    's0'
+    >>> buffer_reader.next(peek=True), buffer_reader.last_item # next will not update last_item cursor
+    ('s1', 's0')
+    >>> buffer_reader.next(), buffer_reader.last_item # same as what was peeked but now cursor is updated
+    ('s1', 's1')
+    >>> buffer_reader.range(start=5, stop=10)
+    ['s5', 's6', 's7', 's8', 's9', 's10']
+    >>> buffer_reader.last_item
+    's10'
+    >>> buffer_reader.range(start=5, stop=10, step=3), buffer_reader.last_item
+    (['s5', 's8'], 's8')
+    >>> buffer_reader.range(start=10, stop=15, peek=True)
+    ['s10', 's11', 's12', 's13', 's14', 's15']
+    >>> buffer_reader.last_item # unchanged with peek
+    's8'
+    >>> buffer_reader.last_key # key of last_item
+    8
+    >>> buffer_reader.range(start=0, stop=9, only_new_items=True) # only 9 is greater than last item key
+    ['s9']
+    >>> buffer_reader.head(), buffer_reader.last_item, buffer_reader.last_key
+    ('s0', 's0', 0)
+    >>> buffer_reader.tail(), buffer_reader.last_item, buffer_reader.last_key
+    ('s99', 's99', 99)
+    >>>
+    >>> stream_buffer.stop()
+    >>>
+    >>> buffer_reader.is_stopped
+    True
+    """
 
     def __init__(self, buffer: RWLockSortedDeque, source_reader_info: dict, stop_event: threading.Event):
         """
@@ -53,6 +100,7 @@ class BufferReader:
 
     @property
     def last_key(self):
+        """key to last seen item cursor"""
         return self._last_key
 
     def _getlast_item(self):
@@ -68,7 +116,7 @@ class BufferReader:
         del self._last_key
         self._last_key = None
 
-    last_item = property(_getlast_item, _setlast_item, _dellast_item, 'last_item cursor')
+    last_item = property(_getlast_item, _setlast_item, _dellast_item, 'last seen item cursor')
 
     def next(self, *, peek=False, ignore_no_item_found=False):
         """Finds an item with a key greater than the last returned item.
@@ -100,8 +148,8 @@ class BufferReader:
         1. Get last n minutes
         2. Give me data I don't have
 
-        :param start: starting range key of item
-        :param stop: ending range key of item
+        :param start: starting range key of item inclusive
+        :param stop: ending range key of item inclusive
         :param step:
         :param peek: if True, last_item cursor will not be updated
         :param ignore_no_item_found: if True, return None when no next item instead of raising exception

@@ -47,7 +47,37 @@ class _SourceBuffer:
 
 
 class StreamBuffer:
-    """Handles starting and stopping SourceReader and making BufferReaders"""
+    """Handles starting and stopping SourceReader and making BufferReaders
+
+    >>> from stream2py import StreamBuffer
+    >>> from stream2py.examples.source_reader import SimpleCounterString
+    >>>
+    >>> source_reader = SimpleCounterString(start=0, stop=100)
+    >>> stream_buffer = StreamBuffer(source_reader=source_reader, maxlen=100)
+    >>> stream_buffer.is_running
+    False
+    >>> print(stream_buffer.source_reader_info)
+    None
+    >>> stream_buffer.start()
+    >>> assert stream_buffer.is_running
+    >>> stream_buffer.source_reader_info
+    {'start': 0, 'stop': 100, 'open_count': 1}
+    >>> open1_reader1 = stream_buffer.mk_reader()
+    >>> open1_reader1.next()
+    's0'
+    >>> open1_reader2 = stream_buffer.mk_reader()
+    >>> assert open1_reader1 == open1_reader2  # readers from the same open instance are the same
+    >>> assert open1_reader1.next() != open1_reader2.next()  # item cursor position is different
+    >>> stream_buffer.stop()
+    >>>
+    >>> with stream_buffer:
+    ...     stream_buffer.source_reader_info
+    ...     open2_reader1  = stream_buffer.mk_reader()
+    ...     open2_reader2  = stream_buffer.mk_reader()
+    ...     assert open2_reader1 == open2_reader2  # readers from the same open instance are the same
+    ...     assert open2_reader1 != open1_reader1  # readers from the different open instances
+    {'start': 0, 'stop': 100, 'open_count': 2}
+    """
     def __init__(self, source_reader: SourceReader,
                  *, maxlen: int, sleep_time_on_read_none_s: Optional[Union[int, float]] = None):
         """
@@ -69,14 +99,16 @@ class StreamBuffer:
 
         self._stop_event = None
         self.source_buffer = None
-        self.open_lock = threading.Lock()  # used to lock mk_reader while source is still starting up
+        self.start_lock = threading.Lock()  # used to lock mk_reader while source is still starting up
 
     def start(self):
         """Open and start reading from source_reader into buffer"""
-        if self._stop_event and not self._stop_event.is_set():
-            self.stop()
-        self._set_read_to_buffer_thread_and_source_buffer()
-        self._read_to_buffer_thread.start()
+        with self.start_lock:
+            if self._stop_event and not self._stop_event.is_set():
+                self.stop()
+            self._set_read_to_buffer_thread_and_source_buffer()
+            self._open()
+            self._read_to_buffer_thread.start()
 
     def stop(self):
         """Stop reading and close source_reader"""
@@ -89,7 +121,7 @@ class StreamBuffer:
 
         :return: BufferReader instance
         """
-        with self.open_lock:
+        with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
                 raise RuntimeError("Readers should be made after starting")
             return self.source_buffer.mk_reader()
@@ -109,7 +141,8 @@ class StreamBuffer:
 
         :return: bool
         """
-        return self._stop_event and not self._stop_event.is_set()
+        with self.start_lock:
+            return self._stop_event is not None and not self._stop_event.is_set()
 
     @property
     def join(self):
@@ -124,7 +157,6 @@ class StreamBuffer:
 
     def _run(self):
         try:
-            self._open()
             while not self._stop_event.is_set():
                 data = self.source_reader.read()
                 if data is not None:
@@ -151,10 +183,9 @@ class StreamBuffer:
     def _open(self):
         """First thing called after start/run
         Calls source_reader.open() and then sets up source_buffer with latest source_reader.info"""
-        with self.open_lock:
-            self.source_reader.open()
-            self.source_buffer = _SourceBuffer(source_reader_info=self.source_reader.info, stop_event=self._stop_event,
-                                               key=self.source_reader.key, maxlen=self._maxlen)
+        self.source_reader.open()
+        self.source_buffer = _SourceBuffer(source_reader_info=self.source_reader.info, stop_event=self._stop_event,
+                                            key=self.source_reader.key, maxlen=self._maxlen)
 
 
 if __name__ == '__main__':

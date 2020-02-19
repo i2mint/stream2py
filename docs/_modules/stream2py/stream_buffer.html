@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>stream2py.stream_buffer &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for stream2py.stream_buffer</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;StreamBuffer&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">stream2py.utility.locked_sorted_deque</span> <span class="k">import</span> <span class="n">RWLockSortedDeque</span>
+<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">DFLT_SLEEP_TIME_ON_READ_NONE_S</span> <span class="o">=</span> <span class="mf">0.3</span>
+
+
+<span class="k">class</span> <span class="nc">_SourceBuffer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">stop_event</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;StreamBuffer helper class</span>
+<span class="sd">        Thread safe buffer for reading and writing data items</span>
+
+<span class="sd">        source_name should default to source class name</span>
+<span class="sd">        source_info should default to args for constructing source class</span>
+<span class="sd">        an audio source info should have info about sample rates, bit depth, etc.</span>
+<span class="sd">        reader should get both source_name and source_info</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">stop_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="n">RWLockSortedDeque</span><span class="p">([],</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span> <span class="o">=</span> <span class="n">source_reader_info</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">key</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">writer_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BufferReader</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span><span class="p">,</span>
+                            <span class="n">stop_event</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="StreamBuffer"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer">[docs]</a><span class="k">class</span> <span class="nc">StreamBuffer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Handles starting and stopping SourceReader and making BufferReaders</span>
+
+<span class="sd">    &gt;&gt;&gt; from stream2py import StreamBuffer</span>
+<span class="sd">    &gt;&gt;&gt; from stream2py.examples.source_reader import SimpleCounterString</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; source_reader = SimpleCounterString(start=0, stop=100)</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer = StreamBuffer(source_reader=source_reader, maxlen=100)</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.is_running</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; print(stream_buffer.source_reader_info)</span>
+<span class="sd">    None</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.start()</span>
+<span class="sd">    &gt;&gt;&gt; assert stream_buffer.is_running</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.source_reader_info</span>
+<span class="sd">    {&#39;start&#39;: 0, &#39;stop&#39;: 100, &#39;open_count&#39;: 1}</span>
+<span class="sd">    &gt;&gt;&gt; open1_reader1 = stream_buffer.mk_reader()</span>
+<span class="sd">    &gt;&gt;&gt; open1_reader1.next()</span>
+<span class="sd">    &#39;s0&#39;</span>
+<span class="sd">    &gt;&gt;&gt; open1_reader2 = stream_buffer.mk_reader()</span>
+<span class="sd">    &gt;&gt;&gt; assert open1_reader1 == open1_reader2  # readers from the same open instance are the same</span>
+<span class="sd">    &gt;&gt;&gt; assert open1_reader1.next() != open1_reader2.next()  # item cursor position is different</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.stop()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; with stream_buffer:</span>
+<span class="sd">    ...     stream_buffer.source_reader_info</span>
+<span class="sd">    ...     open2_reader1  = stream_buffer.mk_reader()</span>
+<span class="sd">    ...     open2_reader2  = stream_buffer.mk_reader()</span>
+<span class="sd">    ...     assert open2_reader1 == open2_reader2  # readers from the same open instance are the same</span>
+<span class="sd">    ...     assert open2_reader1 != open1_reader1  # readers from the different open instances</span>
+<span class="sd">    {&#39;start&#39;: 0, &#39;stop&#39;: 100, &#39;open_count&#39;: 2}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="StreamBuffer.__init__"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader</span><span class="p">:</span> <span class="n">SourceReader</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO: option to auto restart source on read exception</span>
+
+<span class="sd">        :param source_reader: instance of a SourceReader subclass</span>
+<span class="sd">        :param maxlen: max number of read data points to store in buffer before data starts dropping off the queue</span>
+<span class="sd">        :param sleep_time_on_read_none_s: Seconds to sleep when reading None from source_reader. None to use defaults.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">SourceReader</span><span class="p">),</span> <span class="s2">&quot;source_reader is not a subclass of SourceReader&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">source_reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span> <span class="o">=</span> <span class="n">maxlen</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">sleep_time_on_read_none_s</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">DFLT_SLEEP_TIME_ON_READ_NONE_S</span>  <span class="c1"># default</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>  <span class="c1"># used to lock mk_reader while source is still starting up</span></div>
+
+<div class="viewcode-block" id="StreamBuffer.start"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open and start reading from source_reader into buffer&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StreamBuffer.stop"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stop reading and close source_reader&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StreamBuffer.mk_reader"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.mk_reader">[docs]</a>    <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Makes a BufferReader instance for the currently running  StreamBuffer.</span>
+<span class="sd">        Reader must be made after start() to have data from said start.</span>
+
+<span class="sd">        :return: BufferReader instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Readers should be made after starting&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;A dict with important source info set by SourceReader.</span>
+
+<span class="sd">        :return: dict or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">source_reader_info</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks if stop event has been set.</span>
+
+<span class="sd">        :return: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">join</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize source and buffer</span>
+<span class="sd">        Makes a new run thread, and stop event that is unique to this run session&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;First thing called after start/run</span>
+<span class="sd">        Calls source_reader.open() and then sets up source_buffer with latest source_reader.info&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="n">_SourceBuffer</span><span class="p">(</span><span class="n">source_reader_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="n">stop_event</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">,</span>
+                                            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">operator</span>
+
+
+    <span class="k">class</span> <span class="nc">TenthSecondCounter</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Example SourceReader</span>
+<span class="sd">        Start counting when as soon as you construct&quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_count</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">)}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">starting_count</span> <span class="o">=</span> <span class="n">starting_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Reset params for first read&quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">bt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">*</span> <span class="mi">100000</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_info</span>
+
+        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">next_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
+            <span class="n">next_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span>
+            <span class="k">if</span> <span class="n">now</span> <span class="o">&gt;=</span> <span class="n">next_time</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">next_time</span> <span class="o">*</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">next_count</span>  <span class="c1"># (timestamp_us, count)</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (timestamp_us, count) -&gt; timestamp_us</span>
+
+
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">TenthSecondCounter</span><span class="p">()</span>  <span class="c1"># source</span>
+    <span class="n">sc_buf</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># buffer</span>
+
+    <span class="c1"># start source, print some data, and check last_item cursor is working</span>
+    <span class="n">sc_buf</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>  <span class="c1"># start reader to buffer thread</span>
+    <span class="n">sc_reader</span> <span class="o">=</span> <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># reader must be made after start to have data related to said start</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data as shown is (timestamp, count) at every tenth of a second&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+            <span class="n">last_read</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">==</span> <span class="n">last_read</span><span class="p">,</span> <span class="s2">&quot;last_item did not follow last next() call&quot;</span>
+
+    <span class="c1"># check range works and last_item cursor is working</span>
+    <span class="n">rstart</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">rstop</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">source_info</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span>
+    <span class="n">start_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstart</span>  <span class="c1"># 5</span>
+    <span class="n">stop_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstop</span>  <span class="c1"># 10</span>
+    <span class="n">range_data</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start_key</span><span class="p">,</span> <span class="n">stop_key</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">expected_data</span><span class="p">,</span> <span class="n">rdata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rstart</span><span class="p">,</span> <span class="n">rstop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">range_data</span><span class="p">):</span>
+        <span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">rdata</span>
+        <span class="k">assert</span> <span class="n">data</span> <span class="o">==</span> <span class="n">expected_data</span><span class="p">,</span> <span class="s2">&quot;wrong data does not match&quot;</span>
+    <span class="k">assert</span> <span class="n">expected_data</span> <span class="o">==</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f</span><span class="s2">&quot;last_item did not follow last range(</span><span class="si">{start_key}</span><span class="s2">, </span><span class="si">{stop_key}</span><span class="s2">) call&quot;</span>
+    <span class="n">previous_last_item</span> <span class="o">=</span> <span class="n">expected_data</span>
+
+    <span class="c1"># check range works with step and peek, and last_item does not move with peek=True</span>
+    <span class="n">rstart</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">rstop</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">rstep</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">source_info</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span>
+    <span class="n">start_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstart</span>  <span class="c1"># 5</span>
+    <span class="n">stop_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstop</span>  <span class="c1"># 10</span>
+    <span class="n">range_data</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start_key</span><span class="p">,</span> <span class="n">stop_key</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">rstep</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">expected_data_value</span><span class="p">,</span> <span class="n">rdata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rstart</span><span class="p">,</span> <span class="n">rstop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rstep</span><span class="p">),</span> <span class="n">range_data</span><span class="p">):</span>
+        <span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">rdata</span>
+        <span class="k">assert</span> <span class="n">data</span> <span class="o">==</span> <span class="n">expected_data_value</span><span class="p">,</span> <span class="s2">&quot;wrong data does not match&quot;</span>
+    <span class="k">assert</span> <span class="n">previous_last_item</span> <span class="o">==</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">f</span><span class="s2">&quot;last_item moved but should not when peek=True&quot;</span>
+
+    <span class="c1"># stop source and check if reader see it</span>
+    <span class="n">sc_reader12</span> <span class="o">=</span> <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># reader1</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span> <span class="o">==</span> <span class="n">sc_reader12</span><span class="p">,</span> <span class="s2">&quot;first readers should be equal&quot;</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">!=</span> <span class="n">sc_reader12</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> \
+        <span class="s2">&quot;first readers should have a different last_item cursor position&quot;</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Reader should see source is not stopped&quot;</span>
+    <span class="n">sc_buf</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Reader should see source is stopped&quot;</span>
+
+    <span class="c1"># restart source and make new readers then check old reader is different from new reader</span>
+    <span class="k">with</span> <span class="n">sc_buf</span><span class="p">:</span>  <span class="c1"># start and stop with a context manager</span>
+
+        <span class="n">sc_reader21</span> <span class="o">=</span> <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># reader2</span>
+        <span class="n">sc_reader22</span> <span class="o">=</span> <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># reader2</span>
+        <span class="k">assert</span> <span class="n">sc_reader21</span> <span class="o">==</span> <span class="n">sc_reader22</span><span class="p">,</span> <span class="s2">&quot;two new readers should be equal&quot;</span>
+        <span class="k">assert</span> <span class="n">sc_reader</span> <span class="o">!=</span> <span class="n">sc_reader21</span><span class="p">,</span> <span class="s2">&quot;first reader should not equal new reader&quot;</span>
+        <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;first reader should still see a stopped source&quot;</span>
+        <span class="k">assert</span> <span class="n">sc_reader21</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;new reader should see the source is running&quot;</span>
+        <span class="k">assert</span> <span class="n">sc_reader22</span><span class="o">.</span><span class="n">last_item</span> <span class="o">==</span> <span class="n">sc_reader21</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> \
+            <span class="s2">&quot;new readers should now have the same last_item cursor position&quot;</span>
+
+        <span class="c1"># print some data from old and new reader and see they are different</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;comparing first start reader values to second start&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">r22</span> <span class="o">=</span> <span class="n">sc_reader22</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">r12</span> <span class="o">=</span> <span class="n">sc_reader12</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">r22</span><span class="p">:</span>
+                <span class="k">def</span> <span class="nf">zero_if_none</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+                    <span class="k">return</span> <span class="n">val</span>
+
+
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{r22}</span><span class="s2"> &gt; </span><span class="si">{r12}</span><span class="s2">, ts_diff={r22[0] - r12[0]}&quot;</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">r22</span> <span class="o">&gt;</span> <span class="n">zero_if_none</span><span class="p">(</span><span class="n">r12</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">assert</span> <span class="n">sc_reader22</span><span class="o">.</span><span class="n">last_item</span> <span class="o">!=</span> <span class="n">sc_reader21</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> \
+            <span class="s2">&quot;new readers should now have a different last_item cursor position&quot;</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

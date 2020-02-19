@@ -31,12 +31,17 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', #Include documentation from docstrings
+    'sphinx.ext.autodoc', # Include documentation from docstrings
+    'sphinx.ext.doctest', # Test snippets in the documentation
     'sphinx.ext.githubpages', # This extension creates .nojekyll file
     'sphinx.ext.graphviz', # Add Graphviz graphs
     'sphinx.ext.napoleon', # Support for NumPy and Google style docstrings
+    'sphinx.ext.todo', # Support for todo items
+    'sphinx.ext.viewcode', # Add links to highlighted source code
     'recommonmark', # Parse .md files
 ]
+
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
