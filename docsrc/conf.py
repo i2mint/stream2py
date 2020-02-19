@@ -31,9 +31,11 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.githubpages',
-    'recommonmark',
+    'sphinx.ext.autodoc', #Include documentation from docstrings
+    'sphinx.ext.githubpages', # This extension creates .nojekyll file
+    'sphinx.ext.graphviz', # Add Graphviz graphs
+    'sphinx.ext.napoleon', # Support for NumPy and Google style docstrings
+    'recommonmark', # Parse .md files
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -75,4 +77,3 @@ html_static_path = ['_static']
 #
 # def setup(app):
 #     app.connect("autodoc-skip-member", skip)
-

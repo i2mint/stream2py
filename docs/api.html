@@ -7,6 +7,7 @@
     <title>API Documentation &#8212; stream2py 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -34,6 +35,14 @@
             
   <div class="section" id="api-documentation">
 <h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="graphviz"><img src="_images/graphviz-20285e1b7adc5c570bcc9f6d0eded310a734ef0d.png" alt="digraph {
+    rankdir=LR;
+    &quot;SourceReader&quot; [shape=cds]
+    &quot;StreamBuffer&quot; [shape=box3d]
+    &quot;SourceReader&quot; -&gt; &quot;StreamBuffer&quot; -&gt; &quot;BufferReader1&quot;;
+    &quot;StreamBuffer&quot; -&gt; &quot;BufferReader2&quot;;
+    &quot;StreamBuffer&quot; -&gt; &quot;BufferReader3&quot;;
+}" class="graphviz" /></div>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">

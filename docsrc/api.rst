@@ -1,6 +1,8 @@
 API Documentation
 =================
 
+.. include:: graph/source1_buffer1_reader3.rst
+
 Classes
 -------
 .. autoclass:: stream2py.SourceReader
