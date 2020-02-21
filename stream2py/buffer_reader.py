@@ -71,16 +71,9 @@ class BufferReader:
         self._last_key = None
         self._stop_event = stop_event
 
-    def __hash__(self):
-        return hash(self._stop_event)
-
-    def __eq__(self, other):
-        """BufferReaders are equivalent if they share a stop event
-        and thus the same source instance/session and buffer"""
-        return self.__class__ == other.__class__ and self._stop_event == other._stop_event
-
-    def __ne__(self, other):
-        return not self == other
+    def is_same_buffer(self, other_buffer_reader):
+        """Check if reader is looking at the same buffer"""
+        return self.__class__ == other_buffer_reader.__class__ and self._stop_event == other_buffer_reader._stop_event
 
     @property
     def is_stopped(self) -> bool:

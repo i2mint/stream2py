@@ -66,7 +66,7 @@ class StreamBuffer:
     >>> open1_reader1.next()
     's0'
     >>> open1_reader2 = stream_buffer.mk_reader()
-    >>> assert open1_reader1 == open1_reader2  # readers from the same open instance are the same
+    >>> assert open1_reader1.is_same_buffer(open1_reader2) is True  # readers from the same open instance are the same
     >>> assert open1_reader1.next() != open1_reader2.next()  # item cursor position is different
     >>> stream_buffer.stop()
     >>>
@@ -74,8 +74,8 @@ class StreamBuffer:
     ...     stream_buffer.source_reader_info
     ...     open2_reader1  = stream_buffer.mk_reader()
     ...     open2_reader2  = stream_buffer.mk_reader()
-    ...     assert open2_reader1 == open2_reader2  # readers from the same open instance are the same
-    ...     assert open2_reader1 != open1_reader1  # readers from the different open instances
+    ...     assert open2_reader1.is_same_buffer(open2_reader2) is True  # readers from the same open instance are the same
+    ...     assert open2_reader1.is_same_buffer(open1_reader1) is False  # readers from the different open instances
     {'start': 0, 'stop': 100, 'open_count': 2}
     """
     def __init__(self, source_reader: SourceReader,

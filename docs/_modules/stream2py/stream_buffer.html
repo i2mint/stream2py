@@ -100,7 +100,7 @@
 <span class="sd">    &gt;&gt;&gt; open1_reader1.next()</span>
 <span class="sd">    &#39;s0&#39;</span>
 <span class="sd">    &gt;&gt;&gt; open1_reader2 = stream_buffer.mk_reader()</span>
-<span class="sd">    &gt;&gt;&gt; assert open1_reader1 == open1_reader2  # readers from the same open instance are the same</span>
+<span class="sd">    &gt;&gt;&gt; assert open1_reader1.is_same_buffer(open1_reader2) is True  # readers from the same open instance are the same</span>
 <span class="sd">    &gt;&gt;&gt; assert open1_reader1.next() != open1_reader2.next()  # item cursor position is different</span>
 <span class="sd">    &gt;&gt;&gt; stream_buffer.stop()</span>
 <span class="sd">    &gt;&gt;&gt;</span>
@@ -108,8 +108,8 @@
 <span class="sd">    ...     stream_buffer.source_reader_info</span>
 <span class="sd">    ...     open2_reader1  = stream_buffer.mk_reader()</span>
 <span class="sd">    ...     open2_reader2  = stream_buffer.mk_reader()</span>
-<span class="sd">    ...     assert open2_reader1 == open2_reader2  # readers from the same open instance are the same</span>
-<span class="sd">    ...     assert open2_reader1 != open1_reader1  # readers from the different open instances</span>
+<span class="sd">    ...     assert open2_reader1.is_same_buffer(open2_reader2) is True  # readers from the same open instance are the same</span>
+<span class="sd">    ...     assert open2_reader1.is_same_buffer(open1_reader1) is False  # readers from the different open instances</span>
 <span class="sd">    {&#39;start&#39;: 0, &#39;stop&#39;: 100, &#39;open_count&#39;: 2}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="StreamBuffer.__init__"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader</span><span class="p">:</span> <span class="n">SourceReader</span><span class="p">,</span>

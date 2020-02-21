@@ -204,7 +204,7 @@ Not necessary if read is a blocking function that always returns a data point.</
 <span class="gp">&gt;&gt;&gt; </span><span class="n">open1_reader1</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 <span class="go">&#39;s0&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">open1_reader2</span> <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">open1_reader1</span> <span class="o">==</span> <span class="n">open1_reader2</span>  <span class="c1"># readers from the same open instance are the same</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">open1_reader1</span><span class="o">.</span><span class="n">is_same_buffer</span><span class="p">(</span><span class="n">open1_reader2</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>  <span class="c1"># readers from the same open instance are the same</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">open1_reader1</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="o">!=</span> <span class="n">open1_reader2</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c1"># item cursor position is different</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -212,8 +212,8 @@ Not necessary if read is a blocking function that always returns a data point.</
 <span class="gp">... </span>    <span class="n">stream_buffer</span><span class="o">.</span><span class="n">source_reader_info</span>
 <span class="gp">... </span>    <span class="n">open2_reader1</span>  <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">open2_reader2</span>  <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="k">assert</span> <span class="n">open2_reader1</span> <span class="o">==</span> <span class="n">open2_reader2</span>  <span class="c1"># readers from the same open instance are the same</span>
-<span class="gp">... </span>    <span class="k">assert</span> <span class="n">open2_reader1</span> <span class="o">!=</span> <span class="n">open1_reader1</span>  <span class="c1"># readers from the different open instances</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">open2_reader1</span><span class="o">.</span><span class="n">is_same_buffer</span><span class="p">(</span><span class="n">open2_reader2</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>  <span class="c1"># readers from the same open instance are the same</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">open2_reader1</span><span class="o">.</span><span class="n">is_same_buffer</span><span class="p">(</span><span class="n">open1_reader1</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span>  <span class="c1"># readers from the different open instances</span>
 <span class="go">{&#39;start&#39;: 0, &#39;stop&#39;: 100, &#39;open_count&#39;: 2}</span>
 </pre></div>
 </div>
@@ -331,6 +331,12 @@ Reader must be made after start() to have data from said start.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="stream2py.BufferReader.is_same_buffer">
+<code class="sig-name descname">is_same_buffer</code><span class="sig-paren">(</span><em class="sig-param">other_buffer_reader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader.is_same_buffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader.is_same_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if reader is looking at the same buffer</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="stream2py.BufferReader.is_stopped">
 <em class="property">property </em><code class="sig-name descname">is_stopped</code><a class="headerlink" href="#stream2py.BufferReader.is_stopped" title="Permalink to this definition">¶</a></dt>

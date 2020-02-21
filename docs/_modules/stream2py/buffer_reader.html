@@ -105,16 +105,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">stop_event</span>
 
-    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;BufferReaders are equivalent if they share a stop event</span>
-<span class="sd">        and thus the same source instance/session and buffer&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_stop_event</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+<div class="viewcode-block" id="BufferReader.is_same_buffer"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.is_same_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">is_same_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_buffer_reader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if reader is looking at the same buffer&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="n">_stop_event</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
