@@ -11,6 +11,8 @@ Welcome to stream2py's documentation!
 
    readme_link
    api
+   sources
+   example
    things_you_can_do
 
 

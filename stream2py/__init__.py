@@ -1,4 +1,7 @@
 """
+API Documentation
+=================
+
 .. graphviz::
 
     digraph {
