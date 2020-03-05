@@ -1,24 +1,6 @@
-"""
-Listen to key input
-Enter a keyword to start/stop typing test
-
-Source readers:
-1. Keyboard input
-    * starts with the app
-2. Typing test
-    * add prompt function
-    * test prompt strings should describe how the app works
-
-Consumers
-1. Listen to Keyboard input to trigger typing test
-    * start and stop keywords
-        * basically an on off switch to listen for prompt requests
-    * 'enter' to request new prompt
-2. Listen to Typing test and Keyboard input and display an accuracy and time score
-
-
-Add flow chart describing what is happening
-
+"""TODO:
+    Documentation
+    Add flow chart describing what is happening
 """
 from collections import deque
 from contextlib import contextmanager, suppress
@@ -29,9 +11,16 @@ import time
 
 from stream2py import SourceReader, StreamBuffer, BufferReader
 from stream2py.sources.keyboard_input import KeyboardInputSourceReader
-from stream2py.utility.typing_hints import ComparableType, Any, Optional, Iterable
+from stream2py.utility.typing_hints import ComparableType, Any, Optional, Iterable, Union
 
 _ITEMGETTER_0 = operator.itemgetter(0)
+_TYPING_TEST_PROMPTS = """Welcome to the typing test tutorial!
+This example demonstrates the usage of stream2py with 4 asynchronous components.
+First is KeyboardInputSourceReader which starts at the launch of this program.
+Second is TypingTest, also a SourceReader, which queues up test prompts when started.
+Third is PromptSwitch, a BufferReader consumer that reads keyboard inputs for commands and tells TypingTest what to do.
+Last is TestProctor, a BufferReader consumer that gives you TypingTest prompts and grades your submissions.
+""".splitlines(keepends=False)
 
 
 class TypingTest(SourceReader):  # TODO: make an abc that adds timestamp or counter automatically
@@ -69,10 +58,12 @@ class TypingTest(SourceReader):  # TODO: make an abc that adds timestamp or coun
         return _ITEMGETTER_0(data)
 
     def add_prompt(self):
-        # TODO: handle PROMPT_END
         with self._release_lock:
-            self._release_deque.append((self.get_timestamp(), self.prompt_deque[0]))
+            prompt = self.prompt_deque[0]
+            timestamp = self.get_timestamp()
+            self._release_deque.append((timestamp, prompt))
         self.prompt_deque.rotate(-1)
+        return prompt
 
     def _reset_deque_order(self):
         while self.prompt_deque[-1] is not TypingTest.PROMPT_END:
@@ -84,6 +75,7 @@ class PromptSwitch(threading.Thread):
     "start" will start adding prompts after each return key press.
     "stop" will stop adding prompts
     "exit" will exit the program"""
+
     def __init__(self, input: StreamBuffer, prompts: StreamBuffer):
         if not isinstance(input.source_reader, KeyboardInputSourceReader):
             raise TypeError(f"input must be a StreamBuffer with KeyboardInputSourceReader: {input}")
@@ -101,11 +93,12 @@ class PromptSwitch(threading.Thread):
         self.stop_event.set()
 
     def run(self):
+        self.display_usage()
         input_reader = self.input.mk_reader()
         for index, timestamp, char in iter(input_reader):
             if self.stop_event.is_set():
                 break
-            print(char, sep='', end='\n' if char == '\r' else '', flush=True)
+            print(char, sep='', end='\n' if char == '\r' else '', flush=True)  # print input character
 
             if char == '\r':  # "return" key
                 if self._check_trigger_string('exit', input_reader, index):
@@ -116,11 +109,24 @@ class PromptSwitch(threading.Thread):
                         self.prompts.start()
                         self.prompts.source_reader.add_prompt()
                         self.is_started = True
+                    else:
+                        self.display_usage()
                 elif self._check_trigger_string('stop', input_reader, index):
                     self.prompts.stop()
                     self.is_started = False
                 else:
-                    self.prompts.source_reader.add_prompt()
+                    prompt = self.prompts.source_reader.add_prompt()
+                    if prompt is TypingTest.PROMPT_END:
+                        self.prompts.stop()
+                        self.is_started = False
+        print("Thanks for playing!")
+
+    @staticmethod
+    def display_usage():
+        print("Commands that can be entered anytime:\n\r"
+              " start - begin typing test\n\r"
+              " stop  - end typing test\n\r"
+              " exit  - close program\n\r")
 
     @staticmethod
     def _check_trigger_string(trigger_string: str, input_reader: BufferReader, return_index: int):
@@ -131,8 +137,9 @@ class PromptSwitch(threading.Thread):
         return input_str == trigger_string
 
 
-class PromptGrader(threading.Thread):
+class TestProctor(threading.Thread):
     """Give prompts and grade input"""
+
     def __init__(self, input: StreamBuffer, prompts: StreamBuffer):
         if not isinstance(input.source_reader, KeyboardInputSourceReader):
             raise TypeError(f"input must be a StreamBuffer with KeyboardInputSourceReader: {input}")
@@ -158,35 +165,37 @@ class PromptGrader(threading.Thread):
                 for timestamp, prompt in iter(prompts_reader):
                     if prev_timestamp:
                         self.grade(prev_prompt, prev_timestamp, timestamp)
-                    print(prompt, end='\n\r')
+                    print("Prompt: ", prompt, sep='', end='\n\r Input: ')
                     prev_timestamp = timestamp
                     prev_prompt = prompt
                 else:
-                    if prev_timestamp:
+                    if prev_timestamp and prev_prompt is not TypingTest.PROMPT_END:
                         self.grade(prev_prompt, prev_timestamp, float('inf'))
 
-    def grade(self, prompt, begin_time, end_time):
+    def grade(self, prompt: str, begin_time: Union[int, float], end_time: Union[int, float], debug=False):
         input_reader = self.input.mk_reader()
         all_input_data = input_reader.range(0, float('inf'))
-        begin_time = begin_time
         relevant_characters = [c for i, t, c in all_input_data if begin_time <= t <= end_time]
         try:
             stop_index = relevant_characters.index("\r")
         except ValueError:
             stop_index = len(relevant_characters)
+        relevant_timestamps = [t for i, t, c in all_input_data if begin_time <= t <= end_time]
+        true_start_time = relevant_timestamps[0]
+        true_end_time = relevant_timestamps[stop_index]
         input_string = ''.join(relevant_characters[0:stop_index])
         score = len(prompt) - sum(1 for diff in difflib.ndiff(prompt, input_string) if not diff.startswith(" "))
-        print(f"\n\rprompt={prompt}\n\r"
-              f" input={input_string}\n\r"
-              f" You scored {score} out of {len(prompt)}!\n\r")
-
-
-def _dummy_prompt_gen(n=10):
-    return (f"This is prompt number: {i}" for i in range(1, n + 1))
+        time_seconds = (true_end_time - true_start_time) / 1e6
+        if debug:
+            print(f"\n\rPrompt: {prompt}\n\r"
+                  f" Input: {input_string}\n\r"
+                  f"""Characters: [{', '.join(f'"{ch}"' for ch in input_string)}]\n\r""", flush=True)
+        print(f"You scored {score} out of {len(prompt)} in {round(time_seconds, 1)} seconds!\n\r")
 
 
 @contextmanager
-def source_runner(sources):
+def source_runner(sources: dict):
+    """contextmanager for putting SourceReaders in StreamBuffers and calling start and stop"""
     stream_buffers = {}
     try:
         for name, s in sources.items():
@@ -202,17 +211,28 @@ def source_runner(sources):
                 s_buf.stop()
 
 
-sources = {'input': dict(source=KeyboardInputSourceReader(), start=True, maxlen=None),
-           'prompts': dict(source=TypingTest(prompts=_dummy_prompt_gen(10)), start=False, maxlen=None)}
+@contextmanager
+def consumer_runner(consumers: dict):
+    """contextmanager for calling start and stop on consumers"""
+    try:
+        for name, c in consumers.items():
+            c.start()
+        yield consumers
+    finally:
+        for name, c in consumers.items():
+            with suppress(Exception):
+                c.stop()
 
 
-with source_runner(sources) as stream_buffers:
-    consumers = {'switch': PromptSwitch(input=stream_buffers['input'], prompts=stream_buffers['prompts']),
-                 'grader': PromptGrader(input=stream_buffers['input'], prompts=stream_buffers['prompts'])}
-    for name, c in consumers.items():
-        c.start()
+def main():
+    sources = {'input': dict(source=KeyboardInputSourceReader(), start=True, maxlen=None),
+               'prompts': dict(source=TypingTest(prompts=_TYPING_TEST_PROMPTS), start=False, maxlen=None)}
+    with source_runner(sources) as stream_buffers:
+        consumers = {'switch': PromptSwitch(input=stream_buffers['input'], prompts=stream_buffers['prompts']),
+                     'grader': TestProctor(input=stream_buffers['input'], prompts=stream_buffers['prompts'])}
+        with consumer_runner(consumers):
+            consumers['switch'].join()  # wait for PromptSwitch to exit
 
-    consumers['switch'].join()  # wait for PromptSwitch to exit
 
-    for name, c in consumers.items():
-        c.stop()
+if __name__ == '__main__':
+    main()
