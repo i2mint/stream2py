@@ -129,9 +129,9 @@ class SourceReader(metaclass=ABCMeta):
         """
         return int(time.time() * cls.timestamp_seconds_to_unit_conversion)
 
-    def __enter__(self) -> Callable[[], Optional[Any]]:
+    def __enter__(self):
         self.open()
-        return self.read
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()

@@ -1,8 +1,10 @@
 __all__ = ['BufferReader']
 
 import threading
+import time
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
+from stream2py.utility.typing_hints import Union
 
 
 class BufferReader:
@@ -70,6 +72,24 @@ class BufferReader:
         self._last_item = None
         self._last_key = None
         self._stop_event = stop_event
+        self._sleep_time_on_iter_none_s = 0.1
+
+    def __iter__(self):
+        while True:
+            _next = self.next(ignore_no_item_found=True)
+            if _next is not None:
+                yield _next
+            elif self.is_stopped:
+                return None
+            else:
+                time.sleep(self._sleep_time_on_iter_none_s)
+
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+        """Set the sleep time of the iter yield loop when next data item is not yet available.
+
+        :param sleep_time_s: seconds to sleep
+        """
+        self._sleep_time_on_iter_none_s = sleep_time_s
 
     def is_same_buffer(self, other_buffer_reader):
         """Check if reader is looking at the same buffer"""

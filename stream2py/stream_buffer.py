@@ -78,6 +78,7 @@ class StreamBuffer:
     ...     assert open2_reader1.is_same_buffer(open1_reader1) is False  # readers from the different open instances
     {'start': 0, 'stop': 100, 'open_count': 2}
     """
+
     def __init__(self, source_reader: SourceReader,
                  *, maxlen: int, sleep_time_on_read_none_s: Optional[Union[int, float]] = None):
         """
@@ -185,7 +186,7 @@ class StreamBuffer:
         Calls source_reader.open() and then sets up source_buffer with latest source_reader.info"""
         self.source_reader.open()
         self.source_buffer = _SourceBuffer(source_reader_info=self.source_reader.info, stop_event=self._stop_event,
-                                            key=self.source_reader.key, maxlen=self._maxlen)
+                                           key=self.source_reader.key, maxlen=self._maxlen)
 
 
 if __name__ == '__main__':
@@ -273,7 +274,7 @@ if __name__ == '__main__':
 
     # stop source and check if reader see it
     sc_reader12 = sc_buf.mk_reader()  # reader1
-    assert sc_reader == sc_reader12, "first readers should be equal"
+    assert sc_reader.is_same_buffer(sc_reader12), "first readers should be equal"
     assert sc_reader.last_item != sc_reader12.last_item, \
         "first readers should have a different last_item cursor position"
     assert sc_reader.is_stopped is False, "Reader should see source is not stopped"
@@ -285,8 +286,8 @@ if __name__ == '__main__':
 
         sc_reader21 = sc_buf.mk_reader()  # reader2
         sc_reader22 = sc_buf.mk_reader()  # reader2
-        assert sc_reader21 == sc_reader22, "two new readers should be equal"
-        assert sc_reader != sc_reader21, "first reader should not equal new reader"
+        assert sc_reader21.is_same_buffer(sc_reader22), "two new readers should be equal"
+        assert not sc_reader.is_same_buffer(sc_reader21), "first reader should not equal new reader"
         assert sc_reader.is_stopped is True, "first reader should still see a stopped source"
         assert sc_reader21.is_stopped is False, "new reader should see the source is running"
         assert sc_reader22.last_item == sc_reader21.last_item, \

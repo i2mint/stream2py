@@ -182,8 +182,11 @@ class PyAudioSaver(BufferReaderConsumer):
 
 
 def audio_to_files(rate, width, channels, input_device_index, frames_per_buffer, interval, rootdir, logging_enabled):
-    """Basically the main function to run the example. Check this source code to see how to put together the three
-    components: SourceReader, StreamBuffer, BufferReader
+    """Basically the main function to run the example.
+    It will record audio with stream2py.sources.audio.PyAudioSourceReader
+    and save to wav files with stream2py.examples.usage.record_audio_to_files.PyAudioSaver
+
+    Check this source code to see how to put together the three components: SourceReader, StreamBuffer, BufferReader
 
     :param rate: Specifies the desired sample rate (in Hz)
     :param width: Sample width in bytes (1, 2, 3, or 4)
