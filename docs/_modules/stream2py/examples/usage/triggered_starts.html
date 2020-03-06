@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>stream2py.examples.usage.triggered_starts &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for stream2py.examples.usage.triggered_starts</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">=================================</span>
+<span class="sd">Triggered Starts in a Typing Test</span>
+<span class="sd">=================================</span>
+
+<span class="sd">.. graphviz::</span>
+
+<span class="sd">    digraph components {</span>
+<span class="sd">        subgraph cluster_0 {</span>
+<span class="sd">            style=filled;</span>
+<span class="sd">            color=lightgrey;</span>
+<span class="sd">            node [style=filled,color=white];</span>
+<span class="sd">            label=&quot;Sources&quot;;</span>
+<span class="sd">            labeljust=&quot;l&quot;</span>
+<span class="sd">            &quot;TypingTest&quot;</span>
+<span class="sd">            &quot;KeyboardInput&quot;</span>
+<span class="sd">        }</span>
+
+<span class="sd">        subgraph cluster_1 {</span>
+<span class="sd">            node [style=filled];</span>
+<span class="sd">            label=&quot;Readers&quot;;</span>
+<span class="sd">            labeljust=&quot;l&quot;</span>
+<span class="sd">            color=lightgrey</span>
+<span class="sd">            node [style=filled,color=lightgrey];</span>
+<span class="sd">            &quot;TestProctor&quot;</span>
+<span class="sd">            &quot;PromptSwitch&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;KeyboardInput&quot; -&gt; &quot;PromptSwitch&quot; -&gt; &quot;TypingTest&quot; -&gt; &quot;TestProctor&quot;;</span>
+<span class="sd">        &quot;KeyboardInput&quot; -&gt; &quot;TestProctor&quot;;</span>
+<span class="sd">    }</span>
+
+<span class="sd">This example demonstrates the usage of stream2py with 4 asynchronous components:</span>
+
+<span class="sd">1. KeyboardInputSourceReader starts at the launch of this program and listens to key presses.</span>
+<span class="sd">2. TypingTest waits for start, stop, and add prompt commands.</span>
+<span class="sd">3. PromptSwitch reads keyboard inputs for commands and tells TypingTest what to do.</span>
+<span class="sd">4. TestProctor gives you TypingTest prompts and grades your keyboard input submissions.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">-----</span>
+<span class="sd">Launching the script:</span>
+<span class="sd">::</span>
+<span class="sd">    python -m stream2py.examples.usage.triggered_starts</span>
+
+<span class="sd">.. graphviz::</span>
+
+<span class="sd">    digraph flow_chart {</span>
+<span class="sd">        label=&quot;User Flow&quot;;</span>
+<span class="sd">        labeljust=&quot;l&quot;</span>
+<span class="sd">        labelloc=&quot;t&quot;</span>
+<span class="sd">        splines=polyline</span>
+<span class="sd">        nodesep=.2</span>
+<span class="sd">        {</span>
+<span class="sd">            node [shape=oval]</span>
+<span class="sd">            enter [label=&quot;Begin&quot;]</span>
+<span class="sd">            exit [label=&quot;Exit&quot;]</span>
+<span class="sd">        }</span>
+<span class="sd">        {</span>
+<span class="sd">            node [shape=diamond label=&quot;Is Started?&quot;]</span>
+<span class="sd">            started_start</span>
+<span class="sd">            started_stop</span>
+<span class="sd">            started_other</span>
+<span class="sd">        }</span>
+<span class="sd">        {</span>
+<span class="sd">            node [shape=box]</span>
+<span class="sd">            start [label=&quot;Start&quot;]</span>
+<span class="sd">            stop [label=&quot;Stop&quot;]</span>
+<span class="sd">            submit [label=&quot;Submit for Score&quot;]</span>
+<span class="sd">            prompt [label=&quot;New Test Prompt&quot;]</span>
+<span class="sd">            usage [label=&quot;Display Commands&quot;]</span>
+<span class="sd">        }</span>
+<span class="sd">        input [shape=parallelogram, label=&quot;Keyboard Input&quot;]</span>
+<span class="sd">        enter -&gt; usage -&gt; input;</span>
+<span class="sd">        input -&gt; started_start [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;start&quot;&lt;/font&gt;&gt;, labeldistance=2];</span>
+<span class="sd">        input -&gt; started_stop [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;stop&quot;&lt;/font&gt;&gt;, labeldistance=3 ];</span>
+<span class="sd">        input -&gt; started_other [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;other&quot;*&lt;/font&gt;&gt;, labeldistance=2.5 ];</span>
+<span class="sd">        input -&gt; exit [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;exit&quot;&lt;/font&gt;&gt;, labeldistance=1.5 ];</span>
+<span class="sd">        started_start -&gt; submit  [ label=&quot;Yes&quot; ];</span>
+<span class="sd">        started_start -&gt; start [ label=&quot;No&quot; ];</span>
+<span class="sd">        started_stop -&gt; stop [ label=&quot;Yes&quot; ];</span>
+<span class="sd">        started_stop -&gt; usage [ label=&quot;No&quot; ];</span>
+<span class="sd">        started_other -&gt; submit [ label=&quot;Yes&quot; ];</span>
+<span class="sd">        started_other -&gt; usage [ label=&quot;No&quot; ];</span>
+<span class="sd">        submit -&gt; prompt -&gt; input;</span>
+<span class="sd">        start -&gt; prompt</span>
+<span class="sd">        stop -&gt; input</span>
+<span class="sd">    }</span>
+
+<span class="sd">Classes</span>
+<span class="sd">-------</span>
+
+<span class="sd">.. autoclass:: stream2py.sources.keyboard_input.KeyboardInputSourceReader</span>
+<span class="sd">.. autoclass:: TypingTest</span>
+<span class="sd">.. autoclass:: PromptSwitch</span>
+<span class="sd">.. autoclass:: TestProctor</span>
+
+
+<span class="sd">.. todo::</span>
+<span class="sd">    * Generalize event based triggers.</span>
+<span class="sd">    * Refactor to simplify design patterns.</span>
+<span class="sd">    * Clarify what components are doing and the objectives of the example.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span><span class="p">,</span> <span class="n">suppress</span>
+<span class="kn">import</span> <span class="nn">difflib</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">SourceReader</span><span class="p">,</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">BufferReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.sources.keyboard_input</span> <span class="k">import</span> <span class="n">KeyboardInputSourceReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="k">import</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="n">_ITEMGETTER_0</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">_TYPING_TEST_PROMPTS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Welcome to the typing test tutorial!</span>
+<span class="s2">This example demonstrates the usage of stream2py with 4 asynchronous components.</span>
+<span class="s2">First is KeyboardInputSourceReader which starts at the launch of this program.</span>
+<span class="s2">Second is TypingTest, also a SourceReader, which queues up test prompts when started.</span>
+<span class="s2">Third is PromptSwitch, a BufferReader consumer that reads keyboard inputs for commands and tells TypingTest what to do.</span>
+<span class="s2">Last is TestProctor, a BufferReader consumer that</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TypingTest"><a class="viewcode-back" href="../../../../examples/triggered_starts.html#stream2py.examples.usage.triggered_starts.TypingTest">[docs]</a><span class="k">class</span> <span class="nc">TypingTest</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>  <span class="c1"># TODO: make an abc that adds timestamp or counter automatically</span>
+    <span class="n">PROMPT_END</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="n">prompts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">prompts</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_release_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_release_deque</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_deque_order</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_release_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_release_deque</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_release_deque</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_release_lock</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_release_deque</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;bt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bt</span><span class="p">,</span> <span class="s2">&quot;prompts&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ITEMGETTER_0</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_release_lock</span><span class="p">:</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_release_deque</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">prompt</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">prompt</span>
+
+    <span class="k">def</span> <span class="nf">_reset_deque_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompt_deque</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PromptSwitch"><a class="viewcode-back" href="../../../../examples/triggered_starts.html#stream2py.examples.usage.triggered_starts.PromptSwitch">[docs]</a><span class="k">class</span> <span class="nc">PromptSwitch</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;PromptSwitch will recognize 3 commands: &quot;start&quot;, &quot;stop&quot;, and &quot;exit&quot; followed by a return key press.</span>
+
+<span class="sd">    1. &quot;start&quot; will start adding prompts after each return key press.</span>
+<span class="sd">    2. &quot;stop&quot; will stop adding prompts</span>
+<span class="sd">    3. &quot;exit&quot; will exit the program&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">prompts</span><span class="p">:</span> <span class="n">StreamBuffer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">KeyboardInputSourceReader</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;input must be a StreamBuffer with KeyboardInputSourceReader: </span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompts</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">TypingTest</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;prompts must be a StreamBuffer with TypingTest: </span><span class="si">{prompts}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="nb">input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="n">prompts</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_usage</span><span class="p">()</span>
+        <span class="n">input_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">input_reader</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+                <span class="k">break</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># print input character</span>
+
+            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">:</span>  <span class="c1"># &quot;return&quot; key</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_trigger_string</span><span class="p">(</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                    <span class="k">break</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_trigger_string</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">add_prompt</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">display_usage</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_trigger_string</span><span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">add_prompt</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">prompt</span> <span class="ow">is</span> <span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Thanks for playing!&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">display_usage</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Commands that can be entered anytime:</span><span class="se">\n\r</span><span class="s2">&quot;</span>
+              <span class="s2">&quot; start - begin typing test</span><span class="se">\n\r</span><span class="s2">&quot;</span>
+              <span class="s2">&quot; stop  - end typing test</span><span class="se">\n\r</span><span class="s2">&quot;</span>
+              <span class="s2">&quot; exit  - close program</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_trigger_string</span><span class="p">(</span><span class="n">trigger_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">,</span> <span class="n">return_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="n">return_index</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">trigger_string</span><span class="p">)</span>
+        <span class="n">stop_index</span> <span class="o">=</span> <span class="n">return_index</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="n">input_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">start_index</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop_index</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">input_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">input_str</span> <span class="o">==</span> <span class="n">trigger_string</span></div>
+
+
+<div class="viewcode-block" id="TestProctor"><a class="viewcode-back" href="../../../../examples/triggered_starts.html#stream2py.examples.usage.triggered_starts.TestProctor">[docs]</a><span class="k">class</span> <span class="nc">TestProctor</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Give prompts and grade input&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">prompts</span><span class="p">:</span> <span class="n">StreamBuffer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">KeyboardInputSourceReader</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;input must be a StreamBuffer with KeyboardInputSourceReader: </span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompts</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">TypingTest</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;prompts must be a StreamBuffer with TypingTest: </span><span class="si">{prompts}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="nb">input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span> <span class="o">=</span> <span class="n">prompts</span>
+
+    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prompts_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+                <span class="n">prev_timestamp</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">prev_prompt</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">prompts_reader</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">prev_timestamp</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">grade</span><span class="p">(</span><span class="n">prev_prompt</span><span class="p">,</span> <span class="n">prev_timestamp</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prompt: &quot;</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\r</span><span class="s1"> Input: &#39;</span><span class="p">)</span>
+                    <span class="n">prev_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+                    <span class="n">prev_prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">prev_timestamp</span> <span class="ow">and</span> <span class="n">prev_prompt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">grade</span><span class="p">(</span><span class="n">prev_prompt</span><span class="p">,</span> <span class="n">prev_timestamp</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">grade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">begin_time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">end_time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">input_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+        <span class="n">all_input_data</span> <span class="o">=</span> <span class="n">input_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
+        <span class="n">relevant_characters</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">all_input_data</span> <span class="k">if</span> <span class="n">begin_time</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">stop_index</span> <span class="o">=</span> <span class="n">relevant_characters</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">stop_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">relevant_characters</span><span class="p">)</span>
+        <span class="n">relevant_timestamps</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">all_input_data</span> <span class="k">if</span> <span class="n">begin_time</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="p">]</span>
+        <span class="n">true_start_time</span> <span class="o">=</span> <span class="n">relevant_timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">true_end_time</span> <span class="o">=</span> <span class="n">relevant_timestamps</span><span class="p">[</span><span class="n">stop_index</span><span class="p">]</span>
+        <span class="n">input_string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relevant_characters</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">stop_index</span><span class="p">])</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">difflib</span><span class="o">.</span><span class="n">ndiff</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">input_string</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">diff</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
+        <span class="n">time_seconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">true_end_time</span> <span class="o">-</span> <span class="n">true_start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="se">\n\r</span><span class="s2">Prompt: </span><span class="si">{prompt}</span><span class="se">\n\r</span><span class="s2">&quot;</span>
+                  <span class="n">f</span><span class="s2">&quot; Input: </span><span class="si">{input_string}</span><span class="se">\n\r</span><span class="s2">&quot;</span>
+                  <span class="n">f</span><span class="s2">&quot;&quot;&quot;Characters: [{&#39;, &#39;.join(f&#39;&quot;</span><span class="si">{ch}</span><span class="s2">&quot;&#39; for ch in input_string)}]</span><span class="se">\n\r</span><span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;You scored </span><span class="si">{score}</span><span class="s2"> out of {len(prompt)} in {round(time_seconds, 1)} seconds!</span><span class="se">\n\r</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">source_runner</span><span class="p">(</span><span class="n">sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;contextmanager for putting SourceReaders in StreamBuffers and calling start and stop&quot;&quot;&quot;</span>
+    <span class="n">stream_buffers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">SourceReader</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Source must be a SourceReader: </span><span class="si">{s}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">stream_buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">],</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;maxlen&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">stream_buffers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">stream_buffers</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">s_buf</span> <span class="ow">in</span> <span class="n">stream_buffers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">s_buf</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">consumer_runner</span><span class="p">(</span><span class="n">consumers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;contextmanager for calling start and stop on consumers&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">consumers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">consumers</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">consumers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">KeyboardInputSourceReader</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+               <span class="s1">&#39;prompts&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">TypingTest</span><span class="p">(</span><span class="n">prompts</span><span class="o">=</span><span class="n">_TYPING_TEST_PROMPTS</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">)}</span>
+    <span class="k">with</span> <span class="n">source_runner</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream_buffers</span><span class="p">:</span>
+        <span class="n">consumers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;switch&#39;</span><span class="p">:</span> <span class="n">PromptSwitch</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span> <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">]),</span>
+                     <span class="s1">&#39;grader&#39;</span><span class="p">:</span> <span class="n">TestProctor</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span> <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">])}</span>
+        <span class="k">with</span> <span class="n">consumer_runner</span><span class="p">(</span><span class="n">consumers</span><span class="p">):</span>
+            <span class="n">consumers</span><span class="p">[</span><span class="s1">&#39;switch&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>  <span class="c1"># wait for PromptSwitch to exit</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

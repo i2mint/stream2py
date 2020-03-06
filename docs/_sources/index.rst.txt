@@ -9,10 +9,10 @@ Welcome to stream2py's documentation!
 .. toctree::
    :maxdepth: 2
 
-   readme_link
    api
    sources
-   example
+   example_toc
+   readme_link
    things_you_can_do
 
 

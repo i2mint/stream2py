@@ -102,6 +102,10 @@ class StreamBuffer:
         self.source_buffer = None
         self.start_lock = threading.Lock()  # used to lock mk_reader while source is still starting up
 
+    def __iter__(self):
+        reader = self.mk_reader()
+        yield from iter(reader)
+
     def start(self):
         """Open and start reading from source_reader into buffer"""
         with self.start_lock:

@@ -73,10 +73,10 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="BufferReaderConsumer"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer">[docs]</a><span class="k">class</span> <span class="nc">BufferReaderConsumer</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReaderConsumer"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer">[docs]</a><span class="k">class</span> <span class="nc">BufferReaderConsumer</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Call reader_handler function with reader at defined time intervals between calls&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BufferReaderConsumer.__init__"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">logging_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReaderConsumer.__init__"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">logging_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param buffer_reader: BufferReader created from a StreamBuffer</span>
@@ -90,14 +90,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logging_enabled</span> <span class="o">=</span> <span class="n">logging_enabled</span></div>
 
-<div class="viewcode-block" id="BufferReaderConsumer.stop"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReaderConsumer.stop"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets stop event and waits for thread to finish&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Consumer stopping... </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="BufferReaderConsumer.run"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReaderConsumer.run"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event</span>
 <span class="sd">        is set or Exception is raised by self.reader_handler&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_enabled</span><span class="p">:</span>
@@ -112,7 +112,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_enabled</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Consumer stopped! </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BufferReaderConsumer.reader_handler"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.reader_handler">[docs]</a>    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="BufferReaderConsumer.reader_handler"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.reader_handler">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">reader_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Implements how to read from buffer and what to do with the data&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
@@ -125,10 +125,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="PyAudioSaver"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver">[docs]</a><span class="k">class</span> <span class="nc">PyAudioSaver</span><span class="p">(</span><span class="n">BufferReaderConsumer</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver">[docs]</a><span class="k">class</span> <span class="nc">PyAudioSaver</span><span class="p">(</span><span class="n">BufferReaderConsumer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save audio to wav file. Start a new wav file on errors such as input overflow.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PyAudioSaver.__init__"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">,</span> <span class="n">logging_enabled</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.__init__"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">,</span> <span class="n">logging_enabled</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param buffer_reader: BufferReader created from a StreamBuffer with PyAudioSourceReader</span>
@@ -143,7 +143,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">error_path_format</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_data_path_format</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{timestamp}</span><span class="s2">_ERROR_</span><span class="si">{status_flags}</span><span class="s2">.wav&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.reader_handler"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.reader_handler">[docs]</a>    <span class="k">def</span> <span class="nf">reader_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.reader_handler"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.reader_handler">[docs]</a>    <span class="k">def</span> <span class="nf">reader_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="p">:</span> <span class="n">BufferReader</span><span class="p">):</span>
         <span class="n">new_data_list</span> <span class="o">=</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_data_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">in_data</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span> <span class="ow">in</span> <span class="n">new_data_list</span><span class="p">:</span>
@@ -159,14 +159,14 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">write_to_file</span><span class="p">(</span><span class="n">in_data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.file_is_open"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.file_is_open">[docs]</a>    <span class="k">def</span> <span class="nf">file_is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="PyAudioSaver.file_is_open"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.file_is_open">[docs]</a>    <span class="k">def</span> <span class="nf">file_is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if file is open</span>
 <span class="sd">        :return: boolean</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.open_file"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wave</span><span class="o">.</span><span class="n">Wave_write</span><span class="p">:</span>
+<div class="viewcode-block" id="PyAudioSaver.open_file"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">wave</span><span class="o">.</span><span class="n">Wave_write</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;open wav file for writing&quot;&quot;&quot;</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">],</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_enabled</span><span class="p">:</span>
@@ -176,7 +176,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.set_params"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.set_params">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PyAudioSaver.set_params"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.set_params">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">wave</span><span class="o">.</span><span class="n">Wave_write</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set wav file params&quot;&quot;&quot;</span>
         <span class="n">nchannels</span> <span class="o">=</span> <span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span>
@@ -187,22 +187,22 @@
         <span class="n">compname</span> <span class="o">=</span> <span class="s1">&#39;not compressed&#39;</span>
         <span class="n">file</span><span class="o">.</span><span class="n">setparams</span><span class="p">((</span><span class="n">nchannels</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">framerate</span><span class="p">,</span> <span class="n">nframes</span><span class="p">,</span> <span class="n">comptype</span><span class="p">,</span> <span class="n">compname</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.write_to_file"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.write_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_data</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.write_to_file"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.write_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write to wav file&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">in_data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.close_file"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.close_file">[docs]</a>    <span class="k">def</span> <span class="nf">close_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.close_file"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.close_file">[docs]</a>    <span class="k">def</span> <span class="nf">close_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close wav file&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.stop"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.stop"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop BufferReaderConsumer loop and close wav file&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_is_open</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close_file</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PyAudioSaver.save_error"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.save_error">[docs]</a>    <span class="k">def</span> <span class="nf">save_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">in_data</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSaver.save_error"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.save_error">[docs]</a>    <span class="k">def</span> <span class="nf">save_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">in_data</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save to error wav file&quot;&quot;&quot;</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_path_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">],</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
                                                   <span class="n">status_flags</span><span class="o">=</span><span class="n">status_flags</span><span class="p">)</span>
@@ -215,9 +215,12 @@
         <span class="n">error_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="audio_to_files"><a class="viewcode-back" href="../../../../example.html#stream2py.examples.usage.record_audio_to_files.audio_to_files">[docs]</a><span class="k">def</span> <span class="nf">audio_to_files</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">input_device_index</span><span class="p">,</span> <span class="n">frames_per_buffer</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">,</span> <span class="n">logging_enabled</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Basically the main function to run the example. Check this source code to see how to put together the three</span>
-<span class="sd">    components: SourceReader, StreamBuffer, BufferReader</span>
+<div class="viewcode-block" id="audio_to_files"><a class="viewcode-back" href="../../../../examples/record_audio_to_files.html#stream2py.examples.usage.record_audio_to_files.audio_to_files">[docs]</a><span class="k">def</span> <span class="nf">audio_to_files</span><span class="p">(</span><span class="n">rate</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">input_device_index</span><span class="p">,</span> <span class="n">frames_per_buffer</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">,</span> <span class="n">logging_enabled</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basically the main function to run the example.</span>
+<span class="sd">    It will record audio with stream2py.sources.audio.PyAudioSourceReader</span>
+<span class="sd">    and save to wav files with stream2py.examples.usage.record_audio_to_files.PyAudioSaver</span>
+
+<span class="sd">    Check this source code to see how to put together the three components: SourceReader, StreamBuffer, BufferReader</span>
 
 <span class="sd">    :param rate: Specifies the desired sample rate (in Hz)</span>
 <span class="sd">    :param width: Sample width in bytes (1, 2, 3, or 4)</span>
@@ -271,10 +274,10 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../readme_link.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../sources.html">Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme_link.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
 </ul>
 

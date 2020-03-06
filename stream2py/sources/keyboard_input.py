@@ -6,7 +6,6 @@ import time
 from typing import Any
 
 from stream2py import SourceReader
-from stream2py.utility.getch import getch
 from stream2py.utility.typing_hints import ComparableType
 
 
@@ -41,6 +40,8 @@ class KeyboardInputSourceReader(SourceReader, threading.Thread):
                 return self.data.popleft()
 
     def close(self):
+        # Import getch here to avoid errors for rst preview extension when loaded within IDE terminals
+        from stream2py.utility.getch import getch
         self.stop_event.set()
         getch.restore_settings()
 
@@ -57,6 +58,8 @@ class KeyboardInputSourceReader(SourceReader, threading.Thread):
         return _ITEMGETTER_0(data)
 
     def run(self):
+        # Import getch here to avoid errors for rst preview extension when loaded within IDE terminals
+        from stream2py.utility.getch import getch
         try:
             while not self.stop_event.is_set():
                 ch = getch.blocking()
@@ -74,7 +77,7 @@ if __name__ == '__main__':
             data = source.read()
             if data is not None:
                 index, timestamp, char = data
-                print(f"{timestamp}: {char}")
+                print(f"{timestamp}: {char}", end="\n\r")
 
                 if char == '\x1b':  # ESC key
                     break

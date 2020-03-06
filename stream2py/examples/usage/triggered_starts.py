@@ -1,7 +1,107 @@
-"""TODO:
-    Documentation
-    Add flow chart describing what is happening
 """
+=================================
+Triggered Starts in a Typing Test
+=================================
+
+.. graphviz::
+
+    digraph components {
+        subgraph cluster_0 {
+            style=filled;
+            color=lightgrey;
+            node [style=filled,color=white];
+            label="Sources";
+            labeljust="l"
+            "TypingTest"
+            "KeyboardInput"
+        }
+
+        subgraph cluster_1 {
+            node [style=filled];
+            label="Readers";
+            labeljust="l"
+            color=lightgrey
+            node [style=filled,color=lightgrey];
+            "TestProctor"
+            "PromptSwitch"
+        }
+        "KeyboardInput" -> "PromptSwitch" -> "TypingTest" -> "TestProctor";
+        "KeyboardInput" -> "TestProctor";
+    }
+
+This example demonstrates the usage of stream2py with 4 asynchronous components:
+
+1. KeyboardInputSourceReader starts at the launch of this program and listens to key presses.
+2. TypingTest waits for start, stop, and add prompt commands.
+3. PromptSwitch reads keyboard inputs for commands and tells TypingTest what to do.
+4. TestProctor gives you TypingTest prompts and grades your keyboard input submissions.
+
+Usage
+-----
+Launching the script:
+::
+    python -m stream2py.examples.usage.triggered_starts
+
+.. graphviz::
+
+    digraph flow_chart {
+        label="User Flow";
+        labeljust="l"
+        labelloc="t"
+        splines=polyline
+        nodesep=.2
+        {
+            node [shape=oval]
+            enter [label="Begin"]
+            exit [label="Exit"]
+        }
+        {
+            node [shape=diamond label="Is Started?"]
+            started_start
+            started_stop
+            started_other
+        }
+        {
+            node [shape=box]
+            start [label="Start"]
+            stop [label="Stop"]
+            submit [label="Submit for Score"]
+            prompt [label="New Test Prompt"]
+            usage [label="Display Commands"]
+        }
+        input [shape=parallelogram, label="Keyboard Input"]
+        enter -> usage -> input;
+        input -> started_start [ headlabel=<<font color="grey25">"start"</font>>, labeldistance=2];
+        input -> started_stop [ headlabel=<<font color="grey25">"stop"</font>>, labeldistance=3 ];
+        input -> started_other [ headlabel=<<font color="grey25">"other"*</font>>, labeldistance=2.5 ];
+        input -> exit [ headlabel=<<font color="grey25">"exit"</font>>, labeldistance=1.5 ];
+        started_start -> submit  [ label="Yes" ];
+        started_start -> start [ label="No" ];
+        started_stop -> stop [ label="Yes" ];
+        started_stop -> usage [ label="No" ];
+        started_other -> submit [ label="Yes" ];
+        started_other -> usage [ label="No" ];
+        submit -> prompt -> input;
+        start -> prompt
+        stop -> input
+    }
+
+Classes
+-------
+
+.. autoclass:: stream2py.sources.keyboard_input.KeyboardInputSourceReader
+.. autoclass:: TypingTest
+.. autoclass:: PromptSwitch
+.. autoclass:: TestProctor
+
+
+.. todo::
+    * Generalize event based triggers.
+    * Refactor to simplify design patterns.
+    * Clarify what components are doing and the objectives of the example.
+"""
+
+
 from collections import deque
 from contextlib import contextmanager, suppress
 import difflib
@@ -19,7 +119,7 @@ This example demonstrates the usage of stream2py with 4 asynchronous components.
 First is KeyboardInputSourceReader which starts at the launch of this program.
 Second is TypingTest, also a SourceReader, which queues up test prompts when started.
 Third is PromptSwitch, a BufferReader consumer that reads keyboard inputs for commands and tells TypingTest what to do.
-Last is TestProctor, a BufferReader consumer that gives you TypingTest prompts and grades your submissions.
+Last is TestProctor, a BufferReader consumer that
 """.splitlines(keepends=False)
 
 
@@ -72,9 +172,10 @@ class TypingTest(SourceReader):  # TODO: make an abc that adds timestamp or coun
 
 class PromptSwitch(threading.Thread):
     """PromptSwitch will recognize 3 commands: "start", "stop", and "exit" followed by a return key press.
-    "start" will start adding prompts after each return key press.
-    "stop" will stop adding prompts
-    "exit" will exit the program"""
+
+    1. "start" will start adding prompts after each return key press.
+    2. "stop" will stop adding prompts
+    3. "exit" will exit the program"""
 
     def __init__(self, input: StreamBuffer, prompts: StreamBuffer):
         if not isinstance(input.source_reader, KeyboardInputSourceReader):
@@ -159,10 +260,9 @@ class TestProctor(threading.Thread):
             if not self.prompts.is_running:
                 time.sleep(0.1)
             else:
-                prompts_reader = self.prompts.mk_reader()
                 prev_timestamp = None
                 prev_prompt = None
-                for timestamp, prompt in iter(prompts_reader):
+                for timestamp, prompt in iter(self.prompts):
                     if prev_timestamp:
                         self.grade(prev_prompt, prev_timestamp, timestamp)
                     print("Prompt: ", prompt, sep='', end='\n\r Input: ')
