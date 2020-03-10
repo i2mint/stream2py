@@ -218,6 +218,8 @@ def audio_to_files(rate, width, channels, input_device_index, frames_per_buffer,
                 pass
 
 
+audio_to_files.list_device_info = lambda: PyAudioSourceReader.list_device_info()
+
 if __name__ == "__main__":
     audio_to_files(rate=44100, width=2, channels=1, input_device_index=6, frames_per_buffer=1024 * 4,
                    interval=1, rootdir="~/odir/stream2py", logging_enabled=True)
