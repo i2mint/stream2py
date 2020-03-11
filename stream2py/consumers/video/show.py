@@ -1,3 +1,4 @@
+from contextlib import suppress
 import cv2
 import threading
 
@@ -28,7 +29,8 @@ class VideoShow(BufferReaderConsumer):
 
     def stop(self):
         super().stop()
-        cv2.destroyWindow(self.window_name)
+        with suppress(cv2.error):
+            cv2.destroyWindow(self.window_name)
         self.show_event.clear()
 
 

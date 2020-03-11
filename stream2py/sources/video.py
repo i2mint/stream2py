@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 import cv2
 import operator
@@ -12,16 +12,37 @@ _ITEMGETTER_0 = operator.itemgetter(0)
 class VideoCapture(SourceReader):
     """Video Capture using OpenCV"""
 
-    def __init__(self, video_input=0):
+    def __init__(self, video_input: Union[str, int] = 0):
         """
         https://docs.opencv.org/4.2.0/d8/dfe/classcv_1_1VideoCapture.html#ac4107fb146a762454a8a87715d9b7c96
         https://docs.opencv.org/4.2.0/d8/dfe/classcv_1_1VideoCapture.html#aabce0d83aa0da9af802455e8cf5fd181
 
         :param video_input: filename or device id, see cv2.VideoCapture documentation for more info
         """
+        if isinstance(video_input, str):
+            self.is_file = True
+        elif isinstance(video_input, int):
+            self.is_file = False
+        else:
+            raise TypeError(f"{self.__class__.__name__} video_input must be type str or int: {type(video_input)}")
         self.video_capture = None
         self._bt = -1
         self.video_input = video_input
+
+    @classmethod
+    def video_input_info(cls, video_input: Union[str, int]) -> dict:
+        """
+        https://docs.opencv.org/4.2.0/d4/d15/group__videoio__flags__base.html#gaeb8dd9c89c10a5c63c139bf7c4f5704d
+
+        :param video_input: filename or device id, see cv2.VideoCapture documentation for more info
+        :return: dict
+
+        .. todo:: filter for useful info
+        """
+        vid_cap = cv2.VideoCapture(video_input)
+        _info = {cap_prop: vid_cap.get(getattr(cv2, cap_prop))
+                 for cap_prop in dir(cv2) if cap_prop.startswith('CAP_PROP_')}
+        return _info
 
     def open(self) -> None:
         self._bt = self.get_timestamp()
@@ -57,8 +78,12 @@ class VideoCapture(SourceReader):
 
 
 if __name__ == "__main__":
+    video_input = 0
+    from pprint import pprint
+    pprint(VideoCapture.video_input_info(video_input))
 
-    with VideoCapture(video_input=0) as cap:
+    print('starting recording')
+    with VideoCapture(video_input=video_input) as cap:
         print(cap.info)
         print("Press 'q' to quit")
         while cap.is_opened():

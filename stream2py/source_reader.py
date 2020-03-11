@@ -61,6 +61,23 @@ class SourceReader(metaclass=ABCMeta):
     's2'
     """
 
+    _sleep_time_on_iter_none_s = 0.001
+
+    def __iter__(self):
+        while True:
+            _next = self.read()
+            if _next is not None:
+                yield _next
+            else:
+                time.sleep(self._sleep_time_on_iter_none_s)
+
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+        """Set the sleep time of the iter yield loop when next data item is not yet available.
+
+        :param sleep_time_s: seconds to sleep
+        """
+        self._sleep_time_on_iter_none_s = sleep_time_s
+
     @abstractmethod
     def open(self) -> None:
         """Set up source to be read and set some source info affected by open time like the time of open.
