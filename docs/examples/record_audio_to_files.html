@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Recording audio to wav file &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Triggered Starts in a Typing Test" href="triggered_starts.html" />
+    <link rel="prev" title="Examples" href="../example_toc.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="module-stream2py.examples.usage.record_audio_to_files"></span><div class="section" id="recording-audio-to-wav-file">
+<h1>Recording audio to wav file<a class="headerlink" href="#recording-audio-to-wav-file" title="Permalink to this headline">¶</a></h1>
+<p>This example requires PyAudio</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">PyAudio</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.record_audio_to_files.</code><code class="sig-name descname">BufferReaderConsumer</code><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#BufferReaderConsumer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<p>Call reader_handler function with reader at defined time intervals between calls</p>
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">buffer_reader: stream2py.buffer_reader.BufferReader, interval: Union[int, float], logging_enabled: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#BufferReaderConsumer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_reader</strong> – BufferReader created from a StreamBuffer</p></li>
+<li><p><strong>interval</strong> – seconds between reader_handler calls</p></li>
+<li><p><strong>logging_enabled</strong> – log debug messages using logging module</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.reader_handler">
+<em class="property">abstract </em><code class="sig-name descname">reader_handler</code><span class="sig-paren">(</span><em class="sig-param">buffer_reader: stream2py.buffer_reader.BufferReader</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#BufferReaderConsumer.reader_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.reader_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements how to read from buffer and what to do with the data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#BufferReaderConsumer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
+is set or Exception is raised by self.reader_handler</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#BufferReaderConsumer.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets stop event and waits for thread to finish</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.record_audio_to_files.</code><code class="sig-name descname">PyAudioSaver</code><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer" title="stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer"><code class="xref py py-class docutils literal notranslate"><span class="pre">stream2py.examples.usage.record_audio_to_files.BufferReaderConsumer</span></code></a></p>
+<p>Save audio to wav file. Start a new wav file on errors such as input overflow.</p>
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">buffer_reader</em>, <em class="sig-param">interval</em>, <em class="sig-param">rootdir</em>, <em class="sig-param">logging_enabled</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_reader</strong> – BufferReader created from a StreamBuffer with PyAudioSourceReader</p></li>
+<li><p><strong>interval</strong> – seconds between reader_handler calls</p></li>
+<li><p><strong>rootdir</strong> – folder path where files will be saved under</p></li>
+<li><p><strong>logging_enabled</strong> – log debug messages using logging module</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.close_file">
+<code class="sig-name descname">close_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.close_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.close_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close wav file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.file_is_open">
+<code class="sig-name descname">file_is_open</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.file_is_open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.file_is_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if file is open
+:return: boolean</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.open_file">
+<code class="sig-name descname">open_file</code><span class="sig-paren">(</span><em class="sig-param">source_reader_info: dict</em>, <em class="sig-param">timestamp: int</em><span class="sig-paren">)</span> &#x2192; wave.Wave_write<a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.open_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.open_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>open wav file for writing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.reader_handler">
+<code class="sig-name descname">reader_handler</code><span class="sig-paren">(</span><em class="sig-param">buffer_reader: stream2py.buffer_reader.BufferReader</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.reader_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.reader_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements how to read from buffer and what to do with the data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.save_error">
+<code class="sig-name descname">save_error</code><span class="sig-paren">(</span><em class="sig-param">source_reader_info</em>, <em class="sig-param">timestamp</em>, <em class="sig-param">in_data</em>, <em class="sig-param">status_flags</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.save_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.save_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save to error wav file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.set_params">
+<em class="property">static </em><code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">file: wave.Wave_write</em>, <em class="sig-param">source_reader_info: dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set wav file params</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop BufferReaderConsumer loop and close wav file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stream2py.examples.usage.record_audio_to_files.PyAudioSaver.write_to_file">
+<code class="sig-name descname">write_to_file</code><span class="sig-paren">(</span><em class="sig-param">in_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#PyAudioSaver.write_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.PyAudioSaver.write_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write to wav file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="stream2py.examples.usage.record_audio_to_files.audio_to_files">
+<code class="sig-prename descclassname">stream2py.examples.usage.record_audio_to_files.</code><code class="sig-name descname">audio_to_files</code><span class="sig-paren">(</span><em class="sig-param">rate</em>, <em class="sig-param">width</em>, <em class="sig-param">channels</em>, <em class="sig-param">input_device_index</em>, <em class="sig-param">frames_per_buffer</em>, <em class="sig-param">interval</em>, <em class="sig-param">rootdir</em>, <em class="sig-param">logging_enabled</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/record_audio_to_files.html#audio_to_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.record_audio_to_files.audio_to_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basically the main function to run the example.
+It will record audio with stream2py.sources.audio.PyAudioSourceReader
+and save to wav files with stream2py.examples.usage.record_audio_to_files.PyAudioSaver</p>
+<p>Check this source code to see how to put together the three components: SourceReader, StreamBuffer, BufferReader</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rate</strong> – Specifies the desired sample rate (in Hz)</p></li>
+<li><p><strong>width</strong> – Sample width in bytes (1, 2, 3, or 4)</p></li>
+<li><p><strong>channels</strong> – The desired number of input channels. Ignored if input_device is not specified (or None).</p></li>
+<li><p><strong>input_device_index</strong> – Index of Input Device to use. Unspecified (or None) uses default device.</p></li>
+<li><p><strong>frames_per_buffer</strong> – Specifies the number of frames per buffer.</p></li>
+<li><p><strong>interval</strong> – seconds between reader_handler calls</p></li>
+<li><p><strong>rootdir</strong> – folder path where files will be saved under</p></li>
+<li><p><strong>logging_enabled</strong> – log debug messages using logging module</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">Sources</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../example_toc.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Recording audio to wav file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triggered_starts.html">Triggered Starts in a Typing Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../example_toc.html">Examples</a><ul>
+      <li>Previous: <a href="../example_toc.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="triggered_starts.html" title="next chapter">Triggered Starts in a Typing Test</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/examples/record_audio_to_files.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

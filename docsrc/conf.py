@@ -41,6 +41,8 @@ extensions = [
     'recommonmark', # Parse .md files
 ]
 
+master_doc = 'index'
+
 todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.

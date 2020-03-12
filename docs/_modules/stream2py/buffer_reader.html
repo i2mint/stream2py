@@ -35,8 +35,10 @@
 <span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BufferReader&#39;</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">stream2py.utility.locked_sorted_deque</span> <span class="k">import</span> <span class="n">RWLockSortedDeque</span>
+<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="k">import</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="BufferReader"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader">[docs]</a><span class="k">class</span> <span class="nc">BufferReader</span><span class="p">:</span>
@@ -104,6 +106,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">stop_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_next</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BufferReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+
+<span class="sd">        :param sleep_time_s: seconds to sleep</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
 
 <div class="viewcode-block" id="BufferReader.is_same_buffer"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.is_same_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">is_same_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_buffer_reader</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if reader is looking at the same buffer&quot;&quot;&quot;</span>
@@ -260,10 +280,10 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sources.html">Sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../example.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
 </ul>
 
