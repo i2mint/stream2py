@@ -1,148 +1,24 @@
-import ctypes
 import threading
+import time
 from collections import deque
-from contextlib import suppress
-from dataclasses import dataclass
 from pprint import pprint
-from typing import List, Optional, Any, Callable
+from typing import List, Optional, Any
 
-from snap7.common import check_error
-from snap7.snap7exceptions import Snap7Exception
-from snap7.snap7types import S7DataItem, S7AreaDB, S7WLBit, S7WLReal, S7WLByte, S7WLWord, S7WLDWord
+import snap7
+from snap7.snap7types import S7AreaDB, S7WLReal, S7WLBit
 
 from stream2py import SourceReader
-import snap7
+from stream2py.sources.raw_plc import PlcRawRead, PlcDataItem
 
 from stream2py.utility.typing_hints import ComparableType
-
-@dataclass
-class PlcDataItem:
-
-    area: int
-    word_len: int
-    db_number: int
-    start: int
-    amount: int
-
-    key: str  # for multiple items read, represents key name in returned dictionary
-    convert:  snap7.util.get_bool or snap7.util.get_real or snap7.util.get_real or snap7.util.get_int \
-              or snap7.util.get_string or snap7.util.get_dword
-    convert_args : Optional or None
-
-    def __init__(self, area: int, word_len: int, db_number: int,  start: int,  amount: int,
-                key: str,  convert: Callable, convert_args : Optional or None = None):
-
-        self.area = area
-        self.word_len = word_len
-        self.db_number = db_number
-        self.start = start
-        self.amount = amount
-        self.key = key
-        self.convert = convert
-        self.convert_args = convert_args
-
-        # allocate memory for data
-        _size = 0
-        if self.word_len in [S7WLBit, S7WLByte]:
-            _size = 1
-        elif self.word_len == S7WLWord:
-            _size = 2
-        elif self.word_len == S7WLDWord:
-            _size = 4
-        elif self.word_len == S7WLReal:
-            _size = 8
-
-        assert _size != 0, 'Unknown word len'
-
-        self.buffer = ctypes.create_string_buffer(_size * self.amount)
-        self.buffer = ctypes.cast(ctypes.pointer(self.buffer), ctypes.POINTER(ctypes.c_uint8))
-
-    def get_item(self):
-        return S7DataItem(
-            Area=self.area,
-            WordLen=self.word_len,
-            DBNumber=self.db_number,
-            Start=self.start,
-            Amount=self.amount,
-            pData=self.buffer,
-        )
-
-    def decode_item(self, item_read: S7DataItem):
-        check_error(item_read.Result)
-
-        if self.convert_args is not None:
-            return self.convert(item_read.pData, *self.convert_args)
-        else:
-            return self.convert(item_read.pData, 0)
-
-
-class PlcRawRead():
-
-    def __init__(self, ip_address: str, *,  rack: int, slot: int, tcp_port: int = 102):
-
-        self._plc = snap7.client.Client()
-        self._ip_address = ip_address
-        self._rack = rack
-        self._slot = slot
-        self._tcp_port = tcp_port
-
-        self.plc_info = {}
-
-    def open(self):
-        self._plc.connect(self._ip_address, self._rack, self._slot, self._tcp_port)
-
-    @classmethod
-    def todict(cls, struct):
-        return dict((field, getattr(struct, field)) for field, _ in struct._fields_)
-
-    def get_info(self):
-        if self._plc.get_connected():
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(cpu_info=self.todict(self._plc.get_cpu_info()))
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(cpu_state=self._plc.get_cpu_state())
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(pdu_len=self._plc.get_pdu_length())
-
-        return self.plc_info
-
-    def close(self):
-        self._plc.disconnect()
-        self._plc.destroy()
-
-    def write_items(self, items: List[PlcDataItem]) -> bool:
-        return False
-
-    def read_items(self, items: List[PlcDataItem]) -> List[dict] or None:
-
-        _items = (S7DataItem * len(items))()
-        for _i in range(0, len(items)):
-            _items[_i] = items[_i].get_item()
-
-        result, items_read = self._plc.read_multi_vars(_items)
-        if result:
-            return None
-
-        result = []
-        for _idx in range(0, len(items)):
-            result.append({
-                "key": items[_idx].key,
-                "value": items[_idx].decode_item(items_read[_idx]),
-                "ts": SourceReader.get_timestamp()
-            })
-
-        return result
 
 
 class PlcReader(SourceReader):
     """
         TODO: Finish class implementation
     """
-
-    def __init__(self, ip_address : str, *, items_to_read: List[PlcDataItem],  rack: int, slot: int, tcp_port: int = 102):
+    def __init__(self, ip_address: str, *, items_to_read: List[PlcDataItem],
+                 rack: int, slot: int, tcp_port: int = 102, sleep_time=1.0):
 
         self._init_kwargs = {k: v for k, v in locals().items() if k not in ('self', '__class__')}
 
@@ -150,45 +26,49 @@ class PlcReader(SourceReader):
         self._rack = rack
         self._slot = slot
         self._tcp_port = tcp_port
+        self._items_to_read = items_to_read
+        self._sleep_time = sleep_time
 
+        # validate IP address
         import socket
         socket.inet_aton(self._ip_address)  # validate IP Address
-        # def __init__(self, ip_address: str, *,  rack: int, slot: int, tcp_port: int = 102):
         self._plc_raw_reader = PlcRawRead(self._ip_address, rack=self._rack, slot=self._slot, tcp_port=self._tcp_port)
 
         self.bt = None
         self._start_time = None
         self._data_lock = threading.Lock()
-
-        if self.data:
-            self.data.clear()
-
+        self._data_read_thread_exit = threading.Event()
+        self._data_read_thread = None
+        self._data_read_thread_exit.clear()
         self.data = deque()
         self.plc_info = dict()
 
         self.reader_thread = None
 
+    def _stream_thread(self):
+        while not self._data_read_thread_exit.is_set():
+            with self._data_lock:
+                data_item = self._plc_raw_reader.read_items(self._items_to_read)
+                self.data.append(data_item)
+                _sleep_time = self.sleep_time_on_read_none_s
+                if _sleep_time > 0:
+                    time.sleep(_sleep_time)
 
-    def open(self) -> None:
-        # Open connection and retrieve base PLC info
+    @property
+    def sleep_time_on_read_none_s(self) -> float:
+        return self._sleep_time
 
-        self._plc.connect(self._ip_address, self._rack, self._slot, self._tcp_port)
-        self.bt = self.get_timestamp()
-        self._start_time = self.bt
+    def open(self) -> bool:
 
-        # get plc base info
-        if self._plc.get_connected():
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(cpu_info=self._plc.get_cpu_info())
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(cpu_state=self._plc.get_cpu_state())
-
-            with suppress(Snap7Exception):
-                self.plc_info.update(pdu_len=self._plc.get_pdu_length())
-
-
+        if self._plc_raw_reader.open():
+            self.bt = self.get_timestamp()
+            self._start_time = self.bt
+            self.plc_info = self._plc_raw_reader.get_info()
+            if self._data_read_thread is None:
+                self._data_read_thread = threading.Thread(target=self._stream_thread)
+                self._data_read_thread.start()
+            return True
+        return False
     def read(self) -> Optional[Any]:
         """
         :return: timestamp, plc info, read db items as key:value
@@ -201,8 +81,8 @@ class PlcReader(SourceReader):
         """Close and clean up source reader.
         Will be called when StreamBuffer stops or if an exception is raised during read and append loop.
         """
-        if self._plc.get_connected():
-            self._plc.disconnect()
+        self._data_read_thread_exit.set()
+        self._plc_raw_reader.close()
 
     @property
     def info(self) -> dict:
@@ -211,23 +91,14 @@ class PlcReader(SourceReader):
         _info.update(plc_info=self.plc_info)
         return _info
 
-    def key(self, data: Any) -> ComparableType:
-        """
-        Converts data into a comparable value to sort by
-
-        :param data: the return value of the 'read' method
-        :return: ComparableType
-        """
-        raise NotImplementedError("Implement the 'key' method to convert data into a comparable value to sort by")
+    def key(self, data_item: Any or None) -> ComparableType:
+        import operator
+        return operator.itemgetter("bt")(data_item)
 
 
 if __name__ == '__main__':
 
-    plcTest = PlcRawRead("192.168.0.19",  rack =0, slot=1)
-    plcTest.open()
-    pprint(plcTest.get_info())
-
-    _d = plcTest.read_items([
+    read_items = [
         PlcDataItem(
             key='temperature',
             area=S7AreaDB,
@@ -242,7 +113,7 @@ if __name__ == '__main__':
             area=S7AreaDB,
             word_len=S7WLBit,
             db_number=3,
-            start=0*8+0, # bit ofsset
+            start=0 * 8 + 0,  # bit ofsset
             amount=1,
             convert=snap7.util.get_bool,
             convert_args=(0, 0)),
@@ -256,25 +127,70 @@ if __name__ == '__main__':
             amount=1,
             convert=snap7.util.get_bool,
             convert_args=(0, 0)),
-    ])
-    print(_d)
-    plcTest.close()
+    ]
 
-    """
-        Output example of get info:
-        {'cpu_info': {'ASName': b'S71500/ET200MP station_1',
-              'Copyright': b'Original Siemens Equipment',
-              'ModuleName': b'PLC_1',
-              'ModuleTypeName': b'CPU 1511C-1 PN',
-              'SerialNumber': b'S V-L9AL98812019'},
-     'cpu_state': 'S7CpuStatusRun',
-     'pdu_len': 480}
-     
-     Output example of get Item
-     
-    [{'key': 'temperature', 'value': 10.0, 'ts': 1583086607352911}, {'key': 'led1', 'value': False, 'ts': 1583086607352923}, {'key': 'led2', 'value': False, 'ts': 1583086607352927}]
+    preader = PlcReader('192.168.0.19', items_to_read=read_items,
+                        rack=0, slot=0)
 
-    """
+    if not preader.open():
+        preader.close()
+        exit(-1)
+    can_run: bool = True
 
+    pprint(preader.info)
+    while can_run:
+        try:
+            data = preader.read()
+            if data is None:
+                time.sleep(0.5)
+            else:
+                pprint(data)
+                print()
+        except KeyboardInterrupt as kb:
+            can_run = False
+
+
+
+"""
+
+    Ouptut::
+    
+{'bt': 1584040986041418,
+ 'ip_address': '192.168.0.19',
+ 'items_to_read': [PlcDataItem(area=132, word_len=8, db_number=3, start=2, amount=1, key='temperature', convert=<function get_real at 0x7f8488038200>, convert_args=None),
+                   PlcDataItem(area=132, word_len=1, db_number=3, start=0, amount=1, key='led1', convert=<function get_bool at 0x7f84780c2b00>, convert_args=(0, 0)),
+                   PlcDataItem(area=132, word_len=1, db_number=3, start=1, amount=1, key='led2', convert=<function get_bool at 0x7f84780c2b00>, convert_args=(0, 0))],
+ 'plc_info': {'cpu_info': {'ASName': b'S71500/ET200MP station_1',
+                           'Copyright': b'Original Siemens Equipment',
+                           'ModuleName': b'PLC_1',
+                           'ModuleTypeName': b'CPU 1511C-1 PN',
+                           'SerialNumber': b'S V-L9AL98812019'},
+              'cpu_state': 'S7CpuStatusRun',
+              'pdu_len': 480},
+ 'rack': 0,
+ 'sleep_time': 1.0,
+ 'slot': 0,
+ 'tcp_port': 102}
+ 
+ 
+ 
+[{'key': 'temperature', 'ts': 1584040986051531, 'value': 11.0},
+ {'key': 'led1', 'ts': 1584040986051538, 'value': False},
+ {'key': 'led2', 'ts': 1584040986051540, 'value': True}]
+
+[{'key': 'temperature', 'ts': 1584040987061010, 'value': 11.0},
+ {'key': 'led1', 'ts': 1584040987061022, 'value': False},
+ {'key': 'led2', 'ts': 1584040987061029, 'value': True}]
+
+[{'key': 'temperature', 'ts': 1584040988080404, 'value': 11.0},
+ {'key': 'led1', 'ts': 1584040988080412, 'value': False},
+ {'key': 'led2', 'ts': 1584040988080415, 'value': True}]
+
+[{'key': 'temperature', 'ts': 1584040989104420, 'value': 11.0},
+ {'key': 'led1', 'ts': 1584040989104428, 'value': False},
+ {'key': 'led2', 'ts': 1584040989104431, 'value': True}]
+
+
+"""
 
 
