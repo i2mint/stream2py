@@ -42,10 +42,13 @@ def live_audio_chks(input_device_index=None, sr=DFLT_SR, sample_width=DFLT_SAMPL
 
     if input_device_index is None:  # TODO: Has no effect. See why.
         # TODO: Nicer way to print info (perhaps only relevant info, formated as table)
-        print("Need a valid input_device_index. Here's some information aboout that:")
+        print("Need a valid input_device_index. Calling live_audio_chks.list_device_info() to information about the "
+              "devices I can detect:\n")
         for item in PyAudioSourceReader.list_device_info():
             print(item)
             print("")
+        print("---> Look in the list above and choose an input_device_index (it's called index in the printout above) "
+              "that seems to be right for you!")
         raise ValueError("Need a valid input_device_index")
 
     seconds_per_read = chk_size / sr
