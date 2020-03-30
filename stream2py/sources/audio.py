@@ -98,7 +98,7 @@ class PyAudioSourceReader(SourceReader):
                                      'input_host_api_specific_stream_info': None,
                                      'output_host_api_specific_stream_info': None,
                                      'stream_callback': self._stream_callback}
-        self._data_lock = threading.Lock()
+        #self._data_lock = threading.Lock()
 
         self._fp = None
         self._first_time_info = None
@@ -209,8 +209,8 @@ class PyAudioSourceReader(SourceReader):
         :return: (timestamp, waveform, frame_count, time_info, status_flags)
         """
         if len(self.data):
-            with self._data_lock:
-                return self.data.popleft()
+            #with self._data_lock:
+           return self.data.popleft()
 
     def _stream_callback(self, in_data, frame_count, time_info, status_flags):
         """Calculates timestamp based on open() bt and frames read.
@@ -236,8 +236,8 @@ class PyAudioSourceReader(SourceReader):
         _frame_time_s = self.frame_index / self._init_kwargs['rate']
         timestamp = int(self._start_time + _frame_time_s * self.timestamp_seconds_to_unit_conversion)
 
-        with self._data_lock:  # add data for read
-            self.data.append(self.data_to_append(timestamp, in_data, frame_count, time_info, status_flags))
+        #with self._data_lock:  # add data for read
+        self.data.append(self.data_to_append(timestamp, in_data, frame_count, time_info, status_flags))
 
         if PaStatusFlags(status_flags) != PaStatusFlags.paNoError:
             # reset frame index and thus self._start_time on any error status
@@ -284,12 +284,12 @@ if __name__ == '__main__':
 
     pprint(PyAudioSourceReader.list_device_info())
 
-    source = PyAudioSourceReader(rate=44100, width=2, channels=1, input_device_index=7, frames_per_buffer=4096)
-    pprint(source.info)
+    source = PyAudioSourceReader(rate=44100, width=2, channels=1, input_device_index=0, frames_per_buffer=4096)
+    #pprint(source.info)
     try:
         source.open()
         pprint(source.info)
-        exit()
+        #exit()
         i = 0
         while i < 600:
             data = source.read()
