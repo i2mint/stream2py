@@ -1,14 +1,15 @@
 import threading
 import time
+from asyncio import Queue
 from collections import deque
 from pprint import pprint
 from typing import List, Optional, Any
 
 import snap7
-from snap7.snap7types import S7AreaDB, S7WLReal, S7WLBit
+from snap7.snap7types import S7AreaDB, S7WLReal, S7WLBit, S7WLByte
 
 from stream2py import SourceReader
-from stream2py.sources.raw_plc import PlcRawRead, PlcDataItem
+from stream2py.sources.raw_plc import PlcRawRead, PlcDataItem, get_byte
 
 from stream2py.utility.typing_hints import ComparableType
 
@@ -36,23 +37,23 @@ class PlcReader(SourceReader):
 
         self.bt = None
         self._start_time = None
-        self._data_lock = threading.Lock()
+        #self._data_lock = threading.Lock()
         self._data_read_thread_exit = threading.Event()
         self._data_read_thread = None
         self._data_read_thread_exit.clear()
-        self.data = deque()
+        self.data = deque() #Queue()
         self.plc_info = dict()
 
         self.reader_thread = None
 
     def _stream_thread(self):
+        _sleep_time = self.sleep_time_on_read_none_s
+
         while not self._data_read_thread_exit.is_set():
-            with self._data_lock:
-                data_item = self._plc_raw_reader.read_items(self._items_to_read)
-                self.data.append(data_item)
-                _sleep_time = self.sleep_time_on_read_none_s
-                if _sleep_time > 0:
-                    time.sleep(_sleep_time)
+            data_item = self._plc_raw_reader.read_items(self._items_to_read)
+            self.data.append(data_item)
+            if _sleep_time > 0:
+                time.sleep(_sleep_time)
 
     @property
     def sleep_time_on_read_none_s(self) -> float:
@@ -69,13 +70,14 @@ class PlcReader(SourceReader):
                 self._data_read_thread.start()
             return True
         return False
-    def read(self) -> Optional[Any]:
+
+    def read(self, blocking : bool = False, timeout:int = 0) -> Optional[Any]:
         """
         :return: timestamp, plc info, read db items as key:value
         """
         if len(self.data):
-            with self._data_lock:
-                return self.data.popleft()
+            return self.data.popleft()
+        #return self.data.get(block = blocking, timeout=timeout)
 
     def close(self) -> None:
         """Close and clean up source reader.
@@ -97,46 +99,93 @@ class PlcReader(SourceReader):
 
 
 if __name__ == '__main__':
+    #
+    # read_items = [
+    #     PlcDataItem(
+    #         key='temperature',
+    #         area=S7AreaDB,
+    #         word_len=S7WLReal,
+    #         db_number=3,
+    #         start=2,
+    #         amount=1,
+    #         convert=snap7.util.get_real),
+    #
+    #     PlcDataItem(
+    #         key='led1',
+    #         area=S7AreaDB,
+    #         word_len=S7WLBit,
+    #         db_number=3,
+    #         start=0 * 8 + 0,  # bit ofsset
+    #         amount=1,
+    #         convert=snap7.util.get_bool,
+    #         convert_args=(0, 0)),
+    #
+    #     PlcDataItem(
+    #         key='led2',
+    #         area=S7AreaDB,
+    #         word_len=S7WLBit,
+    #         db_number=3,
+    #         start=0 * 8 + 1,  # bit ofsset
+    #         amount=1,
+    #         convert=snap7.util.get_bool,
+    #         convert_args=(0, 0)),
+    # ]
 
     read_items = [
-        PlcDataItem(
-            key='temperature',
-            area=S7AreaDB,
-            word_len=S7WLReal,
-            db_number=3,
-            start=2,
-            amount=1,
-            convert=snap7.util.get_real),
 
         PlcDataItem(
-            key='led1',
+
+            key='PLC Motor Status',
             area=S7AreaDB,
             word_len=S7WLBit,
-            db_number=3,
-            start=0 * 8 + 0,  # bit ofsset
+            db_number=1,
+            start=0 * 8 + 0,  # bit offset
             amount=1,
             convert=snap7.util.get_bool,
             convert_args=(0, 0)),
 
         PlcDataItem(
-            key='led2',
+            key='PLC LED Status',
             area=S7AreaDB,
             word_len=S7WLBit,
-            db_number=3,
-            start=0 * 8 + 1,  # bit ofsset
+            db_number=1,
+            start=0 * 8 + 1,  # bit offset
             amount=1,
             convert=snap7.util.get_bool,
             convert_args=(0, 0)),
+
+        PlcDataItem(
+            key='NetHAT Motor Speed',
+            area=S7AreaDB,
+            word_len=S7WLByte,
+            db_number=1,
+            start=3,
+            amount=1,
+            convert=get_byte,
+            convert_args=(0,)),
+
+        PlcDataItem(
+            key='NetHAT LED Brightness',
+            area=S7AreaDB,
+            word_len=S7WLByte,
+            db_number=1,
+            start=4,
+            amount=1,
+            convert=get_byte,
+            convert_args=(0,)),
+
     ]
 
     preader = PlcReader('192.168.0.19', items_to_read=read_items,
-                        rack=0, slot=0)
+                        rack=0, slot=0, sleep_time=0)
 
     if not preader.open():
         preader.close()
         exit(-1)
     can_run: bool = True
 
+
+    _i = preader.info
     pprint(preader.info)
     while can_run:
         try:
@@ -144,8 +193,9 @@ if __name__ == '__main__':
             if data is None:
                 time.sleep(0.5)
             else:
-                pprint(data)
-                print()
+                pass
+                # pprint(data)
+                # print()
         except KeyboardInterrupt as kb:
             can_run = False
 

@@ -1,4 +1,6 @@
 
+[Documentation hosted here](https://i2mint.github.io/stream2py/index.html).
+
 # stream2py
 Bring data streams to python, with ease.
 
@@ -62,3 +64,5 @@ we've acquired.
 Point is, stream2py will give you the tools to tackle that problem properly. 
 It does so by having the stream2py buffers mentioned above keep data flow statistics that readers can then use to 
 more precisely timestamp what they read.
+
+[Documentation here](https://i2mint.github.io/stream2py/index.html).

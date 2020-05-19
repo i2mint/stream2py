@@ -11,6 +11,13 @@ from snap7.snap7types import S7DataItem, S7AreaDB, S7WLBit, S7WLReal, S7WLByte, 
 from stream2py import SourceReader
 import snap7
 
+
+def get_byte(_bytearray, byte_index):
+    """
+    Get the boolean value from location in bytearray
+    """
+    return _bytearray[byte_index]
+
 @dataclass
 class PlcDataItem:
 
@@ -136,42 +143,115 @@ class PlcRawRead:
         return result
 
 
+
+
+read_items = [
+
+    PlcDataItem(
+
+        key='PLC Motor Status',
+        area=S7AreaDB,
+        word_len=S7WLBit,
+        db_number=1,
+        start=0 * 8 + 0,  # bit offset
+        amount=1,
+        convert=snap7.util.get_bool,
+        convert_args=(0, 0)),
+
+    PlcDataItem(
+        key='PLC LED Status',
+        area=S7AreaDB,
+        word_len=S7WLBit,
+        db_number=1,
+        start=0 * 8 + 1,  # bit offset
+        amount=1,
+        convert=snap7.util.get_bool,
+        convert_args=(0, 0)),
+
+    # PlcDataItem(
+    #     key='PLC Motor Speed',
+    #     area=S7AreaDB,
+    #     word_len=S7WLByte,
+    #     db_number=1,
+    #     start=1,
+    #     amount=1,
+    #     convert=get_byte,
+    #     convert_args=(0,)),
+    #
+    # PlcDataItem(
+    #     key='PLC LED Brightness',
+    #     area=S7AreaDB,
+    #     word_len=S7WLByte,
+    #     db_number=1,
+    #     start=2,
+    #     amount=1,
+    #     convert=get_byte,
+    #     convert_args=(0,)),
+
+    PlcDataItem(
+        key='NetHAT Motor Speed',
+        area=S7AreaDB,
+        word_len=S7WLByte,
+        db_number=1,
+        start=3,
+        amount=1,
+        convert=get_byte,
+        convert_args=(0,)),
+
+    PlcDataItem(
+        key='NetHAT LED Brightness',
+        area=S7AreaDB,
+        word_len=S7WLByte,
+        db_number=1,
+        start=4,
+        amount=1,
+        convert=get_byte,
+        convert_args=(0,)),
+
+]
+
+
 if __name__ == '__main__':
     plcTest = PlcRawRead("192.168.0.19", rack=0, slot=0)
     plcTest.open()
     pprint(plcTest.get_info())
 
-    _d = plcTest.read_items([
-        PlcDataItem(
-            key='temperature',
-            area=S7AreaDB,
-            word_len=S7WLReal,
-            db_number=3,
-            start=2,
-            amount=1,
-            convert=snap7.util.get_real),
+    while True:
+        _d = plcTest.read_items(read_items)
+        #
+        #     [
+        #     PlcDataItem(
+        #         key='temperature',
+        #         area=S7AreaDB,
+        #         word_len=S7WLReal,
+        #         db_number=3,
+        #         start=2,
+        #         amount=1,
+        #         convert=snap7.util.get_real),
+        #
+        #     PlcDataItem(
+        #         key='led1',
+        #         area=S7AreaDB,
+        #         word_len=S7WLBit,
+        #         db_number=3,
+        #         start=0 * 8 + 0,  # bit ofsset
+        #         amount=1,
+        #         convert=snap7.util.get_bool,
+        #         convert_args=(0, 0)),
+        #
+        #     PlcDataItem(
+        #         key='led2',
+        #         area=S7AreaDB,
+        #         word_len=S7WLBit,
+        #         db_number=3,
+        #         start=0 * 8 + 1,  # bit ofsset
+        #         amount=1,
+        #         convert=snap7.util.get_bool,
+        #         convert_args=(0, 0)),
+        # ])
+        pprint(_d)
+        print()
 
-        PlcDataItem(
-            key='led1',
-            area=S7AreaDB,
-            word_len=S7WLBit,
-            db_number=3,
-            start=0 * 8 + 0,  # bit ofsset
-            amount=1,
-            convert=snap7.util.get_bool,
-            convert_args=(0, 0)),
-
-        PlcDataItem(
-            key='led2',
-            area=S7AreaDB,
-            word_len=S7WLBit,
-            db_number=3,
-            start=0 * 8 + 1,  # bit ofsset
-            amount=1,
-            convert=snap7.util.get_bool,
-            convert_args=(0, 0)),
-    ])
-    print(_d)
     plcTest.close()
 
     """
