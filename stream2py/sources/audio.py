@@ -20,13 +20,14 @@ This source requires PyAudio
 
 __all__ = ['PyAudioSourceReader', 'PaStatusFlags', 'PaCallbackReturnCodes']
 
-from _collections import deque
+from collections import deque
 from contextlib import suppress, contextmanager
 from enum import IntFlag
-
+import math
 import operator
-import pyaudio
 import threading
+
+import pyaudio
 
 from stream2py import SourceReader
 from stream2py.utility.typing_hints import Generator, ComparableType, List
@@ -277,6 +278,18 @@ class PyAudioSourceReader(SourceReader):
         """
         with cls._pyaudio() as pa:
             return [pa.get_device_info_by_index(idx) for idx in range(pa.get_device_count())]
+
+    @staticmethod
+    def audio_buffer_size_seconds_to_maxlen(buffer_size_seconds, rate, frames_per_buffer) -> int:
+        """Calculate maxlen for StreamBuffer to keep a minimum of buffer_size_seconds of data on buffer
+
+        :param buffer_size_seconds: desired length of StreamBuffer in seconds
+        :param rate: sample rate
+        :param frames_per_buffer: number of frames per buffer
+        :return: maxlen for StreamBuffer
+        """
+        seconds_per_read = frames_per_buffer / rate
+        return math.ceil(buffer_size_seconds / seconds_per_read)
 
 
 if __name__ == '__main__':
