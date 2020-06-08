@@ -23,7 +23,6 @@ class KeyboardInputSourceReader(SourceReader, threading.Thread):
         self.index = 0
 
     def open(self):
-        threading.Thread.__init__(self, daemon=True)
         self.data.clear()
         self.stop_event.clear()
         self.bt = self.get_timestamp()
