@@ -49,7 +49,8 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
         try:
             while not self.stop_event.is_set():
                 self.reader_handler(self.buffer_reader)
-                time.sleep(self.interval)
+                if self.interval > 0:
+                    time.sleep(self.interval)
         finally:
             with suppress(Exception):
                 self.stop()

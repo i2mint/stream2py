@@ -33,7 +33,8 @@ class PlcReader(SourceReader):
         # validate IP address
         import socket
         socket.inet_aton(self._ip_address)  # validate IP Address
-        self._plc_raw_reader = PlcRawRead(self._ip_address, rack=self._rack, slot=self._slot, tcp_port=self._tcp_port)
+        self._plc_raw_reader = PlcRawRead(self._ip_address, rack=self._rack, slot=self._slot,
+                                          tcp_port=self._tcp_port)
 
         self.bt = None
         self._start_time = None
@@ -94,8 +95,12 @@ class PlcReader(SourceReader):
         return _info
 
     def key(self, data_item: Any or None) -> ComparableType:
+
+        assert data_item is not None and len (data_item) > 0 and 'bt' in data_item[0],\
+            'Cannot get key because bt is missing from data_item'
+
         import operator
-        return operator.itemgetter("bt")(data_item)
+        return operator.itemgetter("bt")(data_item[0])
 
 
 if __name__ == '__main__':

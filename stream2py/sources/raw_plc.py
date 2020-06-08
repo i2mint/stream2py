@@ -36,11 +36,11 @@ class PlcDataItem:
                 key: str,  convert: Callable, convert_args : Optional or None = None):
 
         self.area = area
-        self.word_len = word_len
-        self.db_number = db_number
-        self.start = start
-        self.amount = amount
-        self.key = key
+        self.word_len = int(word_len)
+        self.db_number = int(db_number)
+        self.start = eval(str(start))
+        self.amount = int(amount)
+        self.key = str(key)
         self.convert = convert
         self.convert_args = convert_args
 
@@ -57,8 +57,18 @@ class PlcDataItem:
 
         assert _size != 0, 'Unknown word len'
 
-        self.buffer = ctypes.create_string_buffer(_size * self.amount)
-        self.buffer = ctypes.cast(ctypes.pointer(self.buffer), ctypes.POINTER(ctypes.c_uint8))
+        print(f'PlcDataItem {self.key}: size = {_size}, amount = {self.amount}')
+
+        try:
+            self.buffer = ctypes.create_string_buffer(_size * self.amount)
+        except Exception as ex:
+            print(f'ERROR: Failed to allocate string buffer for item {self.key} : {ex}')
+            return
+
+        try:
+            self.buffer = ctypes.cast(ctypes.pointer(self.buffer), ctypes.POINTER(ctypes.c_uint8))
+        except Exception as ex:
+            return
 
     def get_item(self):
         return S7DataItem(
@@ -132,12 +142,13 @@ class PlcRawRead:
         if result:
             return None
 
+        _bt = SourceReader.get_timestamp()
         result = []
         for _idx in range(0, len(items)):
             result.append({
                 "key": items[_idx].key,
                 "value": items[_idx].decode_item(items_read[_idx]),
-                "ts": SourceReader.get_timestamp()
+                "bt": _bt
             })
 
         return result
