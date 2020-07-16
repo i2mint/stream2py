@@ -26,6 +26,14 @@ def bytes_to_waveform(b, sr=DFLT_SR, n_channels=DFLT_N_CHANNELS, sample_width=DF
     return sf.read(BytesIO(b), samplerate=sr, channels=n_channels, **read_kwargs_for_sample_width[sample_width])[0]
 
 
+def waveform_to_bytes(wf, sr=DFLT_SR, sample_width=DFLT_SAMPLE_WIDTH):
+    b = BytesIO()
+    subtype = read_kwargs_for_sample_width[sample_width]['subtype']
+    sf.write(b, wf, samplerate=sr, format='RAW', subtype=subtype)
+    b.seek(0)
+    return b.read()
+
+
 ########################################################################################################################
 
 def find_a_device_index(filt='microphone', dflt=None):
@@ -172,3 +180,52 @@ def simple_chunker(a, chk_size: int):
 
 def rechunker(chks, chk_size):
     yield from simple_chunker(chain.from_iterable(chks), chk_size)
+
+
+######################################################################################################
+# Example applications
+
+from itertools import islice
+import pyaudio
+from time import sleep
+import soundfile as sf
+from io import BytesIO
+
+
+def asis(wf):
+    return wf
+
+
+def reverse_and_print(wf):
+    print('reversed sounds like this...')
+    return wf[::-1]
+
+
+def listen_and_shout(transform_wf=asis, every_seconds=1, input_device_index=None,
+                     sr=DFLT_SR, sample_width=DFLT_SAMPLE_WIDTH,
+                     chk_size=DFLT_CHK_SIZE, stream_buffer_size_s=DFLT_STREAM_BUF_SIZE_S):
+    # Create an interface to PortAudio
+    p = pyaudio.PyAudio()
+
+    # Open a .Stream object to write the WAV file to
+    # 'output = True' indicates that the sound will be played rather than recorded
+    stream = p.open(format=sample_width,
+                    channels=1,
+                    rate=int(sr / 2),  # why? I don't know. It's just accelerated if I don't
+                    output=True)
+
+    with live_wf_ctx(input_device_index, sr=sr,
+                     sample_width=sample_width, chk_size=chk_size,
+                     stream_buffer_size_s=stream_buffer_size_s) as wf_gen:
+        while True:
+            try:
+                wf = list(islice(wf_gen, int(sr * every_seconds)))
+                b = waveform_to_bytes(transform_wf(wf), sr, sample_width)
+                stream.write(b)
+            except KeyboardInterrupt:
+                print('KeyboardInterrupt... Closing down')
+                break
+
+    # Close and terminate the stream
+    stream.close()
+    p.terminate()
