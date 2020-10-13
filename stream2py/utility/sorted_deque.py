@@ -119,6 +119,16 @@ class SortedDeque(SortedCollection):
                 raise e
         raise ValueError('No item found with key above: %r' % (k,))
 
+    def drop(self, n=1):
+        """Remove n items from the left
+
+        :param n:
+        :return:
+        """
+        for _ in range(n):
+            del self._keys[0]
+            del self._items[0]
+
 
 # ---------------------------  Simple demo and tests  -------------------------
 if __name__ == '__main__':

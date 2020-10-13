@@ -29,6 +29,9 @@ class _SourceBuffer:
         self._buffer = RWLockSortedDeque([], key=key, maxlen=maxlen)
         self._source_reader_info = source_reader_info
 
+    def __len__(self):
+        return len(self._buffer)
+
     @property
     def key(self):
         return self._buffer.key
@@ -40,6 +43,10 @@ class _SourceBuffer:
     def append(self, item):
         with self._buffer.writer_lock() as writer:
             writer.append(item)
+
+    def drop(self, n=1):
+        with self._buffer.writer_lock() as writer:
+            writer.drop(n)
 
     def mk_reader(self):
         return BufferReader(buffer=self._buffer, source_reader_info=self._source_reader_info,
@@ -80,17 +87,19 @@ class StreamBuffer:
     """
 
     def __init__(self, source_reader: SourceReader,
-                 *, maxlen: int, sleep_time_on_read_none_s: Optional[Union[int, float]] = None):
+                 *, maxlen: int, sleep_time_on_read_none_s: Optional[Union[int, float]] = None, auto_drop=True):
         """
         TODO: option to auto restart source on read exception
 
         :param source_reader: instance of a SourceReader subclass
         :param maxlen: max number of read data points to store in buffer before data starts dropping off the queue
         :param sleep_time_on_read_none_s: Seconds to sleep when reading None from source_reader. None to use defaults.
+        :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to manually make space.
         """
         assert isinstance(source_reader, SourceReader), "source_reader is not a subclass of SourceReader"
         self.source_reader = source_reader
         self._maxlen = maxlen
+        self.auto_drop = auto_drop
         if isinstance(sleep_time_on_read_none_s, (int, float)):
             self._sleep_time_on_read_none_s = sleep_time_on_read_none_s
         elif isinstance(source_reader.sleep_time_on_read_none_s, (int, float)):
@@ -105,6 +114,16 @@ class StreamBuffer:
     def __iter__(self):
         reader = self.mk_reader()
         yield from iter(reader)
+
+    def drop(self, n=1):
+        """Manually drop items from buffer when auto_drop is False
+
+        :param n: number of items to drop from the left side
+        :return:
+        """
+        if self.auto_drop is True:
+            raise RuntimeError("auto_drop must be False to manually drop items from buffer")
+        self.source_buffer.drop(n)
 
     def start(self):
         """Open and start reading from source_reader into buffer"""
@@ -163,7 +182,12 @@ class StreamBuffer:
     def _run(self):
         try:
             while not self._stop_event.is_set():
-                data = self.source_reader.read()
+                # check if buffer is full and skip read or append
+                if self.auto_drop is True or len(self.source_buffer) < self._maxlen:
+                    data = self.source_reader.read()
+                else:
+                    data = None
+
                 if data is not None:
                     self.source_buffer.append(data)
                 else:

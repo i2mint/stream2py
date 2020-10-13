@@ -28,6 +28,9 @@ class RWLockSortedDeque(RWLock):
         RWLock.__init__(self)
         self._sorted_deque = SortedDeque(iterable, key, maxlen)
 
+    def __len__(self):
+        return len(self._sorted_deque)
+
     @property
     def key(self):
         return self._sorted_deque.key
