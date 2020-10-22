@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="stream2py",
-    version="1.0.1",
+    version="1.0.2",
     author="Andie Shining Phan",
     author_email="asphan@gmail.com",
     description="Bring data streams to python, with ease.",

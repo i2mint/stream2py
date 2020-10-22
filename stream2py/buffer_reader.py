@@ -171,7 +171,14 @@ class BufferReader:
         """
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
-                _next_key = reader.key(self.next(peek=True, ignore_no_item_found=ignore_no_item_found))
+                _next = self.next(peek=True, ignore_no_item_found=ignore_no_item_found)
+                try:
+                    _next_key = reader.key(_next)
+                except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
+                    if ignore_no_item_found:
+                        return None
+                    else:
+                        raise e
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
