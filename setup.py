@@ -1,13 +1,16 @@
-import setuptools
+from setuptools import setup, find_packages
 
-setuptools.setup(
-    name="stream2py",
-    version="1.0.2",
-    author="Andie Shining Phan",
-    author_email="asphan@gmail.com",
-    description="Bring data streams to python, with ease.",
-    long_description="",
-    url="https://github.com/i2mint/stream2py",
-    packages=setuptools.find_packages(),
-    include_package_data=True
-)
+
+def text_of_readme_md_file():
+    try:
+        with open('README.md') as f:
+            return f.read()
+    except:
+        return ""
+
+
+setup(
+    packages=find_packages(),
+    long_description=text_of_readme_md_file(),
+    long_description_content_type="text/markdown"
+)  # Note: Everything should be in the local setup.cfg
