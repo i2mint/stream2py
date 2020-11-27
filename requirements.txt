@@ -1,0 +1,2 @@
+python-snap7==0.11
+opencv-python==4.4.0.46
