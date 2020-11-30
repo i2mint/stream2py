@@ -19,10 +19,22 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Initialize Resource Directory
+        run: |
+          echo "RESOURCE_DIR=$(mktemp -d)" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip -q install axblack pytest pylint
+          sudo apt-get -qq update
+          sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+#          curl -o $RESOURCE_DIR/port_audio.tgz http://files.portaudio.com/archives/pa_stable_v190600_20161030.tgz
+#          tar -zxvf $RESOURCE_DIR/port_audio.tgz
+#          cd port_audio
+#          ./configure && make
+#          sudo make install
+#          cd ..
           pip -q install -r requirements.txt
 
       - name: Format source code
