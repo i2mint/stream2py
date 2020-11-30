@@ -9,7 +9,7 @@ class _Getch:
     def __init__(self, is_blocking=True):
         try:
             self.impl = _GetchWindows(is_blocking)
-        except (ImportError, ModuleNotFoundError):
+        except ImportError:
             self.impl = _GetchUnix(is_blocking)
 
     def __getattr__(self, attr):
