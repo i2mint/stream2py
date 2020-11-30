@@ -30,6 +30,7 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
           pip -q install -r requirements.txt
+          pip -q install -r test_requirements.txt
 
       - name: Format source code
         run: black --line-length=79 .

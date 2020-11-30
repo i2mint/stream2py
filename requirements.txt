@@ -1,3 +1,4 @@
 python-snap7==0.11
 opencv-python==4.4.0.46
 PyAudio==0.2.11
+psutil==5.7.3
