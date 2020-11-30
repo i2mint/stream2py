@@ -32,10 +32,6 @@ jobs:
           pip -q install -r requirements.txt
           pip -q install -r test_requirements.txt
 
-      - name: Remove Getch
-        run: |
-          rm -f stream2py/utility/getch.py
-
       - name: Format source code
         run: black --line-length=79 .
 
