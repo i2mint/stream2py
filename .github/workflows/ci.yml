@@ -28,7 +28,7 @@ jobs:
           python -m pip install --upgrade pip
           pip -q install axblack pytest pylint
           sudo apt-get -qq update
-          sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+          sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0 libsndfile1
           pip -q install -r requirements.txt
           pip -q install -r test_requirements.txt
 
