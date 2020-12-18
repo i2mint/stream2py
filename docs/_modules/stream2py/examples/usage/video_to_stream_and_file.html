@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stream2py.examples.usage.video_to_stream_and_file &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for stream2py.examples.usage.video_to_stream_and_file</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">TODO:</span>
+<span class="sd">    Maybe for next more advanced version:</span>
+<span class="sd">    * default output files to ~/odir</span>
+<span class="sd">    * set StreamBuffer maxlen to something reasonable</span>
+<span class="sd">    * set VideoShow intervals based on frame_rate</span>
+<span class="sd">    * add a lookup for VideoCapture info like frame_size and frame_rate for any give input</span>
+<span class="sd">    * playback/recording controls</span>
+<span class="sd">        [x] default just plays and records everything</span>
+<span class="sd">        [ ] frame rate control</span>
+<span class="sd">        [ ] skip back/ahead</span>
+<span class="sd">        [ ] start/stop record based on what is currently displayed</span>
+<span class="sd">            * need to sync VideoWriter and VideoShow</span>
+<span class="sd">    What interface do I need for VideoWriter and VideoShow</span>
+<span class="sd">    see how to handle syncing buffer_readers between two consumers</span>
+<span class="sd">      sharing one buffer_reader won&#39;t work like anything expected or intended or desired</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">StreamBuffer</span>
+<span class="kn">from</span> <span class="nn">stream2py.sources.video</span> <span class="k">import</span> <span class="n">VideoCapture</span>
+<span class="kn">from</span> <span class="nn">stream2py.sources.keyboard_input</span> <span class="k">import</span> <span class="n">KeyboardInputSourceReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.consumers.video.write</span> <span class="k">import</span> <span class="n">VideoWriter</span>
+<span class="kn">from</span> <span class="nn">stream2py.consumers.video.show</span> <span class="k">import</span> <span class="n">VideoShow</span>
+
+
+<div class="viewcode-block" id="video_display_and_save"><a class="viewcode-back" href="../../../../all_files.html#stream2py.examples.usage.video_to_stream_and_file.video_display_and_save">[docs]</a><span class="k">def</span> <span class="nf">video_display_and_save</span><span class="p">(</span><span class="n">video_input</span><span class="p">,</span>  <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;VideoWriter.avi&quot;</span><span class="p">,</span> <span class="n">fourcc</span><span class="o">=</span><span class="s2">&quot;MJPG&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display recording on screen and save to file</span>
+
+<span class="sd">    TODO: fps info from devices (camera) is not accurate and need to be calculated</span>
+
+<span class="sd">    :param video_input: file name or device id of video source</span>
+<span class="sd">    :param file_name: video file path to save recording</span>
+<span class="sd">    :param fourcc: video file encoding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">source_reader</span> <span class="o">=</span> <span class="n">VideoCapture</span><span class="p">(</span><span class="n">video_input</span><span class="o">=</span><span class="n">video_input</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream_buffer</span><span class="p">:</span>
+
+        <span class="n">buffer_reader_for_write</span> <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+        <span class="n">frame_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">buffer_reader_for_write</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;frame_width&#39;</span><span class="p">],</span>
+                      <span class="n">buffer_reader_for_write</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;frame_height&#39;</span><span class="p">])</span>
+        <span class="n">fps</span> <span class="o">=</span> <span class="n">buffer_reader_for_write</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;fps&#39;</span><span class="p">]</span>
+
+        <span class="k">with</span> <span class="n">VideoWriter</span><span class="p">(</span><span class="n">buffer_reader</span><span class="o">=</span><span class="n">buffer_reader_for_write</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">fourcc</span><span class="o">=</span><span class="n">fourcc</span><span class="p">,</span>
+                         <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="n">frame_size</span><span class="o">=</span><span class="n">frame_size</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+
+            <span class="n">buffer_reader_for_show</span> <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">VideoShow</span><span class="p">(</span><span class="n">buffer_reader</span><span class="o">=</span><span class="n">buffer_reader_for_show</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">window_name</span><span class="o">=</span><span class="s2">&quot;show_demo&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">show</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;press &quot;q&quot; to end recording&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">KeyboardInputSourceReader</span><span class="p">()</span> <span class="k">as</span> <span class="n">key_input</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">key_input</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;quitting&#39;</span><span class="p">)</span>
+                            <span class="k">break</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">video_display_and_save</span><span class="p">(</span><span class="n">video_input</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

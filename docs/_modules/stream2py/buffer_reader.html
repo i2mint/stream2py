@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream2py.buffer_reader &#8212; stream2py 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -41,7 +42,7 @@
 <span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="k">import</span> <span class="n">Union</span>
 
 
-<div class="viewcode-block" id="BufferReader"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader">[docs]</a><span class="k">class</span> <span class="nc">BufferReader</span><span class="p">:</span>
+<div class="viewcode-block" id="BufferReader"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader">[docs]</a><span class="k">class</span> <span class="nc">BufferReader</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Reader that is constructed from StreamBuffer.mk_reader()</span>
 
 <span class="sd">    &gt;&gt;&gt; from stream2py import StreamBuffer, BufferReader</span>
@@ -118,14 +119,14 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BufferReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 
 <span class="sd">        :param sleep_time_s: seconds to sleep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
 
-<div class="viewcode-block" id="BufferReader.is_same_buffer"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.is_same_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">is_same_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_buffer_reader</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.is_same_buffer"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader.is_same_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">is_same_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_buffer_reader</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if reader is looking at the same buffer&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="n">_stop_event</span></div>
 
@@ -165,7 +166,7 @@
 
     <span class="n">last_item</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getlast_item</span><span class="p">,</span> <span class="n">_setlast_item</span><span class="p">,</span> <span class="n">_dellast_item</span><span class="p">,</span> <span class="s1">&#39;last seen item cursor&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BufferReader.next"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.next"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Finds an item with a key greater than the last returned item.</span>
 <span class="sd">        Raise ValueError if no item found with key above last item.</span>
 
@@ -190,7 +191,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
         <span class="k">return</span> <span class="n">next_item</span></div>
 
-<div class="viewcode-block" id="BufferReader.range"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.range">[docs]</a>    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.range"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader.range">[docs]</a>    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enables:</span>
 <span class="sd">        1. Get last n minutes</span>
 <span class="sd">        2. Give me data I don&#39;t have</span>
@@ -205,7 +206,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">only_new_items</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">_next_key</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">))</span>
+                <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">_next_key</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: &#39;NoneType&#39; object is not subscriptable</span>
+                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
                 <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">_next_key</span> <span class="k">else</span> <span class="n">_next_key</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
@@ -221,7 +229,7 @@
                     <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span> <span class="n">items</span></div>
 
-<div class="viewcode-block" id="BufferReader.tail"><a class="viewcode-back" href="../../api.html#stream2py.BufferReader.tail">[docs]</a>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.tail"><a class="viewcode-back" href="../../all_files.html#stream2py.buffer_reader.BufferReader.tail">[docs]</a>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Finds the last item in buffer. Raise ValueError if no item found.</span>
 
 <span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
@@ -322,7 +330,7 @@
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
