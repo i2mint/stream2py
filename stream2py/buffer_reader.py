@@ -2,6 +2,7 @@ __all__ = ['BufferReader']
 
 import threading
 import time
+from contextlib import suppress
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 from stream2py.utility.typing_hints import Union
@@ -156,7 +157,8 @@ class BufferReader:
             self.last_item = next_item
         return next_item
 
-    def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False):
+    def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False,
+              start_le=False):
         """Enables:
         1. Get last n minutes
         2. Give me data I don't have
@@ -165,8 +167,10 @@ class BufferReader:
         :param stop: ending range key of item inclusive
         :param step:
         :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item instead of raising exception
+        :param ignore_no_item_found: if True, return None when no next item instead of raising exception.
         :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found
+        :param start_le: if True, increase the search range to find start less than or equal by rounding down if start
+            is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0
         :return: list of items in range
         """
         with self._buffer.reader_lock() as reader:
@@ -182,6 +186,10 @@ class BufferReader:
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
+            if start_le is True:
+                with suppress(ValueError):  # ValueError: No item found with key at or below: _start
+                    _start = reader.key(reader.find_le(_start))
+
             items = reader.range(_start, stop, step)
 
         if not peek:
