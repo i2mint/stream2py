@@ -172,7 +172,7 @@ if __name__ == '__main__':
 
     stream_buffer = PyAudioStreamBuffer(device, sr=44100, frames_per_buffer=4096)
 
-    print(f"Test 1: PyAudioSourceReader")
+    print(f"\nTest 1: PyAudioSourceReader ####################")
     with stream_buffer:
         time.sleep(2)
         bt = PyAudioSourceReader.get_timestamp()
@@ -183,9 +183,9 @@ if __name__ == '__main__':
 
     print(f"{len(items)=}, ({items[0][0]=}, {items[-1][0]=}), ({bt=}, {tt=})")
 
-    print("{stream_buffer[(bt + tt) / 2][0][0]=}")
+    print(f"{stream_buffer[(bt + tt) / 2][0][0]=}")
 
-    print(f"Test 2: PyAudioStreamBufferWithByteSlice")
+    print(f"\nTest 2: PyAudioStreamBufferWithByteSlice ######################")
 
     stream_buffer_with_byte_slice = PyAudioStreamBufferWithByteSlice(
         device,
@@ -208,4 +208,141 @@ if __name__ == '__main__':
     wf_bytes = stream_buffer_with_byte_slice[bt:tt]
     print(f"{len(wf_bytes)=}")
 
-    # TODO: Continue...
+    print(f"\nTest 3: BufferReader Queries #################################")
+
+    with stream_buffer:
+        time.sleep(5)
+        reader = stream_buffer.mk_reader()
+        print(reader.source_reader_info)
+        bt = PyAudioSourceReader.get_timestamp()
+        for x in range(3, 0, -1):
+            print(x)
+            time.sleep(1)
+        tt = PyAudioSourceReader.get_timestamp()
+        bt_tt_data = reader.range(bt, tt, start_le=True)
+
+    print(len(bt_tt_data), bt - bt_tt_data[0][0], tt - bt_tt_data[-1][0])
+
+    buffer_count = 5
+
+    # iterating from reader
+    print("   ... iterating from reader")
+
+    with stream_buffer:
+        reader = stream_buffer.mk_reader()
+        for i, data in enumerate(reader):
+            print(i, data[0])
+            if i >= buffer_count:
+                break
+
+    # using next() with work around
+
+    print("   ... using next() with work around")
+
+    with stream_buffer:
+        reader = stream_buffer.mk_reader()
+
+
+        def yield_from_reader(reader):
+            yield from reader
+
+
+        reader_gen = yield_from_reader(reader)
+
+        for i in range(buffer_count):
+            data = next(reader_gen)
+            print(i, data[0])
+
+    # using BufferReader.next()
+
+    print("   ... using BufferReader.next()")
+
+    with stream_buffer:
+        reader = stream_buffer.mk_reader()
+
+        i = 0
+        while i < buffer_count:
+            data = reader.next(ignore_no_item_found=True)
+            if data:
+                print(i, data[0])
+                i += 1
+
+    # using BufferReader.next(n=5)
+    # TODO: Not working: Repair.
+    # print("   ... using BufferReader.next(n=5)")
+    #
+    # with stream_buffer:
+    #     reader = stream_buffer.mk_reader()
+    #
+    #     i = 0
+    #     while i < buffer_count:
+    #         data = reader.next(5, ignore_no_item_found=True)
+    #         if data:
+    #             print(i, data[0][0], len(data))
+    #             i += 1
+    #             time.sleep(1)
+
+    # Frame Count Indexing
+
+    print("\nTest 4: Frame Count Indexing ##########################")
+
+    frame_index_stream_buffer = PyAudioStreamBuffer(
+        device,
+        sr=44100,
+        frames_per_buffer=4096,
+        source_reader_class=PyAudioWithZeroedErrorsAndFrameIndexingSourceReader)
+
+    start_index = 4095
+    end_index = 20000
+
+    with frame_index_stream_buffer:
+        time.sleep(1)
+        reader = frame_index_stream_buffer.mk_reader()
+        for x in range(3, 0, -1):
+            print(x)
+            time.sleep(1)
+        with reader._buffer.reader_lock() as _reader:
+            _start = _reader.find_le(start_index)[0]
+            print(_start)
+        data_range = reader.range(start_index, end_index, start_le=True)
+    len(data_range), data_range[0][0], data_range[-1][0]
+
+    # iterating from reader
+    print("   ... iterating from reader")
+
+    with frame_index_stream_buffer:
+        reader = frame_index_stream_buffer.mk_reader()
+        for i, data in enumerate(reader):
+            print(i, data[0])
+            if i >= buffer_count:
+                break
+
+    # using next() with work around
+    print("   ... using next() with work around")
+
+    with frame_index_stream_buffer:
+        reader = frame_index_stream_buffer.mk_reader()
+
+
+        def yield_from_reader(reader):
+            yield from reader
+
+
+        reader_gen = yield_from_reader(reader)
+
+        for i in range(buffer_count):
+            data = next(reader_gen)
+            print(i, data[0])
+
+    # using BufferReader.next()
+    print("   ... using BufferReader.next()")
+
+    with frame_index_stream_buffer:
+        reader = frame_index_stream_buffer.mk_reader()
+
+        i = 0
+        while i < buffer_count:
+            data = reader.next(ignore_no_item_found=True)
+            if data:
+                print(i, data[0])
+                i += 1
