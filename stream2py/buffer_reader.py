@@ -132,13 +132,15 @@ class BufferReader:
 
     last_item = property(_getlast_item, _setlast_item, _dellast_item, 'last seen item cursor')
 
-    def next(self, *, peek=False, ignore_no_item_found=False):
+    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
 
+        :param n: number of items to return
         :param peek: if True, last_item cursor will not be updated
         :param ignore_no_item_found: if True, return None when no next item instead of raising exception
-        :return: next item
+        :param strict_n: if True, raise ValueError if n items are not available
+        :return: next item or list of next items if n > 1
         """
         with self._buffer.reader_lock() as reader:
             try:
@@ -153,9 +155,20 @@ class BufferReader:
                     next_item = reader[0]
                 else:
                     raise e
-        if not peek:
-            self.last_item = next_item
-        return next_item
+            if n > 1:
+                i = reader.index(next_item)
+                j = i + n
+                if strict_n and j >= len(reader):
+                    raise ValueError(f'Number of items found is less than n: strict_n={strict_n}, n={n}')
+
+                next_items_list = reader.range_by_index(i, j)
+                if not peek:
+                    self.last_item = next_items_list[-1]
+                return next_items_list
+            else:
+                if not peek:
+                    self.last_item = next_item
+                return next_item
 
     def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False,
               start_le=False):

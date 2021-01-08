@@ -97,7 +97,7 @@ class SortedDeque(SortedCollection):
         self._items.append(item)
 
     def range(self, start, stop, step=None):
-        """
+        """Return list of items within start and stop key range.
 
         :param start: starting key
         :param stop: stopping key
@@ -106,7 +106,17 @@ class SortedDeque(SortedCollection):
         """
         i = bisect_left(self._keys, start)
         j = bisect_right(self._keys, stop)
-        return list(islice(self._items, i, j, step))
+        return self.range_by_index(i, j, step)
+
+    def range_by_index(self, start_index, stop_index, step=None):
+        """Return list of items within start and stop index range.
+
+        :param start_index: starting index
+        :param stop_index: stopping index
+        :param step:
+        :return: list with items in range
+        """
+        return list(islice(self._items, start_index, stop_index, step))
 
     def find_last_gt(self, k):
         """Return last item with a key > k.  Raise ValueError if not found.
