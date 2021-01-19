@@ -171,7 +171,7 @@ class BufferReader:
                 return next_item
 
     def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False,
-              start_le=False):
+              start_le=False, stop_ge=False):
         """Enables:
         1. Get last n minutes
         2. Give me data I don't have
@@ -184,6 +184,8 @@ class BufferReader:
         :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found
         :param start_le: if True, increase the search range to find start less than or equal by rounding down if start
             is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0
+        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to stop in buffer,
+            if ignore_no_item_found is also True, return None instead of ValueError
         :return: list of items in range
         """
         with self._buffer.reader_lock() as reader:
@@ -202,6 +204,14 @@ class BufferReader:
             if start_le is True:
                 with suppress(ValueError):  # ValueError: No item found with key at or below: _start
                     _start = reader.key(reader.find_le(_start))
+            if stop_ge is True:
+                try:
+                    stop = reader.key(reader.find_ge(stop))
+                except ValueError as e:  # ValueError: No item found with key at or above: stop
+                    if ignore_no_item_found:
+                        return None
+                    else:
+                        raise e
 
             items = reader.range(_start, stop, step)
 
