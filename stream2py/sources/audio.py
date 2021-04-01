@@ -320,6 +320,11 @@ class PyAudioSourceReader(SourceReader):
         seconds_per_read = frames_per_buffer / rate
         return math.ceil(buffer_size_seconds / seconds_per_read)
 
+    @classmethod
+    def list_recording_devices(cls):
+        """List names of available recording devices"""
+        return sorted(d['name'] for d in cls.list_device_info() if d['maxInputChannels'] > 0)
+
 
 class FillErrorWithZeroesMixin:
     """Mixin to handle all pyaudio's error status flags by filling the error time gap with zeros"""
