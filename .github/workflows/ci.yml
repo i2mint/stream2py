@@ -34,7 +34,7 @@ jobs:
       #   run: pylint ./$PROJECT_NAME --ignore=examples --disable=all --enable=C0114,C0115,C0116
 
       - name: Test
-        run: pytest --doctest-modules -v $PROJECT_NAME
+        run: pytest -s --doctest-modules -v $PROJECT_NAME
   publish:
     name: Publish
     if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == 'refs/heads/master'"

@@ -6,7 +6,7 @@ from pprint import pprint
 from typing import List, Optional, Any
 
 import snap7
-from snap7.snap7types import S7AreaDB, S7WLReal, S7WLBit, S7WLByte
+from snap7.types import S7AreaDB, S7WLReal, S7WLBit, S7WLByte
 
 from stream2py import SourceReader
 from stream2py.sources.raw_plc import PlcRawRead, PlcDataItem, get_byte
@@ -209,7 +209,7 @@ if __name__ == '__main__':
 """
 
     Ouptut::
-    
+
 {'bt': 1584040986041418,
  'ip_address': '192.168.0.19',
  'items_to_read': [PlcDataItem(area=132, word_len=8, db_number=3, start=2, amount=1, key='temperature', convert=<function get_real at 0x7f8488038200>, convert_args=None),
@@ -226,9 +226,9 @@ if __name__ == '__main__':
  'sleep_time': 1.0,
  'slot': 0,
  'tcp_port': 102}
- 
- 
- 
+
+
+
 [{'key': 'temperature', 'ts': 1584040986051531, 'value': 11.0},
  {'key': 'led1', 'ts': 1584040986051538, 'value': False},
  {'key': 'led2', 'ts': 1584040986051540, 'value': True}]

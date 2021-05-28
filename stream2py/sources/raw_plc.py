@@ -5,8 +5,8 @@ from pprint import pprint
 from typing import List, Optional, Callable
 
 from snap7.common import check_error
-from snap7.snap7exceptions import Snap7Exception
-from snap7.snap7types import S7DataItem, S7AreaDB, S7WLBit, S7WLReal, S7WLByte, S7WLWord, S7WLDWord
+from snap7.exceptions import Snap7Exception
+from snap7.types import S7DataItem, S7AreaDB, S7WLBit, S7WLReal, S7WLByte, S7WLWord, S7WLDWord
 
 from stream2py import SourceReader
 import snap7
