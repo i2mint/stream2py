@@ -1,7 +1,7 @@
 name: Continuous Integration
 on: [push, pull_request]
 env:
-  PROJECT_NAME: py2http
+  PROJECT_NAME: stream2py
 jobs:
   validation:
     name: Validation
