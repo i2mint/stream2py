@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip -q install axblack pytest pylint isee pipenv
+          pip -q install axblack pytest pylint isee
           sudo apt-get -qq update
           sudo apt-get install -y portaudio19-dev python-pyaudio
           isee install-requires
@@ -35,8 +35,7 @@ jobs:
 
       - name: Test
         run: |
-          pipenv sync --dev
-          pipenv run pytest -s --doctest-modules -v $PROJECT_NAME
+          pytest -vs --doctest-modules -v $PROJECT_NAME
   publish:
     name: Publish
     if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == 'refs/heads/master'"
