@@ -19,18 +19,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Initialize Resource Directory
-        run: |
-          echo "RESOURCE_DIR=$(mktemp -d)" >> $GITHUB_ENV
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip -q install axblack pytest pylint
+          pip -q install axblack pytest pylint isee
           sudo apt-get -qq update
-          sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0 libsndfile1
-          pip -q install -r requirements.txt
-          pip -q install -r test_requirements.txt
+          sudo apt-get install portaudio19-dev python-pyaudio
+          isee install-requires
 
       - name: Format source code
         run: black --line-length=79 .
@@ -39,7 +34,7 @@ jobs:
       #   run: pylint ./$PROJECT_NAME --ignore=examples --disable=all --enable=C0114,C0115,C0116
 
       - name: Test
-        run: pytest --doctest-modules -v
+        run: pytest --doctest-modules -v $PROJECT_NAME
   publish:
     name: Publish
     if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == 'refs/heads/master'"
@@ -48,9 +43,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-    env:
-      GITLAB_HOSTNAME: git.otosense.ai
-      SCRIPTS_REPOSITORY_URL: http://${{ secrets.SCRIPTS_USERNAME }}:${{ secrets.SCRIPTS_TOKEN }}@git.otosense.ai/vferon/ci-scripts.git
     steps:
       - uses: actions/checkout@v2
         with:
@@ -61,17 +53,6 @@ jobs:
           git config --global user.email "vferon@pentalog.com"
           git config --global user.name "GitHub CI Runner"
 
-      - name: Initialize Resource Directory
-        run: |
-          echo "RESOURCE_DIR=$(mktemp -d)" >> $GITHUB_ENV
-
-      - name: Get CI Scripts
-        run: |
-          export SCRIPTS_DIR=$RESOURCE_DIR/scripts
-          echo "SCRIPTS_DIR=$SCRIPTS_DIR" >> $GITHUB_ENV
-          sudo git clone "$SCRIPTS_REPOSITORY_URL" "$SCRIPTS_DIR"
-          sudo chmod -R +x $SCRIPTS_DIR
-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -80,25 +61,33 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip -q install semver axblack twine
+          pip -q install axblack twine epythet wads isee
+          sudo apt-get -qq update
+          sudo apt-get install portaudio19-dev python-pyaudio
+          isee install-requires
 
       - name: Format source code
         run: black --line-length=79 .
 
       - name: Update version number
         run: |
-          export VERSION=$($SCRIPTS_DIR/gen_semver.py)
+          export VERSION=$(isee gen-semver)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          $SCRIPTS_DIR/update_setup_cfg.py
+          isee update-setup-cfg
+
+      - name: Generate Documentation
+        run: isee generate-documentation
+
+      - name: Package
+        run: python setup.py sdist
 
       - name: Publish
         run: |
-          python setup.py sdist
           twine upload dist/$PROJECT_NAME-$VERSION.tar.gz -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} --non-interactive  --skip-existing --disable-progress-bar
+          epythet make . github
 
-      - name: Update & Tag Repository
-        run: |
-          git commit -a -m "**CI** Formatted code & Updated version number. [skip ci]"
-          git push
-          git tag $VERSION
-          git push origin $VERSION
+      - name: Push Changes
+        run: pack check-in "**CI** Formatted code + Updated version number and documentation. [skip ci]" --auto-choose-default-action --bypass-docstring-validation --bypass-tests --bypass-code-formatting --verbose
+
+      - name: Tag Repository
+        run: isee tag-repo $VERSION
