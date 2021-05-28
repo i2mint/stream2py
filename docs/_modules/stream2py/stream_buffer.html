@@ -1,9 +1,10 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream2py.stream_buffer &#8212; stream2py 0.0.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -63,6 +64,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="n">RWLockSortedDeque</span><span class="p">([],</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span> <span class="o">=</span> <span class="n">source_reader_info</span>
 
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">key</span>
@@ -75,12 +79,16 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">writer_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">writer_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">BufferReader</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">,</span> <span class="n">source_reader_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span><span class="p">,</span>
                             <span class="n">stop_event</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="StreamBuffer"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer">[docs]</a><span class="k">class</span> <span class="nc">StreamBuffer</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamBuffer"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer">[docs]</a><span class="k">class</span> <span class="nc">StreamBuffer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Handles starting and stopping SourceReader and making BufferReaders</span>
 
 <span class="sd">    &gt;&gt;&gt; from stream2py import StreamBuffer</span>
@@ -113,18 +121,20 @@
 <span class="sd">    {&#39;start&#39;: 0, &#39;stop&#39;: 100, &#39;open_count&#39;: 2}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StreamBuffer.__init__"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader</span><span class="p">:</span> <span class="n">SourceReader</span><span class="p">,</span>
-                 <span class="o">*</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamBuffer.__init__"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_reader</span><span class="p">:</span> <span class="n">SourceReader</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span> <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        TODO: option to auto restart source on read exception</span>
 
 <span class="sd">        :param source_reader: instance of a SourceReader subclass</span>
 <span class="sd">        :param maxlen: max number of read data points to store in buffer before data starts dropping off the queue</span>
 <span class="sd">        :param sleep_time_on_read_none_s: Seconds to sleep when reading None from source_reader. None to use defaults.</span>
+<span class="sd">        :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to manually make space.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">SourceReader</span><span class="p">),</span> <span class="s2">&quot;source_reader is not a subclass of SourceReader&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">source_reader</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span> <span class="o">=</span> <span class="n">maxlen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="o">=</span> <span class="n">auto_drop</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">sleep_time_on_read_none_s</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
@@ -140,7 +150,17 @@
         <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
         <span class="k">yield from</span> <span class="nb">iter</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StreamBuffer.start"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamBuffer.drop"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Manually drop items from buffer when auto_drop is False</span>
+
+<span class="sd">        :param n: number of items to drop from the left side</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;auto_drop must be False to manually drop items from buffer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StreamBuffer.start"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Open and start reading from source_reader into buffer&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
@@ -149,12 +169,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="StreamBuffer.stop"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamBuffer.stop"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop reading and close source_reader&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamBuffer.mk_reader"><a class="viewcode-back" href="../../api.html#stream2py.StreamBuffer.mk_reader">[docs]</a>    <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamBuffer.mk_reader"><a class="viewcode-back" href="../../all_files.html#stream2py.stream_buffer.StreamBuffer.mk_reader">[docs]</a>    <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Makes a BufferReader instance for the currently running  StreamBuffer.</span>
 <span class="sd">        Reader must be made after start() to have data from said start.</span>
 
@@ -197,7 +217,12 @@
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="c1"># check if buffer is full and skip read or append</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
                 <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -412,7 +437,7 @@
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

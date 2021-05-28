@@ -2,6 +2,7 @@ __all__ = ['BufferReader']
 
 import threading
 import time
+from contextlib import suppress
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 from stream2py.utility.typing_hints import Union
@@ -131,13 +132,15 @@ class BufferReader:
 
     last_item = property(_getlast_item, _setlast_item, _dellast_item, 'last seen item cursor')
 
-    def next(self, *, peek=False, ignore_no_item_found=False):
+    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
 
+        :param n: number of items to return
         :param peek: if True, last_item cursor will not be updated
         :param ignore_no_item_found: if True, return None when no next item instead of raising exception
-        :return: next item
+        :param strict_n: if True, raise ValueError if n items are not available
+        :return: next item or list of next items if n > 1
         """
         with self._buffer.reader_lock() as reader:
             try:
@@ -152,11 +155,23 @@ class BufferReader:
                     next_item = reader[0]
                 else:
                     raise e
-        if not peek:
-            self.last_item = next_item
-        return next_item
+            if n > 1:
+                i = reader.index(next_item)
+                j = i + n
+                if strict_n and j >= len(reader):
+                    raise ValueError(f'Number of items found is less than n: strict_n={strict_n}, n={n}')
 
-    def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False):
+                next_items_list = reader.range_by_index(i, j)
+                if not peek:
+                    self.last_item = next_items_list[-1]
+                return next_items_list
+            else:
+                if not peek:
+                    self.last_item = next_item
+                return next_item
+
+    def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False,
+              start_le=False, stop_ge=False):
         """Enables:
         1. Get last n minutes
         2. Give me data I don't have
@@ -165,8 +180,12 @@ class BufferReader:
         :param stop: ending range key of item inclusive
         :param step:
         :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item instead of raising exception
+        :param ignore_no_item_found: if True, return None when no next item instead of raising exception.
         :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found
+        :param start_le: if True, increase the search range to find start less than or equal by rounding down if start
+            is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0
+        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to stop in buffer,
+            if ignore_no_item_found is also True, return None instead of ValueError
         :return: list of items in range
         """
         with self._buffer.reader_lock() as reader:
@@ -182,6 +201,18 @@ class BufferReader:
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
+            if start_le is True:
+                with suppress(ValueError):  # ValueError: No item found with key at or below: _start
+                    _start = reader.key(reader.find_le(_start))
+            if stop_ge is True:
+                try:
+                    stop = reader.key(reader.find_ge(stop))
+                except ValueError as e:  # ValueError: No item found with key at or above: stop
+                    if ignore_no_item_found:
+                        return None
+                    else:
+                        raise e
+
             items = reader.range(_start, stop, step)
 
         if not peek:

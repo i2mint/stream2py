@@ -1,0 +1,173 @@
+stream2py.stream_buffer
+========
+
+.. automodule:: stream2py.stream_buffer
+    :members:
+
+stream2py.buffer_consumer
+========
+
+.. automodule:: stream2py.buffer_consumer
+    :members:
+
+stream2py.examples.source_reader
+========
+
+.. automodule:: stream2py.examples.source_reader
+    :members:
+
+stream2py.examples.usage.record_audio_to_files
+========
+
+.. automodule:: stream2py.examples.usage.record_audio_to_files
+    :members:
+
+stream2py.examples.usage.listen_and_feedback
+========
+
+.. automodule:: stream2py.examples.usage.listen_and_feedback
+    :members:
+
+stream2py.examples.usage.video_to_stream_and_file
+========
+
+.. automodule:: stream2py.examples.usage.video_to_stream_and_file
+    :members:
+
+stream2py.examples.usage.audio_pokes
+========
+
+.. automodule:: stream2py.examples.usage.audio_pokes
+    :members:
+
+stream2py.examples.usage.triggered_starts
+========
+
+.. automodule:: stream2py.examples.usage.triggered_starts
+    :members:
+
+stream2py.source_reader
+========
+
+.. automodule:: stream2py.source_reader
+    :members:
+
+stream2py.buffer_reader
+========
+
+.. automodule:: stream2py.buffer_reader
+    :members:
+
+stream2py.consumers.video.write
+========
+
+.. automodule:: stream2py.consumers.video.write
+    :members:
+
+stream2py.consumers.video.show
+========
+
+.. automodule:: stream2py.consumers.video.show
+    :members:
+
+stream2py.__init__
+========
+
+.. automodule:: stream2py.__init__
+    :members:
+
+stream2py.utility.locked_sorted_deque
+========
+
+.. automodule:: stream2py.utility.locked_sorted_deque
+    :members:
+
+stream2py.utility.reader_writer_lock
+========
+
+.. automodule:: stream2py.utility.reader_writer_lock
+    :members:
+
+stream2py.utility
+========
+
+.. automodule:: stream2py.utility
+    :members:
+
+stream2py.utility.getch
+========
+
+.. automodule:: stream2py.utility.getch
+    :members:
+
+stream2py.utility.typing_hints
+========
+
+.. automodule:: stream2py.utility.typing_hints
+    :members:
+
+stream2py.utility.sorted_collection
+========
+
+.. automodule:: stream2py.utility.sorted_collection
+    :members:
+
+stream2py.utility.logger
+========
+
+.. automodule:: stream2py.utility.logger
+    :members:
+
+stream2py.utility.sorted_deque
+========
+
+.. automodule:: stream2py.utility.sorted_deque
+    :members:
+
+stream2py.sources.video
+========
+
+.. automodule:: stream2py.sources.video
+    :members:
+
+stream2py.sources.audio
+========
+
+.. automodule:: stream2py.sources.audio
+    :members:
+
+stream2py.sources.raw_plc
+========
+
+.. automodule:: stream2py.sources.raw_plc
+    :members:
+
+stream2py.sources.net
+========
+
+.. automodule:: stream2py.sources.net
+    :members:
+
+stream2py.sources
+========
+
+.. automodule:: stream2py.sources
+    :members:
+
+stream2py.sources.pchealth
+========
+
+.. automodule:: stream2py.sources.pchealth
+    :members:
+
+stream2py.sources.plc
+========
+
+.. automodule:: stream2py.sources.plc
+    :members:
+
+stream2py.sources.keyboard_input
+========
+
+.. automodule:: stream2py.sources.keyboard_input
+    :members:
