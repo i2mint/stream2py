@@ -24,7 +24,9 @@ class VideoCapture(SourceReader):
         elif isinstance(video_input, int):
             self.is_file = False
         else:
-            raise TypeError(f"{self.__class__.__name__} video_input must be type str or int: {type(video_input)}")
+            raise TypeError(
+                f'{self.__class__.__name__} video_input must be type str or int: {type(video_input)}'
+            )
         self.video_capture = None
         self._bt = -1
         self.video_input = video_input
@@ -40,15 +42,20 @@ class VideoCapture(SourceReader):
         .. todo:: filter for useful info
         """
         vid_cap = cv2.VideoCapture(video_input)
-        _info = {cap_prop: vid_cap.get(getattr(cv2, cap_prop))
-                 for cap_prop in dir(cv2) if cap_prop.startswith('CAP_PROP_')}
+        _info = {
+            cap_prop: vid_cap.get(getattr(cv2, cap_prop))
+            for cap_prop in dir(cv2)
+            if cap_prop.startswith('CAP_PROP_')
+        }
         return _info
 
     def open(self) -> None:
         self._bt = self.get_timestamp()
         self.video_capture = cv2.VideoCapture(self.video_input)
         if self.is_opened() is False:
-            raise IOError(f"{self.__class__.__name__} error opening video stream or file: {self.video_input}")
+            raise IOError(
+                f'{self.__class__.__name__} error opening video stream or file: {self.video_input}'
+            )
 
     def read(self) -> Optional[Any]:
         ret, frame = self.video_capture.read()
@@ -61,9 +68,15 @@ class VideoCapture(SourceReader):
     def info(self) -> dict:
         _info = {'video_input': self.video_input, 'bt': self._bt}
         if self.is_opened():
-            _info.update(frame_width=int(self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
-                         frame_height=int(self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-                         fps=self.video_capture.get(cv2.CAP_PROP_FPS))
+            _info.update(
+                frame_width=int(
+                    self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+                ),
+                frame_height=int(
+                    self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+                ),
+                fps=self.video_capture.get(cv2.CAP_PROP_FPS),
+            )
         return _info
 
     def key(self, data) -> ComparableType:
@@ -77,9 +90,10 @@ class VideoCapture(SourceReader):
         return self.video_capture is not None and self.video_capture.isOpened()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     video_input = 0
     from pprint import pprint
+
     pprint(VideoCapture.video_input_info(video_input))
 
     print('starting recording')

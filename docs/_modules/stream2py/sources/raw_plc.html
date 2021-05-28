@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stream2py.sources.raw_plc &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for stream2py.sources.raw_plc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">snap7.common</span> <span class="kn">import</span> <span class="n">check_error</span>
+<span class="kn">from</span> <span class="nn">snap7.exceptions</span> <span class="kn">import</span> <span class="n">Snap7Exception</span>
+<span class="kn">from</span> <span class="nn">snap7.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">S7DataItem</span><span class="p">,</span>
+    <span class="n">S7AreaDB</span><span class="p">,</span>
+    <span class="n">S7WLBit</span><span class="p">,</span>
+    <span class="n">S7WLReal</span><span class="p">,</span>
+    <span class="n">S7WLByte</span><span class="p">,</span>
+    <span class="n">S7WLWord</span><span class="p">,</span>
+    <span class="n">S7WLDWord</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">SourceReader</span>
+<span class="kn">import</span> <span class="nn">snap7</span>
+
+
+<div class="viewcode-block" id="get_byte"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/raw_plc.html#stream2py.sources.raw_plc.get_byte">[docs]</a><span class="k">def</span> <span class="nf">get_byte</span><span class="p">(</span><span class="n">_bytearray</span><span class="p">,</span> <span class="n">byte_index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the boolean value from location in bytearray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_bytearray</span><span class="p">[</span><span class="n">byte_index</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PlcDataItem"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/raw_plc.html#stream2py.sources.raw_plc.PlcDataItem">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlcDataItem</span><span class="p">:</span>
+
+    <span class="n">area</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">word_len</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">db_number</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">amount</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># for multiple items read, represents key name in returned dictionary</span>
+    <span class="n">convert</span><span class="p">:</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_bool</span> <span class="ow">or</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_real</span> <span class="ow">or</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_real</span> <span class="ow">or</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_int</span> <span class="ow">or</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_string</span> <span class="ow">or</span> <span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_dword</span>
+    <span class="n">convert_args</span><span class="p">:</span> <span class="n">Optional</span> <span class="ow">or</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">area</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">word_len</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">db_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">convert</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">convert_args</span><span class="p">:</span> <span class="n">Optional</span> <span class="ow">or</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">word_len</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">db_number</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert</span> <span class="o">=</span> <span class="n">convert</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert_args</span> <span class="o">=</span> <span class="n">convert_args</span>
+
+        <span class="c1"># allocate memory for data</span>
+        <span class="n">_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_len</span> <span class="ow">in</span> <span class="p">[</span><span class="n">S7WLBit</span><span class="p">,</span> <span class="n">S7WLByte</span><span class="p">]:</span>
+            <span class="n">_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_len</span> <span class="o">==</span> <span class="n">S7WLWord</span><span class="p">:</span>
+            <span class="n">_size</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_len</span> <span class="o">==</span> <span class="n">S7WLDWord</span><span class="p">:</span>
+            <span class="n">_size</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_len</span> <span class="o">==</span> <span class="n">S7WLReal</span><span class="p">:</span>
+            <span class="n">_size</span> <span class="o">=</span> <span class="mi">8</span>
+
+        <span class="k">assert</span> <span class="n">_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Unknown word len&#39;</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;PlcDataItem </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">: size = </span><span class="si">{</span><span class="n">_size</span><span class="si">}</span><span class="s1">, amount = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">create_string_buffer</span><span class="p">(</span><span class="n">_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;ERROR: Failed to allocate string buffer for item </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span>
+                <span class="n">ctypes</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">),</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint8</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">S7DataItem</span><span class="p">(</span>
+            <span class="n">Area</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
+            <span class="n">WordLen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">word_len</span><span class="p">,</span>
+            <span class="n">DBNumber</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db_number</span><span class="p">,</span>
+            <span class="n">Start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+            <span class="n">Amount</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="p">,</span>
+            <span class="n">pData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_read</span><span class="p">:</span> <span class="n">S7DataItem</span><span class="p">):</span>
+        <span class="n">check_error</span><span class="p">(</span><span class="n">item_read</span><span class="o">.</span><span class="n">Result</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">item_read</span><span class="o">.</span><span class="n">pData</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">convert_args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">item_read</span><span class="o">.</span><span class="n">pData</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">PlcRawRead</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rack</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">slot</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tcp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">102</span>
+    <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span> <span class="o">=</span> <span class="n">snap7</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rack</span> <span class="o">=</span> <span class="n">rack</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slot</span> <span class="o">=</span> <span class="n">slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span> <span class="o">=</span> <span class="n">tcp_port</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_connected</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">todict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">struct</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">struct</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">struct</span><span class="o">.</span><span class="n">_fields_</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_connected</span><span class="p">():</span>
+
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">Snap7Exception</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="n">cpu_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">todict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_cpu_info</span><span class="p">())</span>
+                <span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">Snap7Exception</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cpu_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_cpu_state</span><span class="p">())</span>
+
+            <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">Snap7Exception</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pdu_len</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_pdu_length</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_connected</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">write_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PlcDataItem</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">read_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PlcDataItem</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">_items</span> <span class="o">=</span> <span class="p">(</span><span class="n">S7DataItem</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))()</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+            <span class="n">_items</span><span class="p">[</span><span class="n">_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">_i</span><span class="p">]</span><span class="o">.</span><span class="n">get_item</span><span class="p">()</span>
+
+        <span class="n">result</span><span class="p">,</span> <span class="n">items_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">read_multi_vars</span><span class="p">(</span><span class="n">_items</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">_bt</span> <span class="o">=</span> <span class="n">SourceReader</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">items</span><span class="p">[</span><span class="n">_idx</span><span class="p">]</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">items</span><span class="p">[</span><span class="n">_idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode_item</span><span class="p">(</span><span class="n">items_read</span><span class="p">[</span><span class="n">_idx</span><span class="p">]),</span>
+                    <span class="s1">&#39;bt&#39;</span><span class="p">:</span> <span class="n">_bt</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">read_items</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PlcDataItem</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;PLC Motor Status&#39;</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="n">S7AreaDB</span><span class="p">,</span>
+        <span class="n">word_len</span><span class="o">=</span><span class="n">S7WLBit</span><span class="p">,</span>
+        <span class="n">db_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># bit offset</span>
+        <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">convert</span><span class="o">=</span><span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_bool</span><span class="p">,</span>
+        <span class="n">convert_args</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">PlcDataItem</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;PLC LED Status&#39;</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="n">S7AreaDB</span><span class="p">,</span>
+        <span class="n">word_len</span><span class="o">=</span><span class="n">S7WLBit</span><span class="p">,</span>
+        <span class="n">db_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># bit offset</span>
+        <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">convert</span><span class="o">=</span><span class="n">snap7</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_bool</span><span class="p">,</span>
+        <span class="n">convert_args</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="c1"># PlcDataItem(</span>
+    <span class="c1">#     key=&#39;PLC Motor Speed&#39;,</span>
+    <span class="c1">#     area=S7AreaDB,</span>
+    <span class="c1">#     word_len=S7WLByte,</span>
+    <span class="c1">#     db_number=1,</span>
+    <span class="c1">#     start=1,</span>
+    <span class="c1">#     amount=1,</span>
+    <span class="c1">#     convert=get_byte,</span>
+    <span class="c1">#     convert_args=(0,)),</span>
+    <span class="c1">#</span>
+    <span class="c1"># PlcDataItem(</span>
+    <span class="c1">#     key=&#39;PLC LED Brightness&#39;,</span>
+    <span class="c1">#     area=S7AreaDB,</span>
+    <span class="c1">#     word_len=S7WLByte,</span>
+    <span class="c1">#     db_number=1,</span>
+    <span class="c1">#     start=2,</span>
+    <span class="c1">#     amount=1,</span>
+    <span class="c1">#     convert=get_byte,</span>
+    <span class="c1">#     convert_args=(0,)),</span>
+    <span class="n">PlcDataItem</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;NetHAT Motor Speed&#39;</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="n">S7AreaDB</span><span class="p">,</span>
+        <span class="n">word_len</span><span class="o">=</span><span class="n">S7WLByte</span><span class="p">,</span>
+        <span class="n">db_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">convert</span><span class="o">=</span><span class="n">get_byte</span><span class="p">,</span>
+        <span class="n">convert_args</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span>
+    <span class="p">),</span>
+    <span class="n">PlcDataItem</span><span class="p">(</span>
+        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;NetHAT LED Brightness&#39;</span><span class="p">,</span>
+        <span class="n">area</span><span class="o">=</span><span class="n">S7AreaDB</span><span class="p">,</span>
+        <span class="n">word_len</span><span class="o">=</span><span class="n">S7WLByte</span><span class="p">,</span>
+        <span class="n">db_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">start</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">amount</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">convert</span><span class="o">=</span><span class="n">get_byte</span><span class="p">,</span>
+        <span class="n">convert_args</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,),</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">plcTest</span> <span class="o">=</span> <span class="n">PlcRawRead</span><span class="p">(</span><span class="s1">&#39;192.168.0.19&#39;</span><span class="p">,</span> <span class="n">rack</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">plcTest</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">plcTest</span><span class="o">.</span><span class="n">get_info</span><span class="p">())</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">_d</span> <span class="o">=</span> <span class="n">plcTest</span><span class="o">.</span><span class="n">read_items</span><span class="p">(</span><span class="n">read_items</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1">#     [</span>
+        <span class="c1">#     PlcDataItem(</span>
+        <span class="c1">#         key=&#39;temperature&#39;,</span>
+        <span class="c1">#         area=S7AreaDB,</span>
+        <span class="c1">#         word_len=S7WLReal,</span>
+        <span class="c1">#         db_number=3,</span>
+        <span class="c1">#         start=2,</span>
+        <span class="c1">#         amount=1,</span>
+        <span class="c1">#         convert=snap7.util.get_real),</span>
+        <span class="c1">#</span>
+        <span class="c1">#     PlcDataItem(</span>
+        <span class="c1">#         key=&#39;led1&#39;,</span>
+        <span class="c1">#         area=S7AreaDB,</span>
+        <span class="c1">#         word_len=S7WLBit,</span>
+        <span class="c1">#         db_number=3,</span>
+        <span class="c1">#         start=0 * 8 + 0,  # bit ofsset</span>
+        <span class="c1">#         amount=1,</span>
+        <span class="c1">#         convert=snap7.util.get_bool,</span>
+        <span class="c1">#         convert_args=(0, 0)),</span>
+        <span class="c1">#</span>
+        <span class="c1">#     PlcDataItem(</span>
+        <span class="c1">#         key=&#39;led2&#39;,</span>
+        <span class="c1">#         area=S7AreaDB,</span>
+        <span class="c1">#         word_len=S7WLBit,</span>
+        <span class="c1">#         db_number=3,</span>
+        <span class="c1">#         start=0 * 8 + 1,  # bit ofsset</span>
+        <span class="c1">#         amount=1,</span>
+        <span class="c1">#         convert=snap7.util.get_bool,</span>
+        <span class="c1">#         convert_args=(0, 0)),</span>
+        <span class="c1"># ])</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="n">_d</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+
+    <span class="n">plcTest</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Output example of get info:</span>
+<span class="sd">        {&#39;cpu_info&#39;: {&#39;ASName&#39;: b&#39;S71500/ET200MP station_1&#39;,</span>
+<span class="sd">              &#39;Copyright&#39;: b&#39;Original Siemens Equipment&#39;,</span>
+<span class="sd">              &#39;ModuleName&#39;: b&#39;PLC_1&#39;,</span>
+<span class="sd">              &#39;ModuleTypeName&#39;: b&#39;CPU 1511C-1 PN&#39;,</span>
+<span class="sd">              &#39;SerialNumber&#39;: b&#39;S V-L9AL98812019&#39;},</span>
+<span class="sd">     &#39;cpu_state&#39;: &#39;S7CpuStatusRun&#39;,</span>
+<span class="sd">     &#39;pdu_len&#39;: 480}</span>
+
+<span class="sd">     Output example of get Item</span>
+
+<span class="sd">    [{&#39;key&#39;: &#39;temperature&#39;, &#39;value&#39;: 10.0, &#39;ts&#39;: 1583086607352911}, {&#39;key&#39;: &#39;led1&#39;, &#39;value&#39;: False, &#39;ts&#39;: 1583086607352923}, {&#39;key&#39;: &#39;led2&#39;, &#39;value&#39;: False, &#39;ts&#39;: 1583086607352927}]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -42,7 +42,12 @@ logger = logging.getLogger(__name__)
 class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
     """Call reader_handler function with reader at defined time intervals between calls"""
 
-    def __init__(self, buffer_reader: BufferReader, interval: Union[int, float], logging_enabled: bool = False):
+    def __init__(
+        self,
+        buffer_reader: BufferReader,
+        interval: Union[int, float],
+        logging_enabled: bool = False,
+    ):
         """
 
         :param buffer_reader: BufferReader created from a StreamBuffer
@@ -60,14 +65,14 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
         """Sets stop event and waits for thread to finish"""
         self.stop_event.set()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopping... {self.__class__.__name__}")
+            logger.debug(f'Consumer stopping... {self.__class__.__name__}')
         self.join()
 
     def run(self):
         """Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
         is set or Exception is raised by self.reader_handler"""
         if self.logging_enabled:
-            logger.debug(f"Consumer starting! {self.__class__.__name__}")
+            logger.debug(f'Consumer starting! {self.__class__.__name__}')
         try:
             while not self.stop_event.is_set():
                 self.reader_handler(self.buffer_reader)
@@ -76,7 +81,7 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
             with suppress(Exception):
                 self.stop()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopped! {self.__class__.__name__}")
+            logger.debug(f'Consumer stopped! {self.__class__.__name__}')
 
     @abstractmethod
     def reader_handler(self, buffer_reader: BufferReader):
@@ -104,25 +109,50 @@ class PyAudioSaver(BufferReaderConsumer):
         """
         super().__init__(buffer_reader, interval, logging_enabled)
 
-        self.session_data_path_format = os.path.join(os.path.expanduser(rootdir), "{session}", "d")
-        self.path_format = os.path.join(self.session_data_path_format, "{timestamp}.wav")
-        self.error_path_format = os.path.join(self.session_data_path_format, "{timestamp}_ERROR_{status_flags}.wav")
+        self.session_data_path_format = os.path.join(
+            os.path.expanduser(rootdir), '{session}', 'd'
+        )
+        self.path_format = os.path.join(
+            self.session_data_path_format, '{timestamp}.wav'
+        )
+        self.error_path_format = os.path.join(
+            self.session_data_path_format,
+            '{timestamp}_ERROR_{status_flags}.wav',
+        )
         self.file = None
 
     def reader_handler(self, buffer_reader: BufferReader):
-        new_data_list = buffer_reader.range(start=0, stop=float('inf'), ignore_no_item_found=True, only_new_items=True)
+        new_data_list = buffer_reader.range(
+            start=0,
+            stop=float('inf'),
+            ignore_no_item_found=True,
+            only_new_items=True,
+        )
         if new_data_list is not None:
-            for timestamp, in_data, frame_count, time_info, status_flags in new_data_list:
+            for (
+                timestamp,
+                in_data,
+                frame_count,
+                time_info,
+                status_flags,
+            ) in new_data_list:
                 if PaStatusFlags(status_flags) != PaStatusFlags.paNoError:
                     if self.logging_enabled:
                         logger.debug(PaStatusFlags(status_flags))
                     # an error occurred, close file
                     self.close_file()
                     # save to error file
-                    self.save_error(buffer_reader.source_reader_info, timestamp, in_data, status_flags)
+                    self.save_error(
+                        buffer_reader.source_reader_info,
+                        timestamp,
+                        in_data,
+                        status_flags,
+                    )
                 else:
                     if self.file_is_open() is False:
-                        self.open_file(buffer_reader.source_reader_info, timestamp)
+                        self.open_file(
+                            buffer_reader.source_reader_info, timestamp
+                        )
                     self.write_to_file(in_data)
 
     def file_is_open(self) -> bool:
@@ -132,11 +162,15 @@ class PyAudioSaver(BufferReaderConsumer):
         """
         return self.file is not None
 
-    def open_file(self, source_reader_info: dict, timestamp: int) -> wave.Wave_write:
+    def open_file(
+        self, source_reader_info: dict, timestamp: int
+    ) -> wave.Wave_write:
         """open wav file for writing"""
-        file_path = self.path_format.format(session=source_reader_info['bt'], timestamp=timestamp)
+        file_path = self.path_format.format(
+            session=source_reader_info['bt'], timestamp=timestamp
+        )
         if self.logging_enabled:
-            logger.debug(f"opening file: {file_path}")
+            logger.debug(f'opening file: {file_path}')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         self.file = wave.open(file_path, mode='wb')
         self.set_params(self.file, source_reader_info)
@@ -151,7 +185,9 @@ class PyAudioSaver(BufferReaderConsumer):
         nframes = 0
         comptype = 'NONE'
         compname = 'not compressed'
-        file.setparams((nchannels, sampwidth, framerate, nframes, comptype, compname))
+        file.setparams(
+            (nchannels, sampwidth, framerate, nframes, comptype, compname)
+        )
 
     def write_to_file(self, in_data):
         """Write to wav file"""
@@ -170,10 +206,13 @@ class PyAudioSaver(BufferReaderConsumer):
 
     def save_error(self, source_reader_info, timestamp, in_data, status_flags):
         """Save to error wav file"""
-        file_path = self.error_path_format.format(session=source_reader_info['bt'], timestamp=timestamp,
-                                                  status_flags=status_flags)
+        file_path = self.error_path_format.format(
+            session=source_reader_info['bt'],
+            timestamp=timestamp,
+            status_flags=status_flags,
+        )
         if self.logging_enabled:
-            logger.debug(f"saving error file: {file_path}")
+            logger.debug(f'saving error file: {file_path}')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         error_file = wave.open(file_path, mode='wb')
         self.set_params(error_file, source_reader_info)
@@ -181,7 +220,16 @@ class PyAudioSaver(BufferReaderConsumer):
         error_file.close()
 
 
-def audio_to_files(rate, width, channels, input_device_index, frames_per_buffer, interval, rootdir, logging_enabled):
+def audio_to_files(
+    rate,
+    width,
+    channels,
+    input_device_index,
+    frames_per_buffer,
+    interval,
+    rootdir,
+    logging_enabled,
+):
     """Basically the main function to run the example.
     It will record audio with stream2py.sources.audio.PyAudioSourceReader
     and save to wav files with stream2py.examples.usage.record_audio_to_files.PyAudioSaver
@@ -205,21 +253,44 @@ def audio_to_files(rate, width, channels, input_device_index, frames_per_buffer,
     seconds_to_keep_in_stream_buffer = 60
 
     maxlen = int(seconds_to_keep_in_stream_buffer / seconds_per_read)
-    source_reader = PyAudioSourceReader(rate=rate, width=width, channels=channels, unsigned=True,
-                                        input_device_index=input_device_index, frames_per_buffer=frames_per_buffer)
+    source_reader = PyAudioSourceReader(
+        rate=rate,
+        width=width,
+        channels=channels,
+        unsigned=True,
+        input_device_index=input_device_index,
+        frames_per_buffer=frames_per_buffer,
+    )
 
-    with StreamBuffer(source_reader=source_reader, maxlen=maxlen) as stream_buffer:
+    with StreamBuffer(
+        source_reader=source_reader, maxlen=maxlen
+    ) as stream_buffer:
         """keep open and save to file until stop event"""
         buffer_reader = stream_buffer.mk_reader()
-        with PyAudioSaver(buffer_reader, interval=interval, rootdir=rootdir, logging_enabled=logging_enabled) as pasave:
+        with PyAudioSaver(
+            buffer_reader,
+            interval=interval,
+            rootdir=rootdir,
+            logging_enabled=logging_enabled,
+        ) as pasave:
             try:
                 pasave.join()
             except KeyboardInterrupt:
                 pass
 
 
-audio_to_files.list_device_info = lambda: PyAudioSourceReader.list_device_info()
+audio_to_files.list_device_info = (
+    lambda: PyAudioSourceReader.list_device_info()
+)
 
-if __name__ == "__main__":
-    audio_to_files(rate=44100, width=2, channels=1, input_device_index=6, frames_per_buffer=1024 * 4,
-                   interval=1, rootdir="~/odir/stream2py", logging_enabled=True)
+if __name__ == '__main__':
+    audio_to_files(
+        rate=44100,
+        width=2,
+        channels=1,
+        input_device_index=6,
+        frames_per_buffer=1024 * 4,
+        interval=1,
+        rootdir='~/odir/stream2py',
+        logging_enabled=True,
+    )

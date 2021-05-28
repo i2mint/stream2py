@@ -13,7 +13,6 @@ _ITEMGETTER_0 = operator.itemgetter(0)
 
 
 class KeyboardInputSourceReader(SourceReader, threading.Thread):
-
     def __init__(self):
         threading.Thread.__init__(self, daemon=True)
         self._data_lock = threading.Lock()
@@ -41,6 +40,7 @@ class KeyboardInputSourceReader(SourceReader, threading.Thread):
     def close(self):
         # Import getch here to avoid errors for rst preview extension when loaded within IDE terminals
         from stream2py.utility.getch import getch
+
         self.stop_event.set()
         getch.restore_settings()
 
@@ -59,10 +59,13 @@ class KeyboardInputSourceReader(SourceReader, threading.Thread):
     def run(self):
         # Import getch here to avoid errors for rst preview extension when loaded within IDE terminals
         from stream2py.utility.getch import getch
+
         try:
             while not self.stop_event.is_set():
                 ch = getch.blocking()
-                self.data.append((self.index, self.get_timestamp(), ch))  # (index, timestamp, character)
+                self.data.append(
+                    (self.index, self.get_timestamp(), ch)
+                )  # (index, timestamp, character)
                 self.index += 1
         except Exception:
             self.close()
@@ -76,7 +79,7 @@ if __name__ == '__main__':
             data = source.read()
             if data is not None:
                 index, timestamp, char = data
-                print(f"{timestamp}: {char}", end="\n\r")
+                print(f'{timestamp}: {char}', end='\n\r')
 
                 if char == '\x1b':  # ESC key
                     break

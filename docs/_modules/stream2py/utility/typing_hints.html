@@ -6,8 +6,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream2py.utility.typing_hints &#8212; stream2py 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -33,8 +33,8 @@
           <div class="body" role="main">
             
   <h1>Source code for stream2py.utility.typing_hints</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
 
 
 <span class="c1"># ComparableType ##################################################################################</span>
@@ -42,39 +42,44 @@
 <span class="c1"># From: https://www.python.org/dev/peps/pep-0484/#type-variables-with-an-upper-bound</span>
 <span class="c1"># And From: https://stackoverflow.com/a/37669538/7643974</span>
 
-<div class="viewcode-block" id="Comparable"><a class="viewcode-back" href="../../../all_files.html#stream2py.utility.typing_hints.Comparable">[docs]</a><span class="k">class</span> <span class="nc">Comparable</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Comparable"><a class="viewcode-back" href="../../../module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.Comparable">[docs]</a><span class="k">class</span> <span class="nc">Comparable</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Comparable is any object that implements &quot;less than&quot; and &quot;greater than&quot; comparisons&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="o">...</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span></div>
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="o">...</span></div>
 
 
 <span class="n">ComparableType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;ComparableType&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Comparable</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Tests for checking value types against typing hints to ensure hints are correctly formatted&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">typeguard</span> <span class="k">import</span> <span class="n">check_type</span>
-
+    <span class="kn">from</span> <span class="nn">typeguard</span> <span class="kn">import</span> <span class="n">check_type</span>
 
     <span class="k">def</span> <span class="nf">check_type_same</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">check_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value_type</span><span class="p">),</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;type of &quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot; instead&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot; must be &quot;</span> <span class="ow">in</span> <span class="n">msg</span> <span class="ow">and</span> <span class="s2">&quot;; got &quot;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;type of &#39;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39; instead&#39;</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="s1">&#39; must be &#39;</span> <span class="ow">in</span> <span class="n">msg</span>
+                <span class="ow">and</span> <span class="s1">&#39;; got &#39;</span> <span class="ow">in</span> <span class="n">msg</span>
+            <span class="p">):</span>
                 <span class="c1"># fits template &quot;type of {name} must be {expected_type}; got {actual_type} instead&quot;</span>
                 <span class="c1"># TODO: use regex</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-
     <span class="k">def</span> <span class="nf">check_type_different</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">check_type_same</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_type</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span>
-
 
     <span class="c1"># Basic Tests #################################################################################</span>
     <span class="k">assert</span> <span class="n">check_type_same</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
@@ -90,14 +95,13 @@
     <span class="c1"># TODO: look for a way to test TypeVars like ComparableType where the metaclass is not actually</span>
     <span class="c1">#   implemented but merely describing the expected interface.</span>
     <span class="k">class</span> <span class="nc">_Memo</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">typevars</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: Dict[Any, type]</span>
-
 
     <span class="n">_memo</span> <span class="o">=</span> <span class="n">_Memo</span><span class="p">()</span>
 
-    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;__lt__&quot;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s2">&quot;__lt__&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;__lt__&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;__lt__&#39;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">check_type_same</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">_memo</span><span class="p">)</span>  <span class="c1"># doesn&#39;t work</span>
     <span class="k">assert</span> <span class="n">check_type_same</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">_memo</span><span class="p">)</span>  <span class="c1"># doesn&#39;t work</span>
     <span class="k">assert</span> <span class="n">check_type_different</span><span class="p">({},</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">_memo</span><span class="p">)</span>
@@ -162,7 +166,7 @@
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

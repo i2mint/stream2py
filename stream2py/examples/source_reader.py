@@ -3,6 +3,7 @@ from stream2py import SourceReader
 
 class SimpleCounterString(SourceReader):
     """Count in range returning a string formatted as f's{count}'"""
+
     def __init__(self, start, stop):
         assert start < stop
         self.start = start
@@ -27,7 +28,9 @@ class SimpleCounterString(SourceReader):
 
     @property
     def info(self):
-        return dict(start=self.start, stop=self.stop, open_count=self.open_count)
+        return dict(
+            start=self.start, stop=self.stop, open_count=self.open_count
+        )
 
     def key(self, data):
         return int(data[1:])

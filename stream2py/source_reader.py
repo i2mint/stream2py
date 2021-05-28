@@ -4,7 +4,13 @@ __all__ = ['SourceReader']
 from abc import ABCMeta, abstractmethod
 import time
 
-from stream2py.utility.typing_hints import Optional, Union, ComparableType, Any, Callable
+from stream2py.utility.typing_hints import (
+    Optional,
+    Union,
+    ComparableType,
+    Any,
+    Callable,
+)
 
 
 class SourceReader(metaclass=ABCMeta):
@@ -71,7 +77,9 @@ class SourceReader(metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+    def set_sleep_time_on_iter_none(
+        self, sleep_time_s: Union[int, float] = 0.001
+    ):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -90,7 +98,9 @@ class SourceReader(metaclass=ABCMeta):
 
         :return: data or None
         """
-        raise NotImplementedError("Implement the 'read' method returning data that is sortable with 'key' method")
+        raise NotImplementedError(
+            "Implement the 'read' method returning data that is sortable with 'key' method"
+        )
 
     @abstractmethod
     def close(self) -> None:
@@ -108,7 +118,7 @@ class SourceReader(metaclass=ABCMeta):
 
         :return: dict
         """
-        raise NotImplementedError("no source info set")
+        raise NotImplementedError('no source info set')
 
     @abstractmethod
     def key(self, data: Any) -> ComparableType:
@@ -118,7 +128,9 @@ class SourceReader(metaclass=ABCMeta):
         :param data: the return value of the 'read' method
         :return: ComparableType
         """
-        raise NotImplementedError("Implement the 'key' method to convert data into a comparable value to sort by")
+        raise NotImplementedError(
+            "Implement the 'key' method to convert data into a comparable value to sort by"
+        )
 
     @property
     def sleep_time_on_read_none_s(self) -> Optional[Union[int, float]]:
@@ -136,7 +148,9 @@ class SourceReader(metaclass=ABCMeta):
         """
         return None
 
-    timestamp_seconds_to_unit_conversion: Union[int, float] = 1e6  # to microseconds
+    timestamp_seconds_to_unit_conversion: Union[
+        int, float
+    ] = 1e6  # to microseconds
 
     @classmethod
     def get_timestamp(cls) -> int:

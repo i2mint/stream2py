@@ -6,7 +6,15 @@ from typing import List, Optional, Callable
 
 from snap7.common import check_error
 from snap7.exceptions import Snap7Exception
-from snap7.types import S7DataItem, S7AreaDB, S7WLBit, S7WLReal, S7WLByte, S7WLWord, S7WLDWord
+from snap7.types import (
+    S7DataItem,
+    S7AreaDB,
+    S7WLBit,
+    S7WLReal,
+    S7WLByte,
+    S7WLWord,
+    S7WLDWord,
+)
 
 from stream2py import SourceReader
 import snap7
@@ -18,6 +26,7 @@ def get_byte(_bytearray, byte_index):
     """
     return _bytearray[byte_index]
 
+
 @dataclass
 class PlcDataItem:
 
@@ -28,12 +37,20 @@ class PlcDataItem:
     amount: int
 
     key: str  # for multiple items read, represents key name in returned dictionary
-    convert:  snap7.util.get_bool or snap7.util.get_real or snap7.util.get_real or snap7.util.get_int \
-              or snap7.util.get_string or snap7.util.get_dword
-    convert_args : Optional or None
+    convert: snap7.util.get_bool or snap7.util.get_real or snap7.util.get_real or snap7.util.get_int or snap7.util.get_string or snap7.util.get_dword
+    convert_args: Optional or None
 
-    def __init__(self, area: int, word_len: int, db_number: int,  start: int,  amount: int,
-                key: str,  convert: Callable, convert_args : Optional or None = None):
+    def __init__(
+        self,
+        area: int,
+        word_len: int,
+        db_number: int,
+        start: int,
+        amount: int,
+        key: str,
+        convert: Callable,
+        convert_args: Optional or None = None,
+    ):
 
         self.area = area
         self.word_len = int(word_len)
@@ -57,16 +74,22 @@ class PlcDataItem:
 
         assert _size != 0, 'Unknown word len'
 
-        print(f'PlcDataItem {self.key}: size = {_size}, amount = {self.amount}')
+        print(
+            f'PlcDataItem {self.key}: size = {_size}, amount = {self.amount}'
+        )
 
         try:
             self.buffer = ctypes.create_string_buffer(_size * self.amount)
         except Exception as ex:
-            print(f'ERROR: Failed to allocate string buffer for item {self.key} : {ex}')
+            print(
+                f'ERROR: Failed to allocate string buffer for item {self.key} : {ex}'
+            )
             return
 
         try:
-            self.buffer = ctypes.cast(ctypes.pointer(self.buffer), ctypes.POINTER(ctypes.c_uint8))
+            self.buffer = ctypes.cast(
+                ctypes.pointer(self.buffer), ctypes.POINTER(ctypes.c_uint8)
+            )
         except Exception as ex:
             return
 
@@ -90,8 +113,9 @@ class PlcDataItem:
 
 
 class PlcRawRead:
-
-    def __init__(self, ip_address: str, *,  rack: int, slot: int, tcp_port: int = 102):
+    def __init__(
+        self, ip_address: str, *, rack: int, slot: int, tcp_port: int = 102
+    ):
 
         self._plc = snap7.client.Client()
         self._ip_address = ip_address
@@ -102,18 +126,24 @@ class PlcRawRead:
         self.plc_info = {}
 
     def open(self):
-        self._plc.connect(self._ip_address, self._rack, self._slot, self._tcp_port)
+        self._plc.connect(
+            self._ip_address, self._rack, self._slot, self._tcp_port
+        )
         return self._plc.get_connected()
 
     @classmethod
     def todict(cls, struct):
-        return dict((field, getattr(struct, field)) for field, _ in struct._fields_)
+        return dict(
+            (field, getattr(struct, field)) for field, _ in struct._fields_
+        )
 
     def get_info(self):
         if self._plc.get_connected():
 
             with suppress(Snap7Exception):
-                self.plc_info.update(cpu_info=self.todict(self._plc.get_cpu_info()))
+                self.plc_info.update(
+                    cpu_info=self.todict(self._plc.get_cpu_info())
+                )
 
             with suppress(Snap7Exception):
                 self.plc_info.update(cpu_state=self._plc.get_cpu_state())
@@ -145,21 +175,19 @@ class PlcRawRead:
         _bt = SourceReader.get_timestamp()
         result = []
         for _idx in range(0, len(items)):
-            result.append({
-                "key": items[_idx].key,
-                "value": items[_idx].decode_item(items_read[_idx]),
-                "bt": _bt
-            })
+            result.append(
+                {
+                    'key': items[_idx].key,
+                    'value': items[_idx].decode_item(items_read[_idx]),
+                    'bt': _bt,
+                }
+            )
 
         return result
 
 
-
-
 read_items = [
-
     PlcDataItem(
-
         key='PLC Motor Status',
         area=S7AreaDB,
         word_len=S7WLBit,
@@ -167,8 +195,8 @@ read_items = [
         start=0 * 8 + 0,  # bit offset
         amount=1,
         convert=snap7.util.get_bool,
-        convert_args=(0, 0)),
-
+        convert_args=(0, 0),
+    ),
     PlcDataItem(
         key='PLC LED Status',
         area=S7AreaDB,
@@ -177,8 +205,8 @@ read_items = [
         start=0 * 8 + 1,  # bit offset
         amount=1,
         convert=snap7.util.get_bool,
-        convert_args=(0, 0)),
-
+        convert_args=(0, 0),
+    ),
     # PlcDataItem(
     #     key='PLC Motor Speed',
     #     area=S7AreaDB,
@@ -198,7 +226,6 @@ read_items = [
     #     amount=1,
     #     convert=get_byte,
     #     convert_args=(0,)),
-
     PlcDataItem(
         key='NetHAT Motor Speed',
         area=S7AreaDB,
@@ -207,8 +234,8 @@ read_items = [
         start=3,
         amount=1,
         convert=get_byte,
-        convert_args=(0,)),
-
+        convert_args=(0,),
+    ),
     PlcDataItem(
         key='NetHAT LED Brightness',
         area=S7AreaDB,
@@ -217,13 +244,13 @@ read_items = [
         start=4,
         amount=1,
         convert=get_byte,
-        convert_args=(0,)),
-
+        convert_args=(0,),
+    ),
 ]
 
 
 if __name__ == '__main__':
-    plcTest = PlcRawRead("192.168.0.19", rack=0, slot=0)
+    plcTest = PlcRawRead('192.168.0.19', rack=0, slot=0)
     plcTest.open()
     pprint(plcTest.get_info())
 
@@ -280,5 +307,3 @@ if __name__ == '__main__':
     [{'key': 'temperature', 'value': 10.0, 'ts': 1583086607352911}, {'key': 'led1', 'value': False, 'ts': 1583086607352923}, {'key': 'led2', 'value': False, 'ts': 1583086607352927}]
 
     """
-
-

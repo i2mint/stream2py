@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>stream2py.sources.raw_plc &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-stream2py.sources.raw_plc">
+<span id="stream2py-sources-raw-plc"></span><h1>stream2py.sources.raw_plc<a class="headerlink" href="#module-stream2py.sources.raw_plc" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="stream2py.sources.raw_plc.PlcDataItem">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.sources.raw_plc.</code><code class="sig-name descname">PlcDataItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">word_len</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">db_number</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">start</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">amount</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">convert</span><span class="p">:</span> <span class="n">Callable</span></em>, <em class="sig-param"><span class="n">convert_args</span><span class="p">:</span> <span class="n">Optional</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/sources/raw_plc.html#PlcDataItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.sources.raw_plc.PlcDataItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="stream2py.sources.raw_plc.get_byte">
+<code class="sig-prename descclassname">stream2py.sources.raw_plc.</code><code class="sig-name descname">get_byte</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_bytearray</span></em>, <em class="sig-param"><span class="n">byte_index</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/sources/raw_plc.html#get_byte"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.sources.raw_plc.get_byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the boolean value from location in bytearray</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/module_docs/stream2py/sources/raw_plc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

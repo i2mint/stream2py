@@ -25,7 +25,11 @@ class SortedDeque(SortedCollection):
 
     def to_jdict(self):
         """TODO: WIP. Need to convert key function and iterable items to json friendly format"""
-        return {'iterable': list(self._items), 'key': self._key, 'maxlen': self._maxlen}
+        return {
+            'iterable': list(self._items),
+            'key': self._key,
+            'maxlen': self._maxlen,
+        }
 
     @classmethod
     def from_jdict(cls, params_dict):
@@ -58,7 +62,7 @@ class SortedDeque(SortedCollection):
             self.__class__.__name__,
             list(self._items),  # Not sure if the is the best way to do this
             getattr(self._given_key, '__name__', repr(self._given_key)),
-            getattr(self._maxlen, '__name__', repr(self._maxlen))
+            getattr(self._maxlen, '__name__', repr(self._maxlen)),
         )
 
     def __reduce__(self):
@@ -82,14 +86,19 @@ class SortedDeque(SortedCollection):
         k = self._key(item)
         i = bisect_left(self._keys, k)
         j = bisect_right(self._keys, k)
-        return sum(1 for chk_item in islice(self._items, i, j) if chk_item == item)
+        return sum(
+            1 for chk_item in islice(self._items, i, j) if chk_item == item
+        )
 
     def append(self, item):
         """Append item to the end.  Raise ValueError if item key is less than last item key"""
         k = self._key(item)
         try:
             if k <= self._keys[-1]:
-                raise ValueError('Item key must be greater than last item key to append: %r' % (k,))
+                raise ValueError(
+                    'Item key must be greater than last item key to append: %r'
+                    % (k,)
+                )
         except IndexError as e:
             if len(self._keys) != 0:
                 raise e
@@ -151,14 +160,12 @@ if __name__ == '__main__':
         except ValueError:
             return -1
 
-
     def slow_index(seq, k):
         """Location of match or -1 if not found"""
         for i, item in enumerate(seq):
             if item == k:
                 return i
         return -1
-
 
     def slow_find(seq, k):
         """First item with a key equal to k. -1 if not found"""
@@ -167,14 +174,12 @@ if __name__ == '__main__':
                 return item
         return -1
 
-
     def slow_find_le(seq, k):
         """Last item with a key less-than or equal to k."""
         for item in reversed(seq):
             if item <= k:
                 return item
         return -1
-
 
     def slow_find_lt(seq, k):
         """Last item with a key less-than k."""
@@ -183,7 +188,6 @@ if __name__ == '__main__':
                 return item
         return -1
 
-
     def slow_find_ge(seq, k):
         """First item with a key-value greater-than or equal to k."""
         for item in seq:
@@ -191,14 +195,12 @@ if __name__ == '__main__':
                 return item
         return -1
 
-
     def slow_find_gt(seq, k):
         """First item with a key-value greater-than or equal to k."""
         for item in seq:
             if item > k:
                 return item
         return -1
-
 
     from random import choice
 
@@ -209,18 +211,30 @@ if __name__ == '__main__':
             sc = SortedDeque(s)
             s.sort()
             for probe in pool:
-                assert repr(ve2no(sc.index, probe)) == repr(slow_index(s, probe))
+                assert repr(ve2no(sc.index, probe)) == repr(
+                    slow_index(s, probe)
+                )
                 assert repr(ve2no(sc.find, probe)) == repr(slow_find(s, probe))
-                assert repr(ve2no(sc.find_le, probe)) == repr(slow_find_le(s, probe))
-                assert repr(ve2no(sc.find_lt, probe)) == repr(slow_find_lt(s, probe))
-                assert repr(ve2no(sc.find_ge, probe)) == repr(slow_find_ge(s, probe))
-                assert repr(ve2no(sc.find_gt, probe)) == repr(slow_find_gt(s, probe))
+                assert repr(ve2no(sc.find_le, probe)) == repr(
+                    slow_find_le(s, probe)
+                )
+                assert repr(ve2no(sc.find_lt, probe)) == repr(
+                    slow_find_lt(s, probe)
+                )
+                assert repr(ve2no(sc.find_ge, probe)) == repr(
+                    slow_find_ge(s, probe)
+                )
+                assert repr(ve2no(sc.find_gt, probe)) == repr(
+                    slow_find_gt(s, probe)
+                )
             for i, item in enumerate(s):
                 assert repr(item) == repr(sc[i])  # test __getitem__
                 assert item in sc  # test __contains__ and __iter__
                 assert s.count(item) == sc.count(item)  # test count()
             assert len(sc) == n  # test __len__
-            assert list(map(repr, reversed(sc))) == list(map(repr, reversed(s)))  # test __reversed__
+            assert list(map(repr, reversed(sc))) == list(
+                map(repr, reversed(s))
+            )  # test __reversed__
             assert list(sc.copy()) == list(sc)  # test copy()
             sc.clear()  # test clear()
             assert len(sc) == 0
@@ -229,7 +243,10 @@ if __name__ == '__main__':
     assert sd._keys == ['brown', 'fox', 'jumped', 'quick', 'the']
     assert sd._items == ['Brown', 'Fox', 'jumped', 'quick', 'The']
     assert sd._key == str.lower
-    assert repr(sd) == "SortedCollection(['Brown', 'Fox', 'jumped', 'quick', 'The'], key=lower)"
+    assert (
+        repr(sd)
+        == "SortedCollection(['Brown', 'Fox', 'jumped', 'quick', 'The'], key=lower)"
+    )
     sd.key = str.upper
     assert sd._key == str.upper
     assert len(sd) == 5
@@ -240,8 +257,24 @@ if __name__ == '__main__':
         assert item == sd[i]
     sd.insert('jUmPeD')
     sd.insert_right('QuIcK')
-    assert sd._keys == ['BROWN', 'FOX', 'JUMPED', 'JUMPED', 'QUICK', 'QUICK', 'THE']
-    assert sd._items == ['Brown', 'Fox', 'jUmPeD', 'jumped', 'quick', 'QuIcK', 'The']
+    assert sd._keys == [
+        'BROWN',
+        'FOX',
+        'JUMPED',
+        'JUMPED',
+        'QUICK',
+        'QUICK',
+        'THE',
+    ]
+    assert sd._items == [
+        'Brown',
+        'Fox',
+        'jUmPeD',
+        'jumped',
+        'quick',
+        'QuIcK',
+        'The',
+    ]
     assert sd.find_le('JUMPED') == 'jumped', sd.find_le('JUMPED')
     assert sd.find_ge('JUMPED') == 'jUmPeD'
     assert sd.find_le('GOAT') == 'Fox'

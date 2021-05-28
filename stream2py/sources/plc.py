@@ -18,10 +18,21 @@ class PlcReader(SourceReader):
     """
         TODO: Finish class implementation
     """
-    def __init__(self, ip_address: str, *, items_to_read: List[PlcDataItem],
-                 rack: int, slot: int, tcp_port: int = 102, sleep_time=1.0):
 
-        self._init_kwargs = {k: v for k, v in locals().items() if k not in ('self', '__class__')}
+    def __init__(
+        self,
+        ip_address: str,
+        *,
+        items_to_read: List[PlcDataItem],
+        rack: int,
+        slot: int,
+        tcp_port: int = 102,
+        sleep_time=1.0
+    ):
+
+        self._init_kwargs = {
+            k: v for k, v in locals().items() if k not in ('self', '__class__')
+        }
 
         self._ip_address = ip_address
         self._rack = rack
@@ -32,17 +43,22 @@ class PlcReader(SourceReader):
 
         # validate IP address
         import socket
+
         socket.inet_aton(self._ip_address)  # validate IP Address
-        self._plc_raw_reader = PlcRawRead(self._ip_address, rack=self._rack, slot=self._slot,
-                                          tcp_port=self._tcp_port)
+        self._plc_raw_reader = PlcRawRead(
+            self._ip_address,
+            rack=self._rack,
+            slot=self._slot,
+            tcp_port=self._tcp_port,
+        )
 
         self.bt = None
         self._start_time = None
-        #self._data_lock = threading.Lock()
+        # self._data_lock = threading.Lock()
         self._data_read_thread_exit = threading.Event()
         self._data_read_thread = None
         self._data_read_thread_exit.clear()
-        self.data = deque() #Queue()
+        self.data = deque()  # Queue()
         self.plc_info = dict()
 
         self.reader_thread = None
@@ -67,18 +83,20 @@ class PlcReader(SourceReader):
             self._start_time = self.bt
             self.plc_info = self._plc_raw_reader.get_info()
             if self._data_read_thread is None:
-                self._data_read_thread = threading.Thread(target=self._stream_thread)
+                self._data_read_thread = threading.Thread(
+                    target=self._stream_thread
+                )
                 self._data_read_thread.start()
             return True
         return False
 
-    def read(self, blocking : bool = False, timeout:int = 0) -> Optional[Any]:
+    def read(self, blocking: bool = False, timeout: int = 0) -> Optional[Any]:
         """
         :return: timestamp, plc info, read db items as key:value
         """
         if len(self.data):
             return self.data.popleft()
-        #return self.data.get(block = blocking, timeout=timeout)
+        # return self.data.get(block = blocking, timeout=timeout)
 
     def close(self) -> None:
         """Close and clean up source reader.
@@ -96,11 +114,15 @@ class PlcReader(SourceReader):
 
     def key(self, data_item: Any or None) -> ComparableType:
 
-        assert data_item is not None and len (data_item) > 0 and 'bt' in data_item[0],\
-            'Cannot get key because bt is missing from data_item'
+        assert (
+            data_item is not None
+            and len(data_item) > 0
+            and 'bt' in data_item[0]
+        ), 'Cannot get key because bt is missing from data_item'
 
         import operator
-        return operator.itemgetter("bt")(data_item[0])
+
+        return operator.itemgetter('bt')(data_item[0])
 
 
 if __name__ == '__main__':
@@ -137,9 +159,7 @@ if __name__ == '__main__':
     # ]
 
     read_items = [
-
         PlcDataItem(
-
             key='PLC Motor Status',
             area=S7AreaDB,
             word_len=S7WLBit,
@@ -147,8 +167,8 @@ if __name__ == '__main__':
             start=0 * 8 + 0,  # bit offset
             amount=1,
             convert=snap7.util.get_bool,
-            convert_args=(0, 0)),
-
+            convert_args=(0, 0),
+        ),
         PlcDataItem(
             key='PLC LED Status',
             area=S7AreaDB,
@@ -157,8 +177,8 @@ if __name__ == '__main__':
             start=0 * 8 + 1,  # bit offset
             amount=1,
             convert=snap7.util.get_bool,
-            convert_args=(0, 0)),
-
+            convert_args=(0, 0),
+        ),
         PlcDataItem(
             key='NetHAT Motor Speed',
             area=S7AreaDB,
@@ -167,8 +187,8 @@ if __name__ == '__main__':
             start=3,
             amount=1,
             convert=get_byte,
-            convert_args=(0,)),
-
+            convert_args=(0,),
+        ),
         PlcDataItem(
             key='NetHAT LED Brightness',
             area=S7AreaDB,
@@ -177,18 +197,18 @@ if __name__ == '__main__':
             start=4,
             amount=1,
             convert=get_byte,
-            convert_args=(0,)),
-
+            convert_args=(0,),
+        ),
     ]
 
-    preader = PlcReader('192.168.0.19', items_to_read=read_items,
-                        rack=0, slot=0, sleep_time=0)
+    preader = PlcReader(
+        '192.168.0.19', items_to_read=read_items, rack=0, slot=0, sleep_time=0
+    )
 
     if not preader.open():
         preader.close()
         exit(-1)
     can_run: bool = True
-
 
     _i = preader.info
     pprint(preader.info)
@@ -203,7 +223,6 @@ if __name__ == '__main__':
                 # print()
         except KeyboardInterrupt as kb:
             can_run = False
-
 
 
 """
@@ -247,5 +266,3 @@ if __name__ == '__main__':
 
 
 """
-
-

@@ -12,6 +12,7 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -31,14 +32,14 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', # Include documentation from docstrings
-    'sphinx.ext.doctest', # Test snippets in the documentation
-    'sphinx.ext.githubpages', # This extension creates .nojekyll file
-    'sphinx.ext.graphviz', # Add Graphviz graphs
-    'sphinx.ext.napoleon', # Support for NumPy and Google style docstrings
-    'sphinx.ext.todo', # Support for todo items
-    'sphinx.ext.viewcode', # Add links to highlighted source code
-    'recommonmark', # Parse .md files
+    'sphinx.ext.autodoc',  # Include documentation from docstrings
+    'sphinx.ext.doctest',  # Test snippets in the documentation
+    'sphinx.ext.githubpages',  # This extension creates .nojekyll file
+    'sphinx.ext.graphviz',  # Add Graphviz graphs
+    'sphinx.ext.napoleon',  # Support for NumPy and Google style docstrings
+    'sphinx.ext.todo',  # Support for todo items
+    'sphinx.ext.viewcode',  # Add links to highlighted source code
+    'recommonmark',  # Parse .md files
 ]
 
 master_doc = 'index'

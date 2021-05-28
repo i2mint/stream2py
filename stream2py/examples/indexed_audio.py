@@ -36,7 +36,10 @@ This solution assumes that frame index is more important than timestamp.
 import time
 from collections import namedtuple
 
-from stream2py.sources.audio import PyAudioSourceReader, FillErrorWithZeroesMixin
+from stream2py.sources.audio import (
+    PyAudioSourceReader,
+    FillErrorWithZeroesMixin,
+)
 from stream2py import StreamBuffer, BufferReader
 
 
@@ -47,79 +50,122 @@ from stream2py import StreamBuffer, BufferReader
 #    - possibility that -1 is a better fillval??
 class FrameIndexAsKeyMixin(FillErrorWithZeroesMixin):
     """Must be used with FillErrorWithZeroesMixin for accurate frame count in case of errors"""
+
     _total_frame_index = 0
 
     def open(self):
         self._total_frame_index = 0  # ?? What about FrameIndexAsKeyMixin._total_frame_index? Needed? Safety measure?
         return super(FrameIndexAsKeyMixin, self).open()
 
-    def data_to_append(self, timestamp, waveform, frame_count, time_info, status_flags):
+    def data_to_append(
+        self, timestamp, waveform, frame_count, time_info, status_flags
+    ):
         frame_index = self._total_frame_index
         self._total_frame_index += frame_count
-        return frame_index, timestamp, waveform, frame_count, time_info, status_flags
+        return (
+            frame_index,
+            timestamp,
+            waveform,
+            frame_count,
+            time_info,
+            status_flags,
+        )
 
 
 class PyAudioWithNamedTupleMixin:
     _data_to_append_namedtuple = namedtuple(
         typename='PyAudioSourceReaderData',
-        field_names=['timestamp', 'bytes', 'frame_count', 'time_info', 'status_flags']
+        field_names=[
+            'timestamp',
+            'bytes',
+            'frame_count',
+            'time_info',
+            'status_flags',
+        ],
     )
 
     def key(self, data):
         return data.timestamp
 
-    def data_to_append(self, timestamp, waveform, frame_count, time_info, status_flags):
-        return self._data_to_append_namedtuple(timestamp, waveform, frame_count, time_info, status_flags)
+    def data_to_append(
+        self, timestamp, waveform, frame_count, time_info, status_flags
+    ):
+        return self._data_to_append_namedtuple(
+            timestamp, waveform, frame_count, time_info, status_flags
+        )
 
 
 # TODO: Consider __init_subclass__ to check on proper subclassing (like no conflicts of Mixin method names)
 
-class PyAudioWithZeroedErrorsSourceReader(FillErrorWithZeroesMixin, PyAudioSourceReader):
+
+class PyAudioWithZeroedErrorsSourceReader(
+    FillErrorWithZeroesMixin, PyAudioSourceReader
+):
     """PyAudioSourceReader with source errors resulting in (null) value filling"""
+
     pass
 
 
-class PyAudioWithZeroedErrorsAndFrameIndexingSourceReader(FrameIndexAsKeyMixin, PyAudioSourceReader):
+class PyAudioWithZeroedErrorsAndFrameIndexingSourceReader(
+    FrameIndexAsKeyMixin, PyAudioSourceReader
+):
     """PyAudioSourceReader with frame index tracking"""
+
     pass
 
 
 def list_recording_device_index_names():
     """List (index, name) of available recording devices"""
-    return sorted((d['index'], d['name']) for d in PyAudioSourceReader.list_device_info() if d['maxInputChannels'] > 0)
+    return sorted(
+        (d['index'], d['name'])
+        for d in PyAudioSourceReader.list_device_info()
+        if d['maxInputChannels'] > 0
+    )
 
 
 def device_info_by_index(index):
-    return next(d for d in PyAudioSourceReader.list_device_info() if d['index'] == index)
+    return next(
+        d
+        for d in PyAudioSourceReader.list_device_info()
+        if d['index'] == index
+    )
 
 
 # Slicing ##############################################################################################################
 
+
 class PyAudioStreamBuffer(StreamBuffer):
     _internal_reader: BufferReader = None  # reader persists here after source is stopped
 
-    def __init__(self, input_device_index,
-                 sr=None,
-                 width=2,
-                 channels=None,
-                 frames_per_buffer=None,
-                 *, source_reader_class=PyAudioSourceReader):
+    def __init__(
+        self,
+        input_device_index,
+        sr=None,
+        width=2,
+        channels=None,
+        frames_per_buffer=None,
+        *,
+        source_reader_class=PyAudioSourceReader,
+    ):
         _info = device_info_by_index(input_device_index)
         sr = int(sr or _info['defaultSampleRate'])
         frames_per_buffer = int(frames_per_buffer or sr / 10)
         super(PyAudioStreamBuffer, self).__init__(
-            source_reader=source_reader_class(input_device_index=input_device_index,
-                                              rate=sr,
-                                              width=width,
-                                              channels=int(channels or _info['maxInputChannels']),
-                                              frames_per_buffer=frames_per_buffer,
-                                              ),
-            maxlen=source_reader_class.audio_buffer_size_seconds_to_maxlen(buffer_size_seconds=60,
-                                                                           rate=sr,
-                                                                           frames_per_buffer=frames_per_buffer,
-                                                                           ),
+            source_reader=source_reader_class(
+                input_device_index=input_device_index,
+                rate=sr,
+                width=width,
+                channels=int(channels or _info['maxInputChannels']),
+                frames_per_buffer=frames_per_buffer,
+            ),
+            maxlen=source_reader_class.audio_buffer_size_seconds_to_maxlen(
+                buffer_size_seconds=60,
+                rate=sr,
+                frames_per_buffer=frames_per_buffer,
+            ),
             auto_drop=False,
-            sleep_time_on_read_none_s=0.1)
+            sleep_time_on_read_none_s=0.1,
+        )
 
     @property
     def reader(self):
@@ -146,19 +192,25 @@ class PyAudioStreamBufferWithByteSlice(PyAudioStreamBuffer):
         # TODO: robust way of defining how to slice items into subitems without making any assumptions
         if not isinstance(item, slice):
             item = slice(item, item + 1)
-        items = super(PyAudioStreamBufferWithByteSlice, self).__getitem__(slice(item.start, item.stop))
+        items = super(PyAudioStreamBufferWithByteSlice, self).__getitem__(
+            slice(item.start, item.stop)
+        )
         i_bytes = b''.join(_i[1] for _i in items)
 
         first_item_bt = items[0][0]
         first_item_tt = items[1][0]
-        subitem_index_per_time = len(items[0][1]) / (first_item_tt - first_item_bt)
+        subitem_index_per_time = len(items[0][1]) / (
+            first_item_tt - first_item_bt
+        )
         last_item_bt = items[-1][0]
-        last_item_tt = last_item_bt + (len(items[-1][1]) / subitem_index_per_time)
+        last_item_tt = last_item_bt + (
+            len(items[-1][1]) / subitem_index_per_time
+        )
 
         i_start = int((item.start - first_item_bt) * subitem_index_per_time)
         i_stop = int((item.stop - last_item_tt) * subitem_index_per_time)
 
-        return i_bytes[i_start:i_stop: item.step]
+        return i_bytes[i_start : i_stop : item.step]
 
 
 if __name__ == '__main__':
@@ -170,9 +222,11 @@ if __name__ == '__main__':
 
     device = find_a_default_input_device_index()
 
-    stream_buffer = PyAudioStreamBuffer(device, sr=44100, frames_per_buffer=4096)
+    stream_buffer = PyAudioStreamBuffer(
+        device, sr=44100, frames_per_buffer=4096
+    )
 
-    print(f"\nTest 1: PyAudioSourceReader ####################")
+    print(f'\nTest 1: PyAudioSourceReader ####################')
     with stream_buffer:
         time.sleep(2)
         bt = PyAudioSourceReader.get_timestamp()
@@ -181,16 +235,14 @@ if __name__ == '__main__':
         time.sleep(2)
         items = stream_buffer[bt:tt]
 
-    print(f"{len(items)=}, ({items[0][0]=}, {items[-1][0]=}), ({bt=}, {tt=})")
+    print(f'{len(items)=}, ({items[0][0]=}, {items[-1][0]=}), ({bt=}, {tt=})')
 
-    print(f"{stream_buffer[(bt + tt) / 2][0][0]=}")
+    print(f'{stream_buffer[(bt + tt) / 2][0][0]=}')
 
-    print(f"\nTest 2: PyAudioStreamBufferWithByteSlice ######################")
+    print(f'\nTest 2: PyAudioStreamBufferWithByteSlice ######################')
 
     stream_buffer_with_byte_slice = PyAudioStreamBufferWithByteSlice(
-        device,
-        sr=44100,
-        frames_per_buffer=4096,
+        device, sr=44100, frames_per_buffer=4096,
     )
 
     with stream_buffer_with_byte_slice:
@@ -201,14 +253,14 @@ if __name__ == '__main__':
         time.sleep(2)
         items = stream_buffer_with_byte_slice[bt:tt]
 
-    print(f"{len(items)=}, {items[0:10]=}, ({bt=}, {tt=})")
+    print(f'{len(items)=}, {items[0:10]=}, ({bt=}, {tt=})')
 
     bt = stream_buffer_with_byte_slice.reader.head(peek=True)[0]
     tt = stream_buffer_with_byte_slice.reader.tail(peek=True)[0]
     wf_bytes = stream_buffer_with_byte_slice[bt:tt]
-    print(f"{len(wf_bytes)=}")
+    print(f'{len(wf_bytes)=}')
 
-    print(f"\nTest 3: BufferReader Queries #################################")
+    print(f'\nTest 3: BufferReader Queries #################################')
 
     with stream_buffer:
         time.sleep(5)
@@ -226,7 +278,7 @@ if __name__ == '__main__':
     buffer_count = 5
 
     # iterating from reader
-    print("   ... iterating from reader")
+    print('   ... iterating from reader')
 
     with stream_buffer:
         reader = stream_buffer.mk_reader()
@@ -237,15 +289,13 @@ if __name__ == '__main__':
 
     # using next() with work around
 
-    print("   ... using next() with work around")
+    print('   ... using next() with work around')
 
     with stream_buffer:
         reader = stream_buffer.mk_reader()
 
-
         def yield_from_reader(reader):
             yield from reader
-
 
         reader_gen = yield_from_reader(reader)
 
@@ -255,7 +305,7 @@ if __name__ == '__main__':
 
     # using BufferReader.next()
 
-    print("   ... using BufferReader.next()")
+    print('   ... using BufferReader.next()')
 
     with stream_buffer:
         reader = stream_buffer.mk_reader()
@@ -284,13 +334,14 @@ if __name__ == '__main__':
 
     # Frame Count Indexing
 
-    print("\nTest 4: Frame Count Indexing ##########################")
+    print('\nTest 4: Frame Count Indexing ##########################')
 
     frame_index_stream_buffer = PyAudioStreamBuffer(
         device,
         sr=44100,
         frames_per_buffer=4096,
-        source_reader_class=PyAudioWithZeroedErrorsAndFrameIndexingSourceReader)
+        source_reader_class=PyAudioWithZeroedErrorsAndFrameIndexingSourceReader,
+    )
 
     start_index = 4095
     end_index = 20000
@@ -308,7 +359,7 @@ if __name__ == '__main__':
     len(data_range), data_range[0][0], data_range[-1][0]
 
     # iterating from reader
-    print("   ... iterating from reader")
+    print('   ... iterating from reader')
 
     with frame_index_stream_buffer:
         reader = frame_index_stream_buffer.mk_reader()
@@ -318,15 +369,13 @@ if __name__ == '__main__':
                 break
 
     # using next() with work around
-    print("   ... using next() with work around")
+    print('   ... using next() with work around')
 
     with frame_index_stream_buffer:
         reader = frame_index_stream_buffer.mk_reader()
 
-
         def yield_from_reader(reader):
             yield from reader
-
 
         reader_gen = yield_from_reader(reader)
 
@@ -335,7 +384,7 @@ if __name__ == '__main__':
             print(i, data[0])
 
     # using BufferReader.next()
-    print("   ... using BufferReader.next()")
+    print('   ... using BufferReader.next()')
 
     with frame_index_stream_buffer:
         reader = frame_index_stream_buffer.mk_reader()

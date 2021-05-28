@@ -4,10 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Triggered Starts in a Typing Test &#8212; stream2py 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -34,9 +35,9 @@
 
           <div class="body" role="main">
             
-  <span class="target" id="module-stream2py.examples.usage.triggered_starts"></span><div class="section" id="triggered-starts-in-a-typing-test">
+  <span class="target" id="module-stream2py.examples.usage.triggered_starts"></span><section id="triggered-starts-in-a-typing-test">
 <h1>Triggered Starts in a Typing Test<a class="headerlink" href="#triggered-starts-in-a-typing-test" title="Permalink to this headline">¶</a></h1>
-<div class="graphviz"><img src="../_images/graphviz-059c3438afcbbf77bf77a53253b74d143213b169.png" alt="digraph components {
+digraph components {
     subgraph cluster_0 {
         style=filled;
         color=lightgrey;
@@ -58,21 +59,20 @@
     }
     &quot;KeyboardInput&quot; -&gt; &quot;PromptSwitch&quot; -&gt; &quot;TypingTest&quot; -&gt; &quot;TestProctor&quot;;
     &quot;KeyboardInput&quot; -&gt; &quot;TestProctor&quot;;
-}" class="graphviz" /></div>
-<p>This example demonstrates the usage of stream2py with 4 asynchronous components:</p>
+}<p>This example demonstrates the usage of stream2py with 4 asynchronous components:</p>
 <ol class="arabic simple">
 <li><p>KeyboardInputSourceReader starts at the launch of this program and listens to key presses.</p></li>
 <li><p>TypingTest waits for start, stop, and add prompt commands.</p></li>
 <li><p>PromptSwitch reads keyboard inputs for commands and tells TypingTest what to do.</p></li>
 <li><p>TestProctor gives you TypingTest prompts and grades your keyboard input submissions.</p></li>
 </ol>
-<div class="section" id="usage">
+<section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Launching the script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">stream2py</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">triggered_starts</span>
 </pre></div>
 </div>
-<div class="graphviz"><img src="../_images/graphviz-0675c708a0da5a74b51cb991dfdb99a553e8b2e6.png" alt="digraph flow_chart {
+digraph flow_chart {
     label=&quot;User Flow&quot;;
     labeljust=&quot;l&quot;
     labelloc=&quot;t&quot;
@@ -112,9 +112,8 @@
     submit -&gt; prompt -&gt; input;
     start -&gt; prompt
     stop -&gt; input
-}" class="graphviz" /></div>
-</div>
-<div class="section" id="classes">
+}</section>
+<section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="stream2py.sources.keyboard_input.KeyboardInputSourceReader">
@@ -128,7 +127,7 @@
 
 <dl class="py class">
 <dt id="stream2py.examples.usage.triggered_starts.PromptSwitch">
-<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">PromptSwitch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../all_files.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../all_files.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/triggered_starts.html#PromptSwitch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.PromptSwitch" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">PromptSwitch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/triggered_starts.html#PromptSwitch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.PromptSwitch" title="Permalink to this definition">¶</a></dt>
 <dd><p>PromptSwitch will recognize 3 commands: “start”, “stop”, and “exit” followed by a return key press.</p>
 <ol class="arabic simple">
 <li><p>“start” will start adding prompts after each return key press.</p></li>
@@ -139,7 +138,7 @@
 
 <dl class="py class">
 <dt id="stream2py.examples.usage.triggered_starts.TestProctor">
-<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">TestProctor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../all_files.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../all_files.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/triggered_starts.html#TestProctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.TestProctor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">TestProctor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/examples/usage/triggered_starts.html#TestProctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.TestProctor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Give prompts and grade input</p>
 </dd></dl>
 
@@ -151,8 +150,8 @@
 <li><p>Clarify what components are doing and the objectives of the example.</p></li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -220,7 +219,7 @@
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

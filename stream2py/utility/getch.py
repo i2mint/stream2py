@@ -22,6 +22,7 @@ class _Getch:
 class _GetchUnix:
     def __init__(self, is_blocking):
         import tty, sys, termios
+
         self.fd = sys.stdin.fileno()
         self.old_settings = termios.tcgetattr(self.fd)
         if is_blocking is True:
@@ -31,6 +32,7 @@ class _GetchUnix:
 
     def blocking(self):
         import sys, tty, termios
+
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
         try:
@@ -42,6 +44,7 @@ class _GetchUnix:
 
     def non_blocking(self):
         import sys, tty, termios
+
         old_settings = termios.tcgetattr(sys.stdin)
         ch = None
         try:
@@ -54,11 +57,13 @@ class _GetchUnix:
 
     def restore_settings(self):
         import sys, tty, termios
+
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old_settings)
 
     @staticmethod
     def _is_data():
         import select, sys
+
         return select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], [])
 
     def __call__(self):
@@ -68,6 +73,7 @@ class _GetchUnix:
 class _GetchWindows:
     def __init__(self, is_blocking):
         import msvcrt
+
         if is_blocking is True:
             self._getch = self.blocking
         else:
@@ -75,10 +81,12 @@ class _GetchWindows:
 
     def blocking(self):
         import msvcrt
+
         return msvcrt.getch()
 
     def non_blocking(self):
         import msvcrt
+
         if msvcrt.kbhit():
             return msvcrt.getch()
 
@@ -91,14 +99,17 @@ class _GetchWindows:
 
 getch = _Getch()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     import sys
 
-
     def getch_loop(is_blocking=True):
-        print(f'{"Blocking" if is_blocking is True else "Non-blocking"} getch! Press any key! Esc to quit!')
+        print(
+            f'{"Blocking" if is_blocking is True else "Non-blocking"} getch! Press any key! Esc to quit!'
+        )
         i = 0
-        getch_func = getch.blocking if is_blocking is True else getch.non_blocking
+        getch_func = (
+            getch.blocking if is_blocking is True else getch.non_blocking
+        )
         while True:
             char = getch_func()
             if char or i % 15000 == 0:
@@ -108,10 +119,11 @@ if __name__ == "__main__":
                 break
             i += 1
 
-
     getch_file, *args = sys.argv
-    print("Getch! Echo key press usage:\n"
-          f"Blocking mode: python {getch_file}\n"
-          f"Non-blocking mode: python {getch_file} False\n")
+    print(
+        'Getch! Echo key press usage:\n'
+        f'Blocking mode: python {getch_file}\n'
+        f'Non-blocking mode: python {getch_file} False\n'
+    )
 
     getch_loop(is_blocking=False if len(args) and args[0] == 'False' else True)

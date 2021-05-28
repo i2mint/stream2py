@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>stream2py.utility.sorted_deque &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-stream2py.utility.sorted_deque">
+<span id="stream2py-utility-sorted-deque"></span><h1>stream2py.utility.sorted_deque<a class="headerlink" href="#module-stream2py.utility.sorted_deque" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="stream2py.utility.sorted_deque.SortedDeque">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.utility.sorted_deque.</code><code class="sig-name descname">SortedDeque</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iterable</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">maxlen</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deque sorted by a key function.</p>
+<p>Intent of SortedDeque is to efficiently search buffered data while efficiently maintaining a fixed length buffer
+that is frequently popping the head and appending to the tail.</p>
+<p>Overloaded SortedCollection methods __contains__, index, and count due to the lack of
+slicing in deques. Efficiency of said methods is still better than base deque.</p>
+<p>Added an append method for cases where the new item to insert is known to be the last.</p>
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.append">
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append item to the end.  Raise ValueError if item key is less than last item key</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.drop">
+<code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove n items from the left</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.find_last_gt">
+<code class="sig-name descname">find_last_gt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">k</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.find_last_gt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.find_last_gt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return last item with a key &gt; k.  Raise ValueError if not found.
+Basically a tail function with a greater than check</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the position of an item.  Raise ValueError if not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.maxlen">
+<em class="property">property </em><code class="sig-name descname">maxlen</code><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.maxlen" title="Permalink to this definition">¶</a></dt>
+<dd><p>maxlen function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.range">
+<code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">stop</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of items within start and stop key range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – starting key</p></li>
+<li><p><strong>stop</strong> – stopping key</p></li>
+<li><p><strong>step</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with items in range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.range_by_index">
+<code class="sig-name descname">range_by_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start_index</span></em>, <em class="sig-param"><span class="n">stop_index</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.range_by_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.range_by_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of items within start and stop index range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_index</strong> – starting index</p></li>
+<li><p><strong>stop_index</strong> – stopping index</p></li>
+<li><p><strong>step</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list with items in range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.utility.sorted_deque.SortedDeque.to_jdict">
+<code class="sig-name descname">to_jdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/utility/sorted_deque.html#SortedDeque.to_jdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.to_jdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: WIP. Need to convert key function and iterable items to json friendly format</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/module_docs/stream2py/utility/sorted_deque.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

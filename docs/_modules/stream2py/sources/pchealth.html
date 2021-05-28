@@ -6,8 +6,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>stream2py.sources.pchealth &#8212; stream2py 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -38,14 +38,14 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">import</span> <span class="nn">psutil</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 
-<span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">SourceReader</span>
-<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="k">import</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">SourceReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="kn">import</span> <span class="n">ComparableType</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provide computer status info. </span>
@@ -55,49 +55,37 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;StatusInfo&#39;</span><span class="p">,</span> <span class="s1">&#39;StatusInfoReader&#39;</span><span class="p">]</span>
 
-<span class="n">DFLT_STATUS_INFO_READ_INTERVAL</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># in ms</span>
+<span class="n">DFLT_STATUS_INFO_READ_INTERVAL</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># in ms</span>
+
 
 <span class="k">class</span> <span class="nc">StatusInfo</span><span class="p">:</span>
 
-    <span class="n">SPEEDTEST_CMD</span> <span class="o">=</span> <span class="s2">&quot;speedtest&quot;</span>
+    <span class="n">SPEEDTEST_CMD</span> <span class="o">=</span> <span class="s1">&#39;speedtest&#39;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">disk_free_bytes</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">free</span><span class="p">),</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;bytes&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">free</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">disk_used_percents</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">percent</span><span class="p">),</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;%&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">psutil</span><span class="o">.</span><span class="n">disk_usage</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">percent</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;%&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">cpu_used_percents</span><span class="p">():</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(),</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;%&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;%&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">cpu_temp</span><span class="p">():</span>
 
         <span class="n">_t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/sys/class/thermal/thermal_zone0/temp&#39;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ftemp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/sys/class/thermal/thermal_zone0/temp&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ftemp</span><span class="p">:</span>
                 <span class="n">_t</span> <span class="o">=</span> <span class="n">ftemp</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">_t</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">_t</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="n">_t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">_t</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;C&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">_t</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mem_total</span><span class="p">():</span>
@@ -105,10 +93,7 @@
 <span class="sd">         - total:</span>
 <span class="sd">           total physical memory available.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">total</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;bytes&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">total</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mem_available</span><span class="p">():</span>
@@ -120,10 +105,7 @@
 <span class="sd">           on the platform and it is supposed to be used to monitor actual</span>
 <span class="sd">           memory usage in a cross platform fashion.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;bytes&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mem_used_percent</span><span class="p">():</span>
@@ -131,10 +113,7 @@
 <span class="sd">        - used:</span>
 <span class="sd">          the percentage usage calculated as (total - available) / total * 100</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;%&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;%&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mem_used_bytes</span><span class="p">():</span>
@@ -146,10 +125,7 @@
 <span class="sd">            BSD: active + wired + cached</span>
 <span class="sd">            Linux: total - free</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">used</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;bytes&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">used</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mem_free</span><span class="p">():</span>
@@ -160,27 +136,18 @@
 <span class="sd">           (use &#39;available&#39; instead)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">free</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;bytes&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">free</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;bytes&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">platform</span><span class="p">():</span>
-        <span class="n">_info</span> <span class="o">=</span><span class="n">platform</span><span class="o">.</span><span class="n">uname</span><span class="p">()</span>
+        <span class="n">_info</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">uname</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">_info</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">_info</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;val&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="kc">None</span>
-            <span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 
         <span class="n">_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">_info</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
             <span class="n">_values</span><span class="p">[</span><span class="n">_f</span><span class="p">]</span> <span class="o">=</span> <span class="n">_info</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">_f</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="n">_values</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="n">_values</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">network_download_speed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span>
@@ -192,19 +159,15 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="n">StatusInfo</span><span class="o">.</span><span class="n">SPEEDTEST_CMD</span> <span class="o">+</span> <span class="s1">&#39; --no-upload --simple &#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">speedtest_output</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span>
+                <span class="n">StatusInfo</span><span class="o">.</span><span class="n">SPEEDTEST_CMD</span> <span class="o">+</span> <span class="s1">&#39; --no-upload --simple &#39;</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">speedtest_output</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">speedtest_output</span><span class="p">:</span>
                     <span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                     <span class="k">if</span> <span class="s1">&#39;download&#39;</span> <span class="ow">in</span> <span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                        <span class="k">return</span> <span class="p">{</span>
-                            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
-                            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">unit</span>
-                        <span class="p">}</span>
+                        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="n">unit</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;not installed&quot;</span>
-            <span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;not installed&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">network_upload_speed</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -216,55 +179,49 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="n">StatusInfo</span><span class="o">.</span><span class="n">SPEEDTEST_CMD</span> <span class="o">+</span> <span class="s1">&#39; --no-download --simple &#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">speedtest_output</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span>
+                <span class="n">StatusInfo</span><span class="o">.</span><span class="n">SPEEDTEST_CMD</span> <span class="o">+</span> <span class="s1">&#39; --no-download --simple &#39;</span>
+            <span class="p">)</span> <span class="k">as</span> <span class="n">speedtest_output</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">speedtest_output</span><span class="p">:</span>
                     <span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                     <span class="k">if</span> <span class="s1">&#39;upload&#39;</span> <span class="ow">in</span> <span class="n">label</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                        <span class="k">return</span> <span class="p">{</span>
-                            <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
-                            <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">unit</span>
-                        <span class="p">}</span>
+                        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="n">unit</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;not installed&quot;</span>
-            <span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;not installed&#39;</span><span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="n">include_network_download_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">include_network_upload_speed</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span>
+        <span class="n">include_network_download_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">include_network_upload_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
 
         <span class="n">_info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;memory&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_total</span><span class="p">(),</span>
-                <span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_available</span><span class="p">(),</span>
-                <span class="s2">&quot;free&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_free</span><span class="p">(),</span>
-                <span class="s2">&quot;used_bytes&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_used_bytes</span><span class="p">(),</span>
-                <span class="s2">&quot;used_percents&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_used_percent</span><span class="p">(),</span>
+            <span class="s1">&#39;memory&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_total</span><span class="p">(),</span>
+                <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_available</span><span class="p">(),</span>
+                <span class="s1">&#39;free&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_free</span><span class="p">(),</span>
+                <span class="s1">&#39;used_bytes&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_used_bytes</span><span class="p">(),</span>
+                <span class="s1">&#39;used_percents&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">mem_used_percent</span><span class="p">(),</span>
             <span class="p">},</span>
-
-            <span class="s2">&quot;disk&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;free&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">disk_free_bytes</span><span class="p">(),</span>
-                <span class="s2">&quot;used&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">disk_used_percents</span><span class="p">()</span>
+            <span class="s1">&#39;disk&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;free&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">disk_free_bytes</span><span class="p">(),</span>
+                <span class="s1">&#39;used&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">disk_used_percents</span><span class="p">(),</span>
             <span class="p">},</span>
-
-            <span class="s2">&quot;cpu&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;used&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">cpu_used_percents</span><span class="p">(),</span>
-                <span class="s2">&quot;temp&quot;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">cpu_temp</span><span class="p">()</span>
+            <span class="s1">&#39;cpu&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;used&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">cpu_used_percents</span><span class="p">(),</span>
+                <span class="s1">&#39;temp&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">cpu_temp</span><span class="p">(),</span>
             <span class="p">},</span>
-
-            <span class="s2">&quot;platform&quot;</span> <span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">platform</span><span class="p">()</span>
+            <span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">platform</span><span class="p">(),</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">include_network_download_speed</span> <span class="ow">or</span> <span class="n">include_network_upload_speed</span><span class="p">:</span>
-            <span class="n">_info</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">_info</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">include_network_download_speed</span><span class="p">:</span>
-            <span class="n">_info</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;download&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">network_download_speed</span><span class="p">()</span>
+            <span class="n">_info</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">][</span><span class="s1">&#39;download&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">network_download_speed</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">include_network_upload_speed</span><span class="p">:</span>
-            <span class="n">_info</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">][</span><span class="s2">&quot;upload&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">network_upload_speed</span><span class="p">()</span>
-
+            <span class="n">_info</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">][</span><span class="s1">&#39;upload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">StatusInfo</span><span class="o">.</span><span class="n">network_upload_speed</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">_info</span>
 
@@ -272,9 +229,8 @@
 <span class="n">_ITEMGETTER_0</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">SyncQueue</span><span class="p">():</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SyncQueue</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
 
@@ -300,16 +256,18 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="StatusInfoReader"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader">[docs]</a><span class="k">class</span> <span class="nc">StatusInfoReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="StatusInfoReader"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader">[docs]</a><span class="k">class</span> <span class="nc">StatusInfoReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
     <span class="n">_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">_data</span><span class="p">:</span> <span class="n">SyncQueue</span> <span class="o">=</span> <span class="n">SyncQueue</span><span class="p">()</span>
     <span class="n">_stop</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
     <span class="n">_bt</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">read_interval_ms</span> <span class="o">=</span> <span class="n">DFLT_STATUS_INFO_READ_INTERVAL</span><span class="p">,</span>
-                 <span class="n">include_network_download_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">include_network_upload_speed</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">read_interval_ms</span><span class="o">=</span><span class="n">DFLT_STATUS_INFO_READ_INTERVAL</span><span class="p">,</span>
+        <span class="n">include_network_download_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">include_network_upload_speed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">read_interval_ms</span> <span class="o">=</span> <span class="n">read_interval_ms</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include_network_download_speed</span> <span class="o">=</span> <span class="n">include_network_download_speed</span>
@@ -317,8 +275,7 @@
 
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="StatusInfoReader.open"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StatusInfoReader.open"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="mi">0</span>
@@ -326,37 +283,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="StatusInfoReader.read"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StatusInfoReader.read"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns one data item</span>
 
 <span class="sd">        :return: (index, timestamp, character)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">popleft_no_block</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="StatusInfoReader.close"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StatusInfoReader.close"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;bt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bt</span><span class="p">}</span>
 
-<div class="viewcode-block" id="StatusInfoReader.key"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
+<div class="viewcode-block" id="StatusInfoReader.key"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param data: (index, timestamp, character)</span>
 <span class="sd">        :return: index</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_ITEMGETTER_0</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StatusInfoReader.run"><a class="viewcode-back" href="../../../all_files.html#stream2py.sources.pchealth.StatusInfoReader.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StatusInfoReader.run"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/pchealth.html#stream2py.sources.pchealth.StatusInfoReader.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">(),</span>
-                                  <span class="n">StatusInfo</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">include_network_download_speed</span><span class="p">,</span>
-                                                 <span class="bp">self</span><span class="o">.</span><span class="n">include_network_upload_speed</span><span class="p">)))</span>  <span class="c1"># (index, timestamp, character)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_index</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">(),</span>
+                        <span class="n">StatusInfo</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">include_network_download_speed</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">include_network_upload_speed</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>  <span class="c1"># (index, timestamp, character)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_interval_ms</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_interval_ms</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_interval_ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -389,7 +353,7 @@
     <span class="c1"># print(f&quot;\tUpload speed {StatusInfo.network_upload_speed()}&quot;)</span>
 
     <span class="c1"># or as a single JSON</span>
-    <span class="c1">#print(StatusInfo.all(include_network_download_speed=True, include_network_upload_speed=True))</span>
+    <span class="c1"># print(StatusInfo.all(include_network_download_speed=True, include_network_upload_speed=True))</span>
 
     <span class="k">with</span> <span class="n">StatusInfoReader</span><span class="p">()</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ctrl+C to exit&#39;</span><span class="p">)</span>
@@ -399,12 +363,12 @@
                 <span class="n">data</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">index</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">data</span>
-                    <span class="n">pprint</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{index}</span><span class="s2">.</span><span class="si">{timestamp}</span><span class="s2">: </span><span class="si">{info}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">pprint</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">kb</span><span class="p">:</span>
                 <span class="k">break</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done!&#39;</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -466,7 +430,7 @@
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

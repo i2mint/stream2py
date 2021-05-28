@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>stream2py.buffer_consumer &#8212; stream2py 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-stream2py.buffer_consumer">
+<span id="stream2py-buffer-consumer"></span><h1>stream2py.buffer_consumer<a class="headerlink" href="#module-stream2py.buffer_consumer" title="Permalink to this headline">¶</a></h1>
+<p>Work in progress. Use as example to construct your own until this is finalized with a standard api.</p>
+<p>Abstract classes to make asynchronous consumers of BufferReaders and StreamBuffers.</p>
+<dl class="py class">
+<dt id="stream2py.buffer_consumer.BufferReaderConsumer">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.buffer_consumer.</code><code class="sig-name descname">BufferReaderConsumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="buffer_reader.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a></span></em>, <em class="sig-param"><span class="n">interval</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">logging_enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#BufferReaderConsumer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.BufferReaderConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call reader_handler function with reader at defined time intervals between calls</p>
+<dl class="py method">
+<dt id="stream2py.buffer_consumer.BufferReaderConsumer.reader_handler">
+<em class="property">abstract </em><code class="sig-name descname">reader_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="buffer_reader.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#BufferReaderConsumer.reader_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.BufferReaderConsumer.reader_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements how to read from buffer and what to do with the data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.buffer_consumer.BufferReaderConsumer.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#BufferReaderConsumer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.BufferReaderConsumer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
+is set or Exception is raised by self.reader_handler</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.buffer_consumer.BufferReaderConsumer.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#BufferReaderConsumer.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.BufferReaderConsumer.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets stop event and waits for thread to finish</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.buffer_consumer.StreamBufferConsumer">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.buffer_consumer.</code><code class="sig-name descname">StreamBufferConsumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_buffer</span><span class="p">:</span> <span class="n"><a class="reference internal" href="stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">interval</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">logging_enabled</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#StreamBufferConsumer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.StreamBufferConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="stream2py.buffer_consumer.StreamBufferConsumer.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#StreamBufferConsumer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.StreamBufferConsumer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
+is set or Exception is raised by self.stream_buffer_handler</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.buffer_consumer.StreamBufferConsumer.stop">
+<code class="sig-name descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#StreamBufferConsumer.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.StreamBufferConsumer.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets stop event and waits for thread to finish</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.buffer_consumer.StreamBufferConsumer.stream_buffer_handler">
+<em class="property">abstract </em><code class="sig-name descname">stream_buffer_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stream_buffer</span><span class="p">:</span> <span class="n"><a class="reference internal" href="stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_consumer.html#StreamBufferConsumer.stream_buffer_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_consumer.StreamBufferConsumer.stream_buffer_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements how to read from buffer and what to do with the data</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">stream2py</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example_toc.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme_link.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../things_you_can_do.html">Get audio segments when ever I chose</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Andie Shining Phan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/module_docs/stream2py/buffer_consumer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -4,10 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>API Documentation &#8212; stream2py 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -34,27 +35,26 @@
 
           <div class="body" role="main">
             
-  <span class="target" id="module-stream2py"></span><div class="section" id="api-documentation">
+  <span class="target" id="module-stream2py"></span><section id="api-documentation">
 <h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="graphviz"><img src="_images/graphviz-20285e1b7adc5c570bcc9f6d0eded310a734ef0d.png" alt="digraph {
+digraph {
     rankdir=LR;
     &quot;SourceReader&quot; [shape=cds]
     &quot;StreamBuffer&quot; [shape=box3d]
     &quot;SourceReader&quot; -&gt; &quot;StreamBuffer&quot; -&gt; &quot;BufferReader1&quot;;
     &quot;StreamBuffer&quot; -&gt; &quot;BufferReader2&quot;;
     &quot;StreamBuffer&quot; -&gt; &quot;BufferReader3&quot;;
-}" class="graphviz" /></div>
-<div class="section" id="classes">
+}<section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="stream2py.SourceReader">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.</code><code class="sig-name descname">SourceReader</code><a class="reference internal" href="_modules/stream2py/source_reader.html#SourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.SourceReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract class interface to be used by StreamBuffer.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">SourceReader</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">SourceReader</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SimpleCounterString</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="sd">&#39;&#39;&#39;Count in range returning a string formatted as f&quot;s{count}&quot;&#39;&#39;&#39;</span>
-<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">assert</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">stop</span>
 <span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
 <span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="n">stop</span>
@@ -68,7 +68,7 @@
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>            <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;s</span><span class="si">{value}</span><span class="s1">&#39;</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;s</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="gp">... </span>        <span class="k">else</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">return</span> <span class="kc">None</span>
 <span class="gp">...</span>
@@ -199,8 +199,8 @@ Not necessary if read is a blocking function that always returns a data point.</
 <dt id="stream2py.StreamBuffer">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.</code><code class="sig-name descname">StreamBuffer</code><a class="reference internal" href="_modules/stream2py/stream_buffer.html#StreamBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.StreamBuffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles starting and stopping SourceReader and making BufferReaders</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">StreamBuffer</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py.examples.source_reader</span> <span class="k">import</span> <span class="n">SimpleCounterString</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">StreamBuffer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py.examples.source_reader</span> <span class="kn">import</span> <span class="n">SimpleCounterString</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -231,7 +231,7 @@ Not necessary if read is a blocking function that always returns a data point.</
 </div>
 <dl class="py method">
 <dt id="stream2py.StreamBuffer.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="all_files.html#stream2py.source_reader.SourceReader" title="stream2py.source_reader.SourceReader">stream2py.source_reader.SourceReader</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">maxlen</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_drop</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/stream_buffer.html#StreamBuffer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.StreamBuffer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader" title="stream2py.source_reader.SourceReader">stream2py.source_reader.SourceReader</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">maxlen</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_drop</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/stream_buffer.html#StreamBuffer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.StreamBuffer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>TODO: option to auto restart source on read exception</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -272,7 +272,7 @@ Not necessary if read is a blocking function that always returns a data point.</
 
 <dl class="py method">
 <dt id="stream2py.StreamBuffer.mk_reader">
-<code class="sig-name descname">mk_reader</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="all_files.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a><a class="reference internal" href="_modules/stream2py/stream_buffer.html#StreamBuffer.mk_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.StreamBuffer.mk_reader" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mk_reader</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a><a class="reference internal" href="_modules/stream2py/stream_buffer.html#StreamBuffer.mk_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.StreamBuffer.mk_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes a BufferReader instance for the currently running  StreamBuffer.
 Reader must be made after start() to have data from said start.</p>
 <dl class="field-list simple">
@@ -311,8 +311,8 @@ Reader must be made after start() to have data from said start.</p>
 <dt id="stream2py.BufferReader">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.</code><code class="sig-name descname">BufferReader</code><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reader that is constructed from StreamBuffer.mk_reader()</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="k">import</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">BufferReader</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py.examples.source_reader</span> <span class="k">import</span> <span class="n">SimpleCounterString</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">BufferReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py.examples.source_reader</span> <span class="kn">import</span> <span class="n">SimpleCounterString</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -389,25 +389,27 @@ Reader must be made after start() to have data from said start.</p>
 
 <dl class="py method">
 <dt id="stream2py.BufferReader.next">
-<code class="sig-name descname">next</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">peek</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader.next" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">next</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">peek</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">strict_n</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader.next" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds an item with a key greater than the last returned item.
 Raise ValueError if no item found with key above last item.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – number of items to return</p></li>
 <li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
 <li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception</p></li>
+<li><p><strong>strict_n</strong> – if True, raise ValueError if n items are not available</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>next item</p>
+<dd class="field-even"><p>next item or list of next items if n &gt; 1</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="stream2py.BufferReader.range">
-<code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">stop</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">peek</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">only_new_items</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader.range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader.range" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">stop</span></em>, <em class="sig-param"><span class="n">step</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">peek</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">only_new_items</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">start_le</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">stop_ge</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stream2py/buffer_reader.html#BufferReader.range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.BufferReader.range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables:
 1. Get last n minutes
 2. Give me data I don’t have</p>
@@ -418,8 +420,12 @@ Raise ValueError if no item found with key above last item.</p>
 <li><p><strong>stop</strong> – ending range key of item inclusive</p></li>
 <li><p><strong>step</strong> – </p></li>
 <li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
-<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception.</p></li>
 <li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError or return None if ignore_no_item_found</p></li>
+<li><p><strong>start_le</strong> – if True, increase the search range to find start less than or equal by rounding down if start
+is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0</p></li>
+<li><p><strong>stop_ge</strong> – if True, raise ValueError when there is no key greater than or equal to stop in buffer,
+if ignore_no_item_found is also True, return None instead of ValueError</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -477,8 +483,8 @@ Raise ValueError if no item found with key above last item.</p>
 <li><p>reduce the complexity of the main doctest of each class</p></li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -543,7 +549,7 @@ Raise ValueError if no item found with key above last item.</p>
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -58,7 +58,12 @@ class BufferReader:
     True
     """
 
-    def __init__(self, buffer: RWLockSortedDeque, source_reader_info: dict, stop_event: threading.Event):
+    def __init__(
+        self,
+        buffer: RWLockSortedDeque,
+        source_reader_info: dict,
+        stop_event: threading.Event,
+    ):
         """
 
         :param buffer:
@@ -85,7 +90,9 @@ class BufferReader:
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+    def set_sleep_time_on_iter_none(
+        self, sleep_time_s: Union[int, float] = 0.1
+    ):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -94,7 +101,10 @@ class BufferReader:
 
     def is_same_buffer(self, other_buffer_reader):
         """Check if reader is looking at the same buffer"""
-        return self.__class__ == other_buffer_reader.__class__ and self._stop_event == other_buffer_reader._stop_event
+        return (
+            self.__class__ == other_buffer_reader.__class__
+            and self._stop_event == other_buffer_reader._stop_event
+        )
 
     @property
     def is_stopped(self) -> bool:
@@ -130,9 +140,13 @@ class BufferReader:
         del self._last_key
         self._last_key = None
 
-    last_item = property(_getlast_item, _setlast_item, _dellast_item, 'last seen item cursor')
+    last_item = property(
+        _getlast_item, _setlast_item, _dellast_item, 'last seen item cursor'
+    )
 
-    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
+    def next(
+        self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False
+    ):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
 
@@ -151,7 +165,9 @@ class BufferReader:
                 else:
                     raise e
             except TypeError as e:  # TypeError: '<' not supported between instances of 'NoneType' and type(key)
-                if self.last_item is None:  # first time reading a value from buffer
+                if (
+                    self.last_item is None
+                ):  # first time reading a value from buffer
                     next_item = reader[0]
                 else:
                     raise e
@@ -159,7 +175,9 @@ class BufferReader:
                 i = reader.index(next_item)
                 j = i + n
                 if strict_n and j >= len(reader):
-                    raise ValueError(f'Number of items found is less than n: strict_n={strict_n}, n={n}')
+                    raise ValueError(
+                        f'Number of items found is less than n: strict_n={strict_n}, n={n}'
+                    )
 
                 next_items_list = reader.range_by_index(i, j)
                 if not peek:
@@ -170,8 +188,18 @@ class BufferReader:
                     self.last_item = next_item
                 return next_item
 
-    def range(self, start, stop, step=None, *, peek=False, ignore_no_item_found=False, only_new_items=False,
-              start_le=False, stop_ge=False):
+    def range(
+        self,
+        start,
+        stop,
+        step=None,
+        *,
+        peek=False,
+        ignore_no_item_found=False,
+        only_new_items=False,
+        start_le=False,
+        stop_ge=False,
+    ):
         """Enables:
         1. Get last n minutes
         2. Give me data I don't have
@@ -190,7 +218,9 @@ class BufferReader:
         """
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
-                _next = self.next(peek=True, ignore_no_item_found=ignore_no_item_found)
+                _next = self.next(
+                    peek=True, ignore_no_item_found=ignore_no_item_found
+                )
                 try:
                     _next_key = reader.key(_next)
                 except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
@@ -202,7 +232,9 @@ class BufferReader:
             else:
                 _start = start
             if start_le is True:
-                with suppress(ValueError):  # ValueError: No item found with key at or below: _start
+                with suppress(
+                    ValueError
+                ):  # ValueError: No item found with key at or below: _start
                     _start = reader.key(reader.find_le(_start))
             if stop_ge is True:
                 try:
@@ -225,7 +257,9 @@ class BufferReader:
                     raise e
         return items
 
-    def tail(self, *, peek=False, ignore_no_item_found=False, only_new_items=False):
+    def tail(
+        self, *, peek=False, ignore_no_item_found=False, only_new_items=False
+    ):
         """Finds the last item in buffer. Raise ValueError if no item found.
 
         :param peek: if True, last_item cursor will not be updated
@@ -243,7 +277,9 @@ class BufferReader:
                     else:
                         raise e
                 except TypeError as e:  # TypeError: '>' not supported between instances of type(key) and 'NoneType'
-                    if self.last_item is None:  # first time reading a value from buffer
+                    if (
+                        self.last_item is None
+                    ):  # first time reading a value from buffer
                         item = reader[-1]
                     else:
                         raise e

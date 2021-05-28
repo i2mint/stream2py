@@ -20,7 +20,12 @@ logger = logging.getLogger(__name__)
 class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
     """Call reader_handler function with reader at defined time intervals between calls"""
 
-    def __init__(self, buffer_reader: BufferReader, interval: Union[int, float], logging_enabled: bool = False):
+    def __init__(
+        self,
+        buffer_reader: BufferReader,
+        interval: Union[int, float],
+        logging_enabled: bool = False,
+    ):
         """
 
         :param buffer_reader: BufferReader created from a StreamBuffer
@@ -38,14 +43,14 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
         """Sets stop event and waits for thread to finish"""
         self.stop_event.set()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopping... {self.__class__.__name__}")
+            logger.debug(f'Consumer stopping... {self.__class__.__name__}')
         self.join()
 
     def run(self):
         """Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
         is set or Exception is raised by self.reader_handler"""
         if self.logging_enabled:
-            logger.debug(f"Consumer starting! {self.__class__.__name__}")
+            logger.debug(f'Consumer starting! {self.__class__.__name__}')
         try:
             while not self.stop_event.is_set():
                 self.reader_handler(self.buffer_reader)
@@ -55,7 +60,7 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
             with suppress(Exception):
                 self.stop()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopped! {self.__class__.__name__}")
+            logger.debug(f'Consumer stopped! {self.__class__.__name__}')
 
     @abstractmethod
     def reader_handler(self, buffer_reader: BufferReader):
@@ -71,8 +76,12 @@ class BufferReaderConsumer(threading.Thread, metaclass=ABCMeta):
 
 
 class StreamBufferConsumer(threading.Thread, metaclass=ABCMeta):
-
-    def __init__(self, stream_buffer: StreamBuffer, interval: Union[int, float], logging_enabled: bool = False):
+    def __init__(
+        self,
+        stream_buffer: StreamBuffer,
+        interval: Union[int, float],
+        logging_enabled: bool = False,
+    ):
         """
 
         :param stream_buffer: a StreamBuffer
@@ -90,14 +99,14 @@ class StreamBufferConsumer(threading.Thread, metaclass=ABCMeta):
         """Sets stop event and waits for thread to finish"""
         self.stop_event.set()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopping... {self.__class__.__name__}")
+            logger.debug(f'Consumer stopping... {self.__class__.__name__}')
         self.join()
 
     def run(self):
         """Calls self.reader_handler in a loop while sleeping for self.interval seconds after each call until stop event
         is set or Exception is raised by self.stream_buffer_handler"""
         if self.logging_enabled:
-            logger.debug(f"Consumer starting! {self.__class__.__name__}")
+            logger.debug(f'Consumer starting! {self.__class__.__name__}')
         try:
             while not self.stop_event.is_set():
                 self.stream_buffer_handler(self.stream_buffer)
@@ -106,7 +115,7 @@ class StreamBufferConsumer(threading.Thread, metaclass=ABCMeta):
             with suppress(Exception):
                 self.stop()
         if self.logging_enabled:
-            logger.debug(f"Consumer stopped! {self.__class__.__name__}")
+            logger.debug(f'Consumer stopped! {self.__class__.__name__}')
 
     @abstractmethod
     def stream_buffer_handler(self, stream_buffer: StreamBuffer):

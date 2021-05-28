@@ -15,13 +15,15 @@ def get_logging_level(env_variable_name, default=logging.NOTSET):
     return _level
 
 
-STREAM2PY_LOGGING_LEVEL = get_logging_level(env_variable_name="STREAM2PY_LOGGING_LEVEL", default=logging.WARNING)
+STREAM2PY_LOGGING_LEVEL = get_logging_level(
+    env_variable_name='STREAM2PY_LOGGING_LEVEL', default=logging.WARNING
+)
 
 
 def set_logging_config(level=STREAM2PY_LOGGING_LEVEL, filename=None):
-    logging.basicConfig(filename=filename,
-                        level=level,
-                        datefmt='%d-%m-%y %H:%M',
-                        format="%(asctime)s %(levelname)s %(filename)s:%(lineno)d  ::> %(message)s")
-
-
+    logging.basicConfig(
+        filename=filename,
+        level=level,
+        datefmt='%d-%m-%y %H:%M',
+        format='%(asctime)s %(levelname)s %(filename)s:%(lineno)d  ::> %(message)s',
+    )

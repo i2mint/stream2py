@@ -24,7 +24,9 @@ from stream2py.consumers.video.write import VideoWriter
 from stream2py.consumers.video.show import VideoShow
 
 
-def video_display_and_save(video_input,  file_name="VideoWriter.avi", fourcc="MJPG"):
+def video_display_and_save(
+    video_input, file_name='VideoWriter.avi', fourcc='MJPG'
+):
     """Display recording on screen and save to file
 
     TODO: fps info from devices (camera) is not accurate and need to be calculated
@@ -34,19 +36,33 @@ def video_display_and_save(video_input,  file_name="VideoWriter.avi", fourcc="MJ
     :param fourcc: video file encoding
     """
     source_reader = VideoCapture(video_input=video_input)
-    with StreamBuffer(source_reader=source_reader, maxlen=1000) as stream_buffer:
+    with StreamBuffer(
+        source_reader=source_reader, maxlen=1000
+    ) as stream_buffer:
 
         buffer_reader_for_write = stream_buffer.mk_reader()
-        frame_size = (buffer_reader_for_write.source_reader_info['frame_width'],
-                      buffer_reader_for_write.source_reader_info['frame_height'])
+        frame_size = (
+            buffer_reader_for_write.source_reader_info['frame_width'],
+            buffer_reader_for_write.source_reader_info['frame_height'],
+        )
         fps = buffer_reader_for_write.source_reader_info['fps']
 
-        with VideoWriter(buffer_reader=buffer_reader_for_write, interval=0.001, file_name=file_name, fourcc=fourcc,
-                         fps=fps, frame_size=frame_size) as writer:
+        with VideoWriter(
+            buffer_reader=buffer_reader_for_write,
+            interval=0.001,
+            file_name=file_name,
+            fourcc=fourcc,
+            fps=fps,
+            frame_size=frame_size,
+        ) as writer:
 
             buffer_reader_for_show = stream_buffer.mk_reader()
 
-            with VideoShow(buffer_reader=buffer_reader_for_show, interval=0.001, window_name="show_demo") as show:
+            with VideoShow(
+                buffer_reader=buffer_reader_for_show,
+                interval=0.001,
+                window_name='show_demo',
+            ) as show:
                 print('press "q" to end recording')
                 with KeyboardInputSourceReader() as key_input:
                     for index, timestamp, char in iter(key_input):
@@ -55,5 +71,5 @@ def video_display_and_save(video_input,  file_name="VideoWriter.avi", fourcc="MJ
                             break
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     video_display_and_save(video_input=0)

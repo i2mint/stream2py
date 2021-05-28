@@ -4,10 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>stream2py &#8212; stream2py 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -34,7 +35,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="stream2py">
+  <section id="stream2py">
 <h1>stream2py<a class="headerlink" href="#stream2py" title="Permalink to this headline">¶</a></h1>
 <p>Bring data streams to python, with ease.</p>
 <p>One of the goals of the suite of i2i tools is to get from idea 2
@@ -44,7 +45,7 @@ py2ws, py2dash) to take care of exposing python functions to the world
 (of command line interfaces, webservices, browser dashboards, etc.).</p>
 <p>Here, we address the stream acquisition concern. As always, we aim at
 offering as-simple-as-drawing-a-simple-drawing means to get things done.</p>
-<div class="section" id="reduce-vocabulary-entropy">
+<section id="reduce-vocabulary-entropy">
 <h2>Reduce vocabulary entropy<a class="headerlink" href="#reduce-vocabulary-entropy" title="Permalink to this headline">¶</a></h2>
 <p>One way we do this is by reducing the vocabulary entropy: We don’t want
 to have to think about how every specific source calls a read, or a
@@ -62,8 +63,8 @@ for the stream you want to hook into. And if it’s something new, well
 you’ll have to figure it out, but you then write the adapter once, and
 now you (1) can use the rest of stream2py’s tools and (2) you don’t have
 to do it again.</p>
-</div>
-<div class="section" id="go-back-in-time">
+</section>
+<section id="go-back-in-time">
 <h2>Go back in time<a class="headerlink" href="#go-back-in-time" title="Permalink to this headline">¶</a></h2>
 <p>We also address the problem of impermanence.</p>
 <p>Think of the streams that different sensors such as audio, vibration,
@@ -73,15 +74,15 @@ buffers, but these are typically just big enough to get the data from
 high frequency reads – not enough to have the time for some more
 involved analysis that smart systems require.</p>
 <p>We address this problem by</p>
-</div>
-<div class="section" id="multi-readers">
+</section>
+<section id="multi-readers">
 <h2>Multi readers<a class="headerlink" href="#multi-readers" title="Permalink to this headline">¶</a></h2>
 <p>It often happens that you want to do more than one thing with a stream.
 Say store it, visualize it in real time, and direct it to a analysis
 pipeline. In order for this to be possible with no hiccups, some things
 need to be taken care of. We did, so you don’t have to.</p>
-</div>
-<div class="section" id="timestamp-correctly">
+</section>
+<section id="timestamp-correctly">
 <h2>Timestamp correctly<a class="headerlink" href="#timestamp-correctly" title="Permalink to this headline">¶</a></h2>
 <p>In our extensive experience with people (the write code to store stream
 data), we’ve noticed that many engineers, when faced with the task to
@@ -104,8 +105,8 @@ segments we’ve acquired.</p>
 properly. It does so by having the stream2py buffers mentioned above
 keep data flow statistics that readers can then use to more precisely
 timestamp what they read.</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -173,7 +174,7 @@ timestamp what they read.</p>
       &copy;2020, Andie Shining Phan.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

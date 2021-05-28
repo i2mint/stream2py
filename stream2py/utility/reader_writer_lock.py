@@ -4,7 +4,7 @@
 # Licensed under the MIT License
 import threading
 
-__author__ = "Mateusz Kobos"
+__author__ = 'Mateusz Kobos'
 
 
 class RWLock:
@@ -92,7 +92,9 @@ import copy
 
 
 class Writer(threading.Thread):
-    def __init__(self, buffer_, rw_lock, init_sleep_time, sleep_time, to_write):
+    def __init__(
+        self, buffer_, rw_lock, init_sleep_time, sleep_time, to_write
+    ):
         """
         @param buffer_: common buffer_ shared by the readers and writers
         @type buffer_: list
