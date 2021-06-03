@@ -28,7 +28,7 @@ jobs:
           isee install-requires
 
       - name: Format source code
-        run: black --line-length=88 .
+        run: black  --line-length=88 .
 
       # - name: Validate docstrings
       #   run: pylint ./$PROJECT_NAME --ignore=examples --disable=all --enable=C0114,C0115,C0116
@@ -67,7 +67,7 @@ jobs:
           isee install-requires
 
       - name: Format source code
-        run: black --line-length=88 .
+        run: black  --line-length=88 .
 
       - name: Update version number
         run: |
