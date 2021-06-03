@@ -24,9 +24,7 @@ from stream2py.consumers.video.write import VideoWriter
 from stream2py.consumers.video.show import VideoShow
 
 
-def video_display_and_save(
-    video_input, file_name='VideoWriter.avi', fourcc='MJPG'
-):
+def video_display_and_save(video_input, file_name='VideoWriter.avi', fourcc='MJPG'):
     """Display recording on screen and save to file
 
     TODO: fps info from devices (camera) is not accurate and need to be calculated
@@ -36,9 +34,7 @@ def video_display_and_save(
     :param fourcc: video file encoding
     """
     source_reader = VideoCapture(video_input=video_input)
-    with StreamBuffer(
-        source_reader=source_reader, maxlen=1000
-    ) as stream_buffer:
+    with StreamBuffer(source_reader=source_reader, maxlen=1000) as stream_buffer:
 
         buffer_reader_for_write = stream_buffer.mk_reader()
         frame_size = (

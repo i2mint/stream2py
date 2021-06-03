@@ -104,12 +104,8 @@
         <span class="n">_info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;video_input&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">video_input</span><span class="p">,</span> <span class="s1">&#39;bt&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bt</span><span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_opened</span><span class="p">():</span>
             <span class="n">_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">frame_width</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">video_capture</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">)</span>
-                <span class="p">),</span>
-                <span class="n">frame_height</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">video_capture</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">)</span>
-                <span class="p">),</span>
+                <span class="n">frame_width</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">video_capture</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">)),</span>
+                <span class="n">frame_height</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">video_capture</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">)),</span>
                 <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">video_capture</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">_info</span>

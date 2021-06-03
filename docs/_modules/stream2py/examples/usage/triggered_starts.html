@@ -257,9 +257,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_trigger_string</span><span class="p">(</span>
-                        <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">,</span> <span class="n">index</span>
-                    <span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_trigger_string</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="n">input_reader</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">add_prompt</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">is_started</span> <span class="o">=</span> <span class="kc">True</span>
@@ -290,9 +288,7 @@
     <span class="p">):</span>
         <span class="n">start_index</span> <span class="o">=</span> <span class="n">return_index</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">trigger_string</span><span class="p">)</span>
         <span class="n">stop_index</span> <span class="o">=</span> <span class="n">return_index</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">input_data</span> <span class="o">=</span> <span class="n">input_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span>
-            <span class="n">start</span><span class="o">=</span><span class="n">start_index</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop_index</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
+        <span class="n">input_data</span> <span class="o">=</span> <span class="n">input_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">start_index</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop_index</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">input_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">input_str</span> <span class="o">==</span> <span class="n">trigger_string</span></div>
 
@@ -332,10 +328,7 @@
                     <span class="n">prev_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
                     <span class="n">prev_prompt</span> <span class="o">=</span> <span class="n">prompt</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="p">(</span>
-                        <span class="n">prev_timestamp</span>
-                        <span class="ow">and</span> <span class="n">prev_prompt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span>
-                    <span class="p">):</span>
+                    <span class="k">if</span> <span class="n">prev_timestamp</span> <span class="ow">and</span> <span class="n">prev_prompt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">TypingTest</span><span class="o">.</span><span class="n">PROMPT_END</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">grade</span><span class="p">(</span><span class="n">prev_prompt</span><span class="p">,</span> <span class="n">prev_timestamp</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">grade</span><span class="p">(</span>
@@ -413,24 +406,18 @@
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="n">sources</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">source</span><span class="o">=</span><span class="n">KeyboardInputSourceReader</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span>
-        <span class="p">),</span>
+        <span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">KeyboardInputSourceReader</span><span class="p">(),</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
         <span class="s1">&#39;prompts&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">source</span><span class="o">=</span><span class="n">TypingTest</span><span class="p">(</span><span class="n">prompts</span><span class="o">=</span><span class="n">_TYPING_TEST_PROMPTS</span><span class="p">),</span>
-            <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">TypingTest</span><span class="p">(</span><span class="n">prompts</span><span class="o">=</span><span class="n">_TYPING_TEST_PROMPTS</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">}</span>
     <span class="k">with</span> <span class="n">source_runner</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream_buffers</span><span class="p">:</span>
         <span class="n">consumers</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;switch&#39;</span><span class="p">:</span> <span class="n">PromptSwitch</span><span class="p">(</span>
-                <span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span>
-                <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">],</span>
+                <span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span> <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">],</span>
             <span class="p">),</span>
             <span class="s1">&#39;grader&#39;</span><span class="p">:</span> <span class="n">TestProctor</span><span class="p">(</span>
-                <span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span>
-                <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">],</span>
+                <span class="nb">input</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">],</span> <span class="n">prompts</span><span class="o">=</span><span class="n">stream_buffers</span><span class="p">[</span><span class="s1">&#39;prompts&#39;</span><span class="p">],</span>
             <span class="p">),</span>
         <span class="p">}</span>
         <span class="k">with</span> <span class="n">consumer_runner</span><span class="p">(</span><span class="n">consumers</span><span class="p">):</span>

@@ -81,10 +81,7 @@
 
         <span class="n">socket</span><span class="o">.</span><span class="n">inet_aton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">)</span>  <span class="c1"># validate IP Address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plc_raw_reader</span> <span class="o">=</span> <span class="n">PlcRawRead</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">,</span>
-            <span class="n">rack</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rack</span><span class="p">,</span>
-            <span class="n">slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">,</span>
-            <span class="n">tcp_port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">,</span> <span class="n">rack</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rack</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">,</span> <span class="n">tcp_port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bt</span> <span class="o">=</span> <span class="kc">None</span>
@@ -118,9 +115,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bt</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc_raw_reader</span><span class="o">.</span><span class="n">get_info</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_read_thread</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_data_read_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-                    <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stream_thread</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data_read_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stream_thread</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_data_read_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
@@ -150,9 +145,7 @@
 <div class="viewcode-block" id="PlcReader.key"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/plc.html#stream2py.sources.plc.PlcReader.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_item</span><span class="p">:</span> <span class="n">Any</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
 
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">data_item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_item</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
-            <span class="ow">and</span> <span class="s1">&#39;bt&#39;</span> <span class="ow">in</span> <span class="n">data_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">data_item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_item</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="s1">&#39;bt&#39;</span> <span class="ow">in</span> <span class="n">data_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">),</span> <span class="s1">&#39;Cannot get key because bt is missing from data_item&#39;</span>
 
         <span class="kn">import</span> <span class="nn">operator</span>

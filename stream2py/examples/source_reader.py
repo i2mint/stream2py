@@ -28,9 +28,7 @@ class SimpleCounterString(SourceReader):
 
     @property
     def info(self):
-        return dict(
-            start=self.start, stop=self.stop, open_count=self.open_count
-        )
+        return dict(start=self.start, stop=self.stop, open_count=self.open_count)
 
     def key(self, data):
         return int(data[1:])

@@ -74,16 +74,12 @@ class PlcDataItem:
 
         assert _size != 0, 'Unknown word len'
 
-        print(
-            f'PlcDataItem {self.key}: size = {_size}, amount = {self.amount}'
-        )
+        print(f'PlcDataItem {self.key}: size = {_size}, amount = {self.amount}')
 
         try:
             self.buffer = ctypes.create_string_buffer(_size * self.amount)
         except Exception as ex:
-            print(
-                f'ERROR: Failed to allocate string buffer for item {self.key} : {ex}'
-            )
+            print(f'ERROR: Failed to allocate string buffer for item {self.key} : {ex}')
             return
 
         try:
@@ -113,9 +109,7 @@ class PlcDataItem:
 
 
 class PlcRawRead:
-    def __init__(
-        self, ip_address: str, *, rack: int, slot: int, tcp_port: int = 102
-    ):
+    def __init__(self, ip_address: str, *, rack: int, slot: int, tcp_port: int = 102):
 
         self._plc = snap7.client.Client()
         self._ip_address = ip_address
@@ -126,24 +120,18 @@ class PlcRawRead:
         self.plc_info = {}
 
     def open(self):
-        self._plc.connect(
-            self._ip_address, self._rack, self._slot, self._tcp_port
-        )
+        self._plc.connect(self._ip_address, self._rack, self._slot, self._tcp_port)
         return self._plc.get_connected()
 
     @classmethod
     def todict(cls, struct):
-        return dict(
-            (field, getattr(struct, field)) for field, _ in struct._fields_
-        )
+        return dict((field, getattr(struct, field)) for field, _ in struct._fields_)
 
     def get_info(self):
         if self._plc.get_connected():
 
             with suppress(Snap7Exception):
-                self.plc_info.update(
-                    cpu_info=self.todict(self._plc.get_cpu_info())
-                )
+                self.plc_info.update(cpu_info=self.todict(self._plc.get_cpu_info()))
 
             with suppress(Snap7Exception):
                 self.plc_info.update(cpu_state=self._plc.get_cpu_state())

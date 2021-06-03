@@ -90,9 +90,7 @@ class BufferReader:
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(
-        self, sleep_time_s: Union[int, float] = 0.1
-    ):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -144,9 +142,7 @@ class BufferReader:
         _getlast_item, _setlast_item, _dellast_item, 'last seen item cursor'
     )
 
-    def next(
-        self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False
-    ):
+    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
 
@@ -165,9 +161,7 @@ class BufferReader:
                 else:
                     raise e
             except TypeError as e:  # TypeError: '<' not supported between instances of 'NoneType' and type(key)
-                if (
-                    self.last_item is None
-                ):  # first time reading a value from buffer
+                if self.last_item is None:  # first time reading a value from buffer
                     next_item = reader[0]
                 else:
                     raise e
@@ -218,9 +212,7 @@ class BufferReader:
         """
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
-                _next = self.next(
-                    peek=True, ignore_no_item_found=ignore_no_item_found
-                )
+                _next = self.next(peek=True, ignore_no_item_found=ignore_no_item_found)
                 try:
                     _next_key = reader.key(_next)
                 except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
@@ -257,9 +249,7 @@ class BufferReader:
                     raise e
         return items
 
-    def tail(
-        self, *, peek=False, ignore_no_item_found=False, only_new_items=False
-    ):
+    def tail(self, *, peek=False, ignore_no_item_found=False, only_new_items=False):
         """Finds the last item in buffer. Raise ValueError if no item found.
 
         :param peek: if True, last_item cursor will not be updated
@@ -277,9 +267,7 @@ class BufferReader:
                     else:
                         raise e
                 except TypeError as e:  # TypeError: '>' not supported between instances of type(key) and 'NoneType'
-                    if (
-                        self.last_item is None
-                    ):  # first time reading a value from buffer
+                    if self.last_item is None:  # first time reading a value from buffer
                         item = reader[-1]
                     else:
                         raise e

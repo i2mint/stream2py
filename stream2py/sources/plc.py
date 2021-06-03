@@ -46,10 +46,7 @@ class PlcReader(SourceReader):
 
         socket.inet_aton(self._ip_address)  # validate IP Address
         self._plc_raw_reader = PlcRawRead(
-            self._ip_address,
-            rack=self._rack,
-            slot=self._slot,
-            tcp_port=self._tcp_port,
+            self._ip_address, rack=self._rack, slot=self._slot, tcp_port=self._tcp_port,
         )
 
         self.bt = None
@@ -83,9 +80,7 @@ class PlcReader(SourceReader):
             self._start_time = self.bt
             self.plc_info = self._plc_raw_reader.get_info()
             if self._data_read_thread is None:
-                self._data_read_thread = threading.Thread(
-                    target=self._stream_thread
-                )
+                self._data_read_thread = threading.Thread(target=self._stream_thread)
                 self._data_read_thread.start()
             return True
         return False
@@ -115,9 +110,7 @@ class PlcReader(SourceReader):
     def key(self, data_item: Any or None) -> ComparableType:
 
         assert (
-            data_item is not None
-            and len(data_item) > 0
-            and 'bt' in data_item[0]
+            data_item is not None and len(data_item) > 0 and 'bt' in data_item[0]
         ), 'Cannot get key because bt is missing from data_item'
 
         import operator

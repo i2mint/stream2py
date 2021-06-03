@@ -127,9 +127,7 @@
 
 
 <div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../../../module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">,</span> <span class="n">to_write</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">,</span> <span class="n">to_write</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        @param buffer_: common buffer_ shared by the readers and writers</span>
 <span class="sd">        @type buffer_: list</span>

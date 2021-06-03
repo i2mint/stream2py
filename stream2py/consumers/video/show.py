@@ -45,15 +45,11 @@ if __name__ == '__main__':
     from stream2py.sources.keyboard_input import KeyboardInputSourceReader
 
     source_reader = VideoCapture(video_input=0)
-    with StreamBuffer(
-        source_reader=source_reader, maxlen=1000
-    ) as stream_buffer:
+    with StreamBuffer(source_reader=source_reader, maxlen=1000) as stream_buffer:
         buffer_reader = stream_buffer.mk_reader()
 
         with VideoShow(
-            buffer_reader=buffer_reader,
-            interval=0.001,
-            window_name='show_demo',
+            buffer_reader=buffer_reader, interval=0.001, window_name='show_demo',
         ) as show:
             with StreamBuffer(KeyboardInputSourceReader(), maxlen=100) as key:
                 for idx, ts, char in iter(key):

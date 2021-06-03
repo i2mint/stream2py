@@ -116,17 +116,13 @@ class PyAudioSaver(BufferReaderConsumer):
             self.session_data_path_format, '{timestamp}.wav'
         )
         self.error_path_format = os.path.join(
-            self.session_data_path_format,
-            '{timestamp}_ERROR_{status_flags}.wav',
+            self.session_data_path_format, '{timestamp}_ERROR_{status_flags}.wav',
         )
         self.file = None
 
     def reader_handler(self, buffer_reader: BufferReader):
         new_data_list = buffer_reader.range(
-            start=0,
-            stop=float('inf'),
-            ignore_no_item_found=True,
-            only_new_items=True,
+            start=0, stop=float('inf'), ignore_no_item_found=True, only_new_items=True,
         )
         if new_data_list is not None:
             for (
@@ -150,9 +146,7 @@ class PyAudioSaver(BufferReaderConsumer):
                     )
                 else:
                     if self.file_is_open() is False:
-                        self.open_file(
-                            buffer_reader.source_reader_info, timestamp
-                        )
+                        self.open_file(buffer_reader.source_reader_info, timestamp)
                     self.write_to_file(in_data)
 
     def file_is_open(self) -> bool:
@@ -162,9 +156,7 @@ class PyAudioSaver(BufferReaderConsumer):
         """
         return self.file is not None
 
-    def open_file(
-        self, source_reader_info: dict, timestamp: int
-    ) -> wave.Wave_write:
+    def open_file(self, source_reader_info: dict, timestamp: int) -> wave.Wave_write:
         """open wav file for writing"""
         file_path = self.path_format.format(
             session=source_reader_info['bt'], timestamp=timestamp
@@ -185,9 +177,7 @@ class PyAudioSaver(BufferReaderConsumer):
         nframes = 0
         comptype = 'NONE'
         compname = 'not compressed'
-        file.setparams(
-            (nchannels, sampwidth, framerate, nframes, comptype, compname)
-        )
+        file.setparams((nchannels, sampwidth, framerate, nframes, comptype, compname))
 
     def write_to_file(self, in_data):
         """Write to wav file"""
@@ -262,9 +252,7 @@ def audio_to_files(
         frames_per_buffer=frames_per_buffer,
     )
 
-    with StreamBuffer(
-        source_reader=source_reader, maxlen=maxlen
-    ) as stream_buffer:
+    with StreamBuffer(source_reader=source_reader, maxlen=maxlen) as stream_buffer:
         """keep open and save to file until stop event"""
         buffer_reader = stream_buffer.mk_reader()
         with PyAudioSaver(
@@ -279,9 +267,7 @@ def audio_to_files(
                 pass
 
 
-audio_to_files.list_device_info = (
-    lambda: PyAudioSourceReader.list_device_info()
-)
+audio_to_files.list_device_info = lambda: PyAudioSourceReader.list_device_info()
 
 if __name__ == '__main__':
     audio_to_files(

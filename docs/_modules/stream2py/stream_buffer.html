@@ -156,13 +156,9 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">sleep_time_on_read_none_s</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">source_reader</span><span class="o">.</span><span class="n">sleep_time_on_read_none_s</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">DFLT_SLEEP_TIME_ON_READ_NONE_S</span>  <span class="c1"># default</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">DFLT_SLEEP_TIME_ON_READ_NONE_S</span>  <span class="c1"># default</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
@@ -227,9 +223,7 @@
 <span class="sd">        :return: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -246,10 +240,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
                 <span class="c1"># check if buffer is full and skip read or append</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span>
-                    <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span>
-                <span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
@@ -272,9 +263,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -298,9 +287,7 @@
 
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_count</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">)</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;self&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">)</span>
             <span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">starting_count</span> <span class="o">=</span> <span class="n">starting_count</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -314,9 +301,7 @@
         <span class="nd">@property</span>
         <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">bt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">*</span> <span class="mi">100000</span>
-            <span class="p">)</span>
+            <span class="n">_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">bt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">*</span> <span class="mi">100000</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">_info</span>
 
         <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -341,9 +326,7 @@
         <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
     <span class="p">)</span>  <span class="c1"># reader must be made after start to have data related to said start</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
-    <span class="p">),</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">source_reader_info</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;data as shown is (timestamp, count) at every tenth of a second&#39;</span><span class="p">)</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -352,9 +335,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">break</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">==</span> <span class="n">last_read</span>
-    <span class="p">),</span> <span class="s1">&#39;last_item did not follow last next() call&#39;</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">==</span> <span class="n">last_read</span><span class="p">,</span> <span class="s1">&#39;last_item did not follow last next() call&#39;</span>
 
     <span class="c1"># check range works and last_item cursor is working</span>
     <span class="n">rstart</span> <span class="o">=</span> <span class="mi">5</span>
@@ -379,9 +360,7 @@
     <span class="n">start_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstart</span>  <span class="c1"># 5</span>
     <span class="n">stop_key</span> <span class="o">=</span> <span class="n">source_info</span><span class="p">[</span><span class="s1">&#39;bt&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">rstop</span>  <span class="c1"># 10</span>
     <span class="n">range_data</span> <span class="o">=</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start_key</span><span class="p">,</span> <span class="n">stop_key</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">rstep</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">expected_data_value</span><span class="p">,</span> <span class="n">rdata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-        <span class="nb">range</span><span class="p">(</span><span class="n">rstart</span><span class="p">,</span> <span class="n">rstop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rstep</span><span class="p">),</span> <span class="n">range_data</span>
-    <span class="p">):</span>
+    <span class="k">for</span> <span class="n">expected_data_value</span><span class="p">,</span> <span class="n">rdata</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rstart</span><span class="p">,</span> <span class="n">rstop</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rstep</span><span class="p">),</span> <span class="n">range_data</span><span class="p">):</span>
         <span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">rdata</span>
         <span class="k">assert</span> <span class="n">data</span> <span class="o">==</span> <span class="n">expected_data_value</span><span class="p">,</span> <span class="s1">&#39;wrong data does not match&#39;</span>
     <span class="k">assert</span> <span class="p">(</span>
@@ -390,15 +369,11 @@
 
     <span class="c1"># stop source and check if reader see it</span>
     <span class="n">sc_reader12</span> <span class="o">=</span> <span class="n">sc_buf</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># reader1</span>
-    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_same_buffer</span><span class="p">(</span>
-        <span class="n">sc_reader12</span>
-    <span class="p">),</span> <span class="s1">&#39;first readers should be equal&#39;</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_same_buffer</span><span class="p">(</span><span class="n">sc_reader12</span><span class="p">),</span> <span class="s1">&#39;first readers should be equal&#39;</span>
     <span class="k">assert</span> <span class="p">(</span>
         <span class="n">sc_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">!=</span> <span class="n">sc_reader12</span><span class="o">.</span><span class="n">last_item</span>
     <span class="p">),</span> <span class="s1">&#39;first readers should have a different last_item cursor position&#39;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">False</span>
-    <span class="p">),</span> <span class="s1">&#39;Reader should see source is not stopped&#39;</span>
+    <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Reader should see source is not stopped&#39;</span>
     <span class="n">sc_buf</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
     <span class="k">assert</span> <span class="n">sc_reader</span><span class="o">.</span><span class="n">is_stopped</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Reader should see source is stopped&#39;</span>
 

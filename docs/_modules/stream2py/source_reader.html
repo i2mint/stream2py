@@ -112,9 +112,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SourceReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.SourceReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="SourceReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.SourceReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 
 <span class="sd">        :param sleep_time_s: seconds to sleep</span>
@@ -183,9 +181,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
-        <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>  <span class="c1"># to microseconds</span>
+    <span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>  <span class="c1"># to microseconds</span>
 
 <div class="viewcode-block" id="SourceReader.get_timestamp"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.SourceReader.get_timestamp">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>

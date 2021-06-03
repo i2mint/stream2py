@@ -13,9 +13,7 @@ DFLT_CONFIG_SECTION = 'metadata'
 
 # TODO: postprocess_ini_section_items and preprocess_ini_section_items: Add comma separated possibility?
 # TODO: Find out if configparse has an option to do this processing alreadys
-def postprocess_ini_section_items(
-    items: Union[Mapping, Iterable]
-) -> Generator:
+def postprocess_ini_section_items(items: Union[Mapping, Iterable]) -> Generator:
     r"""Transform newline-separated string values into actual list of strings (assuming that intent)
 
     >>> section_from_ini = {
@@ -34,9 +32,7 @@ def postprocess_ini_section_items(
         if v.startswith('\n'):
             v = splitter_re.split(v[1:])
             v = [vv.strip() for vv in v if vv.strip()]
-            v = [
-                vv for vv in v if not vv.startswith('#')
-            ]  # remove commented lines
+            v = [vv for vv in v if not vv.startswith('#')]  # remove commented lines
         yield k, v
 
 
@@ -104,9 +100,7 @@ def increment_version(version_str):
     return '.'.join(map(str, version_nums))
 
 
-DLFT_PYPI_PACKAGE_JSON_URL_TEMPLATE = (
-    'https://pypi.python.org/pypi/{package}/json'
-)
+DLFT_PYPI_PACKAGE_JSON_URL_TEMPLATE = 'https://pypi.python.org/pypi/{package}/json'
 
 
 # TODO: Perhaps there's a safer way to analyze errors (and determine if the package exists or other HTTPError)
@@ -132,9 +126,7 @@ def current_pypi_version(
             t = json.loads(r.read())
             releases = t.get('releases', [])
             if releases:
-                return sorted(
-                    releases, key=lambda r: tuple(map(int, r.split('.')))
-                )[-1]
+                return sorted(releases, key=lambda r: tuple(map(int, r.split('.'))))[-1]
         else:
             raise ValueError(f'response code was {r.code}')
     except HTTPError:
@@ -159,13 +151,9 @@ def my_setup(**setup_kwargs):
     from setuptools import setup
     import json
 
-    print(
-        'Setup params -------------------------------------------------------'
-    )
+    print('Setup params -------------------------------------------------------')
     print(json.dumps(setup_kwargs, indent=2))
-    print(
-        '--------------------------------------------------------------------'
-    )
+    print('--------------------------------------------------------------------')
     setup(**setup_kwargs)
 
 
@@ -223,10 +211,7 @@ partial_formatter = PartialFormatter()
 
 def _unformatted(d):
     for k, v in d.items():
-        if (
-            isinstance(v, str)
-            and len(partial_formatter.format_fields_set(v)) > 0
-        ):
+        if isinstance(v, str) and len(partial_formatter.format_fields_set(v)) > 0:
             yield k
 
 

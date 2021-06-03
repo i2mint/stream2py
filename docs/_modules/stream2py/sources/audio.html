@@ -272,9 +272,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_ITEMGETTER_0</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PyAudioSourceReader.data_to_append"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.PyAudioSourceReader.data_to_append">[docs]</a>    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="PyAudioSourceReader.data_to_append"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.PyAudioSourceReader.data_to_append">[docs]</a>    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Can to be overloaded to change the shape of read outputs by altering the return value.</span>
 <span class="sd">        The key function must also be overloaded to return timestamp from the new shape.</span>
 
@@ -339,8 +337,7 @@
 
         <span class="n">_frame_time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span>
-            <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -389,8 +386,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pyaudio</span><span class="p">()</span> <span class="k">as</span> <span class="n">pa</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
-                <span class="n">pa</span><span class="o">.</span><span class="n">get_device_info_by_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">get_device_count</span><span class="p">())</span>
+                <span class="n">pa</span><span class="o">.</span><span class="n">get_device_info_by_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">get_device_count</span><span class="p">())</span>
             <span class="p">]</span></div>
 
 <div class="viewcode-block" id="PyAudioSourceReader.audio_buffer_size_seconds_to_maxlen"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.PyAudioSourceReader.audio_buffer_size_seconds_to_maxlen">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -411,9 +407,7 @@
     <span class="k">def</span> <span class="nf">list_recording_devices</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List names of available recording devices&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">list_device_info</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;maxInputChannels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">list_device_info</span><span class="p">()</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;maxInputChannels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="p">)</span></div></div>
 
 
@@ -449,17 +443,14 @@
 
         <span class="n">_frame_time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span>
-            <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">PaStatusFlags</span><span class="p">(</span><span class="n">status_flags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">PaStatusFlags</span><span class="o">.</span><span class="n">paNoError</span><span class="p">:</span>
             <span class="c1"># reset frame index and thus self._start_time on any error status</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">timestamp</span>  <span class="c1"># track when errors started</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>  <span class="c1"># track when errors started</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_error_status_flag</span> <span class="o">=</span> <span class="n">PaStatusFlags</span><span class="p">(</span>
                     <span class="n">status_flags</span>
                 <span class="p">)</span>  <span class="c1"># track what errors occured</span>
@@ -471,10 +462,7 @@
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">):</span>  <span class="c1"># first ok status after there was an error status</span>
-                <span class="p">(</span>
-                    <span class="n">zeroed_data</span><span class="p">,</span>
-                    <span class="n">zeroed_count</span><span class="p">,</span>
-                <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_time_interval_with_zeroes</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">zeroed_data</span><span class="p">,</span> <span class="n">zeroed_count</span><span class="p">,)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_time_interval_with_zeroes</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span><span class="p">,</span> <span class="n">timestamp</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -508,13 +496,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">single_zero_sample</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span>
-            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span>
-            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+            <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
         <span class="p">)</span>  <span class="c1"># interleaved zeros</span>
         <span class="n">samples_per_time_unit</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
-            <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
         <span class="p">)</span>
 
         <span class="n">delta_time</span> <span class="o">=</span> <span class="n">first_ok_status_ts</span> <span class="o">-</span> <span class="n">first_error_status_ts</span>
@@ -555,17 +540,14 @@
 
         <span class="n">_frame_time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_index</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
         <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span>
-            <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">+</span> <span class="n">_frame_time_s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">PaStatusFlags</span><span class="p">(</span><span class="n">status_flags</span><span class="p">)</span> <span class="o">!=</span> <span class="n">PaStatusFlags</span><span class="o">.</span><span class="n">paNoError</span><span class="p">:</span>
             <span class="c1"># reset frame index and thus self._start_time on any error status</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">timestamp</span>  <span class="c1"># track when errors started</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_first_error_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>  <span class="c1"># track when errors started</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_error_status_flag</span> <span class="o">=</span> <span class="n">PaStatusFlags</span><span class="p">(</span>
                     <span class="n">status_flags</span>
                 <span class="p">)</span>  <span class="c1"># track what errors occured</span>
@@ -616,8 +598,7 @@
             <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="n">samples_per_time_unit</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span>
-            <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">[</span><span class="s1">&#39;rate&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span>
         <span class="p">)</span>
 
         <span class="n">delta_time</span> <span class="o">=</span> <span class="n">first_ok_status_ts</span> <span class="o">-</span> <span class="n">first_error_status_ts</span>
@@ -629,9 +610,7 @@
 <div class="viewcode-block" id="DictDataMixin"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.DictDataMixin">[docs]</a><span class="k">class</span> <span class="nc">DictDataMixin</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Mixin to reduce data to a dict with bt, wf, and status_flag. Removing typically discarded information.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="DictDataMixin.data_to_append"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.DictDataMixin.data_to_append">[docs]</a>    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span>
-    <span class="p">):</span>
+<div class="viewcode-block" id="DictDataMixin.data_to_append"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.DictDataMixin.data_to_append">[docs]</a>    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simplify data only</span>
 
 <span class="sd">        :param timestamp: start time of waveform</span>
@@ -654,9 +633,7 @@
 <div class="viewcode-block" id="RaiseRuntimeErrorOnStatusFlagMixin"><a class="viewcode-back" href="../../../sources.html#stream2py.sources.audio.RaiseRuntimeErrorOnStatusFlagMixin">[docs]</a><span class="k">class</span> <span class="nc">RaiseRuntimeErrorOnStatusFlagMixin</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Mixin to raise RuntimeError when status_flag is not PaStatusFlags.paNoError (0)&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">data_to_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">PaStatusFlags</span><span class="o">.</span><span class="n">paNoError</span> <span class="o">!=</span> <span class="n">PaStatusFlags</span><span class="p">(</span><span class="n">status_flags</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">PaStatusFlags</span><span class="p">(</span><span class="n">status_flags</span><span class="p">))</span>
 
@@ -699,11 +676,7 @@
     <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
     <span class="n">source</span> <span class="o">=</span> <span class="n">readerClass</span><span class="p">(</span>
-        <span class="n">rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>
-        <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">input_device_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">frames_per_buffer</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+        <span class="n">rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">input_device_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frames_per_buffer</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">pprint</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>

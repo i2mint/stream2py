@@ -107,9 +107,7 @@ if __name__ == '__main__':
             f'{"Blocking" if is_blocking is True else "Non-blocking"} getch! Press any key! Esc to quit!'
         )
         i = 0
-        getch_func = (
-            getch.blocking if is_blocking is True else getch.non_blocking
-        )
+        getch_func = getch.blocking if is_blocking is True else getch.non_blocking
         while True:
             char = getch_func()
             if char or i % 15000 == 0:

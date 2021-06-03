@@ -86,9 +86,7 @@ class SortedDeque(SortedCollection):
         k = self._key(item)
         i = bisect_left(self._keys, k)
         j = bisect_right(self._keys, k)
-        return sum(
-            1 for chk_item in islice(self._items, i, j) if chk_item == item
-        )
+        return sum(1 for chk_item in islice(self._items, i, j) if chk_item == item)
 
     def append(self, item):
         """Append item to the end.  Raise ValueError if item key is less than last item key"""
@@ -96,8 +94,7 @@ class SortedDeque(SortedCollection):
         try:
             if k <= self._keys[-1]:
                 raise ValueError(
-                    'Item key must be greater than last item key to append: %r'
-                    % (k,)
+                    'Item key must be greater than last item key to append: %r' % (k,)
                 )
         except IndexError as e:
             if len(self._keys) != 0:
@@ -211,22 +208,12 @@ if __name__ == '__main__':
             sc = SortedDeque(s)
             s.sort()
             for probe in pool:
-                assert repr(ve2no(sc.index, probe)) == repr(
-                    slow_index(s, probe)
-                )
+                assert repr(ve2no(sc.index, probe)) == repr(slow_index(s, probe))
                 assert repr(ve2no(sc.find, probe)) == repr(slow_find(s, probe))
-                assert repr(ve2no(sc.find_le, probe)) == repr(
-                    slow_find_le(s, probe)
-                )
-                assert repr(ve2no(sc.find_lt, probe)) == repr(
-                    slow_find_lt(s, probe)
-                )
-                assert repr(ve2no(sc.find_ge, probe)) == repr(
-                    slow_find_ge(s, probe)
-                )
-                assert repr(ve2no(sc.find_gt, probe)) == repr(
-                    slow_find_gt(s, probe)
-                )
+                assert repr(ve2no(sc.find_le, probe)) == repr(slow_find_le(s, probe))
+                assert repr(ve2no(sc.find_lt, probe)) == repr(slow_find_lt(s, probe))
+                assert repr(ve2no(sc.find_ge, probe)) == repr(slow_find_ge(s, probe))
+                assert repr(ve2no(sc.find_gt, probe)) == repr(slow_find_gt(s, probe))
             for i, item in enumerate(s):
                 assert repr(item) == repr(sc[i])  # test __getitem__
                 assert item in sc  # test __contains__ and __iter__

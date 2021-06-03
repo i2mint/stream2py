@@ -237,9 +237,7 @@ class PyAudioSourceReader(SourceReader):
         """
         return _ITEMGETTER_0(data)
 
-    def data_to_append(
-        self, timestamp, waveform, frame_count, time_info, status_flags
-    ):
+    def data_to_append(self, timestamp, waveform, frame_count, time_info, status_flags):
         """Can to be overloaded to change the shape of read outputs by altering the return value.
         The key function must also be overloaded to return timestamp from the new shape.
 
@@ -304,8 +302,7 @@ class PyAudioSourceReader(SourceReader):
 
         _frame_time_s = self.frame_index / self._init_kwargs['rate']
         timestamp = int(
-            self._start_time
-            + _frame_time_s * self.timestamp_seconds_to_unit_conversion
+            self._start_time + _frame_time_s * self.timestamp_seconds_to_unit_conversion
         )
 
         self.data.append(
@@ -354,8 +351,7 @@ class PyAudioSourceReader(SourceReader):
         """
         with cls._pyaudio() as pa:
             return [
-                pa.get_device_info_by_index(idx)
-                for idx in range(pa.get_device_count())
+                pa.get_device_info_by_index(idx) for idx in range(pa.get_device_count())
             ]
 
     @staticmethod
@@ -376,9 +372,7 @@ class PyAudioSourceReader(SourceReader):
     def list_recording_devices(cls):
         """List names of available recording devices"""
         return sorted(
-            d['name']
-            for d in cls.list_device_info()
-            if d['maxInputChannels'] > 0
+            d['name'] for d in cls.list_device_info() if d['maxInputChannels'] > 0
         )
 
 
@@ -414,17 +408,14 @@ class FillErrorWithZeroesMixin:
 
         _frame_time_s = self.frame_index / self._init_kwargs['rate']
         timestamp = int(
-            self._start_time
-            + _frame_time_s * self.timestamp_seconds_to_unit_conversion
+            self._start_time + _frame_time_s * self.timestamp_seconds_to_unit_conversion
         )
 
         if PaStatusFlags(status_flags) != PaStatusFlags.paNoError:
             # reset frame index and thus self._start_time on any error status
             self.frame_index = 0
             if self._first_error_timestamp is None:
-                self._first_error_timestamp = (
-                    timestamp  # track when errors started
-                )
+                self._first_error_timestamp = timestamp  # track when errors started
                 self._error_status_flag = PaStatusFlags(
                     status_flags
                 )  # track what errors occured
@@ -436,10 +427,7 @@ class FillErrorWithZeroesMixin:
             if (
                 self._first_error_timestamp is not None
             ):  # first ok status after there was an error status
-                (
-                    zeroed_data,
-                    zeroed_count,
-                ) = self._fill_time_interval_with_zeroes(
+                (zeroed_data, zeroed_count,) = self._fill_time_interval_with_zeroes(
                     self._first_error_timestamp, timestamp
                 )
                 self.data.append(
@@ -473,13 +461,10 @@ class FillErrorWithZeroesMixin:
         """
 
         single_zero_sample = (
-            b'\x00'
-            * self._init_kwargs['channels']
-            * self._init_kwargs['width']
+            b'\x00' * self._init_kwargs['channels'] * self._init_kwargs['width']
         )  # interleaved zeros
         samples_per_time_unit = (
-            self._init_kwargs['rate']
-            / self.timestamp_seconds_to_unit_conversion
+            self._init_kwargs['rate'] / self.timestamp_seconds_to_unit_conversion
         )
 
         delta_time = first_ok_status_ts - first_error_status_ts
@@ -520,17 +505,14 @@ class FillErrorWithOnesMixin:
 
         _frame_time_s = self.frame_index / self._init_kwargs['rate']
         timestamp = int(
-            self._start_time
-            + _frame_time_s * self.timestamp_seconds_to_unit_conversion
+            self._start_time + _frame_time_s * self.timestamp_seconds_to_unit_conversion
         )
 
         if PaStatusFlags(status_flags) != PaStatusFlags.paNoError:
             # reset frame index and thus self._start_time on any error status
             self.frame_index = 0
             if self._first_error_timestamp is None:
-                self._first_error_timestamp = (
-                    timestamp  # track when errors started
-                )
+                self._first_error_timestamp = timestamp  # track when errors started
                 self._error_status_flag = PaStatusFlags(
                     status_flags
                 )  # track what errors occured
@@ -581,8 +563,7 @@ class FillErrorWithOnesMixin:
             * self._init_kwargs['channels']
         )
         samples_per_time_unit = (
-            self._init_kwargs['rate']
-            / self.timestamp_seconds_to_unit_conversion
+            self._init_kwargs['rate'] / self.timestamp_seconds_to_unit_conversion
         )
 
         delta_time = first_ok_status_ts - first_error_status_ts
@@ -594,9 +575,7 @@ class FillErrorWithOnesMixin:
 class DictDataMixin:
     """Mixin to reduce data to a dict with bt, wf, and status_flag. Removing typically discarded information."""
 
-    def data_to_append(
-        self, timestamp, waveform, frame_count, time_info, status_flags
-    ):
+    def data_to_append(self, timestamp, waveform, frame_count, time_info, status_flags):
         """Simplify data only
 
         :param timestamp: start time of waveform
@@ -619,9 +598,7 @@ class DictDataMixin:
 class RaiseRuntimeErrorOnStatusFlagMixin:
     """Mixin to raise RuntimeError when status_flag is not PaStatusFlags.paNoError (0)"""
 
-    def data_to_append(
-        self, timestamp, waveform, frame_count, time_info, status_flags
-    ):
+    def data_to_append(self, timestamp, waveform, frame_count, time_info, status_flags):
         if PaStatusFlags.paNoError != PaStatusFlags(status_flags):
             raise RuntimeError(PaStatusFlags(status_flags))
 
@@ -664,11 +641,7 @@ def _test_run_PyAudioSourceReader(
     from pprint import pprint
 
     source = readerClass(
-        rate=44100,
-        width=2,
-        channels=1,
-        input_device_index=0,
-        frames_per_buffer=4096,
+        rate=44100, width=2, channels=1, input_device_index=0, frames_per_buffer=4096,
     )
     pprint(source.info)
     try:

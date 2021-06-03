@@ -109,16 +109,12 @@
 
         <span class="k">assert</span> <span class="n">_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Unknown word len&#39;</span>
 
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;PlcDataItem </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">: size = </span><span class="si">{</span><span class="n">_size</span><span class="si">}</span><span class="s1">, amount = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="si">}</span><span class="s1">&#39;</span>
-        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PlcDataItem </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">: size = </span><span class="si">{</span><span class="n">_size</span><span class="si">}</span><span class="s1">, amount = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">create_string_buffer</span><span class="p">(</span><span class="n">_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;ERROR: Failed to allocate string buffer for item </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ERROR: Failed to allocate string buffer for item </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -148,9 +144,7 @@
 
 
 <span class="k">class</span> <span class="nc">PlcRawRead</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rack</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">slot</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tcp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">102</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip_address</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rack</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">slot</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">tcp_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">102</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span> <span class="o">=</span> <span class="n">snap7</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span> <span class="o">=</span> <span class="n">ip_address</span>
@@ -161,24 +155,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ip_address</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tcp_port</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_connected</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">todict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">struct</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">struct</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">struct</span><span class="o">.</span><span class="n">_fields_</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">field</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">struct</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">struct</span><span class="o">.</span><span class="n">_fields_</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_connected</span><span class="p">():</span>
 
             <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">Snap7Exception</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="n">cpu_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">todict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_cpu_info</span><span class="p">())</span>
-                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cpu_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">todict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_cpu_info</span><span class="p">()))</span>
 
             <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span><span class="n">Snap7Exception</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">plc_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cpu_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plc</span><span class="o">.</span><span class="n">get_cpu_state</span><span class="p">())</span>

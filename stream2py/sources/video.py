@@ -69,12 +69,8 @@ class VideoCapture(SourceReader):
         _info = {'video_input': self.video_input, 'bt': self._bt}
         if self.is_opened():
             _info.update(
-                frame_width=int(
-                    self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
-                ),
-                frame_height=int(
-                    self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
-                ),
+                frame_width=int(self.video_capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
+                frame_height=int(self.video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)),
                 fps=self.video_capture.get(cv2.CAP_PROP_FPS),
             )
         return _info

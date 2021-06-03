@@ -222,9 +222,7 @@ class PromptSwitch(threading.Thread):
                     self.stop()
                     break
                 elif self.is_started is False:
-                    if self._check_trigger_string(
-                        'start', input_reader, index
-                    ):
+                    if self._check_trigger_string('start', input_reader, index):
                         self.prompts.start()
                         self.prompts.source_reader.add_prompt()
                         self.is_started = True
@@ -255,9 +253,7 @@ class PromptSwitch(threading.Thread):
     ):
         start_index = return_index - len(trigger_string)
         stop_index = return_index - 1
-        input_data = input_reader.range(
-            start=start_index, stop=stop_index, peek=True
-        )
+        input_data = input_reader.range(start=start_index, stop=stop_index, peek=True)
         input_str = ''.join(c for i, t, c in input_data)
         return input_str == trigger_string
 
@@ -297,10 +293,7 @@ class TestProctor(threading.Thread):
                     prev_timestamp = timestamp
                     prev_prompt = prompt
                 else:
-                    if (
-                        prev_timestamp
-                        and prev_prompt is not TypingTest.PROMPT_END
-                    ):
+                    if prev_timestamp and prev_prompt is not TypingTest.PROMPT_END:
                         self.grade(prev_prompt, prev_timestamp, float('inf'))
 
     def grade(
@@ -378,24 +371,18 @@ def consumer_runner(consumers: dict):
 
 def main():
     sources = {
-        'input': dict(
-            source=KeyboardInputSourceReader(), start=True, maxlen=None
-        ),
+        'input': dict(source=KeyboardInputSourceReader(), start=True, maxlen=None),
         'prompts': dict(
-            source=TypingTest(prompts=_TYPING_TEST_PROMPTS),
-            start=False,
-            maxlen=None,
+            source=TypingTest(prompts=_TYPING_TEST_PROMPTS), start=False, maxlen=None,
         ),
     }
     with source_runner(sources) as stream_buffers:
         consumers = {
             'switch': PromptSwitch(
-                input=stream_buffers['input'],
-                prompts=stream_buffers['prompts'],
+                input=stream_buffers['input'], prompts=stream_buffers['prompts'],
             ),
             'grader': TestProctor(
-                input=stream_buffers['input'],
-                prompts=stream_buffers['prompts'],
+                input=stream_buffers['input'], prompts=stream_buffers['prompts'],
             ),
         }
         with consumer_runner(consumers):

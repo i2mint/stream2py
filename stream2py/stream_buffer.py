@@ -121,13 +121,9 @@ class StreamBuffer:
         if isinstance(sleep_time_on_read_none_s, (int, float)):
             self._sleep_time_on_read_none_s = sleep_time_on_read_none_s
         elif isinstance(source_reader.sleep_time_on_read_none_s, (int, float)):
-            self._sleep_time_on_read_none_s = (
-                source_reader.sleep_time_on_read_none_s
-            )
+            self._sleep_time_on_read_none_s = source_reader.sleep_time_on_read_none_s
         else:
-            self._sleep_time_on_read_none_s = (
-                DFLT_SLEEP_TIME_ON_READ_NONE_S  # default
-            )
+            self._sleep_time_on_read_none_s = DFLT_SLEEP_TIME_ON_READ_NONE_S  # default
 
         self._stop_event = None
         self.source_buffer = None
@@ -192,9 +188,7 @@ class StreamBuffer:
         :return: bool
         """
         with self.start_lock:
-            return (
-                self._stop_event is not None and not self._stop_event.is_set()
-            )
+            return self._stop_event is not None and not self._stop_event.is_set()
 
     @property
     def join(self):
@@ -211,10 +205,7 @@ class StreamBuffer:
         try:
             while not self._stop_event.is_set():
                 # check if buffer is full and skip read or append
-                if (
-                    self.auto_drop is True
-                    or len(self.source_buffer) < self._maxlen
-                ):
+                if self.auto_drop is True or len(self.source_buffer) < self._maxlen:
                     data = self.source_reader.read()
                 else:
                     data = None
@@ -237,9 +228,7 @@ class StreamBuffer:
         if self._stop_event and not self._stop_event.is_set():
             self.stop()
         self.source_buffer = None
-        self._read_to_buffer_thread = threading.Thread(
-            target=self._run, daemon=True
-        )
+        self._read_to_buffer_thread = threading.Thread(target=self._run, daemon=True)
         self._stop_event = threading.Event()
 
     def _open(self):
@@ -263,9 +252,7 @@ if __name__ == '__main__':
 
         def __init__(self, starting_count=0):
             self._init_kwargs = {
-                k: v
-                for k, v in locals().items()
-                if k not in ('self', '__class__')
+                k: v for k, v in locals().items() if k not in ('self', '__class__')
             }
             self.starting_count = starting_count
             self._count = 0
@@ -279,9 +266,7 @@ if __name__ == '__main__':
         @property
         def info(self):
             _info = self._init_kwargs.copy()
-            _info.update(
-                name=self.__class__.__name__, bt=self._start_time * 100000
-            )
+            _info.update(name=self.__class__.__name__, bt=self._start_time * 100000)
             return _info
 
         def close(self):
@@ -306,9 +291,7 @@ if __name__ == '__main__':
         sc_buf.mk_reader()
     )  # reader must be made after start to have data related to said start
     time.sleep(2)
-    assert (
-        sc_reader.source_reader_info['bt'] != 0
-    ), sc_reader.source_reader_info
+    assert sc_reader.source_reader_info['bt'] != 0, sc_reader.source_reader_info
     print('data as shown is (timestamp, count) at every tenth of a second')
     while True:
         x = sc_reader.next(ignore_no_item_found=True)
@@ -317,9 +300,7 @@ if __name__ == '__main__':
             print(x)
         else:
             break
-    assert (
-        sc_reader.last_item == last_read
-    ), 'last_item did not follow last next() call'
+    assert sc_reader.last_item == last_read, 'last_item did not follow last next() call'
 
     # check range works and last_item cursor is working
     rstart = 5
@@ -344,9 +325,7 @@ if __name__ == '__main__':
     start_key = source_info['bt'] + 1e5 * rstart  # 5
     stop_key = source_info['bt'] + 1e5 * rstop  # 10
     range_data = sc_reader.range(start_key, stop_key, step=rstep, peek=True)
-    for expected_data_value, rdata in zip(
-        range(rstart, rstop + 1, rstep), range_data
-    ):
+    for expected_data_value, rdata in zip(range(rstart, rstop + 1, rstep), range_data):
         timestamp, data = rdata
         assert data == expected_data_value, 'wrong data does not match'
     assert (
@@ -355,15 +334,11 @@ if __name__ == '__main__':
 
     # stop source and check if reader see it
     sc_reader12 = sc_buf.mk_reader()  # reader1
-    assert sc_reader.is_same_buffer(
-        sc_reader12
-    ), 'first readers should be equal'
+    assert sc_reader.is_same_buffer(sc_reader12), 'first readers should be equal'
     assert (
         sc_reader.last_item != sc_reader12.last_item
     ), 'first readers should have a different last_item cursor position'
-    assert (
-        sc_reader.is_stopped is False
-    ), 'Reader should see source is not stopped'
+    assert sc_reader.is_stopped is False, 'Reader should see source is not stopped'
     sc_buf.stop()
     assert sc_reader.is_stopped is True, 'Reader should see source is stopped'
 
