@@ -195,8 +195,10 @@ class PyAudioSourceReader(SourceReader):
 
         >>> from stream2py.sources.audio import PyAudioSourceReader
         >>> from pprint import pprint
-        >>> source = PyAudioSourceReader(rate=44100, width=2, channels=1, input_device_index=7, frames_per_buffer=4096)
-        >>> source.open()
+        >>> source = PyAudioSourceReader(
+        ... rate=44100, width=2, channels=1,
+        ... input_device_index=7, frames_per_buffer=4096)  # doctest: +SKIP
+        >>> source.open()  # doctest: +SKIP
         >>> pprint(source.info) # doctest: +SKIP
         {'bt': 1582851038965183,
          'channels': 1,
@@ -216,7 +218,7 @@ class PyAudioSourceReader(SourceReader):
          'rate': 44100,
          'unsigned': True,
          'width': 2}
-        >>> source.close()
+        >>> source.close()  # doctest: +SKIP
 
         :return: dict
         """
