@@ -14,7 +14,7 @@ if __name__ == '__main__':
     maxlen = PyAudioSourceReader.audio_buffer_size_seconds_to_maxlen(
         buffer_size_seconds=seconds_to_keep_in_stream_buffer,
         rate=rate,
-        frames_per_buffer=frames_per_buffer
+        frames_per_buffer=frames_per_buffer,
     )
     audio_source_reader = PyAudioSourceReader(
         rate=rate,
@@ -25,8 +25,12 @@ if __name__ == '__main__':
         frames_per_buffer=frames_per_buffer,
     )
 
-    with StreamBuffer(source_reader=audio_source_reader, maxlen=maxlen) as audio_stream_buffer:
-        with StreamBuffer(source_reader=KeyboardInputSourceReader(), maxlen=maxlen) as keyboard_stream_buffer:
+    with StreamBuffer(
+        source_reader=audio_source_reader, maxlen=maxlen
+    ) as audio_stream_buffer:
+        with StreamBuffer(
+            source_reader=KeyboardInputSourceReader(), maxlen=maxlen
+        ) as keyboard_stream_buffer:
             audio_buffer_reader = audio_stream_buffer.mk_reader()
             keyboard_buffer_reader = keyboard_stream_buffer.mk_reader()
 
@@ -43,5 +47,14 @@ if __name__ == '__main__':
                         break
 
                 if audio_data is not None:
-                    audio_timestamp, waveform, frame_count, time_info, status_flags = audio_data
-                    print(f'   [Audio] {audio_timestamp}:  {len(waveform)=} {type(waveform).__name__}', end='\n\r')
+                    (
+                        audio_timestamp,
+                        waveform,
+                        frame_count,
+                        time_info,
+                        status_flags,
+                    ) = audio_data
+                    print(
+                        f'   [Audio] {audio_timestamp}:  {len(waveform)=} {type(waveform).__name__}',
+                        end='\n\r',
+                    )
