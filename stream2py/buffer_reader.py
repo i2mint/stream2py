@@ -90,6 +90,9 @@ class BufferReader:
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
+    def __next__(self):
+        return self.next(ignore_no_item_found=True)
+
     def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
