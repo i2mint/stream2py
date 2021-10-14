@@ -67,6 +67,74 @@ from stream2py.utility.typing_hints import Generator, ComparableType, List
 _ITEMGETTER_0 = operator.itemgetter(0)
 
 
+def list_recording_device_index_names():
+    """List (index, name) of available recording devices"""
+    return sorted(
+        (d['index'], d['name'])
+        for d in PyAudioSourceReader.list_device_info()
+        if d['maxInputChannels'] > 0
+    )
+
+
+def _a_pyaudio_source_reader_can_be_constructed(
+    input_device_index,
+    rate=44100,
+    width=2,
+    unsigned=True,
+    channels=1,
+    frames_per_buffer=1024,
+) -> bool:
+    try:
+        PyAudioSourceReader(**locals())
+        return True
+    except ValueError:
+        return False
+
+
+# TODO: Merge with find_a_device_index
+def find_a_default_input_device_index(verbose=True):
+    """Try to find a device (index) that might work for audio input.
+    Look for one that has 'microphone' in it's name, if not 'mic', and if not, as a last
+    resort, just anything for which a PyAudioSourceReader can be made.
+    """
+    for index, name in list_recording_device_index_names():
+        if 'microphone' in name.lower():
+            if verbose:
+                print(
+                    f'Found {name}. '
+                    f"Will use it as the default input device. It's index is {index}"
+                )
+            return index
+    for index, name in list_recording_device_index_names():
+        if 'mic' in name.lower():
+            if verbose:
+                print(
+                    f'Found {name}. '
+                    f"Will use it as the default input device. It's index is {index}"
+                )
+            return index
+    for index, name in list_recording_device_index_names():
+        if _a_pyaudio_source_reader_can_be_constructed(index):
+            if verbose:
+                print(
+                    f'Found {name}. '
+                    f"Will use it as the default input device. It's index is {index}"
+                )
+            return index
+
+
+# TODO: Test and merge with find_a_default_input_device_index
+def find_a_device_index(filt='microphone', dflt=None):
+    if isinstance(filt, str):
+        match_str = filt
+
+        def filt(x):
+            return match_str in x.get('name', match_str).lower()
+
+    match = next(filter(filt, PyAudioSourceReader.list_device_info()), None)
+    return (match is not None and match['index']) or dflt
+
+
 class PaStatusFlags(IntFlag):
     """Enum to check status_flag for error codes
 
@@ -111,7 +179,7 @@ class PyAudioSourceReader(SourceReader):
         unsigned=True,
         channels=1,
         input_device_index=None,
-        frames_per_buffer=1024
+        frames_per_buffer=1024,
     ):
         """
 
