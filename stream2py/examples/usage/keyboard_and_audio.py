@@ -1,15 +1,48 @@
+"""Example of processing audio and keyboard streams"""
+from typing import Callable, NewType, Any
 from stream2py.stream_buffer import StreamBuffer
 from stream2py.sources.keyboard_input import KeyboardInputSourceReader
-from stream2py.sources.audio import PyAudioSourceReader
+from stream2py.sources.audio import (
+    PyAudioSourceReader,
+    find_a_default_input_device_index,
+)
+
+
+AudioData = NewType('', Any)
+KeyboardData = NewType('', Any)
+AudioDataCallback = Callable[[AudioData], Any]
+KeyboardDataCallback = Callable[[KeyboardData], Any]
+
+
+def default_audio_callback(audio_data):
+    if audio_data is not None:
+        (audio_timestamp, waveform, frame_count, time_info, status_flags,) = audio_data
+        print(
+            f'   [Audio] {audio_timestamp}: {len(waveform)=} {type(waveform).__name__}',
+            end='\n\r',
+        )
+
+
+def default_keyboard_event_callback(keyboard_data):
+    if keyboard_data is not None:
+        index, keyboard_timestamp, char = keyboard_data
+        print(f'[Keyboard] {keyboard_timestamp}: {char}', end='\n\r')
+
+        if char == '\x1b':  # ESC key
+            return True
+        else:
+            return False
 
 
 def keyboard_and_audio(
-    input_device_index=0,  # find index with PyAudioSourceReader.list_device_info()
+    input_device_index=None,  # find index with PyAudioSourceReader.list_device_info()
     rate=44100,
     width=2,
     channels=1,
     frames_per_buffer=44100,  # same as sample rate for 1 second intervals
     seconds_to_keep_in_stream_buffer=60,
+    audio_data_callback: AudioDataCallback = default_audio_callback,
+    keyboard_data_callback: KeyboardDataCallback = default_keyboard_event_callback,
 ):
     """Starts two independent streams: one for audio and another for keyboard inputs.
     Prints stream type, timestamp, and additional info about data:
@@ -25,6 +58,10 @@ def keyboard_and_audio(
     :param seconds_to_keep_in_stream_buffer: max size of audio buffer before data falls off
     :return: None
     """
+
+    if input_device_index is None:
+        input_device_index = find_a_default_input_device_index()
+
     selected_device_info = next(
         dev
         for dev in PyAudioSourceReader.list_device_info()
@@ -55,36 +92,25 @@ def keyboard_and_audio(
         with StreamBuffer(
             source_reader=KeyboardInputSourceReader(), maxlen=maxlen
         ) as keyboard_stream_buffer:
+
             audio_buffer_reader = audio_stream_buffer.mk_reader()
             keyboard_buffer_reader = keyboard_stream_buffer.mk_reader()
 
-            print('getch! Press any key! Esc to quit!\n')
+            print('getch! Press any key! Esc to quit!\n')  # replace w KeyboardInterrupt
             while True:
-                keyboard_data = next(keyboard_buffer_reader)
-                audio_data = next(audio_buffer_reader)
+                try:
+                    keyboard_data = next(keyboard_buffer_reader)
+                    audio_data = next(audio_buffer_reader)
 
-                # do stuff with keyboard data
-                if keyboard_data is not None:
-                    index, keyboard_timestamp, char = keyboard_data
-                    print(f'[Keyboard] {keyboard_timestamp}: {char}', end='\n\r')
-
-                    if char == '\x1b':  # ESC key
+                    should_quit = keyboard_data_callback(keyboard_data)
+                    if should_quit:
                         break
 
-                # do stuff with audio data
-                if audio_data is not None:
-                    (
-                        audio_timestamp,
-                        waveform,
-                        frame_count,
-                        time_info,
-                        status_flags,
-                    ) = audio_data
-                    print(
-                        f'   [Audio] {audio_timestamp}: {len(waveform)=} {type(waveform).__name__}',
-                        end='\n\r',
-                    )
+                    audio_data_callback(audio_data)
+
+                except KeyboardInterrupt:
+                    print("\n\nGot a : I'll quit now...\n")
 
 
 if __name__ == '__main__':
-    keyboard_and_audio(input_device_index=0)
+    keyboard_and_audio()
