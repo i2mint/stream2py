@@ -108,8 +108,9 @@ def keyboard_and_audio(
 
                     audio_data_callback(audio_data)
 
-                except KeyboardInterrupt:
-                    print("\n\nGot a : I'll quit now...\n")
+                except KeyboardInterrupt as e:
+                    print(f"\n\nGot a {e}: I'll quit now...\n")
+                    break
 
 
 if __name__ == '__main__':
