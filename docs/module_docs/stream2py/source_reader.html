@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.18 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PyAudio Source" href="sources/audio.html" />
+    <link rel="prev" title="stream2py.simply" href="simply.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../stream2py.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buffer_consumer.html">stream2py.buffer_consumer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simply.html">stream2py.simply</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/audio.html">PyAudio Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/audio.html#pyaudio-mixins">PyAudio Mixins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/audio.html#example-pyaudio-mixin-usage">Example PyAudio Mixin Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/keyboard_input.html">stream2py.sources.keyboard_input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/pchealth.html">stream2py.sources.pchealth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/plc.html">stream2py.sources.plc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/raw_plc.html">stream2py.sources.raw_plc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/video.html">stream2py.sources.video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/getch.html">stream2py.utility.getch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/logger.html">stream2py.utility.logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>stream2py.source_reader</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/stream2py/source_reader.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stream2py.source_reader">
+<span id="stream2py-source-reader"></span><h1>stream2py.source_reader<a class="headerlink" href="#module-stream2py.source_reader" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="stream2py.source_reader.SourceReader">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.source_reader.</code><code class="sig-name descname">SourceReader</code><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract class interface to be used by StreamBuffer.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">SourceReader</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SimpleCounterString</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="sd">&#39;&#39;&#39;Count in range returning a string formatted as f&quot;s{count}&quot;&#39;&#39;&#39;</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">assert</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">stop</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="n">stop</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;s</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="gp">... </span>        <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">return</span> <span class="kc">None</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">range_iterator</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="nd">@property</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="n">open_count</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_count</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span><span class="o">.</span><span class="n">info</span>
+<span class="go">{&#39;start&#39;: 0, &#39;stop&#39;: 10, &#39;open_count&#39;: 1}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">&#39;s0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">source_reader</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">source_reader</span><span class="o">.</span><span class="n">info</span>
+<span class="gp">... </span>    <span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="go">{&#39;start&#39;: 0, &#39;stop&#39;: 10, &#39;open_count&#39;: 2}</span>
+<span class="go">&#39;s0&#39;</span>
+<span class="go">&#39;s1&#39;</span>
+<span class="go">&#39;s2&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.close">
+<em class="property">abstract </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close and clean up source reader.
+Will be called when StreamBuffer stops or if an exception is raised during read and append loop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.get_timestamp">
+<em class="property">classmethod </em><code class="sig-name descname">get_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.get_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.get_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get timestamp of now as int microseconds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>timestamp in UTC microseconds</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.info">
+<em class="property">abstract property </em><code class="sig-name descname">info</code><a class="headerlink" href="#stream2py.source_reader.SourceReader.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict with important source info. Default can be init_kwargs and open timestamp.</p>
+<p>This info will be available in BufferReader after SourceReader has opened but any changes made between open and
+close are not guaranteed to be visible. Any continuous status updates should be included with read data instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.key">
+<em class="property">abstract </em><code class="sig-name descname">key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType" title="stream2py.utility.typing_hints.ComparableType">stream2py.utility.typing_hints.ComparableType</a><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts data into a comparable value to sort by</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – the return value of the ‘read’ method</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ComparableType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.open">
+<em class="property">abstract </em><code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up source to be read and set some source info affected by open time like the time of open.
+Will be called in StreamBuffer immediately before first read.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.read">
+<em class="property">abstract </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>Any<span class="p">]</span><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily sortable such as
+ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>data or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">
+<code class="sig-name descname">set_sleep_time_on_iter_none</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.001</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.set_sleep_time_on_iter_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the sleep time of the iter yield loop when next data item is not yet available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sleep_time_s</strong> – seconds to sleep</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="stream2py.source_reader.SourceReader.sleep_time_on_read_none_s">
+<em class="property">property </em><code class="sig-name descname">sleep_time_on_read_none_s</code><a class="headerlink" href="#stream2py.source_reader.SourceReader.sleep_time_on_read_none_s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets default sleep time for StreamBuffer when it reads None from SourceReader.
+Useful when you know the period between data points.</p>
+<p>For example if data only comes once every 10 seconds,
+it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times
+but every 10 seconds or even 1 second would be much more reasonable depending on the use case.
+Not necessary if read is a blocking function that always returns a data point.</p>
+<p>Default is None which delegates the sleep time to StreamBuffer’s default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Optional[Union[int, float]] number of seconds to sleep</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="simply.html" class="btn btn-neutral float-left" title="stream2py.simply" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sources/audio.html" class="btn btn-neutral float-right" title="PyAudio Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 
+2021
+Otosense.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

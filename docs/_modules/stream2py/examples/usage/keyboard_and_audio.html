@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.examples.usage.keyboard_and_audio &mdash; stream2py 1.0.18 documentation</title><link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+        <script src="../../../../_static/toggleprompt.js"></script>
+        <script src="../../../../_static/clipboard.min.js"></script>
+        <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/buffer_consumer.html">stream2py.buffer_consumer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/audio.html">PyAudio Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/audio.html#pyaudio-mixins">PyAudio Mixins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/audio.html#example-pyaudio-mixin-usage">Example PyAudio Mixin Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/keyboard_input.html">stream2py.sources.keyboard_input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/pchealth.html">stream2py.sources.pchealth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/plc.html">stream2py.sources.plc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/raw_plc.html">stream2py.sources.raw_plc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/sources/video.html">stream2py.sources.video</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/getch.html">stream2py.utility.getch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/logger.html">stream2py.utility.logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>stream2py.examples.usage.keyboard_and_audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stream2py.examples.usage.keyboard_and_audio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Example of processing audio and keyboard streams&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">stream2py.stream_buffer</span> <span class="kn">import</span> <span class="n">StreamBuffer</span>
+<span class="kn">from</span> <span class="nn">stream2py.sources.keyboard_input</span> <span class="kn">import</span> <span class="n">KeyboardInputSourceReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.sources.audio</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PyAudioSourceReader</span><span class="p">,</span>
+    <span class="n">find_a_default_input_device_index</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">AudioData</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
+<span class="n">KeyboardData</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
+<span class="n">AudioDataCallback</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">AudioData</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+<span class="n">KeyboardDataCallback</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">KeyboardData</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">default_audio_callback</span><span class="p">(</span><span class="n">audio_data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">audio_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">audio_timestamp</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">frame_count</span><span class="p">,</span> <span class="n">time_info</span><span class="p">,</span> <span class="n">status_flags</span><span class="p">,)</span> <span class="o">=</span> <span class="n">audio_data</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;   [Audio] </span><span class="si">{</span><span class="n">audio_timestamp</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">waveform</span><span class="p">)</span><span class="si">=}</span><span class="s1"> </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">waveform</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\r</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">default_keyboard_event_callback</span><span class="p">(</span><span class="n">keyboard_data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">keyboard_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">keyboard_timestamp</span><span class="p">,</span> <span class="n">char</span> <span class="o">=</span> <span class="n">keyboard_data</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[Keyboard] </span><span class="si">{</span><span class="n">keyboard_timestamp</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\r</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\x1b</span><span class="s1">&#39;</span><span class="p">:</span>  <span class="c1"># ESC key</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="keyboard_and_audio"><a class="viewcode-back" href="../../../../module_docs/stream2py/examples/usage/keyboard_and_audio.html#stream2py.examples.usage.keyboard_and_audio.keyboard_and_audio">[docs]</a><span class="k">def</span> <span class="nf">keyboard_and_audio</span><span class="p">(</span>
+    <span class="n">input_device_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># find index with PyAudioSourceReader.list_device_info()</span>
+    <span class="n">rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">frames_per_buffer</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>  <span class="c1"># same as sample rate for 1 second intervals</span>
+    <span class="n">seconds_to_keep_in_stream_buffer</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">audio_data_callback</span><span class="p">:</span> <span class="n">AudioDataCallback</span> <span class="o">=</span> <span class="n">default_audio_callback</span><span class="p">,</span>
+    <span class="n">keyboard_data_callback</span><span class="p">:</span> <span class="n">KeyboardDataCallback</span> <span class="o">=</span> <span class="n">default_keyboard_event_callback</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Starts two independent streams: one for audio and another for keyboard inputs.</span>
+<span class="sd">    Prints stream type, timestamp, and additional info about data:</span>
+<span class="sd">    Shows input key pressed for keyboard and byte count for audio</span>
+
+<span class="sd">    Press Esc key to quit.</span>
+
+<span class="sd">    :param input_device_index: find index with PyAudioSourceReader.list_device_info()</span>
+<span class="sd">    :param rate: audio sample rate</span>
+<span class="sd">    :param width: audio byte width</span>
+<span class="sd">    :param channels: number of audio input channels</span>
+<span class="sd">    :param frames_per_buffer: audio samples per buffer</span>
+<span class="sd">    :param seconds_to_keep_in_stream_buffer: max size of audio buffer before data falls off</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">input_device_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_device_index</span> <span class="o">=</span> <span class="n">find_a_default_input_device_index</span><span class="p">()</span>
+
+    <span class="n">selected_device_info</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+        <span class="n">dev</span>
+        <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="n">PyAudioSourceReader</span><span class="o">.</span><span class="n">list_device_info</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">dev</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_device_index</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting audio device: </span><span class="si">{</span><span class="n">selected_device_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># converts seconds_to_keep_in_stream_buffer to max number of buffers of size frames_per_buffer</span>
+    <span class="n">maxlen</span> <span class="o">=</span> <span class="n">PyAudioSourceReader</span><span class="o">.</span><span class="n">audio_buffer_size_seconds_to_maxlen</span><span class="p">(</span>
+        <span class="n">buffer_size_seconds</span><span class="o">=</span><span class="n">seconds_to_keep_in_stream_buffer</span><span class="p">,</span>
+        <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>
+        <span class="n">frames_per_buffer</span><span class="o">=</span><span class="n">frames_per_buffer</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">audio_source_reader</span> <span class="o">=</span> <span class="n">PyAudioSourceReader</span><span class="p">(</span>
+        <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span>
+        <span class="n">unsigned</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">input_device_index</span><span class="o">=</span><span class="n">input_device_index</span><span class="p">,</span>
+        <span class="n">frames_per_buffer</span><span class="o">=</span><span class="n">frames_per_buffer</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># open audio stream</span>
+    <span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span>
+        <span class="n">source_reader</span><span class="o">=</span><span class="n">audio_source_reader</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">audio_stream_buffer</span><span class="p">:</span>
+        <span class="c1"># open keyboard input stream</span>
+        <span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span>
+            <span class="n">source_reader</span><span class="o">=</span><span class="n">KeyboardInputSourceReader</span><span class="p">(),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">keyboard_stream_buffer</span><span class="p">:</span>
+
+            <span class="n">audio_buffer_reader</span> <span class="o">=</span> <span class="n">audio_stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+            <span class="n">keyboard_buffer_reader</span> <span class="o">=</span> <span class="n">keyboard_stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;getch! Press any key! Esc to quit!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># replace w KeyboardInterrupt</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">keyboard_data</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">keyboard_buffer_reader</span><span class="p">)</span>
+                    <span class="n">audio_data</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">audio_buffer_reader</span><span class="p">)</span>
+
+                    <span class="n">should_quit</span> <span class="o">=</span> <span class="n">keyboard_data_callback</span><span class="p">(</span><span class="n">keyboard_data</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">should_quit</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                    <span class="n">audio_data_callback</span><span class="p">(</span><span class="n">audio_data</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Got a </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">: I&#39;ll quit now...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">break</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">keyboard_and_audio</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 
+2021
+Otosense.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
