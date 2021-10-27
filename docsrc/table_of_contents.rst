@@ -5,8 +5,8 @@
    module_docs/stream2py
    module_docs/stream2py/buffer_consumer
    module_docs/stream2py/buffer_reader
+   module_docs/stream2py/simply
    module_docs/stream2py/source_reader
-   module_docs/stream2py/sources
    module_docs/stream2py/sources/audio
    module_docs/stream2py/sources/keyboard_input
    module_docs/stream2py/sources/pchealth

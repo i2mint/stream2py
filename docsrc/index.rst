@@ -1,19 +1,8 @@
-.. stream2py documentation master file, created by
-   sphinx-quickstart on Wed Feb 12 16:22:30 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to stream2py's documentation!
+Welcome to Stream2py's documentation!
 =====================================
 
-.. toctree::
-   :maxdepth: 2
 
-   api
-   sources
-   example_toc
-   readme_link
-   things_you_can_do
+.. include:: ./table_of_contents.rst
 
 
 Indices and tables
@@ -23,4 +12,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-:doc:`api </api>`
+
+Release: |release|
+
+Last change: |today|

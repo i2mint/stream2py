@@ -25,6 +25,7 @@ jobs:
           pip -q install axblack pytest pylint isee
           sudo apt-get -qq update
           sudo apt-get install -y portaudio19-dev python-pyaudio
+          sudo apt-get install graphviz
           isee install-requires
 
       - name: Format source code
@@ -61,7 +62,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip -q install axblack twine epythet wads isee
+          pip -q install axblack twine epythet wads isee sphinx-rtd-theme
           sudo apt-get -qq update
           sudo apt-get install portaudio19-dev python-pyaudio
           isee install-requires

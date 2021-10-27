@@ -9,7 +9,6 @@ from stream2py.utility.typing_hints import (
     Union,
     ComparableType,
     Any,
-    Callable,
 )
 
 
