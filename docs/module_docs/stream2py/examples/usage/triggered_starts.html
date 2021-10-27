@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; stream2py 1.0.19 documentation</title><link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <title>Triggered Starts in a Typing Test &mdash; stream2py 1.0.18 documentation</title><link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -21,9 +21,7 @@
         <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="stream2py.examples.usage.video_to_stream_and_file" href="video_to_stream_and_file.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="record_audio_to_files.html" /> 
+    <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,11 +44,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../stream2py.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../buffer_consumer.html">stream2py.buffer_consumer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../buffer_reader.html">stream2py.buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../indexed_audio.html">stream2py.examples.indexed_audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../source_reader.html">stream2py.examples.source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="keyboard_and_audio.html">stream2py.examples.usage.keyboard_and_audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="video_to_stream_and_file.html">stream2py.examples.usage.video_to_stream_and_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources/audio.html">PyAudio Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources/audio.html#pyaudio-mixins">PyAudio Mixins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources/audio.html#example-pyaudio-mixin-usage">Example PyAudio Mixin Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sources/keyboard_input.html">stream2py.sources.keyboard_input</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sources/pchealth.html">stream2py.sources.pchealth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sources/plc.html">stream2py.sources.plc</a></li>
@@ -80,7 +78,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>&lt;no title&gt;</li>
+      <li>Triggered Starts in a Typing Test</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/module_docs/stream2py/examples/usage/triggered_starts.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -90,14 +88,122 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <span class="target" id="module-stream2py.examples.usage.triggered_starts"></span><section id="triggered-starts-in-a-typing-test">
+<h1>Triggered Starts in a Typing Test<a class="headerlink" href="#triggered-starts-in-a-typing-test" title="Permalink to this headline">¶</a></h1>
+<div class="graphviz"><img src="../../../../_images/graphviz-5a7e6035e01501628872b65df9eabc8babdf19e3.png" alt="digraph components {
+    subgraph cluster_0 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label=&quot;Sources&quot;;
+        labeljust=&quot;l&quot;
+        &quot;TypingTest&quot;
+        &quot;KeyboardInput&quot;
+    }
+
+    subgraph cluster_1 {
+        node [style=filled];
+        label=&quot;Readers&quot;;
+        labeljust=&quot;l&quot;
+        color=lightgrey
+        node [style=filled,color=lightgrey];
+        &quot;TestProctor&quot;
+        &quot;PromptSwitch&quot;
+    }
+    &quot;KeyboardInput&quot; -&gt; &quot;PromptSwitch&quot; -&gt; &quot;TypingTest&quot; -&gt; &quot;TestProctor&quot;;
+    &quot;KeyboardInput&quot; -&gt; &quot;TestProctor&quot;;
+}" class="graphviz" /></div>
+<p>This example demonstrates the usage of stream2py with 4 asynchronous components:</p>
+<ol class="arabic simple">
+<li><p>KeyboardInputSourceReader starts at the launch of this program and listens to key presses.</p></li>
+<li><p>TypingTest waits for start, stop, and add prompt commands.</p></li>
+<li><p>PromptSwitch reads keyboard inputs for commands and tells TypingTest what to do.</p></li>
+<li><p>TestProctor gives you TypingTest prompts and grades your keyboard input submissions.</p></li>
+</ol>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Launching the script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">stream2py</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">usage</span><span class="o">.</span><span class="n">triggered_starts</span>
+</pre></div>
+</div>
+<div class="graphviz"><img src="../../../../_images/graphviz-d3119ea9deb30f5f3cfcf6b2c1e72e7bebe0ce89.png" alt="digraph flow_chart {
+    label=&quot;User Flow&quot;;
+    labeljust=&quot;l&quot;
+    labelloc=&quot;t&quot;
+    splines=polyline
+    nodesep=.2
+    {
+        node [shape=oval]
+        enter [label=&quot;Begin&quot;]
+        exit [label=&quot;Exit&quot;]
+    }
+    {
+        node [shape=diamond label=&quot;Is Started?&quot;]
+        started_start
+        started_stop
+        started_other
+    }
+    {
+        node [shape=box]
+        start [label=&quot;Start&quot;]
+        stop [label=&quot;Stop&quot;]
+        submit [label=&quot;Submit for Score&quot;]
+        prompt [label=&quot;New Test Prompt&quot;]
+        usage [label=&quot;Display Commands&quot;]
+    }
+    input [shape=parallelogram, label=&quot;Keyboard Input&quot;]
+    enter -&gt; usage -&gt; input;
+    input -&gt; started_start [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;start&quot;&lt;/font&gt;&gt;, labeldistance=2];
+    input -&gt; started_stop [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;stop&quot;&lt;/font&gt;&gt;, labeldistance=3 ];
+    input -&gt; started_other [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;other&quot;*&lt;/font&gt;&gt;, labeldistance=2.5 ];
+    input -&gt; exit [ headlabel=&lt;&lt;font color=&quot;grey25&quot;&gt;&quot;exit&quot;&lt;/font&gt;&gt;, labeldistance=1.5 ];
+    started_start -&gt; submit  [ label=&quot;Yes&quot; ];
+    started_start -&gt; start [ label=&quot;No&quot; ];
+    started_stop -&gt; stop [ label=&quot;Yes&quot; ];
+    started_stop -&gt; usage [ label=&quot;No&quot; ];
+    started_other -&gt; submit [ label=&quot;Yes&quot; ];
+    started_other -&gt; usage [ label=&quot;No&quot; ];
+    submit -&gt; prompt -&gt; input;
+    start -&gt; prompt
+    stop -&gt; input
+}" class="graphviz" /></div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="stream2py.sources.keyboard_input.KeyboardInputSourceReader">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.sources.keyboard_input.</code><code class="sig-name descname">KeyboardInputSourceReader</code><a class="reference internal" href="../../../../_modules/stream2py/sources/keyboard_input.html#KeyboardInputSourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.sources.keyboard_input.KeyboardInputSourceReader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.usage.triggered_starts.TypingTest">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">TypingTest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stream2py/examples/usage/triggered_starts.html#TypingTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.TypingTest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.usage.triggered_starts.PromptSwitch">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">PromptSwitch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../../stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../../stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stream2py/examples/usage/triggered_starts.html#PromptSwitch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.PromptSwitch" title="Permalink to this definition">¶</a></dt>
+<dd><p>PromptSwitch will recognize 3 commands: “start”, “stop”, and “exit” followed by a return key press.</p>
+<ol class="arabic simple">
+<li><p>“start” will start adding prompts after each return key press.</p></li>
+<li><p>“stop” will stop adding prompts</p></li>
+<li><p>“exit” will exit the program</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.usage.triggered_starts.TestProctor">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.usage.triggered_starts.</code><code class="sig-name descname">TestProctor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../../stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em>, <em class="sig-param"><span class="n">prompts</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../../stream_buffer.html#stream2py.stream_buffer.StreamBuffer" title="stream2py.stream_buffer.StreamBuffer">stream2py.stream_buffer.StreamBuffer</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stream2py/examples/usage/triggered_starts.html#TestProctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.usage.triggered_starts.TestProctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give prompts and grade input</p>
+</dd></dl>
+
+</section>
+</section>
+
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="record_audio_to_files.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="video_to_stream_and_file.html" class="btn btn-neutral float-right" title="stream2py.examples.usage.video_to_stream_and_file" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

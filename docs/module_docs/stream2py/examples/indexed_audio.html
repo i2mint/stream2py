@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.examples.indexed_audio &mdash; stream2py 1.0.19 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.examples.indexed_audio &mdash; stream2py 1.0.18 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -21,9 +21,7 @@
         <script src="../../../_static/copybutton.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="stream2py.examples.source_reader" href="source_reader.html" />
-    <link rel="prev" title="stream2py.buffer_reader" href="../buffer_reader.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,15 +40,15 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../stream2py.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../buffer_consumer.html">stream2py.buffer_consumer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../buffer_reader.html">stream2py.buffer_reader</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.examples.indexed_audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source_reader.html">stream2py.examples.source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/keyboard_and_audio.html">stream2py.examples.usage.keyboard_and_audio</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/video_to_stream_and_file.html">stream2py.examples.usage.video_to_stream_and_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/audio.html">PyAudio Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/audio.html#pyaudio-mixins">PyAudio Mixins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/audio.html#example-pyaudio-mixin-usage">Example PyAudio Mixin Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sources/keyboard_input.html">stream2py.sources.keyboard_input</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sources/pchealth.html">stream2py.sources.pchealth</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sources/plc.html">stream2py.sources.plc</a></li>
@@ -90,17 +88,91 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="stream2py-examples-indexed-audio">
-<h1>stream2py.examples.indexed_audio<a class="headerlink" href="#stream2py-examples-indexed-audio" title="Permalink to this headline">¶</a></h1>
+  <section id="module-stream2py.examples.indexed_audio">
+<span id="stream2py-examples-indexed-audio"></span><h1>stream2py.examples.indexed_audio<a class="headerlink" href="#module-stream2py.examples.indexed_audio" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>[taped](<a class="reference external" href="https://github.com/otosense/taped">https://github.com/otosense/taped</a>)) provides a <cite>LiveWf</cite>, but one would like to have more control over</dt><dd><p>it’s behavior. Namely:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>Getting an exception or sentinel value (of user’s choice) when “some data might have been lost”</p></li>
+<li><dl class="simple">
+<dt>repeats of <cite>live_wf[:100]</cite> give me 0-100, then 100-200, then 200-300…</dt><dd><ul>
+<li><p>this would be more clear to all users with a live_wf.next(100) method: Actually not: read is better.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><cite>live_wf[i:j]</cite> is such that i and j are in samples since the process started, with customizable behavior when data</p></li>
+</ul>
+<p>requested is no longer (past) or not yet (future) in buffer (behaviors such as returning exception, or sentinel,
+or (in the case of future data), simply block (sleep) until data is available…</p>
+<p><strong>Problem</strong></p>
+<p><cite>PyAudioSourceReader</cite> doesn’t handle error flags and doesn’t keep track of frame index out of the box.</p>
+<p>_Doesn’t handle <a href="#id1"><span class="problematic" id="id2">errors_</span></a>: Meaning if <cite>PyAudio</cite> catches an error (most likely one to encounter
+being the “InputOverFlow” error, meaning the data wasn’t read fast enough), tags it with a flag,
+you’ll see the corresponding <cite>PyAudioSourceReader</cite> item, which will be placed as is on the buffer,
+but no special handling of these errors is done implicitly. <strong>You</strong> need to chose what to do with this.</p>
+<p>_Doesn’t keep track of frame <a href="#id3"><span class="problematic" id="id4">index_</span></a>: If you are dumping the <cite>PyAudioSourceReader</cite> items on a buffer,
+then reading that buffer with some (or multiple) readers, that reader might want to know if it missed an item or not.
+It can do so with some calculation involving the timestamp information, sample rate,
+etc. but time and data rate are rarely multiple of each other, so some complexity is needed to resolve phase.
+It would be more convenient to have a frame index (i.e. offset – relative to the very first frame we read).</p>
+<p><strong>Solution</strong></p>
+<ul class="simple">
+<li><p><cite>FillErrorWithZeroesMixin</cite> is an element of a solution to the “handle errors” problem.</p></li>
+</ul>
+<p>It solves the problem by filling missing data with zeros.</p>
+<ul class="simple">
+<li><p><cite>FrameIndexAsKeyMixin</cite> is a solution for “frame index tracking” problem.</p></li>
+</ul>
+<p>This solution assumes that frame index is more important than timestamp.</p>
+<dl class="py class">
+<dt id="stream2py.examples.indexed_audio.FrameIndexAsKeyMixin">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">FrameIndexAsKeyMixin</code><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#FrameIndexAsKeyMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.FrameIndexAsKeyMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be used with FillErrorWithZeroesMixin for accurate frame count in case of errors</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.indexed_audio.PyAudioStreamBuffer">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">PyAudioStreamBuffer</code><span class="sig-paren">(</span><em class="sig-param">input_device_index</em>, <em class="sig-param">sr=None</em>, <em class="sig-param">width=2</em>, <em class="sig-param">channels=None</em>, <em class="sig-param">frames_per_buffer=None</em>, <em class="sig-param">*</em>, <em class="sig-param">source_reader_class=&lt;class 'stream2py.sources.audio.PyAudioSourceReader'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#PyAudioStreamBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.PyAudioStreamBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="stream2py.examples.indexed_audio.PyAudioStreamBuffer.start">
+<code class="sig-name descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#PyAudioStreamBuffer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.PyAudioStreamBuffer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open and start reading from source_reader into buffer</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.indexed_audio.PyAudioStreamBufferWithByteSlice">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">PyAudioStreamBufferWithByteSlice</code><span class="sig-paren">(</span><em class="sig-param">input_device_index</em>, <em class="sig-param">sr=None</em>, <em class="sig-param">width=2</em>, <em class="sig-param">channels=None</em>, <em class="sig-param">frames_per_buffer=None</em>, <em class="sig-param">*</em>, <em class="sig-param">source_reader_class=&lt;class 'stream2py.sources.audio.PyAudioSourceReader'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#PyAudioStreamBufferWithByteSlice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.PyAudioStreamBufferWithByteSlice" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.indexed_audio.PyAudioWithZeroedErrorsAndFrameIndexingSourceReader">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">PyAudioWithZeroedErrorsAndFrameIndexingSourceReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">rate</span><span class="o">=</span><span class="default_value">44100</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">unsigned</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">channels</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">input_device_index</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frames_per_buffer</span><span class="o">=</span><span class="default_value">1024</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#PyAudioWithZeroedErrorsAndFrameIndexingSourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.PyAudioWithZeroedErrorsAndFrameIndexingSourceReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyAudioSourceReader with frame index tracking</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="stream2py.examples.indexed_audio.PyAudioWithZeroedErrorsSourceReader">
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">PyAudioWithZeroedErrorsSourceReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">rate</span><span class="o">=</span><span class="default_value">44100</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">unsigned</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">channels</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">input_device_index</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">frames_per_buffer</span><span class="o">=</span><span class="default_value">1024</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#PyAudioWithZeroedErrorsSourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.PyAudioWithZeroedErrorsSourceReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyAudioSourceReader with source errors resulting in (null) value filling</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="stream2py.examples.indexed_audio.list_recording_device_index_names">
+<code class="sig-prename descclassname">stream2py.examples.indexed_audio.</code><code class="sig-name descname">list_recording_device_index_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/examples/indexed_audio.html#list_recording_device_index_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.examples.indexed_audio.list_recording_device_index_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>List (index, name) of available recording devices</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../buffer_reader.html" class="btn btn-neutral float-left" title="stream2py.buffer_reader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="source_reader.html" class="btn btn-neutral float-right" title="stream2py.examples.source_reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
