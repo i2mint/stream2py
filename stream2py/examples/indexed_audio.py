@@ -200,7 +200,7 @@ if __name__ == '__main__':
     # TODO: If not too much overhead, assert what is expected.
     # TODO: If not too much overhead, include these asserts as actual tests (copying this code to a pytest module)
 
-    from taped import find_a_default_input_device_index
+    from stream2py.sources.audio import find_a_default_input_device_index
 
     device = find_a_default_input_device_index()
 
