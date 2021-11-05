@@ -11,6 +11,7 @@
    module_docs/stream2py/examples/usage/record_audio_to_files
    module_docs/stream2py/examples/usage/triggered_starts
    module_docs/stream2py/examples/usage/video_to_stream_and_file
+   module_docs/stream2py/simply
    module_docs/stream2py/source_reader
    module_docs/stream2py/sources/audio
    module_docs/stream2py/sources/keyboard_input
