@@ -130,10 +130,16 @@ class StreamBuffer:
         self.start_lock = (
             threading.Lock()
         )  # used to lock mk_reader while source is still starting up
+        self._next_reader = None
 
     def __iter__(self):
         reader = self.mk_reader()
         yield from iter(reader)
+
+    def __next__(self):
+        if self._next_reader is None:
+            self._next_reader = self.mk_reader()
+        return next(self._next_reader)
 
     def drop(self, n=1):
         """Manually drop items from buffer when auto_drop is False
@@ -160,6 +166,7 @@ class StreamBuffer:
         """Stop reading and close source_reader"""
         self._stop_event.set()
         time.sleep(1)
+        self._next_reader = None
 
     def mk_reader(self) -> BufferReader:
         """ Makes a BufferReader instance for the currently running  StreamBuffer.
