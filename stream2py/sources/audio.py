@@ -445,6 +445,17 @@ class PyAudioSourceReader(SourceReader):
             d['name'] for d in cls.list_device_info() if d['maxInputChannels'] > 0
         )
 
+    @classmethod
+    def info_of_input_device_index(cls, input_device_index):
+        return next(
+            (
+                dev
+                for dev in cls.list_device_info()
+                if dev['index'] == input_device_index
+            ),
+            None,
+        )
+
 
 class FillErrorWithZeroesMixin:
     """Mixin to handle all pyaudio's error status flags by filling the error time gap with zeros"""
