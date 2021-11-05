@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.sources.audio &mdash; stream2py 1.0.22 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.sources.audio &mdash; stream2py 1.0.23 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -539,7 +539,18 @@
         <span class="sd">&quot;&quot;&quot;List names of available recording devices&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="n">d</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">list_device_info</span><span class="p">()</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;maxInputChannels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">info_of_input_device_index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">input_device_index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">dev</span>
+                <span class="k">for</span> <span class="n">dev</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">list_device_info</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">dev</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_device_index</span>
+            <span class="p">),</span>
+            <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FillErrorWithZeroesMixin"><a class="viewcode-back" href="../../../module_docs/stream2py/sources/audio.html#stream2py.sources.audio.FillErrorWithZeroesMixin">[docs]</a><span class="k">class</span> <span class="nc">FillErrorWithZeroesMixin</span><span class="p">:</span>
