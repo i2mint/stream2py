@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_buffer &mdash; stream2py 1.0.20 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.stream_buffer &mdash; stream2py 1.0.21 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -226,10 +226,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="p">)</span>  <span class="c1"># used to lock mk_reader while source is still starting up</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
         <span class="k">yield from</span> <span class="nb">iter</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span><span class="p">)</span>
 
 <div class="viewcode-block" id="StreamBuffer.drop"><a class="viewcode-back" href="../../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Manually drop items from buffer when auto_drop is False</span>
@@ -255,7 +261,8 @@
 <div class="viewcode-block" id="StreamBuffer.stop"><a class="viewcode-back" href="../../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop reading and close source_reader&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="StreamBuffer.mk_reader"><a class="viewcode-back" href="../../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.mk_reader">[docs]</a>    <span class="k">def</span> <span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Makes a BufferReader instance for the currently running  StreamBuffer.</span>
