@@ -1,4 +1,4 @@
-from typing import Optional, Any, Protocol
+from typing import Optional, Any, Protocol, Union
 
 OpenInstance = Optional[Any]
 
