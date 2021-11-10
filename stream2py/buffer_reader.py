@@ -51,7 +51,7 @@ class BufferReader:
     's8'
     >>> buffer_reader.last_key # key of last_item
     8
-    # only 9 is greater than last item key
+    >>> # only 9 is greater than last item key
     >>> buffer_reader.range(start=0, stop=9, only_new_items=True)
     ['s9']
     >>> buffer_reader.head(), buffer_reader.last_item, buffer_reader.last_key
