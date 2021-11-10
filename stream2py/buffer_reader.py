@@ -36,7 +36,7 @@ class BufferReader:
     >>> # next will not update last_item cursor
     >>> buffer_reader.next(peek=True), buffer_reader.last_item
     ('s1', 's0')
-    # same as what was peeked but now cursor is updated
+    >>> # same as what was peeked but now cursor is updated
     >>> buffer_reader.next(), buffer_reader.last_item
     ('s1', 's1')
     >>> buffer_reader.range(start=5, stop=10)
