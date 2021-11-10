@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; stream2py 1.0.25 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Index &mdash; stream2py 1.0.26 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -85,9 +85,13 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -108,11 +112,17 @@
       <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader.buffer_read">buffer_read (stream2py.utility.reader_writer_lock.Reader attribute)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader">BufferReader (class in stream2py.buffer_reader)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.close">close() (stream2py.source_reader.SourceReader method)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType">ComparableType (class in stream2py.utility.typing_hints)</a>
 </li>
   </ul></td>
@@ -129,8 +139,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.drop">drop() (stream2py.utility.sorted_deque.SortedDeque method)</a>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.drop">drop() (stream2py.stream_buffer.StreamBuffer method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.drop">(stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -174,6 +188,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.get_timestamp">get_timestamp() (stream2py.source_reader.SourceReader class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -183,11 +205,19 @@
         <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.index">(stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.info">info() (stream2py.source_reader.SourceReader property)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">insert() (stream2py.utility.sorted_collection.SortedCollection method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert_right">insert_right() (stream2py.utility.sorted_collection.SortedCollection method)</a>
+</li>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.is_running">is_running() (stream2py.stream_buffer.StreamBuffer property)</a>
+</li>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.is_same_buffer">is_same_buffer() (stream2py.buffer_reader.BufferReader method)</a>
+</li>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.is_stopped">is_stopped() (stream2py.buffer_reader.BufferReader property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -195,7 +225,23 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.key">key() (stream2py.utility.sorted_collection.SortedCollection property)</a>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.key">key() (stream2py.source_reader.SourceReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.key">(stream2py.utility.sorted_collection.SortedCollection property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.last_item">last_item() (stream2py.buffer_reader.BufferReader property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.last_key">last_key() (stream2py.buffer_reader.BufferReader property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -205,10 +251,24 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.maxlen">maxlen() (stream2py.utility.sorted_deque.SortedDeque property)</a>
 </li>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.mk_reader">mk_reader() (stream2py.stream_buffer.StreamBuffer method)</a>
+</li>
+      <li><a href="module_docs/stream2py/simply.html#stream2py.simply.mk_stream_buffer">mk_stream_buffer() (in module stream2py.simply)</a>
+</li>
       <li>
     module
 
       <ul>
+        <li><a href="module_docs/stream2py.html#module-stream2py">stream2py</a>
+</li>
+        <li><a href="module_docs/stream2py/buffer_reader.html#module-stream2py.buffer_reader">stream2py.buffer_reader</a>
+</li>
+        <li><a href="module_docs/stream2py/simply.html#module-stream2py.simply">stream2py.simply</a>
+</li>
+        <li><a href="module_docs/stream2py/source_reader.html#module-stream2py.source_reader">stream2py.source_reader</a>
+</li>
+        <li><a href="module_docs/stream2py/stream_buffer.html#module-stream2py.stream_buffer">stream2py.stream_buffer</a>
+</li>
         <li><a href="module_docs/stream2py/utility/locked_sorted_deque.html#module-stream2py.utility.locked_sorted_deque">stream2py.utility.locked_sorted_deque</a>
 </li>
         <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#module-stream2py.utility.reader_writer_lock">stream2py.utility.reader_writer_lock</a>
@@ -223,19 +283,41 @@
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.next">next() (stream2py.buffer_reader.BufferReader method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.open">open() (stream2py.source_reader.SourceReader method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.range">range() (stream2py.utility.sorted_deque.SortedDeque method)</a>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.range">range() (stream2py.buffer_reader.BufferReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.range">(stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
+      </ul></li>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.range_by_index">range_by_index() (stream2py.utility.sorted_deque.SortedDeque method)</a>
+</li>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.read">read() (stream2py.source_reader.SourceReader method)</a>
 </li>
       <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader">Reader (class in stream2py.utility.reader_writer_lock)</a>
 </li>
-      <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">remove() (stream2py.utility.sorted_collection.SortedCollection method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">remove() (stream2py.utility.sorted_collection.SortedCollection method)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader.run">run() (stream2py.utility.reader_writer_lock.Reader method)</a>
 
       <ul>
@@ -254,10 +336,67 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none">set_sleep_time_on_iter_none() (stream2py.buffer_reader.BufferReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">(stream2py.source_reader.SourceReader method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.sleep_time_on_read_none_s">sleep_time_on_read_none_s() (stream2py.source_reader.SourceReader property)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection">SortedCollection (class in stream2py.utility.sorted_collection)</a>
 </li>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque">SortedDeque (class in stream2py.utility.sorted_deque)</a>
 </li>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.source_reader_info">source_reader_info() (stream2py.buffer_reader.BufferReader property)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.source_reader_info">(stream2py.stream_buffer.StreamBuffer property)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader">SourceReader (class in stream2py.source_reader)</a>
+</li>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.start">start() (stream2py.stream_buffer.StreamBuffer method)</a>
+</li>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.stop">stop() (stream2py.stream_buffer.StreamBuffer method)</a>
+</li>
+      <li>
+    stream2py
+
+      <ul>
+        <li><a href="module_docs/stream2py.html#module-stream2py">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.buffer_reader
+
+      <ul>
+        <li><a href="module_docs/stream2py/buffer_reader.html#module-stream2py.buffer_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.simply
+
+      <ul>
+        <li><a href="module_docs/stream2py/simply.html#module-stream2py.simply">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    stream2py.source_reader
+
+      <ul>
+        <li><a href="module_docs/stream2py/source_reader.html#module-stream2py.source_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.stream_buffer
+
+      <ul>
+        <li><a href="module_docs/stream2py/stream_buffer.html#module-stream2py.stream_buffer">module</a>
+</li>
+      </ul></li>
       <li>
     stream2py.utility.locked_sorted_deque
 
@@ -272,8 +411,6 @@
         <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#module-stream2py.utility.reader_writer_lock">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     stream2py.utility.sorted_collection
 
@@ -295,11 +432,17 @@
         <li><a href="module_docs/stream2py/utility/typing_hints.html#module-stream2py.utility.typing_hints">module</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer">StreamBuffer (class in stream2py.stream_buffer)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.tail">tail() (stream2py.buffer_reader.BufferReader method)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.to_jdict">to_jdict() (stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
