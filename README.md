@@ -1,7 +1,10 @@
 
 [Documentation hosted here](https://i2mint.github.io/stream2py/index.html).
 
+To install: `pip install stream2py`
+
 # stream2py
+
 Bring data streams to python, with ease.
 
 One of the goals of the suite of i2i tools is to get from idea 2 implementation without all the fuss. 
@@ -10,6 +13,22 @@ and others (e.g. py2cli, py2ws, py2dash) to take care of exposing python functio
 
 Here, we address the stream acquisition concern. 
 As always, we aim at offering as-simple-as-drawing-a-simple-drawing means to get things done. 
+
+## Plugins
+
+`stream2py` has the core functionality, and is completely dependency-free (only builtin python). 
+
+That said, to work with specific stream sources, you can install plugins that will allow you to work with them. 
+At the time of writing this we have:
+- Audio: [audiostream2py](https://github.com/i2mint/audiostream2py)
+- Keyboard inputs: [keyboardstream2py](https://github.com/i2mint/keyboardstream2py)
+- PLC (Programmable Logic Controller): [plcstream2py](https://github.com/i2mint/plcstream2py)
+- Computer health stats: [pchealthstream2py](https://github.com/i2mint/pchealthstream2py)
+- Video: [videostream2py](https://github.com/i2mint/videostream2py)
+- Flask: [flaskstream2py](https://github.com/i2mint/flaskstream2py)
+
+
+# What `stream2py` is for
 
 ## Reduce vocabulary entropy
 
