@@ -1,11 +1,15 @@
+"""
+A BufferReader gives data access to any number of consumers and provides methods to seek data such
+as next(), range(), head(), tail().  Each BufferReader instance has it's own cursor keeping track of
+what data was last seen."""
 __all__ = ['BufferReader']
 
+from contextlib import suppress
 import threading
 import time
-from contextlib import suppress
+from typing import Union
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
-from stream2py.utility.typing_hints import Union
 
 
 class BufferReader:
@@ -29,9 +33,11 @@ class BufferReader:
     's0'
     >>> buffer_reader.last_item # check last_item cursor
     's0'
-    >>> buffer_reader.next(peek=True), buffer_reader.last_item # next will not update last_item cursor
+    # next will not update last_item cursor
+    >>> buffer_reader.next(peek=True), buffer_reader.last_item
     ('s1', 's0')
-    >>> buffer_reader.next(), buffer_reader.last_item # same as what was peeked but now cursor is updated
+    # same as what was peeked but now cursor is updated
+    >>> buffer_reader.next(), buffer_reader.last_item
     ('s1', 's1')
     >>> buffer_reader.range(start=5, stop=10)
     ['s5', 's6', 's7', 's8', 's9', 's10']
@@ -45,7 +51,8 @@ class BufferReader:
     's8'
     >>> buffer_reader.last_key # key of last_item
     8
-    >>> buffer_reader.range(start=0, stop=9, only_new_items=True) # only 9 is greater than last item key
+    # only 9 is greater than last item key
+    >>> buffer_reader.range(start=0, stop=9, only_new_items=True)
     ['s9']
     >>> buffer_reader.head(), buffer_reader.last_item, buffer_reader.last_key
     ('s0', 's0', 0)
@@ -151,7 +158,8 @@ class BufferReader:
 
         :param n: number of items to return
         :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item instead of raising exception
+        :param ignore_no_item_found: if True, return None when no next item
+            instead of raising exception
         :param strict_n: if True, raise ValueError if n items are not available
         :return: next item or list of next items if n > 1
         """
@@ -161,9 +169,9 @@ class BufferReader:
             except ValueError as e:  # ValueError: No item found with key above: self.last_key
                 if ignore_no_item_found:
                     return None
-                else:
-                    raise e
-            except TypeError as e:  # TypeError: '<' not supported between instances of 'NoneType' and type(key)
+                raise e
+            except TypeError as e:
+                # TypeError: '<' not supported between instances of 'NoneType' and type(key)
                 if self.last_item is None:  # first time reading a value from buffer
                     next_item = reader[0]
                 else:
@@ -180,10 +188,9 @@ class BufferReader:
                 if not peek:
                     self.last_item = next_items_list[-1]
                 return next_items_list
-            else:
-                if not peek:
-                    self.last_item = next_item
-                return next_item
+            if not peek:
+                self.last_item = next_item
+            return next_item
 
     def range(
         self,
@@ -205,12 +212,15 @@ class BufferReader:
         :param stop: ending range key of item inclusive
         :param step:
         :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item instead of raising exception.
-        :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found
-        :param start_le: if True, increase the search range to find start less than or equal by rounding down if start
-            is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0
-        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to stop in buffer,
-            if ignore_no_item_found is also True, return None instead of ValueError
+        :param ignore_no_item_found: if True, return None when no next item
+            instead of raising exception.
+        :param only_new_items: if True and no new items, raise ValueError
+            or return None if ignore_no_item_found
+        :param start_le: if True, increase the search range to find start less than or equal by
+            rounding down if start is in between keys,
+            i.e. keys=[0, 10, 20], start=9 will include key=0
+        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to
+            stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError
         :return: list of items in range
         """
         with self._buffer.reader_lock() as reader:
@@ -221,8 +231,7 @@ class BufferReader:
                 except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
                     if ignore_no_item_found:
                         return None
-                    else:
-                        raise e
+                    raise e
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
@@ -237,8 +246,7 @@ class BufferReader:
                 except ValueError as e:  # ValueError: No item found with key at or above: stop
                     if ignore_no_item_found:
                         return None
-                    else:
-                        raise e
+                    raise e
 
             items = reader.range(_start, stop, step)
 
@@ -248,16 +256,17 @@ class BufferReader:
             except IndexError as e:  # IndexError: list index out of range
                 if ignore_no_item_found:
                     return None
-                else:
-                    raise e
+                raise e
         return items
 
     def tail(self, *, peek=False, ignore_no_item_found=False, only_new_items=False):
         """Finds the last item in buffer. Raise ValueError if no item found.
 
         :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item instead of raising exception
-        :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found
+        :param ignore_no_item_found: if True, return None when no next item
+            instead of raising exception
+        :param only_new_items: if True and no new items, raise ValueError
+            or return None if ignore_no_item_found
         :return: tail item
         """
         with self._buffer.reader_lock() as reader:
@@ -267,9 +276,9 @@ class BufferReader:
                 except ValueError as e:  # ValueError: No item found with key above: self.last_key
                     if ignore_no_item_found:
                         return None
-                    else:
-                        raise e
-                except TypeError as e:  # TypeError: '>' not supported between instances of type(key) and 'NoneType'
+                    raise e
+                except TypeError as e:
+                    # TypeError: '>' not supported between instances of type(key) and 'NoneType'
                     if self.last_item is None:  # first time reading a value from buffer
                         item = reader[-1]
                     else:
@@ -280,8 +289,7 @@ class BufferReader:
                 except IndexError as e:  # IndexError: deque index out of range
                     if ignore_no_item_found:
                         return None
-                    else:
-                        raise e
+                    raise e
         if not peek:
             self.last_item = item
         return item

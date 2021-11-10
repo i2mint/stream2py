@@ -1,14 +1,17 @@
+"""
+A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a SourceReader and puts
+read data onto a thread-safe buffer.
+Second, it is a factory of BufferReaders instances for multiple consumers.
+"""
 __all__ = ['StreamBuffer']
 
+import logging
 import threading
 import time
+from typing import Optional, Union
 
+from stream2py import BufferReader, SourceReader
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
-from stream2py.utility.typing_hints import Optional, Union
-
-from stream2py import *
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +86,8 @@ class StreamBuffer:
     >>> open1_reader1.next()
     's0'
     >>> open1_reader2 = stream_buffer.mk_reader()
-    >>> assert open1_reader1.is_same_buffer(open1_reader2) is True  # readers from the same open instance are the same
+    # readers from the same open instance are the same
+    >>> assert open1_reader1.is_same_buffer(open1_reader2) is True
     >>> assert open1_reader1.next() != open1_reader2.next()  # item cursor position is different
     >>> stream_buffer.stop()
     >>>
@@ -91,8 +95,10 @@ class StreamBuffer:
     ...     stream_buffer.source_reader_info
     ...     open2_reader1  = stream_buffer.mk_reader()
     ...     open2_reader2  = stream_buffer.mk_reader()
-    ...     assert open2_reader1.is_same_buffer(open2_reader2) is True  # readers from the same open instance are the same
-    ...     assert open2_reader1.is_same_buffer(open1_reader1) is False  # readers from the different open instances
+    ...     # readers from the same open instance are the sameQ
+    ...     assert open2_reader1.is_same_buffer(open2_reader2) is True
+    ...     # readers from the different open instances
+    ...     assert open2_reader1.is_same_buffer(open1_reader1) is False
     {'start': 0, 'stop': 100, 'open_count': 2}
     """
 
@@ -108,9 +114,12 @@ class StreamBuffer:
         TODO: option to auto restart source on read exception
 
         :param source_reader: instance of a SourceReader subclass
-        :param maxlen: max number of read data points to store in buffer before data starts dropping off the queue
-        :param sleep_time_on_read_none_s: Seconds to sleep when reading None from source_reader. None to use defaults.
-        :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to manually make space.
+        :param maxlen: max number of read data points to store in buffer before data starts dropping
+            off the queue
+        :param sleep_time_on_read_none_s: Seconds to sleep when reading None from source_reader.
+            None to use defaults.
+        :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to
+            manually make space.
         """
         assert isinstance(
             source_reader, SourceReader
@@ -127,10 +136,10 @@ class StreamBuffer:
 
         self._stop_event = None
         self.source_buffer = None
-        self.start_lock = (
-            threading.Lock()
-        )  # used to lock mk_reader while source is still starting up
+        # start_lock used to lock mk_reader while source is still starting up
+        self.start_lock = threading.Lock()
         self._next_reader = None
+        self._read_to_buffer_thread = None
 
     def __iter__(self):
         reader = self.mk_reader()
@@ -187,6 +196,7 @@ class StreamBuffer:
         """
         if self.source_buffer:
             return self.source_buffer.source_reader_info
+        return None
 
     @property
     def is_running(self) -> bool:
@@ -286,6 +296,7 @@ if __name__ == '__main__':
             if now >= next_time:
                 self._count += 1
                 return next_time * 100000, next_count  # (timestamp_us, count)
+            return None
 
         key = operator.itemgetter(0)  # (timestamp_us, count) -> timestamp_us
 
@@ -316,9 +327,10 @@ if __name__ == '__main__':
     start_key = source_info['bt'] + 1e5 * rstart  # 5
     stop_key = source_info['bt'] + 1e5 * rstop  # 10
     range_data = sc_reader.range(start_key, stop_key)
+    expected_data = None
     for expected_data, rdata in zip(range(rstart, rstop + 1), range_data):
-        timestamp, data = rdata
-        assert data == expected_data, 'wrong data does not match'
+        timestamp, _data = rdata
+        assert _data == expected_data, 'wrong data does not match'
     assert (
         expected_data == sc_reader.last_item[1]
     ), f'last_item did not follow last range({start_key}, {stop_key}) call'
@@ -333,11 +345,11 @@ if __name__ == '__main__':
     stop_key = source_info['bt'] + 1e5 * rstop  # 10
     range_data = sc_reader.range(start_key, stop_key, step=rstep, peek=True)
     for expected_data_value, rdata in zip(range(rstart, rstop + 1, rstep), range_data):
-        timestamp, data = rdata
-        assert data == expected_data_value, 'wrong data does not match'
+        timestamp, _data = rdata
+        assert _data == expected_data_value, 'wrong data does not match'
     assert (
         previous_last_item == sc_reader.last_item[1]
-    ), f'last_item moved but should not when peek=True'
+    ), 'last_item moved but should not when peek=True'
 
     # stop source and check if reader see it
     sc_reader12 = sc_buf.mk_reader()  # reader1

@@ -1,15 +1,14 @@
+"""
+A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
+the data is ordered with the key() method and an info property describing the instance."""
 __all__ = ['SourceReader']
 
 
 from abc import ABCMeta, abstractmethod
 import time
+from typing import Optional, Any, Union
 
-from stream2py.utility.typing_hints import (
-    Optional,
-    Union,
-    ComparableType,
-    Any,
-)
+from stream2py.utility.typing_hints import ComparableType
 
 
 class SourceReader(metaclass=ABCMeta):
@@ -85,13 +84,13 @@ class SourceReader(metaclass=ABCMeta):
 
     @abstractmethod
     def open(self) -> None:
-        """Set up source to be read and set some source info affected by open time like the time of open.
-        Will be called in StreamBuffer immediately before first read."""
+        """Set up source to be read and set some source info affected by open time like the time of
+        open. Will be called in StreamBuffer immediately before first read."""
 
     @abstractmethod
     def read(self) -> Optional[Any]:
-        """Must return data that is sortable with 'key' method or None. Data that is not readily sortable such as
-        ordered words of a sentence can be wrapped in a tuple (word_index, word).
+        """Must return data that is sortable with 'key' method or None. Data that is not readily
+        sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).
 
         :return: data or None
         """
@@ -102,7 +101,8 @@ class SourceReader(metaclass=ABCMeta):
     @abstractmethod
     def close(self) -> None:
         """Close and clean up source reader.
-        Will be called when StreamBuffer stops or if an exception is raised during read and append loop.
+        Will be called when StreamBuffer stops or if an exception is raised during read and append
+        loop.
         """
 
     @property
@@ -110,8 +110,9 @@ class SourceReader(metaclass=ABCMeta):
     def info(self) -> dict:
         """A dict with important source info. Default can be init_kwargs and open timestamp.
 
-        This info will be available in BufferReader after SourceReader has opened but any changes made between open and
-        close are not guaranteed to be visible. Any continuous status updates should be included with read data instead.
+        This info will be available in BufferReader after SourceReader has opened but any changes
+        made between open and close are not guaranteed to be visible. Any continuous status updates
+        should be included with read data instead.
 
         :return: dict
         """
@@ -136,8 +137,8 @@ class SourceReader(metaclass=ABCMeta):
 
         For example if data only comes once every 10 seconds,
         it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times
-        but every 10 seconds or even 1 second would be much more reasonable depending on the use case.
-        Not necessary if read is a blocking function that always returns a data point.
+        but every 10 seconds or even 1 second would be much more reasonable depending on the use
+        case. Not necessary if read is a blocking function that always returns a data point.
 
         Default is None which delegates the sleep time to StreamBuffer's default.
 
