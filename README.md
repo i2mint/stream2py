@@ -20,12 +20,12 @@ As always, we aim at offering as-simple-as-drawing-a-simple-drawing means to get
 
 That said, to work with specific stream sources, you can install plugins that will allow you to work with them. 
 At the time of writing this we have:
-- (audio)[https://github.com/i2mint/audiostream2py]
-- (flask)[https://github.com/i2mint/flaskstream2py]
-- (keyboard)[https://github.com/i2mint/keyboardstream2py]
-- (plc)[https://github.com/i2mint/plcstream2py]
-- (pchealth)[https://github.com/i2mint/pchealthstream2py]
-- (video)[https://github.com/i2mint/videostream2py]
+- audio: [audiostream2py](https://github.com/i2mint/audiostream2py)
+- keyboard inputs: [keyboardstream2py](https://github.com/i2mint/keyboardstream2py)
+- PLC (Programmable Logic Controller): [plcstream2py](https://github.com/i2mint/plcstream2py)
+- Computer health stats: [pchealthstream2py](https://github.com/i2mint/pchealthstream2py)
+- Video: [videostream2py](https://github.com/i2mint/videostream2py)
+- Flask: [flaskstream2py](https://github.com/i2mint/flaskstream2py)
 
 
 # What `stream2py` is for
