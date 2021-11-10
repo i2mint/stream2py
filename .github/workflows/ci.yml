@@ -36,11 +36,11 @@ jobs:
       # C0114: missing-module-docstring
       # C0115: missing-class-docstring
       # C0116: missing-function-docstring
-#       - name: Validate docstrings
-#         run: pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114
+      - name: Validate docstrings
+        run: pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114
 
-      # - name: Test
-      #   run: pytest -s --doctest-modules -v $PROJECT_NAME
+      - name: Test
+        run: pytest -s --doctest-modules -v $PROJECT_NAME
   publish:
     name: Publish
     if: "!contains(github.event.head_commit.message, '[skip ci]') && github.ref == 'refs/heads/master'"
