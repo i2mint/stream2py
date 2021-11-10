@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.source_reader &mdash; stream2py 1.0.26 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.27 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -81,6 +81,8 @@
              
   <section id="module-stream2py.source_reader">
 <span id="stream2py-source-reader"></span><h1>stream2py.source_reader<a class="headerlink" href="#module-stream2py.source_reader" title="Permalink to this headline">¶</a></h1>
+<p>A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
+the data is ordered with the key() method and an info property describing the instance.</p>
 <dl class="py class">
 <dt id="stream2py.source_reader.SourceReader">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.source_reader.</code><code class="sig-name descname">SourceReader</code><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader" title="Permalink to this definition">¶</a></dt>
@@ -140,7 +142,8 @@
 <dt id="stream2py.source_reader.SourceReader.close">
 <em class="property">abstract </em><code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close and clean up source reader.
-Will be called when StreamBuffer stops or if an exception is raised during read and append loop.</p>
+Will be called when StreamBuffer stops or if an exception is raised during read and append
+loop.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -158,8 +161,9 @@ Will be called when StreamBuffer stops or if an exception is raised during read 
 <dt id="stream2py.source_reader.SourceReader.info">
 <em class="property">abstract property </em><code class="sig-name descname">info</code><a class="headerlink" href="#stream2py.source_reader.SourceReader.info" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dict with important source info. Default can be init_kwargs and open timestamp.</p>
-<p>This info will be available in BufferReader after SourceReader has opened but any changes made between open and
-close are not guaranteed to be visible. Any continuous status updates should be included with read data instead.</p>
+<p>This info will be available in BufferReader after SourceReader has opened but any changes
+made between open and close are not guaranteed to be visible. Any continuous status updates
+should be included with read data instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>dict</p>
@@ -184,15 +188,15 @@ close are not guaranteed to be visible. Any continuous status updates should be 
 <dl class="py method">
 <dt id="stream2py.source_reader.SourceReader.open">
 <em class="property">abstract </em><code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up source to be read and set some source info affected by open time like the time of open.
-Will be called in StreamBuffer immediately before first read.</p>
+<dd><p>Set up source to be read and set some source info affected by open time like the time of
+open. Will be called in StreamBuffer immediately before first read.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="stream2py.source_reader.SourceReader.read">
 <em class="property">abstract </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>Any<span class="p">]</span><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily sortable such as
-ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
+<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily
+sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>data or None</p>
@@ -218,8 +222,8 @@ ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
 Useful when you know the period between data points.</p>
 <p>For example if data only comes once every 10 seconds,
 it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times
-but every 10 seconds or even 1 second would be much more reasonable depending on the use case.
-Not necessary if read is a blocking function that always returns a data point.</p>
+but every 10 seconds or even 1 second would be much more reasonable depending on the use
+case. Not necessary if read is a blocking function that always returns a data point.</p>
 <p>Default is None which delegates the sleep time to StreamBuffer’s default.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>

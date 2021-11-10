@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.buffer_reader &mdash; stream2py 1.0.26 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.27 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -77,14 +77,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for stream2py.buffer_reader</h1><div class="highlight"><pre>
-<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BufferReader&#39;</span><span class="p">]</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A BufferReader gives data access to any number of consumers and provides methods to seek data such</span>
+<span class="sd">as next(), range(), head(), tail().  Each BufferReader instance has it&#39;s own cursor keeping track of</span>
+<span class="sd">what data was last seen.&quot;&quot;&quot;</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BufferReader&#39;</span><span class="p">]</span>
 
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">stream2py.utility.locked_sorted_deque</span> <span class="kn">import</span> <span class="n">RWLockSortedDeque</span>
-<span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="kn">import</span> <span class="n">Union</span>
 
 
 <div class="viewcode-block" id="BufferReader"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader">[docs]</a><span class="k">class</span> <span class="nc">BufferReader</span><span class="p">:</span>
@@ -108,9 +112,11 @@
 <span class="sd">    &#39;s0&#39;</span>
 <span class="sd">    &gt;&gt;&gt; buffer_reader.last_item # check last_item cursor</span>
 <span class="sd">    &#39;s0&#39;</span>
-<span class="sd">    &gt;&gt;&gt; buffer_reader.next(peek=True), buffer_reader.last_item # next will not update last_item cursor</span>
+<span class="sd">    &gt;&gt;&gt; # next will not update last_item cursor</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.next(peek=True), buffer_reader.last_item</span>
 <span class="sd">    (&#39;s1&#39;, &#39;s0&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; buffer_reader.next(), buffer_reader.last_item # same as what was peeked but now cursor is updated</span>
+<span class="sd">    &gt;&gt;&gt; # same as what was peeked but now cursor is updated</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.next(), buffer_reader.last_item</span>
 <span class="sd">    (&#39;s1&#39;, &#39;s1&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=5, stop=10)</span>
 <span class="sd">    [&#39;s5&#39;, &#39;s6&#39;, &#39;s7&#39;, &#39;s8&#39;, &#39;s9&#39;, &#39;s10&#39;]</span>
@@ -124,7 +130,8 @@
 <span class="sd">    &#39;s8&#39;</span>
 <span class="sd">    &gt;&gt;&gt; buffer_reader.last_key # key of last_item</span>
 <span class="sd">    8</span>
-<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=0, stop=9, only_new_items=True) # only 9 is greater than last item key</span>
+<span class="sd">    &gt;&gt;&gt; # only 9 is greater than last item key</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=0, stop=9, only_new_items=True)</span>
 <span class="sd">    [&#39;s9&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; buffer_reader.head(), buffer_reader.last_item, buffer_reader.last_key</span>
 <span class="sd">    (&#39;s0&#39;, &#39;s0&#39;, 0)</span>
@@ -230,7 +237,8 @@
 
 <span class="sd">        :param n: number of items to return</span>
 <span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
-<span class="sd">        :param ignore_no_item_found: if True, return None when no next item instead of raising exception</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception</span>
 <span class="sd">        :param strict_n: if True, raise ValueError if n items are not available</span>
 <span class="sd">        :return: next item or list of next items if n &gt; 1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -240,9 +248,9 @@
             <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
                 <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">e</span>
-            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: &#39;&lt;&#39; not supported between instances of &#39;NoneType&#39; and type(key)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># TypeError: &#39;&lt;&#39; not supported between instances of &#39;NoneType&#39; and type(key)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
                     <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -259,10 +267,9 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_items_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">return</span> <span class="n">next_items_list</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
-                <span class="k">return</span> <span class="n">next_item</span></div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
+            <span class="k">return</span> <span class="n">next_item</span></div>
 
 <div class="viewcode-block" id="BufferReader.range"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.range">[docs]</a>    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -284,12 +291,15 @@
 <span class="sd">        :param stop: ending range key of item inclusive</span>
 <span class="sd">        :param step:</span>
 <span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
-<span class="sd">        :param ignore_no_item_found: if True, return None when no next item instead of raising exception.</span>
-<span class="sd">        :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found</span>
-<span class="sd">        :param start_le: if True, increase the search range to find start less than or equal by rounding down if start</span>
-<span class="sd">            is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0</span>
-<span class="sd">        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to stop in buffer,</span>
-<span class="sd">            if ignore_no_item_found is also True, return None instead of ValueError</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception.</span>
+<span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
+<span class="sd">            or return None if ignore_no_item_found</span>
+<span class="sd">        :param start_le: if True, increase the search range to find start less than or equal by</span>
+<span class="sd">            rounding down if start is in between keys,</span>
+<span class="sd">            i.e. keys=[0, 10, 20], start=9 will include key=0</span>
+<span class="sd">        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to</span>
+<span class="sd">            stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError</span>
 <span class="sd">        :return: list of items in range</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
@@ -300,8 +310,7 @@
                 <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: &#39;NoneType&#39; object is not subscriptable</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">e</span>
+                    <span class="k">raise</span> <span class="n">e</span>
                 <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">_next_key</span> <span class="k">else</span> <span class="n">_next_key</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
@@ -316,8 +325,7 @@
                 <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">e</span>
+                    <span class="k">raise</span> <span class="n">e</span>
 
             <span class="n">items</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
@@ -327,16 +335,17 @@
             <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: list index out of range</span>
                 <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">raise</span> <span class="n">e</span>
         <span class="k">return</span> <span class="n">items</span></div>
 
 <div class="viewcode-block" id="BufferReader.tail"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.tail">[docs]</a>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Finds the last item in buffer. Raise ValueError if no item found.</span>
 
 <span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
-<span class="sd">        :param ignore_no_item_found: if True, return None when no next item instead of raising exception</span>
-<span class="sd">        :param only_new_items: if True and no new items, raise ValueError or return None if ignore_no_item_found</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception</span>
+<span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
+<span class="sd">            or return None if ignore_no_item_found</span>
 <span class="sd">        :return: tail item</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
@@ -346,9 +355,9 @@
                 <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">e</span>
-                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: &#39;&gt;&#39; not supported between instances of type(key) and &#39;NoneType&#39;</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># TypeError: &#39;&gt;&#39; not supported between instances of type(key) and &#39;NoneType&#39;</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
                         <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -359,8 +368,7 @@
                 <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: deque index out of range</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">e</span>
+                    <span class="k">raise</span> <span class="n">e</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
         <span class="k">return</span> <span class="n">item</span></div>

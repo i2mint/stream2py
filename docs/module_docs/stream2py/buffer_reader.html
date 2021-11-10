@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.buffer_reader &mdash; stream2py 1.0.26 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.27 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -81,6 +81,9 @@
              
   <section id="module-stream2py.buffer_reader">
 <span id="stream2py-buffer-reader"></span><h1>stream2py.buffer_reader<a class="headerlink" href="#module-stream2py.buffer_reader" title="Permalink to this headline">¶</a></h1>
+<p>A BufferReader gives data access to any number of consumers and provides methods to seek data such
+as next(), range(), head(), tail().  Each BufferReader instance has it’s own cursor keeping track of
+what data was last seen.</p>
 <dl class="py class">
 <dt id="stream2py.buffer_reader.BufferReader">
 <em class="property">class </em><code class="sig-prename descclassname">stream2py.buffer_reader.</code><code class="sig-name descname">BufferReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer</span><span class="p">:</span> <span class="n"><a class="reference internal" href="utility/locked_sorted_deque.html#stream2py.utility.locked_sorted_deque.RWLockSortedDeque" title="stream2py.utility.locked_sorted_deque.RWLockSortedDeque">stream2py.utility.locked_sorted_deque.RWLockSortedDeque</a></span></em>, <em class="sig-param"><span class="n">source_reader_info</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">stop_event</span><span class="p">:</span> <span class="n">threading.Event</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader" title="Permalink to this definition">¶</a></dt>
@@ -103,9 +106,11 @@
 <span class="go">&#39;s0&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="c1"># check last_item cursor</span>
 <span class="go">&#39;s0&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="c1"># next will not update last_item cursor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># next will not update last_item cursor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
 <span class="go">(&#39;s1&#39;, &#39;s0&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="c1"># same as what was peeked but now cursor is updated</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># same as what was peeked but now cursor is updated</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
 <span class="go">(&#39;s1&#39;, &#39;s1&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="go">[&#39;s5&#39;, &#39;s6&#39;, &#39;s7&#39;, &#39;s8&#39;, &#39;s9&#39;, &#39;s10&#39;]</span>
@@ -119,7 +124,8 @@
 <span class="go">&#39;s8&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_key</span> <span class="c1"># key of last_item</span>
 <span class="go">8</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># only 9 is greater than last item key</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># only 9 is greater than last item key</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">[&#39;s9&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_key</span>
 <span class="go">(&#39;s0&#39;, &#39;s0&#39;, 0)</span>
@@ -171,7 +177,8 @@ Raise ValueError if no item found with key above last item.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n</strong> – number of items to return</p></li>
 <li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
-<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception</p></li>
 <li><p><strong>strict_n</strong> – if True, raise ValueError if n items are not available</p></li>
 </ul>
 </dd>
@@ -194,12 +201,15 @@ Raise ValueError if no item found with key above last item.</p>
 <li><p><strong>stop</strong> – ending range key of item inclusive</p></li>
 <li><p><strong>step</strong> – </p></li>
 <li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
-<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception.</p></li>
-<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError or return None if ignore_no_item_found</p></li>
-<li><p><strong>start_le</strong> – if True, increase the search range to find start less than or equal by rounding down if start
-is in between keys, i.e. keys=[0, 10, 20], start=9 will include key=0</p></li>
-<li><p><strong>stop_ge</strong> – if True, raise ValueError when there is no key greater than or equal to stop in buffer,
-if ignore_no_item_found is also True, return None instead of ValueError</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception.</p></li>
+<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError
+or return None if ignore_no_item_found</p></li>
+<li><p><strong>start_le</strong> – if True, increase the search range to find start less than or equal by
+rounding down if start is in between keys,
+i.e. keys=[0, 10, 20], start=9 will include key=0</p></li>
+<li><p><strong>stop_ge</strong> – if True, raise ValueError when there is no key greater than or equal to
+stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -238,8 +248,10 @@ if ignore_no_item_found is also True, return None instead of ValueError</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
-<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item instead of raising exception</p></li>
-<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError or return None if ignore_no_item_found</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception</p></li>
+<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError
+or return None if ignore_no_item_found</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
