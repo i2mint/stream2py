@@ -1,3 +1,4 @@
+"""Sorted Deque that handles Reader-Writer Priority"""
 from contextlib import contextmanager
 
 from stream2py.utility.reader_writer_lock import RWLock

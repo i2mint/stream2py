@@ -1,4 +1,5 @@
-from typing import Optional, Any, Protocol, Union
+"""Typing hints"""
+from typing import Optional, Any, Protocol
 
 OpenInstance = Optional[Any]
 

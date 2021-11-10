@@ -1,3 +1,4 @@
+"""Examples"""
 from stream2py import SourceReader
 
 

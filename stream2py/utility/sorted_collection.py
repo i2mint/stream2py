@@ -1,3 +1,4 @@
+"""Sequence sorted by a key function."""
 # Take from: https://code.activestate.com/recipes/577197-sortedcollection/
 # Found from: https://docs.python.org/3.7/library/bisect.html
 # Created by Raymond Hettinger on Fri, 16 Apr 2010

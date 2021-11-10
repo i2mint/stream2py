@@ -1,3 +1,4 @@
+"""Deque sorted by a key function."""
 from bisect import bisect_left, bisect_right
 from collections import deque
 from itertools import islice
