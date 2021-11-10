@@ -30,9 +30,14 @@ jobs:
 
       - name: Format source code
         run: black  --line-length=88 .
-
-      # - name: Validate docstrings
-      #   run: pylint ./$PROJECT_NAME --ignore=examples --disable=all --enable=C0114,C0115,C0116
+        
+      # Documentation on "enable" codes:
+      #   http://pylint.pycqa.org/en/latest/technical_reference/features.html#basic-checker-messages
+      # C0114: missing-module-docstring
+      # C0115: missing-class-docstring
+      # C0116: missing-function-docstring
+#       - name: Validate docstrings
+#         run: pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114
 
       # - name: Test
       #   run: pytest -s --doctest-modules -v $PROJECT_NAME
