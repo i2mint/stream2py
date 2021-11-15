@@ -3,7 +3,6 @@ from stream2py.stream_buffer import StreamBuffer
 import time
 
 
-
 def test_stream_buffer():
 
     sc = TenthSecondCounter()  # source

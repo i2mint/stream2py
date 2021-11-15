@@ -130,5 +130,3 @@ def mk_stream_buffer(
         yield stream_buffer
     finally:
         stream_buffer.stop()
-
-

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; stream2py 1.0.28 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Index &mdash; stream2py 1.0.29 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -45,6 +45,9 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
@@ -122,11 +125,17 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.close">close() (stream2py.source_reader.SourceReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.close">(stream2py.tests.test_source_reader.RandomFloatSource method)</a>
 </li>
-      <li><a href="module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType">ComparableType (class in stream2py.utility.typing_hints)</a>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.close">(stream2py.tests.test_source_reader.TenthSecondCounter method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType">ComparableType (class in stream2py.utility.typing_hints)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.count">count() (stream2py.utility.sorted_collection.SortedCollection method)</a>
 
       <ul>
@@ -206,11 +215,17 @@
 </li>
       </ul></li>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.info">info() (stream2py.source_reader.SourceReader property)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.info">(stream2py.tests.test_source_reader.RandomFloatSource property)</a>
 </li>
-      <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">insert() (stream2py.utility.sorted_collection.SortedCollection method)</a>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.info">(stream2py.tests.test_source_reader.TenthSecondCounter property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">insert() (stream2py.utility.sorted_collection.SortedCollection method)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert_right">insert_right() (stream2py.utility.sorted_collection.SortedCollection method)</a>
 </li>
       <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.is_running">is_running() (stream2py.stream_buffer.StreamBuffer property)</a>
@@ -228,6 +243,8 @@
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.key">key() (stream2py.source_reader.SourceReader method)</a>
 
       <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.key">(stream2py.tests.test_source_reader.RandomFloatSource method)</a>
+</li>
         <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.key">(stream2py.utility.sorted_collection.SortedCollection property)</a>
 </li>
       </ul></li>
@@ -269,6 +286,12 @@
 </li>
         <li><a href="module_docs/stream2py/stream_buffer.html#module-stream2py.stream_buffer">stream2py.stream_buffer</a>
 </li>
+        <li><a href="module_docs/stream2py/tests/test_lock_sorted_deque.html#module-stream2py.tests.test_lock_sorted_deque">stream2py.tests.test_lock_sorted_deque</a>
+</li>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#module-stream2py.tests.test_source_reader">stream2py.tests.test_source_reader</a>
+</li>
+        <li><a href="module_docs/stream2py/tests/test_stream_buffer.html#module-stream2py.tests.test_stream_buffer">stream2py.tests.test_stream_buffer</a>
+</li>
         <li><a href="module_docs/stream2py/utility/locked_sorted_deque.html#module-stream2py.utility.locked_sorted_deque">stream2py.utility.locked_sorted_deque</a>
 </li>
         <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#module-stream2py.utility.reader_writer_lock">stream2py.utility.reader_writer_lock</a>
@@ -295,13 +318,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.open">open() (stream2py.source_reader.SourceReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.open">(stream2py.tests.test_source_reader.RandomFloatSource method)</a>
 </li>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.open">(stream2py.tests.test_source_reader.TenthSecondCounter method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource">RandomFloatSource (class in stream2py.tests.test_source_reader)</a>
+</li>
       <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.range">range() (stream2py.buffer_reader.BufferReader method)</a>
 
       <ul>
@@ -311,11 +342,17 @@
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.range_by_index">range_by_index() (stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.read">read() (stream2py.source_reader.SourceReader method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.read">(stream2py.tests.test_source_reader.RandomFloatSource method)</a>
 </li>
-      <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader">Reader (class in stream2py.utility.reader_writer_lock)</a>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.read">(stream2py.tests.test_source_reader.TenthSecondCounter method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader">Reader (class in stream2py.utility.reader_writer_lock)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">remove() (stream2py.utility.sorted_collection.SortedCollection method)</a>
 </li>
       <li><a href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader.run">run() (stream2py.utility.reader_writer_lock.Reader method)</a>
@@ -381,8 +418,6 @@
         <li><a href="module_docs/stream2py/simply.html#module-stream2py.simply">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     stream2py.source_reader
 
@@ -390,11 +425,34 @@
         <li><a href="module_docs/stream2py/source_reader.html#module-stream2py.source_reader">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     stream2py.stream_buffer
 
       <ul>
         <li><a href="module_docs/stream2py/stream_buffer.html#module-stream2py.stream_buffer">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.tests.test_lock_sorted_deque
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_lock_sorted_deque.html#module-stream2py.tests.test_lock_sorted_deque">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.tests.test_source_reader
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_source_reader.html#module-stream2py.tests.test_source_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.tests.test_stream_buffer
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_stream_buffer.html#module-stream2py.tests.test_stream_buffer">module</a>
 </li>
       </ul></li>
       <li>
@@ -444,6 +502,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter">TenthSecondCounter (class in stream2py.tests.test_source_reader)</a>
+</li>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.to_jdict">to_jdict() (stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
   </ul></td>

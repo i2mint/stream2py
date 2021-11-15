@@ -3,14 +3,13 @@ import pytest
 import operator
 
 
-@pytest.mark.parametrize("initial_size,maxlen", [
-    (100, 110),
-    (10, 12),
-])
+@pytest.mark.parametrize('initial_size,maxlen', [(100, 110), (10, 12),])
 def test_rw_lock_sorted_deque(initial_size, maxlen):
-    locked_deque = RWLockSortedDeque(((('plc', i), f'data_{i}') for i in range(initial_size)),
-                                     key=operator.itemgetter(0),
-                                     maxlen=maxlen)
+    locked_deque = RWLockSortedDeque(
+        ((('plc', i), f'data_{i}') for i in range(initial_size)),
+        key=operator.itemgetter(0),
+        maxlen=maxlen,
+    )
     assert len(locked_deque) == initial_size
 
     new_item = (('plc', initial_size + 1), 'new data')
@@ -34,12 +33,3 @@ def test_rw_lock_sorted_deque(initial_size, maxlen):
     with locked_deque.writer_lock() as writer:
         with pytest.raises(ValueError):
             writer.append(new_item)
-
-
-
-
-
-
-
-
-

@@ -77,13 +77,18 @@ class TenthSecondCounter(SourceReader):
 
 
 # note that the class to test must have the additional attribute open_count for the test to pass
-@pytest.mark.parametrize("n_reads,n_open_close,source_reader_class,class_params", [
-    (1, 10, RandomFloatSource, {'seed': 1}),
-    (5, 100, RandomFloatSource, {'seed': 1}),
-    (10, 10, RandomFloatSource, {'seed': 1}),
-    (10, 10, TenthSecondCounter, dict())
-])
-def test_source_readers_open_close(n_reads, n_open_close, source_reader_class, class_params):
+@pytest.mark.parametrize(
+    'n_reads,n_open_close,source_reader_class,class_params',
+    [
+        (1, 10, RandomFloatSource, {'seed': 1}),
+        (5, 100, RandomFloatSource, {'seed': 1}),
+        (10, 10, RandomFloatSource, {'seed': 1}),
+        (10, 10, TenthSecondCounter, dict()),
+    ],
+)
+def test_source_readers_open_close(
+    n_reads, n_open_close, source_reader_class, class_params
+):
     sc = source_reader_class(**class_params)
     for open_number in range(n_open_close):
         with sc:
