@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.source_reader &mdash; stream2py 1.0.29 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.30 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -44,6 +44,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
@@ -169,17 +171,6 @@
         <span class="sd">&quot;&quot;&quot;Set up source to be read and set some source info affected by open time like the time of</span>
 <span class="sd">        open. Will be called in StreamBuffer immediately before first read.&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="SourceReader.read"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.read">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Must return data that is sortable with &#39;key&#39; method or None. Data that is not readily</span>
-<span class="sd">        sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).</span>
-
-<span class="sd">        :return: data or None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Implement the &#39;read&#39; method returning data that is sortable with &#39;key&#39; method&quot;</span>
-        <span class="p">)</span></div>
-
 <div class="viewcode-block" id="SourceReader.close"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.close">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Close and clean up source reader.</span>
@@ -244,6 +235,77 @@
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
+
+<span class="n">StreamItem</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s1">&#39;StreamItem&#39;</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">QuickSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A `SourceReader` with whose only required merthod is the read method.</span>
+
+<span class="sd">    - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)</span>
+<span class="sd">    - close does nothing</span>
+<span class="sd">    - info returns a `{`open_time`: ..., `open_instance`: ...}` dict</span>
+<span class="sd">    - key just returns the data itself</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">read_idx</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">open_time</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">StreamItem</span><span class="p">]:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_data</span><span class="p">(</span><span class="n">_next</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">_next</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">when_no_data</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_valid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Bool function indicating whether the data should be released in an iteration.</span>
+
+<span class="sd">        By default, all non-None data will be considered valid, but some streams</span>
+<span class="sd">        might indicate &quot;empty data&quot; in a different way.</span>
+<span class="sd">        In that case, `is_valid_data` can be used to adapt to the situation.</span>
+
+<span class="sd">        This filter function is meant to indicate &quot;empty data&quot;, or &quot;don&#39;t yield this</span>
+<span class="sd">        data&quot; during iteration, but can also be used simply to filter out data that</span>
+<span class="sd">        we don&#39;t want to release in the iteration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Action taken when data is not valid (not yielded in iteration).</span>
+<span class="sd">        Usually, the action is to sleep for a fixed amount of seconds to give a</span>
+<span class="sd">        chance for the source data production to catch up, without hogging resources</span>
+<span class="sd">        by waiting.</span>
+<span class="sd">        The `when_no_data` can do much more though, and even use the source_reader</span>
+<span class="sd">        instance and/or the (non valid) data itself to decide what action to take.</span>
+
+<span class="sd">        For example, one may want to have when_no_data do some timing stats to decide</span>
+<span class="sd">        on the number of seconds to stop, or send an interrupt signal if too many</span>
+<span class="sd">        &quot;non datas&quot; happen in a row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A dummy close class&quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;open_time&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span><span class="p">,</span>
+            <span class="s1">&#39;open_instance&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">data</span>
 </pre></div>
 
            </div>

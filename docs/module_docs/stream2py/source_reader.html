@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.source_reader &mdash; stream2py 1.0.29 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.30 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="stream2py.stream_buffer" href="stream_buffer.html" />
+    <link rel="next" title="stream2py.sources" href="sources.html" />
     <link rel="prev" title="stream2py.simply" href="simply.html" /> 
 </head>
 
@@ -47,6 +47,8 @@
 <li class="toctree-l1"><a class="reference internal" href="buffer_reader.html">stream2py.buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simply.html">stream2py.simply</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
@@ -196,18 +198,6 @@ open. Will be called in StreamBuffer immediately before first read.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="stream2py.source_reader.SourceReader.read">
-<em class="property">abstract </em><code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>Any<span class="p">]</span><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily
-sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>data or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">
 <code class="sig-name descname">set_sleep_time_on_iter_none</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.001</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/source_reader.html#SourceReader.set_sleep_time_on_iter_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the sleep time of the iter yield loop when next data item is not yet available.</p>
@@ -244,7 +234,7 @@ case. Not necessary if read is a blocking function that always returns a data po
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="simply.html" class="btn btn-neutral float-left" title="stream2py.simply" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="stream_buffer.html" class="btn btn-neutral float-right" title="stream2py.stream_buffer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sources.html" class="btn btn-neutral float-right" title="stream2py.sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
