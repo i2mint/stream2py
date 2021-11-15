@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.29 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.30 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -47,6 +47,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../buffer_reader.html">stream2py.buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.tests.test_source_reader</a></li>
@@ -131,18 +133,6 @@ should be included with read data instead.</p>
 open. Will be called in StreamBuffer immediately before first read.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#RandomFloatSource.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily
-sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>data or None</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -174,18 +164,6 @@ should be included with read data instead.</p>
 <dt id="stream2py.tests.test_source_reader.TenthSecondCounter.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#TenthSecondCounter.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset params for first read</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.TenthSecondCounter.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#TenthSecondCounter.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must return data that is sortable with ‘key’ method or None. Data that is not readily
-sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>data or None</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

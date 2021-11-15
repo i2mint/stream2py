@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.29 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.30 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -44,6 +44,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
@@ -101,9 +103,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_gen</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RandomFloatSource.read"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_gen</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span></div>
+        <span class="k">return</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="RandomFloatSource.close"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.RandomFloatSource.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_gen</span></div>
@@ -146,14 +148,14 @@
 <div class="viewcode-block" id="TenthSecondCounter.close"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="TenthSecondCounter.read"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_source_reader.html#stream2py.tests.test_source_reader.TenthSecondCounter.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">next_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
         <span class="n">next_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span>
         <span class="k">if</span> <span class="n">now</span> <span class="o">&gt;=</span> <span class="n">next_time</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="n">next_time</span> <span class="o">*</span> <span class="mi">100000</span><span class="p">,</span> <span class="n">next_count</span>  <span class="c1"># (timestamp_us, count)</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (timestamp_us, count) -&gt; timestamp_us</span></div>
 
