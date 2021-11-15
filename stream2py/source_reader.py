@@ -88,17 +88,6 @@ class SourceReader(metaclass=ABCMeta):
         open. Will be called in StreamBuffer immediately before first read."""
 
     @abstractmethod
-    def read(self) -> Optional[Any]:
-        """Must return data that is sortable with 'key' method or None. Data that is not readily
-        sortable such as ordered words of a sentence can be wrapped in a tuple (word_index, word).
-
-        :return: data or None
-        """
-        raise NotImplementedError(
-            "Implement the 'read' method returning data that is sortable with 'key' method"
-        )
-
-    @abstractmethod
     def close(self) -> None:
         """Close and clean up source reader.
         Will be called when StreamBuffer stops or if an exception is raised during read and append
@@ -162,3 +151,74 @@ class SourceReader(metaclass=ABCMeta):
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
+
+
+from typing import NewType, Iterable, Iterator
+
+StreamItem = NewType('StreamItem', Any)
+
+
+class QuickSourceReader(SourceReader):
+    """
+    A `SourceReader` with whose only required merthod is the read method.
+
+    - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)
+    - close does nothing
+    - info returns a `{`open_time`: ..., `open_instance`: ...}` dict
+    - key just returns the data itself
+    """
+
+    read_idx = None
+    open_time = None
+
+    def __iter__(self) -> Iterator[StreamItem]:
+        while True:
+            _next = self.read()
+            if self.is_valid_data(_next):
+                yield _next
+            else:
+                self.when_no_data(_next)
+
+    def is_valid_data(self, data: StreamItem) -> bool:
+        """Bool function indicating whether the data should be released in an iteration.
+
+        By default, all non-None data will be considered valid, but some streams
+        might indicate "empty data" in a different way.
+        In that case, `is_valid_data` can be used to adapt to the situation.
+
+        This filter function is meant to indicate "empty data", or "don't yield this
+        data" during iteration, but can also be used simply to filter out data that
+        we don't want to release in the iteration.
+        """
+        return data is not None
+
+    def when_no_data(self, _next=None):
+        """Action taken when data is not valid (not yielded in iteration).
+        Usually, the action is to sleep for a fixed amount of seconds to give a
+        chance for the source data production to catch up, without hogging resources
+        by waiting.
+        The `when_no_data` can do much more though, and even use the source_reader
+        instance and/or the (non valid) data itself to decide what action to take.
+
+        For example, one may want to have when_no_data do some timing stats to decide
+        on the number of seconds to stop, or send an interrupt signal if too many
+        "non datas" happen in a row.
+        """
+        time.sleep(self._sleep_time_on_iter_none_s)
+
+    def open(self):
+        self.read_idx = 0
+        self.open_time = self.get_timestamp()
+
+    def close(self):
+        """A dummy close class"""
+
+    @property
+    def info(self):
+        return {
+            'open_time': self.open_time,
+            'open_instance': str(self.open_instance),
+        }
+
+    def key(self, data: StreamItem):
+        return data
