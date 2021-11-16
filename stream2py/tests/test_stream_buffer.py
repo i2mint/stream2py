@@ -1,4 +1,4 @@
-from stream2py.tests.test_source_reader import TenthSecondCounter
+from stream2py.tests.utils_for_testing import TenthSecondCounter
 from stream2py.stream_buffer import StreamBuffer
 import time
 

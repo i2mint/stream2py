@@ -4,25 +4,27 @@ Helper Function to construct a SourceReader and StreamBuffer in one
 
 Example of usage:
 
-from stream2py.simply import mk_stream_buffer
+::
 
-counter = iter(range(10))
-with mk_stream_buffer(
-    read_stream=lambda open_inst: next(counter),
-    open_stream=lambda: print('open'),
-    close_stream=lambda open_inst: print('close'),
-    auto_drop=False,
-    maxlen=2,
-) as count_stream_buffer:
-    count_reader = count_stream_buffer.mk_reader()
-    print(f'start reading {count_reader.source_reader_info}')
-    for i in count_reader:
-        # do stuff with read data
-        print(i)
-        if count_stream_buffer.auto_drop is False:
-            count_stream_buffer.drop()
+    from stream2py.simply import mk_stream_buffer
 
-    print('done reading')
+    counter = iter(range(10))
+    with mk_stream_buffer(
+        read_stream=lambda open_inst: next(counter),
+        open_stream=lambda: print('open'),
+        close_stream=lambda open_inst: print('close'),
+        auto_drop=False,
+        maxlen=2,
+    ) as count_stream_buffer:
+        count_reader = count_stream_buffer.mk_reader()
+        print(f'start reading {count_reader.source_reader_info}')
+        for i in count_reader:
+            # do stuff with read data
+            print(i)
+            if count_stream_buffer.auto_drop is False:
+                count_stream_buffer.drop()
+
+        print('done reading')
 
 """
 
