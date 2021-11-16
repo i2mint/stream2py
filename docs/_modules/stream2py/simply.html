@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.simply &mdash; stream2py 1.0.31 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.simply &mdash; stream2py 1.0.32 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -89,25 +89,27 @@
 
 <span class="sd">Example of usage:</span>
 
-<span class="sd">from stream2py.simply import mk_stream_buffer</span>
+<span class="sd">::</span>
 
-<span class="sd">counter = iter(range(10))</span>
-<span class="sd">with mk_stream_buffer(</span>
-<span class="sd">    read_stream=lambda open_inst: next(counter),</span>
-<span class="sd">    open_stream=lambda: print(&#39;open&#39;),</span>
-<span class="sd">    close_stream=lambda open_inst: print(&#39;close&#39;),</span>
-<span class="sd">    auto_drop=False,</span>
-<span class="sd">    maxlen=2,</span>
-<span class="sd">) as count_stream_buffer:</span>
-<span class="sd">    count_reader = count_stream_buffer.mk_reader()</span>
-<span class="sd">    print(f&#39;start reading {count_reader.source_reader_info}&#39;)</span>
-<span class="sd">    for i in count_reader:</span>
-<span class="sd">        # do stuff with read data</span>
-<span class="sd">        print(i)</span>
-<span class="sd">        if count_stream_buffer.auto_drop is False:</span>
-<span class="sd">            count_stream_buffer.drop()</span>
+<span class="sd">    from stream2py.simply import mk_stream_buffer</span>
 
-<span class="sd">    print(&#39;done reading&#39;)</span>
+<span class="sd">    counter = iter(range(10))</span>
+<span class="sd">    with mk_stream_buffer(</span>
+<span class="sd">        read_stream=lambda open_inst: next(counter),</span>
+<span class="sd">        open_stream=lambda: print(&#39;open&#39;),</span>
+<span class="sd">        close_stream=lambda open_inst: print(&#39;close&#39;),</span>
+<span class="sd">        auto_drop=False,</span>
+<span class="sd">        maxlen=2,</span>
+<span class="sd">    ) as count_stream_buffer:</span>
+<span class="sd">        count_reader = count_stream_buffer.mk_reader()</span>
+<span class="sd">        print(f&#39;start reading {count_reader.source_reader_info}&#39;)</span>
+<span class="sd">        for i in count_reader:</span>
+<span class="sd">            # do stuff with read data</span>
+<span class="sd">            print(i)</span>
+<span class="sd">            if count_stream_buffer.auto_drop is False:</span>
+<span class="sd">                count_stream_buffer.drop()</span>
+
+<span class="sd">        print(&#39;done reading&#39;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 

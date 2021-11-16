@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.31 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.tests.test_source_reader &mdash; stream2py 1.0.32 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -87,88 +87,6 @@
              
   <section id="module-stream2py.tests.test_source_reader">
 <span id="stream2py-tests-test-source-reader"></span><h1>stream2py.tests.test_source_reader<a class="headerlink" href="#module-stream2py.tests.test_source_reader" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource">
-<em class="property">class </em><code class="sig-prename descclassname">stream2py.tests.test_source_reader.</code><code class="sig-name descname">RandomFloatSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#RandomFloatSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>A simple example of source reader based on a random float generator</p>
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#RandomFloatSource.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close and clean up source reader.
-Will be called when StreamBuffer stops or if an exception is raised during read and append
-loop.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource.info">
-<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource.info" title="Permalink to this definition">¶</a></dt>
-<dd><p>A dict with important source info. Default can be init_kwargs and open timestamp.</p>
-<p>This info will be available in BufferReader after SourceReader has opened but any changes
-made between open and close are not guaranteed to be visible. Any continuous status updates
-should be included with read data instead.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource.key">
-<code class="sig-name descname">key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#RandomFloatSource.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource.key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts data into a comparable value to sort by</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> – the return value of the ‘read’ method</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ComparableType</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.RandomFloatSource.open">
-<code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#RandomFloatSource.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.RandomFloatSource.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up source to be read and set some source info affected by open time like the time of
-open. Will be called in StreamBuffer immediately before first read.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="stream2py.tests.test_source_reader.TenthSecondCounter">
-<em class="property">class </em><code class="sig-prename descclassname">stream2py.tests.test_source_reader.</code><code class="sig-name descname">TenthSecondCounter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">starting_count</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#TenthSecondCounter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Example SourceReader
-Start counting when as soon as you construct</p>
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.TenthSecondCounter.close">
-<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#TenthSecondCounter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Not needed but satisfies the abstract</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.TenthSecondCounter.info">
-<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter.info" title="Permalink to this definition">¶</a></dt>
-<dd><p>A dict with important source info. Default can be init_kwargs and open timestamp.</p>
-<p>This info will be available in BufferReader after SourceReader has opened but any changes
-made between open and close are not guaranteed to be visible. Any continuous status updates
-should be included with read data instead.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="stream2py.tests.test_source_reader.TenthSecondCounter.open">
-<code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_source_reader.html#TenthSecondCounter.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_source_reader.TenthSecondCounter.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reset params for first read</p>
-</dd></dl>
-
-</dd></dl>
-
 </section>
 
 
