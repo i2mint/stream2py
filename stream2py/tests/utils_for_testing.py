@@ -1,8 +1,15 @@
 """Utils for testing"""
+import operator
+import random
+import time
 
+from typing import Iterator
 from itertools import tee
 import itertools
 from functools import wraps
+
+from stream2py import SourceReader
+from stream2py.utility.typing_hints import ComparableType
 
 
 def consume_iterator_and_return_last_element(iterator, default=None):
@@ -108,3 +115,114 @@ def is_monotonic(iterable):
 
 
 # ---------------------------------------------------------------------------------------
+# A few source readers
+from typing import Iterator, Any
+
+
+class SimpleSourceReader(SourceReader):
+    """A source reader that only requires an iterable"""
+
+    _current_index = 0
+
+    def __init__(self, data):
+        """Instantiates the reader and creates an iterator if necessary"""
+        if not isinstance(data, Iterator):
+            data = iter(data)
+        self._data = data
+
+    def __iter__(self):
+        while True:
+            yield self.read()
+
+    def open(self) -> None:
+        return None
+
+    # separate indexing concern (could be counter, could be time.time())
+    def read(self):
+        output = self._current_index, next(self._data)
+        self._current_index += 1
+        return output
+
+    def close(self):
+        return None
+
+    @property
+    def info(self) -> dict:
+        return {}
+
+    def key(self, data: Any) -> ComparableType:
+        return data[0]
+
+    def val(self, data: Any):
+        return data[1]
+
+
+class RandomFloatSource(SourceReader):
+    """
+    A simple example of source reader based on a random float generator
+    """
+
+    def __init__(self, seed=1):
+        random.seed(seed)
+        self.seed = seed
+        self.open_count = 0
+
+    def open(self):
+        self.open_count += 1
+        self.random_gen = iter(random.random, 2)
+
+    def read(self):
+        value = next(self.random_gen)
+        return value
+
+    def close(self):
+        del self.random_gen
+
+    @property
+    def info(self):
+        return dict(seed=self.seed, open_count=self.open_count)
+
+    def key(self, data):
+        return data
+
+
+class TenthSecondCounter(SourceReader):
+    """
+    Example SourceReader
+    Start counting when as soon as you construct
+    """
+
+    def __init__(self, starting_count=0):
+        self._init_kwargs = {
+            k: v for k, v in locals().items() if k not in ('self', '__class__')
+        }
+        self.starting_count = starting_count
+        self._count = 0
+        self._start_time = 0
+        self.open_count = 0
+
+    def open(self):
+        """Reset params for first read"""
+        self.open_count += 1
+        self._count = self.starting_count
+        self._start_time = int(time.time() * 10)
+
+    @property
+    def info(self):
+        _info = self._init_kwargs.copy()
+        _info.update(name=self.__class__.__name__, bt=self._start_time * 100000)
+        return _info
+
+    def close(self):
+        """Not needed but satisfies the abstract"""
+
+    def read(self):
+        next_count = self._count
+        next_time = self._start_time + self._count
+        now = time.time() * 10
+        if now >= next_time:
+            self._count += 1
+            return next_time * 100000, next_count  # (timestamp_us, count)
+        return None
+
+    key = operator.itemgetter(0)  # (timestamp_us, count) -> timestamp_us
