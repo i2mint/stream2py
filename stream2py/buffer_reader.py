@@ -7,6 +7,7 @@ __all__ = ['BufferReader']
 from contextlib import suppress
 import threading
 import time
+from functools import wraps, partialmethod, partial
 from typing import Union
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
@@ -65,17 +66,38 @@ class BufferReader:
     True
     """
 
+    read = None  # will be set by init
+
     def __init__(
         self,
         buffer: RWLockSortedDeque,
         source_reader_info: dict,
         stop_event: threading.Event,
+        *,
+        read_size=1,
+        peek=False,
+        strict_n=False,
+        ignore_no_item_found=False,  # TODO: should this be True to be aligned with iter?
     ):
         """
+
+        The `read_size`, `peek`, `strict_n` and `ignore_no_item_found` parameters
+        are used as defaults of the
+        `read` method. More importanty -- since the default read is used by
+        `__next__` and therefore by `__iter__`, the `read_size` and `peek` these
+        parameters define the behavior of
 
         :param buffer:
         :param source_reader_info:
         :param stop_event: threading.Event for source read loop
+        :param read_size: number of items to return by default when reading.
+            Is also used as the "chunk size" when iterating.
+        :param peek: if True, by default, last_item cursor will not be updated during a
+            read
+        :param ignore_no_item_found: if True, by default return None when no next item
+            instead of raising exception during a read
+        :param strict_n: if True, by default a ValueError witll be raised if the
+            exact number of requested items are not available when reading.
         """
         assert isinstance(buffer, RWLockSortedDeque)
         assert isinstance(stop_event, threading.Event)
@@ -86,10 +108,26 @@ class BufferReader:
         self._last_key = None
         self._stop_event = stop_event
         self._sleep_time_on_iter_none_s = 0.1
+        self.read_size = read_size  # read_size used by __next__
+        self.peek = peek
+        self.ignore_no_item_found = ignore_no_item_found
+        self.strict_n = strict_n
+        # _read_kwargs will be used as the defaults of the read method as well as
+        # the kwargs of the __next__ method (with ignore_no_item_found=True forced)
+        self._read_kwargs = dict(
+            n=self.read_size,
+            peek=self.peek,
+            ignore_no_item_found=self.ignore_no_item_found,
+            strict_n=self.strict_n,
+        )
+        # The _read_kwargs_for_iter should be the same as the _read_kwargs, but with
+        # forced ignore_no_item_found=True so that __iter__ always returns a value, and
+        # doesn't throw an error (because iter is blocking)
+        self._read_kwargs_for_next = dict(self._read_kwargs, ignore_no_item_found=True)
 
     def __iter__(self):
         while True:
-            _next = self.next(ignore_no_item_found=True)
+            _next = next(self)
             if _next is not None:
                 yield _next
             elif self.is_stopped:
@@ -98,7 +136,8 @@ class BufferReader:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
     def __next__(self):
-        return self.next(ignore_no_item_found=True)
+        # Call read with the args fixed by init
+        return self.read(**self._read_kwargs_for_next)
 
     def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
@@ -152,46 +191,6 @@ class BufferReader:
         _getlast_item, _setlast_item, _dellast_item, 'last seen item cursor'
     )
 
-    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
-        """Finds an item with a key greater than the last returned item.
-        Raise ValueError if no item found with key above last item.
-
-        :param n: number of items to return
-        :param peek: if True, last_item cursor will not be updated
-        :param ignore_no_item_found: if True, return None when no next item
-            instead of raising exception
-        :param strict_n: if True, raise ValueError if n items are not available
-        :return: next item or list of next items if n > 1
-        """
-        with self._buffer.reader_lock() as reader:
-            try:
-                next_item = reader.find_gt(self.last_key)
-            except ValueError as e:  # ValueError: No item found with key above: self.last_key
-                if ignore_no_item_found:
-                    return None
-                raise e
-            except TypeError as e:
-                # TypeError: '<' not supported between instances of 'NoneType' and type(key)
-                if self.last_item is None:  # first time reading a value from buffer
-                    next_item = reader[0]
-                else:
-                    raise e
-            if n > 1:
-                i = reader.index(next_item)
-                j = i + n
-                if strict_n and j >= len(reader):
-                    raise ValueError(
-                        f'Number of items found is less than n: strict_n={strict_n}, n={n}'
-                    )
-
-                next_items_list = reader.range_by_index(i, j)
-                if not peek:
-                    self.last_item = next_items_list[-1]
-                return next_items_list
-            if not peek:
-                self.last_item = next_item
-            return next_item
-
     def range(
         self,
         start,
@@ -225,7 +224,9 @@ class BufferReader:
         """
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
-                _next = self.next(peek=True, ignore_no_item_found=ignore_no_item_found)
+                _next = self.read(
+                    n=1, peek=True, ignore_no_item_found=ignore_no_item_found
+                )
                 try:
                     _next_key = reader.key(_next)
                 except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
@@ -300,3 +301,56 @@ class BufferReader:
         if not peek:
             self.last_item = item
         return item
+
+    # TODO: Figure out a good way to "inject" init's choice of defaults
+    def read(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
+        """Finds an item with a key greater than the last returned item.
+        Raise ValueError if no item found with key above last item.
+
+        :param n: number of items to return
+        :param peek: if True, last_item cursor will not be updated
+        :param ignore_no_item_found: if True, return None when no next item
+            instead of raising exception
+        :param strict_n: if True, raise ValueError if n items are not available
+        :return: next item or list of next items if n > 1
+        """
+        with self._buffer.reader_lock() as reader:
+            try:
+                next_item = reader.find_gt(self.last_key)
+            except ValueError as e:  # ValueError: No item found with key above:
+                # self.last_key
+                if ignore_no_item_found:
+                    return None
+                raise e
+            except TypeError as e:
+                # TypeError: '<' not supported between instances of 'NoneType' and type(key)
+                if self.last_item is None:  # first time reading a value from buffer
+                    next_item = reader[0]
+                else:
+                    raise e
+            if n > 1:
+                i = reader.index(next_item)
+                j = i + n
+                if strict_n and j >= len(reader):
+                    raise ValueError(
+                        f'Number of items found is less than n: strict_n={strict_n}, n={n}'
+                    )
+
+                next_items_list = reader.range_by_index(i, j)
+                if not peek:
+                    self.last_item = next_items_list[-1]
+                return next_items_list
+            if not peek:
+                self.last_item = next_item
+            return next_item
+
+    def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
+        from warnings import warn
+
+        warn(
+            f'Deprecated. next is deprecated. Use read method instead',
+            DeprecationWarning,
+        )
+        return self.read(
+            n=n, peek=peek, ignore_no_item_found=ignore_no_item_found, strict_n=strict_n
+        )

@@ -95,7 +95,6 @@ class SourceReader(metaclass=ABCMeta):
         """
 
     @property
-    @abstractmethod
     def info(self) -> dict:
         """A dict with important source info. Default can be init_kwargs and open timestamp.
 
@@ -105,7 +104,7 @@ class SourceReader(metaclass=ABCMeta):
 
         :return: dict
         """
-        raise NotImplementedError('no source info set')
+        return {}
 
     @abstractmethod
     def key(self, data: Any) -> ComparableType:

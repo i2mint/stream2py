@@ -17,7 +17,7 @@ def test_stream_buffer():
     assert sc_reader.source_reader_info['bt'] != 0, sc_reader.source_reader_info
     print('data as shown is (timestamp, count) at every tenth of a second')
     while True:
-        x = sc_reader.next(ignore_no_item_found=True)
+        x = sc_reader.read(n=1, ignore_no_item_found=True)
         if x:
             last_read = x
             print(x)
@@ -91,8 +91,8 @@ def test_stream_buffer():
         time.sleep(1.5)
         print('comparing first start reader values to second start')
         while True:
-            r22 = sc_reader22.next(ignore_no_item_found=True)
-            r12 = sc_reader12.next(ignore_no_item_found=True)
+            r22 = sc_reader22.read(n=1, ignore_no_item_found=True)
+            r12 = sc_reader12.read(n=1, ignore_no_item_found=True)
 
             if r22:
 
