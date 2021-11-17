@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.source_reader &mdash; stream2py 1.0.32 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.33 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -180,7 +180,6 @@
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
     <span class="nd">@property</span>
-    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;A dict with important source info. Default can be init_kwargs and open timestamp.</span>
 
@@ -190,7 +189,7 @@
 
 <span class="sd">        :return: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;no source info set&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="SourceReader.key"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.key">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
