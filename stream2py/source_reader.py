@@ -151,6 +151,21 @@ class SourceReader(metaclass=ABCMeta):
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
 
+    def stream_buffer(
+        self,
+        maxlen: int,
+        sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
+        auto_drop=True,
+    ):
+        from stream2py.stream_buffer import StreamBuffer
+
+        return StreamBuffer(
+            self,
+            maxlen=maxlen,
+            sleep_time_on_read_none_s=sleep_time_on_read_none_s,
+            auto_drop=auto_drop,
+        )
+
 
 from typing import NewType, Iterable, Iterator
 
