@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.buffer_reader &mdash; stream2py 1.0.34 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.35 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -96,6 +96,21 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">stream2py.utility.locked_sorted_deque</span> <span class="kn">import</span> <span class="n">RWLockSortedDeque</span>
+
+
+<span class="k">def</span> <span class="nf">defaulted_values</span><span class="p">(</span><span class="n">source_dict</span><span class="p">,</span> <span class="n">defaults</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a the values of source_dict where None values are replaced with the</span>
+<span class="sd">    corresponding `default_dict` values.</span>
+
+<span class="sd">    &gt;&gt;&gt; defaults = {&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({&#39;a&#39;: None, &#39;b&#39;: 22, &#39;c&#39;: None}, defaults))</span>
+<span class="sd">    (1, 22, 3)</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({&#39;a&#39;: False, &#39;b&#39;: True, &#39;c&#39;: None}, defaults))</span>
+<span class="sd">    (False, True, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">defaults</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">source_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="BufferReader"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader">[docs]</a><span class="k">class</span> <span class="nc">BufferReader</span><span class="p">:</span>
@@ -387,10 +402,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
         <span class="k">return</span> <span class="n">item</span>
 
-    <span class="c1"># TODO: Figure out a good way to &quot;inject&quot; init&#39;s choice of defaults</span>
-<div class="viewcode-block" id="BufferReader.read"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BufferReader.read"><a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Finds an item with a key greater than the last returned item.</span>
 <span class="sd">        Raise ValueError if no item found with key above last item.</span>
+
+<span class="sd">        Note: Arguments whose values are not specified will be replaced with</span>
+<span class="sd">        self.</span>
 
 <span class="sd">        :param n: number of items to return</span>
 <span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
@@ -399,6 +416,23 @@
 <span class="sd">        :param strict_n: if True, raise ValueError if n items are not available</span>
 <span class="sd">        :return: next item or list of next items if n &gt; 1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">peek</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span> <span class="o">=</span> <span class="n">defaulted_values</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span>
+                <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
+                <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># # Is the following alternative clearer or more efficient?</span>
+        <span class="c1"># n = n or self._read_kwargs[&#39;n&#39;]</span>
+        <span class="c1"># peek = peek or self._read_kwargs[&#39;peek&#39;]</span>
+        <span class="c1"># ignore_no_item_found = (</span>
+        <span class="c1">#         ignore_no_item_found or self._read_kwargs[&#39;ignore_no_item_found&#39;]</span>
+        <span class="c1"># )</span>
+        <span class="c1"># strict_n = strict_n or self._read_kwargs[&#39;strict_n&#39;]</span>
+
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
