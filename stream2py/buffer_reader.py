@@ -13,6 +13,21 @@ from typing import Union
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
 
+def defaulted_values(source_dict, defaults):
+    """Returns a the values of source_dict where None values are replaced with the
+    corresponding `default_dict` values.
+
+    >>> defaults = {'a': 1, 'b': 2, 'c': 3}
+    >>> tuple(defaulted_values({'a': None, 'b': 22, 'c': None}, defaults))
+    (1, 22, 3)
+    >>> tuple(defaulted_values({'a': False, 'b': True, 'c': None}, defaults))
+    (False, True, 3)
+    """
+    return {
+        k: v if v is not None else defaults[k] for k, v in source_dict.items()
+    }.values()
+
+
 class BufferReader:
     """Reader that is constructed from StreamBuffer.mk_reader()
 
@@ -302,10 +317,12 @@ class BufferReader:
             self.last_item = item
         return item
 
-    # TODO: Figure out a good way to "inject" init's choice of defaults
-    def read(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
+    def read(self, n=None, *, peek=None, ignore_no_item_found=None, strict_n=None):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
+
+        Note: Arguments whose values are not specified will be replaced with
+        self.
 
         :param n: number of items to return
         :param peek: if True, last_item cursor will not be updated
@@ -314,6 +331,23 @@ class BufferReader:
         :param strict_n: if True, raise ValueError if n items are not available
         :return: next item or list of next items if n > 1
         """
+        n, peek, ignore_no_item_found, strict_n = defaulted_values(
+            dict(
+                n=n,
+                peek=peek,
+                ignore_no_item_found=ignore_no_item_found,
+                strict_n=strict_n,
+            ),
+            defaults=self._read_kwargs,
+        )
+        # # Is the following alternative clearer or more efficient?
+        # n = n or self._read_kwargs['n']
+        # peek = peek or self._read_kwargs['peek']
+        # ignore_no_item_found = (
+        #         ignore_no_item_found or self._read_kwargs['ignore_no_item_found']
+        # )
+        # strict_n = strict_n or self._read_kwargs['strict_n']
+
         with self._buffer.reader_lock() as reader:
             try:
                 next_item = reader.find_gt(self.last_key)
