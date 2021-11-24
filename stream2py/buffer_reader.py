@@ -334,11 +334,7 @@ class BufferReader:
         :return: next item or list of next items if n > 1
         """
         n, ignore_no_item_found, strict_n = defaulted_values(
-            dict(
-                n=n,
-                ignore_no_item_found=ignore_no_item_found,
-                strict_n=strict_n,
-            ),
+            dict(n=n, ignore_no_item_found=ignore_no_item_found, strict_n=strict_n,),
             defaults=self._read_kwargs,
         )
         # # Is the following alternative clearer or more efficient?
