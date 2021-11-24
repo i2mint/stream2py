@@ -213,7 +213,7 @@ class BufferReader:
         step=None,
         *,
         peek=False,
-        ignore_no_item_found=False,
+        ignore_no_item_found=None,
         only_new_items=False,
         start_le=False,
         stop_ge=False,
@@ -237,6 +237,8 @@ class BufferReader:
             stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError
         :return: list of items in range
         """
+        if ignore_no_item_found is None:
+            ignore_no_item_found = self._read_kwargs.get('ignore_no_item_found', False)
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
                 _next = self.read(
@@ -331,10 +333,9 @@ class BufferReader:
         :param strict_n: if True, raise ValueError if n items are not available
         :return: next item or list of next items if n > 1
         """
-        n, peek, ignore_no_item_found, strict_n = defaulted_values(
+        n, ignore_no_item_found, strict_n = defaulted_values(
             dict(
                 n=n,
-                peek=peek,
                 ignore_no_item_found=ignore_no_item_found,
                 strict_n=strict_n,
             ),
