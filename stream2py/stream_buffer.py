@@ -16,6 +16,7 @@ from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 logger = logging.getLogger(__name__)
 
 DFLT_SLEEP_TIME_ON_READ_NONE_S = 0.3
+DFLT_MAX_LEN = 10000
 
 
 class _SourceBuffer:
@@ -64,6 +65,10 @@ class _SourceBuffer:
             source_reader_info=self._source_reader_info,
             stop_event=self._stop_event,
         )
+
+    def attach_reader(self, reader):
+        reader._buffer = self._buffer
+        reader._stop_event = self._stop_event
 
 
 class StreamBuffer:
@@ -187,6 +192,13 @@ class StreamBuffer:
             if not isinstance(self.source_buffer, _SourceBuffer):
                 raise RuntimeError('Readers should be made after starting')
             return self.source_buffer.mk_reader()
+
+    def attach_reader(self, reader):
+        """Allows a StreamReader instance to read from this buffer."""
+        with self.start_lock:
+            if not isinstance(self.source_buffer, _SourceBuffer):
+                raise RuntimeError('Readers should be made after starting')
+            return self.source_buffer.attach_reader(reader)
 
     @property
     def source_reader_info(self) -> Optional[dict]:

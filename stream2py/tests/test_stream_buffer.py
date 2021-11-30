@@ -4,7 +4,6 @@ import time
 
 
 def test_stream_buffer():
-
     sc = TenthSecondCounter()  # source
     sc_buf = StreamBuffer(source_reader=sc, maxlen=100)  # buffer
 
