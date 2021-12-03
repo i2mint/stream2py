@@ -40,7 +40,7 @@ class StreamReader:
     >>> from stream2py.examples.source_reader import SimpleCounterString
     >>>
     >>> source_reader = SimpleCounterString(start=0, stop=100)
-    >>> stream_reader = StreamReader(source_reader, maxlen=100).mk_buffer(maxlen=100)
+    >>> stream_reader = StreamReader(source_reader).mk_buffer(maxlen=100)
     >>> stream_reader.start()
     >>>
     >>> stream_reader.is_stopped
@@ -92,7 +92,6 @@ class StreamReader:
         **source_kwargs,
     ):
         """
-
         The `read_size`, `peek`, `strict_n` and `ignore_no_item_found` parameters
         are used as defaults of the
         `read` method. More importanty -- since the default read is used by
