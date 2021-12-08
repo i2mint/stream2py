@@ -6,7 +6,7 @@ __all__ = ['SourceReader']
 
 from abc import ABCMeta, abstractmethod
 import time
-from typing import Optional, Any, Union
+from typing import Optional, Any, Union, NewType, Iterator
 
 from stream2py.utility.typing_hints import ComparableType
 
@@ -151,6 +151,8 @@ class SourceReader(metaclass=ABCMeta):
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
 
+    enter, exit = __enter__, __exit__
+
     def stream_buffer(
         self,
         maxlen: int,
@@ -166,8 +168,6 @@ class SourceReader(metaclass=ABCMeta):
             auto_drop=auto_drop,
         )
 
-
-from typing import NewType, Iterable, Iterator
 
 StreamItem = NewType('StreamItem', Any)
 

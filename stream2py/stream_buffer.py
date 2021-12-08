@@ -218,6 +218,8 @@ class StreamBuffer:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stop()
 
+    enter, exit = __enter__, __exit__
+
     def _run(self):
         try:
             while not self._stop_event.is_set():
@@ -275,6 +277,6 @@ class StreamBuffer:
 
     def __del__(self):
         try:
-            return self.__exit__(None, None, None)
+            self.__exit__(None, None, None)
         except Exception:
             pass
