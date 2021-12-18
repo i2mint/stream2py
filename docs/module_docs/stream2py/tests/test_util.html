@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.test_lock_sorted_deque &mdash; stream2py 1.0.38 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.tests.test_util &mdash; stream2py 1.0.38 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="stream2py.tests.test_source_reader" href="test_source_reader.html" />
-    <link rel="prev" title="stream2py.stream_buffer" href="../stream_buffer.html" /> 
+    <link rel="next" title="stream2py.tests.utils_for_testing" href="utils_for_testing.html" />
+    <link rel="prev" title="stream2py.tests.test_stream_buffer" href="test_stream_buffer.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,10 +50,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../sources.html">stream2py.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../stream_buffer.html">stream2py.stream_buffer</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test_util.html">stream2py.tests.test_util</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.tests.test_util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../util.html">stream2py.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
@@ -77,9 +77,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>stream2py.tests.test_lock_sorted_deque</li>
+      <li>stream2py.tests.test_util</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/module_docs/stream2py/tests/test_lock_sorted_deque.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/module_docs/stream2py/tests/test_util.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,16 +87,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-stream2py.tests.test_lock_sorted_deque">
-<span id="stream2py-tests-test-lock-sorted-deque"></span><h1>stream2py.tests.test_lock_sorted_deque<a class="headerlink" href="#module-stream2py.tests.test_lock_sorted_deque" title="Permalink to this headline">¶</a></h1>
+  <section id="module-stream2py.tests.test_util">
+<span id="stream2py-tests-test-util"></span><h1>stream2py.tests.test_util<a class="headerlink" href="#module-stream2py.tests.test_util" title="Permalink to this headline">¶</a></h1>
+<p>Testing the util.py module</p>
+<dl class="py exception">
+<dt id="stream2py.tests.test_util.StreamHasNotBeenStarted">
+<em class="property">exception </em><code class="sig-prename descclassname">stream2py.tests.test_util.</code><code class="sig-name descname">StreamHasNotBeenStarted</code><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#StreamHasNotBeenStarted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_util.StreamHasNotBeenStarted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when an action requires the stream to be ‘on’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="stream2py.tests.test_util.test_contextualize_with_instance">
+<code class="sig-prename descclassname">stream2py.tests.test_util.</code><code class="sig-name descname">test_contextualize_with_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#test_contextualize_with_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_util.test_contextualize_with_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>To understand the context of this test, the reader should consider the
+test_test_objects, or even better, see:</p>
+<p>issue: <a class="reference external" href="https://github.com/i2mint/stream2py/issues/18">https://github.com/i2mint/stream2py/issues/18</a></p>
+<p>wiki: <a class="reference external" href="https://github.com/i2mint/stream2py/wiki/Forwarding-context-management">https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="stream2py.tests.test_util.test_test_objects">
+<code class="sig-prename descclassname">stream2py.tests.test_util.</code><code class="sig-name descname">test_test_objects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#test_test_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.tests.test_util.test_test_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>This test tests the test objects themselves, to make sure they have the
+expected behavior, commenting at the same time on what kind of behavior we’d
+like to have the power to create, which we get through contextualize_with_instance</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../stream_buffer.html" class="btn btn-neutral float-left" title="stream2py.stream_buffer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="test_source_reader.html" class="btn btn-neutral float-right" title="stream2py.tests.test_source_reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="test_stream_buffer.html" class="btn btn-neutral float-left" title="stream2py.tests.test_stream_buffer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils_for_testing.html" class="btn btn-neutral float-right" title="stream2py.tests.utils_for_testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
