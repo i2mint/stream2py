@@ -262,18 +262,19 @@ class StreamBuffer:
             maxlen=self._maxlen,
         )
 
-    def _mk_contextualized_iterator(self):
-        """Return next item (entering the context beforehand, if not running).
-        This method is meant to be called under context so that a clean exit is assured.
-        """
-        if not self.is_running:
-            self.__enter__()
-        return self.__next__()
+    # def _mk_contextualized_iterator(self):
+    #     """Return next item (entering the context beforehand, if not running).
+    #     This method is meant to be called under context so that a clean exit is assured.
+    #     """
+    #     if not self.is_running:
+    #         self.__enter__()
+    #     return self.__next__()
 
     def __call__(self):
         """Return next item (entering the context beforehand, if not running).
         This method is meant to be called under context so that a clean exit is assured. """
-        return self._mk_contextualized_iterator()
+        return next(self)
+        # return self._mk_contextualized_iterator()
 
     def __del__(self):
         try:

@@ -105,6 +105,10 @@ class ContextualizeCall:
     entering...
     3
     exiting...
+
+    Note: A ``ContextualizeCall`` instance will delegate all other attributes to the
+    wrapped `func` except for special methods. If a user needs to also delegate these
+    special methods, they'll have to wrap `func` themselves.
     """
 
     def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func):
@@ -135,9 +139,12 @@ class ContextualizeCall:
         #         print(f'{type(self).__name__}.__enter__')
         return self.enter_func(self.func)
 
-    def __exit__(self, *exception_info):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         #         print(f'{type(self).__name__}.__exit__')
-        return self.exit_func(self.func, *exception_info)
+        return self.exit_func(self.func, exc_type, exc_val, exc_tb)
+
+    def __getattr__(self, attrname):
+        return getattr(self.func, attrname)
 
 
 # ---------------------------------------------------------------------------------------
@@ -153,7 +160,7 @@ def forward_to_instance_enter(obj):
 
 
 def forward_to_instance_exit(obj, *exception_info):
-    return obj.__self__.__exit__(obj, *exception_info)
+    return obj.__self__.__exit__(*exception_info)
 
 
 contextualize_with_instance = partial(
