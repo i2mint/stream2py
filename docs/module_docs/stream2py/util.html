@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.util &mdash; stream2py 1.0.38 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.util &mdash; stream2py 1.0.39 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -130,6 +130,9 @@ Let’s specify some that do something:</p>
 <span class="go">exiting...</span>
 </pre></div>
 </div>
+<p>Note: A <code class="docutils literal notranslate"><span class="pre">ContextualizeCall</span></code> instance will delegate all other attributes to the
+wrapped <cite>func</cite> except for special methods. If a user needs to also delegate these
+special methods, they’ll have to wrap <cite>func</cite> themselves.</p>
 </dd></dl>
 
 <dl class="py exception">

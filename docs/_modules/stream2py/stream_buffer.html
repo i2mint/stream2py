@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_buffer &mdash; stream2py 1.0.38 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.stream_buffer &mdash; stream2py 1.0.39 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -349,18 +349,19 @@
             <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_mk_contextualized_iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return next item (entering the context beforehand, if not running).</span>
-<span class="sd">        This method is meant to be called under context so that a clean exit is assured.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__next__</span><span class="p">()</span>
+    <span class="c1"># def _mk_contextualized_iterator(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Return next item (entering the context beforehand, if not running).</span>
+    <span class="c1">#     This method is meant to be called under context so that a clean exit is assured.</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     if not self.is_running:</span>
+    <span class="c1">#         self.__enter__()</span>
+    <span class="c1">#     return self.__next__()</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return next item (entering the context beforehand, if not running).</span>
 <span class="sd">        This method is meant to be called under context so that a clean exit is assured. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mk_contextualized_iterator</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># return self._mk_contextualized_iterator()</span>
 
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
