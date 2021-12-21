@@ -1,6 +1,7 @@
-from typing import Any, Protocol
+from typing import Any, Protocol, runtime_checkable
 
 
+@runtime_checkable
 class Source(Protocol):
     def key(self, data) -> Any:
         ...

@@ -8,7 +8,7 @@ from contextlib import suppress
 import threading
 import time
 from functools import wraps, partialmethod, partial
-from typing import Union
+from typing import Callable, Union
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
@@ -82,6 +82,8 @@ class BufferReader:
     """
 
     read = None  # will be set by init
+    onclose: Callable
+    onopen: Callable
 
     def __init__(
         self,
@@ -389,3 +391,18 @@ class BufferReader:
         return self.read(
             n=n, peek=peek, ignore_no_item_found=ignore_no_item_found, strict_n=strict_n
         )
+
+    def enter(self):
+        if self.onopen:
+            self.onopen()
+        return self
+
+    def exit(self, exc_type, exc_val, exc_tb):
+        if self.onclose:
+            self.onclose()
+
+    def __enter__(self):
+        return self.enter()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return self.exit(exc_type, exc_val, exc_tb)

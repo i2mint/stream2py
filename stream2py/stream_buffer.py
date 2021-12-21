@@ -10,7 +10,8 @@ import threading
 import time
 from typing import Optional, Union
 
-from stream2py import BufferReader, SourceReader
+from stream2py.protocols import Source
+from stream2py import BufferReader
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
 logger = logging.getLogger(__name__)
@@ -59,11 +60,12 @@ class _SourceBuffer:
         with self._buffer.writer_lock() as writer:
             writer.drop(n)
 
-    def mk_reader(self):
+    def mk_reader(self, **read_kwargs):
         return BufferReader(
             buffer=self._buffer,
             source_reader_info=self._source_reader_info,
             stop_event=self._stop_event,
+            **read_kwargs,
         )
 
     def attach_reader(self, reader):
@@ -109,9 +111,9 @@ class StreamBuffer:
 
     def __init__(
         self,
-        source_reader: SourceReader,
+        source_reader: Source,
         *,
-        maxlen: int,
+        maxlen: int = 100,
         sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
         auto_drop=True,
     ):
@@ -127,7 +129,7 @@ class StreamBuffer:
             manually make space.
         """
         assert isinstance(
-            source_reader, SourceReader
+            source_reader, Source
         ), 'source_reader is not a subclass of SourceReader'
         self.source_reader = source_reader
         self._maxlen = maxlen
@@ -182,7 +184,7 @@ class StreamBuffer:
         time.sleep(1)
         self._next_reader = None
 
-    def mk_reader(self) -> BufferReader:
+    def mk_reader(self, **read_kwargs) -> BufferReader:
         """ Makes a BufferReader instance for the currently running  StreamBuffer.
         Reader must be made after start() to have data from said start.
 
@@ -191,7 +193,7 @@ class StreamBuffer:
         with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
                 raise RuntimeError('Readers should be made after starting')
-            return self.source_buffer.mk_reader()
+            return self.source_buffer.mk_reader(**read_kwargs)
 
     def attach_reader(self, reader):
         """Allows a StreamReader instance to read from this buffer."""
