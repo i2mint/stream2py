@@ -1,10 +1,10 @@
-from stream2py.tests.utils_for_testing import TenthSecondCounter
+from stream2py.tests.utils_for_testing import TenthSecondCounterStreamSource
 from stream2py.stream_buffer import StreamBuffer
 import time
 
 
 def test_stream_buffer():
-    sc = TenthSecondCounter()  # source
+    sc = TenthSecondCounterStreamSource()  # source
     sc_buf = StreamBuffer(source_reader=sc, maxlen=100)  # buffer
 
     # start source, print some data, and check last_item cursor is working

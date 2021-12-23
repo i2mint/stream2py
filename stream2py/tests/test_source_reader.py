@@ -1,6 +1,6 @@
 import pytest
 
-from stream2py.tests.utils_for_testing import RandomFloatSource, TenthSecondCounter
+from stream2py.tests.utils_for_testing import RandomFloatSource, TenthSecondCounterSourceReader
 
 # note that the class to test must have the additional attribute open_count for the test to pass
 @pytest.mark.parametrize(
@@ -9,7 +9,7 @@ from stream2py.tests.utils_for_testing import RandomFloatSource, TenthSecondCoun
         (1, 10, RandomFloatSource, {'seed': 1}),
         (5, 100, RandomFloatSource, {'seed': 1}),
         (10, 10, RandomFloatSource, {'seed': 1}),
-        (10, 10, TenthSecondCounter, dict()),
+        (10, 10, TenthSecondCounterSourceReader, dict()),
     ],
 )
 def test_source_readers_open_close(

@@ -6,14 +6,12 @@ __all__ = ['SourceReader']
 
 from abc import ABCMeta, abstractmethod
 import time
-from typing import Optional, Any, Union
+from typing import Optional, Any, Union, NewType, Iterator
 
-from stream2py.protocols import Source
-from stream2py.stream_buffer import StreamBuffer
 from stream2py.utility.typing_hints import ComparableType
 
 
-class SourceReader(Source, metaclass=ABCMeta):
+class SourceReader(metaclass=ABCMeta):
     """Abstract class interface to be used by StreamBuffer.
 
     >>> from stream2py import SourceReader
@@ -67,10 +65,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     's2'
     """
 
-    _buffer_kwargs: dict = {}
-    _reader_kwargs: dict = {}
     _sleep_time_on_iter_none_s = 0.001
-    _stream_buffer: StreamBuffer
 
     def __iter__(self):
         while True:
@@ -156,6 +151,8 @@ class SourceReader(Source, metaclass=ABCMeta):
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
 
+    enter, exit = __enter__, __exit__
+
     def stream_buffer(
         self,
         maxlen: int,
@@ -171,12 +168,6 @@ class SourceReader(Source, metaclass=ABCMeta):
             auto_drop=auto_drop,
         )
 
-    def configure_buffer(self):
-
-
-
-
-from typing import NewType, Iterable, Iterator
 
 StreamItem = NewType('StreamItem', Any)
 

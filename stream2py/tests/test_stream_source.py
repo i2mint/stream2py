@@ -1,20 +1,17 @@
-from stream2py.tests.utils_for_testing import TenthSecondCounter
-from stream2py.stream_buffer import StreamBuffer
-from stream2py.stream_reader import StreamReader
+from stream2py.tests.utils_for_testing import TenthSecondCounterStreamSource
 import time
 
 
-def test_stream_buffer():
-
-    sc = TenthSecondCounter()  # source
-    sc_reader = StreamReader(sc).mk_buffer(maxlen=100)
-    with sc_reader:
-        sc_buf = sc_reader.stream_buffer
+def test_stream_source():
+    source = TenthSecondCounterStreamSource()  # source
+    with source.open_reader() as sc_reader:
+        sc_buf = source._stream_buffer
         time.sleep(2)
-        assert sc_reader.source_reader_info['bt'] != 0, sc_reader.source_reader_info
+        assert source.info['bt'] != 0, source.info
         print('data as shown is (timestamp, count) at every tenth of a second')
         while True:
             x = sc_reader.read(n=1, ignore_no_item_found=True)
+            print('x: ' + str(x))
             if x:
                 last_read = x
                 print(x)
@@ -25,7 +22,7 @@ def test_stream_buffer():
         # check range works and last_item cursor is working
         rstart = 5
         rstop = 10
-        source_info = sc_reader.source_reader_info
+        source_info = source.info
         start_key = source_info['bt'] + 1e5 * rstart  # 5
         stop_key = source_info['bt'] + 1e5 * rstop  # 10
         range_data = sc_reader.range(start_key, stop_key)
@@ -42,7 +39,7 @@ def test_stream_buffer():
         rstart = 10
         rstop = 15
         rstep = 2
-        source_info = sc_reader.source_reader_info
+        source_info = source.info
         start_key = source_info['bt'] + 1e5 * rstart  # 5
         stop_key = source_info['bt'] + 1e5 * rstop  # 10
         range_data = sc_reader.range(start_key, stop_key, step=rstep, peek=True)
@@ -53,8 +50,8 @@ def test_stream_buffer():
             previous_last_item == sc_reader.last_item[1]
         ), 'last_item moved but should not when peek=True'
 
-        # stop source and check if reader see it
-        sc_reader12 = sc_reader.stream_buffer.mk_reader()  # reader1
+        # stop source and check if reader sees it
+        sc_reader12 = source.open_reader()
         assert sc_reader.is_same_buffer(sc_reader12), 'first readers should be equal'
         assert (
             sc_reader.last_item != sc_reader12.last_item

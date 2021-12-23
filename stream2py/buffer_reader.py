@@ -393,11 +393,15 @@ class BufferReader:
         )
 
     def enter(self):
-        if self.onopen:
-            self.onopen()
+        return self.open()
+
+    def exit(self):
+        return self.close()
+
+    def open(self):
         return self
 
-    def exit(self, exc_type, exc_val, exc_tb):
+    def close(self):
         if self.onclose:
             self.onclose()
 
@@ -405,4 +409,4 @@ class BufferReader:
         return self.enter()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        return self.exit(exc_type, exc_val, exc_tb)
+        return self.exit()

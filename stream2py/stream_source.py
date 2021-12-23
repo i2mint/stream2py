@@ -33,11 +33,28 @@ def defaulted_values(source_dict, defaults):
 
 
 class StreamSource(Source, metaclass=ABCMeta):
-    """Abstract class interface to be used by StreamBuffer.
+    """Abstract parent class for reading from a source into a StreamBuffer.
+
+    Provides interfaces for configuring the StreamBuffer and instantiating BufferReaders.
+
+    The open method will be called when creating a reader with open_reader().
+    The close method will be called when all open readers have been closed().
+    This will also stop the StreamBuffer. A closed source can be reopened by opening another reader.
 
     >>> from stream2py.examples.stream_source import SimpleCounterString
     >>> source = SimpleCounterString(start=0, stop=10)
-    >>> reader = source.mk_reader()
+    >>> with source.open_reader() as reader:
+    ...     # the source will close when exiting the context
+    ...     reader.read()
+    ...     reader.read()
+    ...     reader.read()
+    's0'
+    's1'
+    's2'
+    >>> reader2 = source.open_reader()
+    >>> reader2.read()
+    's0'
+    >>> reader2.close()  # closing the reader manually
     """
 
     _buffer_kwargs: dict = {}
@@ -100,15 +117,20 @@ class StreamSource(Source, metaclass=ABCMeta):
         """Instantiates a reader.
         :param read_size: number of items to return by default when reading.
             Is also used as the "chunk size" when iterating.
-        :param ignore_no_item_found: if True, by default return None when no next item
-            instead of raising exception during a read
         :param strict_n: if True, by default a ValueError witll be raised if the
             exact number of requested items are not available when reading.
+        :param ignore_no_item_found: if True, by default return None when no next item
+            instead of raising exception during a read
         """
         self._ensure_buffer()
-        new_reader = self._stream_buffer.mk_reader(read_size=read_size, strict_n=strict_n)
+        new_reader = self._stream_buffer.mk_reader(
+            read_size=read_size,
+            strict_n=strict_n,
+            ignore_no_item_found=ignore_no_item_found
+        )
+        self._handle_reader_open()
+        new_reader.open()
         new_reader.onclose = self._handle_reader_closed
-        new_reader.onopen = self._handle_reader_open
         return new_reader
 
     def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):

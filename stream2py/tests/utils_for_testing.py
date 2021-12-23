@@ -8,7 +8,7 @@ from itertools import tee
 import itertools
 from functools import wraps
 
-from stream2py import SourceReader, SourceReader2
+from stream2py import SourceReader, StreamSource
 from stream2py.utility.typing_hints import ComparableType
 
 
@@ -186,7 +186,7 @@ class RandomFloatSource(SourceReader):
         return data
 
 
-class TenthSecondCounter(SourceReader):
+class TenthSecondCounterSourceReader(SourceReader):
     """
     Example SourceReader
     Start counting when as soon as you construct
@@ -228,9 +228,9 @@ class TenthSecondCounter(SourceReader):
     key = operator.itemgetter(0)  # (timestamp_us, count) -> timestamp_us
 
 
-class TenthSecondCounter2(SourceReader2):
+class TenthSecondCounterStreamSource(StreamSource):
     """
-    Example SourceReader
+    Example StreamSource
     Start counting when as soon as you construct
     """
 
@@ -258,7 +258,7 @@ class TenthSecondCounter2(SourceReader2):
     def close(self):
         """Not needed but satisfies the abstract"""
 
-    def get(self):
+    def read(self):
         next_count = self._count
         next_time = self._start_time + self._count
         now = time.time() * 10
