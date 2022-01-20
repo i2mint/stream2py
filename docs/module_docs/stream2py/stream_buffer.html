@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_buffer &mdash; stream2py 1.0.39 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.stream_buffer &mdash; stream2py 1.0.40 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="stream2py.tests.test_lock_sorted_deque" href="tests/test_lock_sorted_deque.html" />
+    <link rel="next" title="stream2py.stream_source" href="stream_source.html" />
     <link rel="prev" title="HTTP Response streaming reader with no external dependencies" href="sources/http.html" /> 
 </head>
 
@@ -45,14 +45,17 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../stream2py.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="protocols.html">stream2py.protocols</a></li>
 <li class="toctree-l1"><a class="reference internal" href="simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source_reader.html">stream2py.source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources.html">stream2py.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_source.html">stream2py.stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/test_util.html">stream2py.tests.test_util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">stream2py.util</a></li>
@@ -94,7 +97,7 @@ and puts read data onto a thread-safe buffer.
 Second, it is a factory of BufferReaders instances for multiple consumers.</p>
 <dl class="py class">
 <dt id="stream2py.stream_buffer.StreamBuffer">
-<em class="property">class </em><code class="sig-prename descclassname">stream2py.stream_buffer.</code><code class="sig-name descname">StreamBuffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source_reader.html#stream2py.source_reader.SourceReader" title="stream2py.source_reader.SourceReader">stream2py.source_reader.SourceReader</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">maxlen</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_drop</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">stream2py.stream_buffer.</code><code class="sig-name descname">StreamBuffer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_reader</span><span class="p">:</span> <span class="n"><a class="reference internal" href="protocols.html#stream2py.protocols.Source" title="stream2py.protocols.Source">stream2py.protocols.Source</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">maxlen</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">100</span></em>, <em class="sig-param"><span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>int<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">auto_drop</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles starting and stopping SourceReader and making BufferReaders</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py</span> <span class="kn">import</span> <span class="n">StreamBuffer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">stream2py.examples.source_reader</span> <span class="kn">import</span> <span class="n">SimpleCounterString</span>
@@ -130,6 +133,12 @@ Second, it is a factory of BufferReaders instances for multiple consumers.</p>
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="stream2py.stream_buffer.StreamBuffer.attach_reader">
+<code class="sig-name descname">attach_reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reader</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer.attach_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.attach_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows a StreamReader instance to read from this buffer.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="stream2py.stream_buffer.StreamBuffer.drop">
 <code class="sig-name descname">drop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer.drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.drop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manually drop items from buffer when auto_drop is False</p>
@@ -156,7 +165,7 @@ Second, it is a factory of BufferReaders instances for multiple consumers.</p>
 
 <dl class="py method">
 <dt id="stream2py.stream_buffer.StreamBuffer.mk_reader">
-<code class="sig-name descname">mk_reader</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="buffer_reader.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer.mk_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.mk_reader" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mk_reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">read_kwargs</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="buffer_reader.html#stream2py.buffer_reader.BufferReader" title="stream2py.buffer_reader.BufferReader">stream2py.buffer_reader.BufferReader</a><a class="reference internal" href="../../_modules/stream2py/stream_buffer.html#StreamBuffer.mk_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.mk_reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes a BufferReader instance for the currently running  StreamBuffer.
 Reader must be made after start() to have data from said start.</p>
 <dl class="field-list simple">
@@ -198,7 +207,7 @@ Reader must be made after start() to have data from said start.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="sources/http.html" class="btn btn-neutral float-left" title="HTTP Response streaming reader with no external dependencies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tests/test_lock_sorted_deque.html" class="btn btn-neutral float-right" title="stream2py.tests.test_lock_sorted_deque" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="stream_source.html" class="btn btn-neutral float-right" title="stream2py.stream_source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -17,7 +17,9 @@ def test_stream_source():
                 print(x)
             else:
                 break
-        assert sc_reader.last_item == last_read, 'last_item did not follow last next() call'
+        assert (
+            sc_reader.last_item == last_read
+        ), 'last_item did not follow last next() call'
 
         # check range works and last_item cursor is working
         rstart = 5
@@ -43,7 +45,9 @@ def test_stream_source():
         start_key = source_info['bt'] + 1e5 * rstart  # 5
         stop_key = source_info['bt'] + 1e5 * rstop  # 10
         range_data = sc_reader.range(start_key, stop_key, step=rstep, peek=True)
-        for expected_data_value, rdata in zip(range(rstart, rstop + 1, rstep), range_data):
+        for expected_data_value, rdata in zip(
+            range(rstart, rstop + 1, rstep), range_data
+        ):
             timestamp, _data = rdata
             assert _data == expected_data_value, 'wrong data does not match'
         assert (

@@ -126,7 +126,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         new_reader = self._stream_buffer.mk_reader(
             read_size=read_size,
             strict_n=strict_n,
-            ignore_no_item_found=ignore_no_item_found
+            ignore_no_item_found=ignore_no_item_found,
         )
         self._handle_reader_open()
         new_reader.open()

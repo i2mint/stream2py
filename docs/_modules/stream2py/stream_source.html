@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.stream_source &mdash; stream2py 1.0.40 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/util.html">stream2py.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>stream2py.stream_source</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stream2py.stream_source</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A BufferReader gives data access to any number of consumers and provides methods to seek data such</span>
+<span class="sd">as next(), range(), head(), tail().  Each BufferReader instance has it&#39;s own cursor keeping track of</span>
+<span class="sd">what data was last seen.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">stream2py.protocols</span> <span class="kn">import</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">stream2py.buffer_reader</span> <span class="kn">import</span> <span class="n">BufferReader</span>
+<span class="kn">from</span> <span class="nn">stream2py.stream_buffer</span> <span class="kn">import</span> <span class="n">StreamBuffer</span>
+
+<span class="n">DFLT_READ_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">DFLT_MAX_LEN</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>  <span class="c1"># to microseconds</span>
+
+
+<div class="viewcode-block" id="defaulted_values"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.defaulted_values">[docs]</a><span class="k">def</span> <span class="nf">defaulted_values</span><span class="p">(</span><span class="n">source_dict</span><span class="p">,</span> <span class="n">defaults</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a the values of source_dict where None values are replaced with the</span>
+<span class="sd">    corresponding `default_dict` values.</span>
+
+<span class="sd">    &gt;&gt;&gt; defaults = {&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({&#39;a&#39;: None, &#39;b&#39;: 22, &#39;c&#39;: None}, defaults))</span>
+<span class="sd">    (1, 22, 3)</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({&#39;a&#39;: False, &#39;b&#39;: True, &#39;c&#39;: None}, defaults))</span>
+<span class="sd">    (False, True, 3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">defaults</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">source_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="StreamSource"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource">[docs]</a><span class="k">class</span> <span class="nc">StreamSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract parent class for reading from a source into a StreamBuffer.</span>
+
+<span class="sd">    Provides interfaces for configuring the StreamBuffer and instantiating BufferReaders.</span>
+
+<span class="sd">    The open method will be called when creating a reader with open_reader().</span>
+<span class="sd">    The close method will be called when all open readers have been closed().</span>
+<span class="sd">    This will also stop the StreamBuffer. A closed source can be reopened by opening another reader.</span>
+
+<span class="sd">    &gt;&gt;&gt; from stream2py.examples.stream_source import SimpleCounterString</span>
+<span class="sd">    &gt;&gt;&gt; source = SimpleCounterString(start=0, stop=10)</span>
+<span class="sd">    &gt;&gt;&gt; with source.open_reader() as reader:</span>
+<span class="sd">    ...     # the source will close when exiting the context</span>
+<span class="sd">    ...     reader.read()</span>
+<span class="sd">    ...     reader.read()</span>
+<span class="sd">    ...     reader.read()</span>
+<span class="sd">    &#39;s0&#39;</span>
+<span class="sd">    &#39;s1&#39;</span>
+<span class="sd">    &#39;s2&#39;</span>
+<span class="sd">    &gt;&gt;&gt; reader2 = source.open_reader()</span>
+<span class="sd">    &gt;&gt;&gt; reader2.read()</span>
+<span class="sd">    &#39;s0&#39;</span>
+<span class="sd">    &gt;&gt;&gt; reader2.close()  # closing the reader manually</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_buffer_kwargs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_open_readers</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">_reader_cls</span> <span class="o">=</span> <span class="n">BufferReader</span>
+    <span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">_stream_buffer</span><span class="p">:</span> <span class="n">StreamBuffer</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reader_cls</span><span class="o">=</span><span class="n">BufferReader</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader_cls</span> <span class="o">=</span> <span class="n">reader_cls</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_next</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+
+<span class="sd">        :param sleep_time_s: seconds to sleep</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span>
+
+<div class="viewcode-block" id="StreamSource.configure_buffer"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.configure_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">configure_buffer</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">maxlen</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets custom buffer parameters.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Buffer has already been started.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span>
+            <span class="n">sleep_time_on_read_none_s</span><span class="o">=</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span>
+            <span class="n">auto_drop</span><span class="o">=</span><span class="n">auto_drop</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_ensure_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer_kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_handle_reader_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_handle_reader_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StreamSource.open_reader"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.open_reader">[docs]</a>    <span class="k">def</span> <span class="nf">open_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiates a reader.</span>
+<span class="sd">        :param read_size: number of items to return by default when reading.</span>
+<span class="sd">            Is also used as the &quot;chunk size&quot; when iterating.</span>
+<span class="sd">        :param strict_n: if True, by default a ValueError witll be raised if the</span>
+<span class="sd">            exact number of requested items are not available when reading.</span>
+<span class="sd">        :param ignore_no_item_found: if True, by default return None when no next item</span>
+<span class="sd">            instead of raising exception during a read</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_buffer</span><span class="p">()</span>
+        <span class="n">new_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">(</span>
+            <span class="n">read_size</span><span class="o">=</span><span class="n">read_size</span><span class="p">,</span>
+            <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+            <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handle_reader_open</span><span class="p">()</span>
+        <span class="n">new_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+        <span class="n">new_reader</span><span class="o">.</span><span class="n">onclose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_reader_closed</span>
+        <span class="k">return</span> <span class="n">new_reader</span></div>
+
+<div class="viewcode-block" id="StreamSource.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+
+<span class="sd">        :param sleep_time_s: seconds to sleep</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
+<span class="sd">        Useful when you know the period between data points.</span>
+
+<span class="sd">        For example if data only comes once every 10 seconds,</span>
+<span class="sd">        it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times</span>
+<span class="sd">        but every 10 seconds or even 1 second would be much more reasonable depending on the use</span>
+<span class="sd">        case. Not necessary if read is a blocking function that always returns a data point.</span>
+
+<span class="sd">        Default is None which delegates the sleep time to StreamBuffer&#39;s default.</span>
+
+<span class="sd">        :return: Optional[Union[int, float]] number of seconds to sleep</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="StreamSource.get_timestamp"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.get_timestamp">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get timestamp of now as int microseconds</span>
+
+<span class="sd">        :return: timestamp in UTC microseconds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="bp">cls</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 
+2021
+Otosense.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

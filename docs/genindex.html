@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; stream2py 1.0.39 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Index &mdash; stream2py 1.0.40 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -42,14 +42,17 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources.html">stream2py.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/util.html">stream2py.util</a></li>
@@ -112,6 +115,10 @@
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.append">append() (stream2py.utility.sorted_deque.SortedDeque method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.attach_reader">attach_reader() (stream2py.stream_buffer.StreamBuffer method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
@@ -136,12 +143,16 @@
 </li>
         <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader.close">(stream2py.tests.utils_for_testing.SimpleSourceReader method)</a>
 </li>
-        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounter.close">(stream2py.tests.utils_for_testing.TenthSecondCounter method)</a>
+        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader.close">(stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader method)</a>
+</li>
+        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource.close">(stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType">ComparableType (class in stream2py.utility.typing_hints)</a>
+</li>
+      <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.configure_buffer">configure_buffer() (stream2py.stream_source.StreamSource method)</a>
 </li>
       <li><a href="module_docs/stream2py/util.html#stream2py.util.ContextualizeCall">ContextualizeCall (class in stream2py.util)</a>
 </li>
@@ -156,6 +167,10 @@
 
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.defaulted_values">defaulted_values() (in module stream2py.stream_source)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.drop">drop() (stream2py.stream_buffer.StreamBuffer method)</a>
 
@@ -214,7 +229,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.get_timestamp">get_timestamp() (stream2py.source_reader.SourceReader class method)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.get_timestamp">(stream2py.stream_source.StreamSource class method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -234,7 +253,7 @@
 </li>
         <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader.info">(stream2py.tests.utils_for_testing.SimpleSourceReader property)</a>
 </li>
-        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounter.info">(stream2py.tests.utils_for_testing.TenthSecondCounter property)</a>
+        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader.info">(stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader property)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">insert() (stream2py.utility.sorted_collection.SortedCollection method)</a>
@@ -315,6 +334,8 @@
 </li>
         <li><a href="module_docs/stream2py/buffer_reader.html#module-stream2py.buffer_reader">stream2py.buffer_reader</a>
 </li>
+        <li><a href="module_docs/stream2py/protocols.html#module-stream2py.protocols">stream2py.protocols</a>
+</li>
         <li><a href="module_docs/stream2py/simply.html#module-stream2py.simply">stream2py.simply</a>
 </li>
         <li><a href="module_docs/stream2py/source_reader.html#module-stream2py.source_reader">stream2py.source_reader</a>
@@ -325,11 +346,15 @@
 </li>
         <li><a href="module_docs/stream2py/stream_buffer.html#module-stream2py.stream_buffer">stream2py.stream_buffer</a>
 </li>
+        <li><a href="module_docs/stream2py/stream_source.html#module-stream2py.stream_source">stream2py.stream_source</a>
+</li>
         <li><a href="module_docs/stream2py/tests/test_lock_sorted_deque.html#module-stream2py.tests.test_lock_sorted_deque">stream2py.tests.test_lock_sorted_deque</a>
 </li>
         <li><a href="module_docs/stream2py/tests/test_source_reader.html#module-stream2py.tests.test_source_reader">stream2py.tests.test_source_reader</a>
 </li>
         <li><a href="module_docs/stream2py/tests/test_stream_buffer.html#module-stream2py.tests.test_stream_buffer">stream2py.tests.test_stream_buffer</a>
+</li>
+        <li><a href="module_docs/stream2py/tests/test_stream_source.html#module-stream2py.tests.test_stream_source">stream2py.tests.test_stream_source</a>
 </li>
         <li><a href="module_docs/stream2py/tests/test_util.html#module-stream2py.tests.test_util">stream2py.tests.test_util</a>
 </li>
@@ -361,9 +386,15 @@
 </li>
         <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader.open">(stream2py.tests.utils_for_testing.SimpleSourceReader method)</a>
 </li>
-        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounter.open">(stream2py.tests.utils_for_testing.TenthSecondCounter method)</a>
+        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader.open">(stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader method)</a>
+</li>
+        <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource.open">(stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.open_reader">open_reader() (stream2py.stream_source.StreamSource method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -419,14 +450,22 @@
       <ul>
         <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">(stream2py.source_reader.SourceReader method)</a>
 </li>
+        <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.set_sleep_time_on_iter_none">(stream2py.stream_source.StreamSource method)</a>
+</li>
       </ul></li>
       <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader">SimpleSourceReader (class in stream2py.tests.utils_for_testing)</a>
 </li>
       <li><a href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.sleep_time_on_read_none_s">sleep_time_on_read_none_s() (stream2py.source_reader.SourceReader property)</a>
+
+      <ul>
+        <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.sleep_time_on_read_none_s">(stream2py.stream_source.StreamSource property)</a>
 </li>
+      </ul></li>
       <li><a href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection">SortedCollection (class in stream2py.utility.sorted_collection)</a>
 </li>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque">SortedDeque (class in stream2py.utility.sorted_deque)</a>
+</li>
+      <li><a href="module_docs/stream2py/protocols.html#stream2py.protocols.Source">Source (class in stream2py.protocols)</a>
 </li>
       <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.source_reader_info">source_reader_info() (stream2py.buffer_reader.BufferReader property)</a>
 
@@ -452,6 +491,13 @@
 
       <ul>
         <li><a href="module_docs/stream2py/buffer_reader.html#module-stream2py.buffer_reader">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.protocols
+
+      <ul>
+        <li><a href="module_docs/stream2py/protocols.html#module-stream2py.protocols">module</a>
 </li>
       </ul></li>
       <li>
@@ -492,6 +538,13 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
+    stream2py.stream_source
+
+      <ul>
+        <li><a href="module_docs/stream2py/stream_source.html#module-stream2py.stream_source">module</a>
+</li>
+      </ul></li>
+      <li>
     stream2py.tests.test_lock_sorted_deque
 
       <ul>
@@ -510,6 +563,13 @@
 
       <ul>
         <li><a href="module_docs/stream2py/tests/test_stream_buffer.html#module-stream2py.tests.test_stream_buffer">module</a>
+</li>
+      </ul></li>
+      <li>
+    stream2py.tests.test_stream_source
+
+      <ul>
+        <li><a href="module_docs/stream2py/tests/test_stream_source.html#module-stream2py.tests.test_stream_source">module</a>
 </li>
       </ul></li>
       <li>
@@ -572,6 +632,8 @@
 </li>
       <li><a href="module_docs/stream2py/tests/test_util.html#stream2py.tests.test_util.StreamHasNotBeenStarted">StreamHasNotBeenStarted</a>
 </li>
+      <li><a href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource">StreamSource (class in stream2py.stream_source)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -580,12 +642,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.tail">tail() (stream2py.buffer_reader.BufferReader method)</a>
 </li>
-      <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounter">TenthSecondCounter (class in stream2py.tests.utils_for_testing)</a>
+      <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader">TenthSecondCounterSourceReader (class in stream2py.tests.utils_for_testing)</a>
 </li>
-      <li><a href="module_docs/stream2py/tests/test_util.html#stream2py.tests.test_util.test_contextualize_with_instance">test_contextualize_with_instance() (in module stream2py.tests.test_util)</a>
+      <li><a href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource">TenthSecondCounterStreamSource (class in stream2py.tests.utils_for_testing)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/stream2py/tests/test_util.html#stream2py.tests.test_util.test_contextualize_with_instance">test_contextualize_with_instance() (in module stream2py.tests.test_util)</a>
+</li>
       <li><a href="module_docs/stream2py/tests/test_util.html#stream2py.tests.test_util.test_test_objects">test_test_objects() (in module stream2py.tests.test_util)</a>
 </li>
       <li><a href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque.to_jdict">to_jdict() (stream2py.utility.sorted_deque.SortedDeque method)</a>

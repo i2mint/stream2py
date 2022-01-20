@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.buffer_reader &mdash; stream2py 1.0.39 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.40 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -42,14 +42,17 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py.html">stream2py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/util.html">stream2py.util</a></li>
@@ -95,7 +98,7 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">,</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">stream2py.utility.locked_sorted_deque</span> <span class="kn">import</span> <span class="n">RWLockSortedDeque</span>
 
@@ -169,6 +172,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">read</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># will be set by init</span>
+    <span class="n">onclose</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="n">onopen</span><span class="p">:</span> <span class="n">Callable</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -471,7 +476,26 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
             <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">enter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
