@@ -1,11 +1,11 @@
+"""Defines protocols for classes to avoid circular imports"""
+
 from typing import Any, Protocol, runtime_checkable
 
 
 @runtime_checkable
 class Source(Protocol):
-    """
-    >>> 1
-    1
+    """The interface for the StreamSource class.
     """
     def key(self, data) -> Any:
         ...

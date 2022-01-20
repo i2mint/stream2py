@@ -12,7 +12,7 @@ from stream2py.utility.typing_hints import ComparableType
 
 
 class SourceReader(metaclass=ABCMeta):
-    """Abstract class interface to be used by StreamBuffer.
+    """(deprecated) Abstract class interface to be used by StreamBuffer.
 
     >>> from stream2py import SourceReader
     >>>
