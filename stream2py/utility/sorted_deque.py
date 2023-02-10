@@ -61,7 +61,7 @@ class SortedDeque(SortedCollection):
     def __repr__(self):
         return '%s(%r, key=%s, maxlen=%s)' % (
             self.__class__.__name__,
-            list(self._items),  # Not sure if the is the best way to do this
+            list(self._items),  # Not sure if this is the best way to do this
             getattr(self._given_key, '__name__', repr(self._given_key)),
             getattr(self._maxlen, '__name__', repr(self._maxlen)),
         )
@@ -90,10 +90,15 @@ class SortedDeque(SortedCollection):
         return sum(1 for chk_item in islice(self._items, i, j) if chk_item == item)
 
     def append(self, item):
-        """Append item to the end.  Raise ValueError if item key is less than last item key"""
+        """Append item to the end and maintain key indexing.
+        Raise ValueError if item key is not greater than last item key.
+
+        :param item: item to append
+        :return: None
+        """
         k = self._key(item)
         try:
-            if k <= self._keys[-1]:
+            if not self._keys[-1] > k:
                 raise ValueError(
                     'Item key must be greater than last item key to append: %r' % (k,)
                 )
@@ -286,6 +291,5 @@ if __name__ == '__main__':
     # ---------------------------  Above tests are copied from SortedCollection  -------------------------
     # TODO: add test examples specific to SortedDeque
     import doctest
-    from operator import itemgetter
 
     print(doctest.testmod())

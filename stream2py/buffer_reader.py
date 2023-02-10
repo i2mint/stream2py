@@ -7,7 +7,6 @@ __all__ = ['BufferReader']
 from contextlib import suppress
 import threading
 import time
-from functools import wraps, partialmethod, partial
 from typing import Callable, Union
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
