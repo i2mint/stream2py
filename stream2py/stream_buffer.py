@@ -278,7 +278,9 @@ class StreamBuffer:
             stop_event=self._stop_event,
             key=self.source_reader.key,
             maxlen=self._maxlen,
-            buffer_reader_class=getattr(self.source_reader, 'buffer_reader_class', BufferReader)
+            buffer_reader_class=getattr(
+                self.source_reader, 'buffer_reader_class', BufferReader
+            ),
         )
 
     # def _mk_contextualized_iterator(self):

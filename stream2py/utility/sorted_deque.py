@@ -98,7 +98,7 @@ class SortedDeque(SortedCollection):
         """
         k = self._key(item)
         try:
-            if not self._keys[-1] > k:
+            if not k > self._keys[-1]:
                 raise ValueError(
                     'Item key must be greater than last item key to append: %r' % (k,)
                 )
