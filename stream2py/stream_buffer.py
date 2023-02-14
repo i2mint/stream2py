@@ -3,12 +3,14 @@ A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a Sour
 and puts read data onto a thread-safe buffer.
 Second, it is a factory of BufferReaders instances for multiple consumers.
 """
+from __future__ import annotations
+
 __all__ = ['StreamBuffer']
 
 import logging
 import threading
 import time
-from typing import Optional, Union
+from typing import Optional, Union, Type
 
 from stream2py.protocols import Source
 from stream2py import BufferReader
@@ -28,6 +30,7 @@ class _SourceBuffer:
         *,
         key=None,
         maxlen: int = 10000,
+        buffer_reader_class: Type[BufferReader] = BufferReader,
     ):
         """StreamBuffer helper class
         Thread safe buffer for reading and writing data items
@@ -40,6 +43,7 @@ class _SourceBuffer:
         self._stop_event = stop_event
         self._buffer = RWLockSortedDeque([], key=key, maxlen=maxlen)
         self._source_reader_info = source_reader_info
+        self.buffer_reader_class = buffer_reader_class
 
     def __len__(self):
         return len(self._buffer)
@@ -61,7 +65,7 @@ class _SourceBuffer:
             writer.drop(n)
 
     def mk_reader(self, **read_kwargs):
-        return BufferReader(
+        return self.buffer_reader_class(
             buffer=self._buffer,
             source_reader_info=self._source_reader_info,
             stop_event=self._stop_event,
@@ -274,6 +278,7 @@ class StreamBuffer:
             stop_event=self._stop_event,
             key=self.source_reader.key,
             maxlen=self._maxlen,
+            buffer_reader_class=getattr(self.source_reader, 'buffer_reader_class', BufferReader)
         )
 
     # def _mk_contextualized_iterator(self):
