@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.source_reader &mdash; stream2py 1.0.41 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.source_reader &mdash; stream2py 1.0.42 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> stream2py
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            stream2py
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
@@ -76,9 +81,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>stream2py.source_reader</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">stream2py.source_reader</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -98,11 +103,12 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">NewType</span><span class="p">,</span> <span class="n">Iterator</span>
 
+<span class="kn">from</span> <span class="nn">stream2py.protocols</span> <span class="kn">import</span> <span class="n">Source</span>
 <span class="kn">from</span> <span class="nn">stream2py.utility.typing_hints</span> <span class="kn">import</span> <span class="n">ComparableType</span>
 
 
-<div class="viewcode-block" id="SourceReader"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader">[docs]</a><span class="k">class</span> <span class="nc">SourceReader</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;(deprecated) Abstract class interface to be used by StreamBuffer.</span>
+<div class="viewcode-block" id="SourceReader"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader">[docs]</a><span class="k">class</span> <span class="nc">SourceReader</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;(deprecated) Abstract class interface to be used by StreamBuffer.</span>
 
 <span class="sd">    &gt;&gt;&gt; from stream2py import SourceReader</span>
 <span class="sd">    &gt;&gt;&gt;</span>
@@ -166,7 +172,7 @@
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 
 <div class="viewcode-block" id="SourceReader.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 
 <span class="sd">        :param sleep_time_s: seconds to sleep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -174,19 +180,19 @@
 
 <div class="viewcode-block" id="SourceReader.open"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.open">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Set up source to be read and set some source info affected by open time like the time of</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up source to be read and set some source info affected by open time like the time of</span>
 <span class="sd">        open. Will be called in StreamBuffer immediately before first read.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="SourceReader.close"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.close">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Close and clean up source reader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close and clean up source reader.</span>
 <span class="sd">        Will be called when StreamBuffer stops or if an exception is raised during read and append</span>
 <span class="sd">        loop.</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;A dict with important source info. Default can be init_kwargs and open timestamp.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A dict with important source info. Default can be init_kwargs and open timestamp.</span>
 
 <span class="sd">        This info will be available in BufferReader after SourceReader has opened but any changes</span>
 <span class="sd">        made between open and close are not guaranteed to be visible. Any continuous status updates</span>
@@ -198,7 +204,7 @@
 
 <div class="viewcode-block" id="SourceReader.key"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.key">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts data into a comparable value to sort by</span>
 
 <span class="sd">        :param data: the return value of the &#39;read&#39; method</span>
@@ -210,7 +216,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
 <span class="sd">        Useful when you know the period between data points.</span>
 
 <span class="sd">        For example if data only comes once every 10 seconds,</span>
@@ -228,7 +234,7 @@
 
 <div class="viewcode-block" id="SourceReader.get_timestamp"><a class="viewcode-back" href="../../module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader.get_timestamp">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get timestamp of now as int microseconds</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get timestamp of now as int microseconds</span>
 
 <span class="sd">        :return: timestamp in UTC microseconds</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -263,8 +269,8 @@
 
 
 <span class="k">class</span> <span class="nc">QuickSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A `SourceReader` with whose only required merthod is the read method.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A `SourceReader` with whose only required method is the read method.</span>
 
 <span class="sd">    - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)</span>
 <span class="sd">    - close does nothing</span>
@@ -284,7 +290,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">when_no_data</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">is_valid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Bool function indicating whether the data should be released in an iteration.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bool function indicating whether the data should be released in an iteration.</span>
 
 <span class="sd">        By default, all non-None data will be considered valid, but some streams</span>
 <span class="sd">        might indicate &quot;empty data&quot; in a different way.</span>
@@ -297,7 +303,7 @@
         <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Action taken when data is not valid (not yielded in iteration).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Action taken when data is not valid (not yielded in iteration).</span>
 <span class="sd">        Usually, the action is to sleep for a fixed amount of seconds to give a</span>
 <span class="sd">        chance for the source data production to catch up, without hogging resources</span>
 <span class="sd">        by waiting.</span>
@@ -315,7 +321,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A dummy close class&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A dummy close class&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

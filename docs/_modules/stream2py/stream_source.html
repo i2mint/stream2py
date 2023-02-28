@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_source &mdash; stream2py 1.0.41 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.stream_source &mdash; stream2py 1.0.42 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> stream2py
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            stream2py
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
@@ -76,9 +81,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>stream2py.stream_source</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">stream2py.stream_source</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -108,7 +113,7 @@
 
 
 <div class="viewcode-block" id="defaulted_values"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.defaulted_values">[docs]</a><span class="k">def</span> <span class="nf">defaulted_values</span><span class="p">(</span><span class="n">source_dict</span><span class="p">,</span> <span class="n">defaults</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns a the values of source_dict where None values are replaced with the</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a the values of source_dict where None values are replaced with the</span>
 <span class="sd">    corresponding `default_dict` values.</span>
 
 <span class="sd">    &gt;&gt;&gt; defaults = {&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}</span>
@@ -123,7 +128,7 @@
 
 
 <div class="viewcode-block" id="StreamSource"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource">[docs]</a><span class="k">class</span> <span class="nc">StreamSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Abstract parent class for reading from a source into a StreamBuffer.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract parent class for reading from a source into a StreamBuffer.</span>
 
 <span class="sd">    Provides interfaces for configuring the StreamBuffer and instantiating BufferReaders.</span>
 
@@ -167,7 +172,7 @@
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 
 <span class="sd">        :param sleep_time_s: seconds to sleep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -180,7 +185,7 @@
         <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets custom buffer parameters.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets custom buffer parameters.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Buffer has already been started.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -204,7 +209,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
 <div class="viewcode-block" id="StreamSource.open_reader"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.open_reader">[docs]</a>    <span class="k">def</span> <span class="nf">open_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiates a reader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiates a reader.</span>
 <span class="sd">        :param read_size: number of items to return by default when reading.</span>
 <span class="sd">            Is also used as the &quot;chunk size&quot; when iterating.</span>
 <span class="sd">        :param strict_n: if True, by default a ValueError witll be raised if the</span>
@@ -224,7 +229,7 @@
         <span class="k">return</span> <span class="n">new_reader</span></div>
 
 <div class="viewcode-block" id="StreamSource.set_sleep_time_on_iter_none"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.set_sleep_time_on_iter_none">[docs]</a>    <span class="k">def</span> <span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 
 <span class="sd">        :param sleep_time_s: seconds to sleep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -232,7 +237,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
 <span class="sd">        Useful when you know the period between data points.</span>
 
 <span class="sd">        For example if data only comes once every 10 seconds,</span>
@@ -248,7 +253,7 @@
 
 <div class="viewcode-block" id="StreamSource.get_timestamp"><a class="viewcode-back" href="../../module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource.get_timestamp">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get timestamp of now as int microseconds</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get timestamp of now as int microseconds</span>
 
 <span class="sd">        :return: timestamp in UTC microseconds</span>
 <span class="sd">        &quot;&quot;&quot;</span>

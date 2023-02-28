@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.utils_for_testing &mdash; stream2py 1.0.41 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>stream2py.tests.utils_for_testing &mdash; stream2py 1.0.42 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/copybutton.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -28,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> stream2py
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            stream2py
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
@@ -76,9 +81,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>stream2py.tests.utils_for_testing</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">stream2py.tests.utils_for_testing</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -115,7 +120,7 @@
 
 
 <div class="viewcode-block" id="pairwise"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.pairwise">[docs]</a><span class="k">def</span> <span class="nf">pairwise</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &gt;&gt;&gt; list(pairwise(&#39;ABCD&#39;))</span>
 <span class="sd">    [(&#39;A&#39;, &#39;B&#39;), (&#39;B&#39;, &#39;C&#39;), (&#39;C&#39;, &#39;D&#39;)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -135,7 +140,7 @@
 
 
 <div class="viewcode-block" id="is_non_increasing"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_non_increasing">[docs]</a><span class="k">def</span> <span class="nf">is_non_increasing</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &gt;&gt;&gt; is_non_increasing([9, 2, 2, 1])</span>
 <span class="sd">    True</span>
 <span class="sd">    &gt;&gt;&gt; is_non_increasing([9, 2, 2, 1, 6])</span>
@@ -149,7 +154,7 @@
 
 
 <div class="viewcode-block" id="is_non_decreasing"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_non_decreasing">[docs]</a><span class="k">def</span> <span class="nf">is_non_decreasing</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &gt;&gt;&gt; is_non_decreasing([1, 2, 2, 9])</span>
 <span class="sd">    True</span>
 <span class="sd">    &gt;&gt;&gt; is_non_decreasing([1, 2, 2, 9, 6])</span>
@@ -169,7 +174,7 @@
 
 
 <div class="viewcode-block" id="is_monotonic"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_monotonic">[docs]</a><span class="k">def</span> <span class="nf">is_monotonic</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;True if and only if iterable is non-increasing or non-decreasing</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if and only if iterable is non-increasing or non-decreasing</span>
 
 <span class="sd">    &gt;&gt;&gt; is_monotonic([1, 2, 2, 9])</span>
 <span class="sd">    True</span>
@@ -210,12 +215,12 @@
 
 
 <div class="viewcode-block" id="SimpleSourceReader"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader">[docs]</a><span class="k">class</span> <span class="nc">SimpleSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A source reader that only requires an iterable&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A source reader that only requires an iterable&quot;&quot;&quot;</span>
 
     <span class="n">_current_index</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiates the reader and creates an iterator if necessary&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiates the reader and creates an iterator if necessary&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">):</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
@@ -248,7 +253,7 @@
 
 
 <div class="viewcode-block" id="RandomFloatSource"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.RandomFloatSource">[docs]</a><span class="k">class</span> <span class="nc">RandomFloatSource</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A simple example of source reader based on a random float generator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -277,7 +282,7 @@
 
 
 <div class="viewcode-block" id="TenthSecondCounterSourceReader"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader">[docs]</a><span class="k">class</span> <span class="nc">TenthSecondCounterSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Example SourceReader</span>
 <span class="sd">    Start counting when as soon as you construct</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -292,7 +297,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="TenthSecondCounterSourceReader.open"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset params for first read&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset params for first read&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_count</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span></div>
@@ -304,7 +309,7 @@
         <span class="k">return</span> <span class="n">_info</span>
 
 <div class="viewcode-block" id="TenthSecondCounterSourceReader.close"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span></div>
 
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">next_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
@@ -319,7 +324,7 @@
 
 
 <div class="viewcode-block" id="TenthSecondCounterStreamSource"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource">[docs]</a><span class="k">class</span> <span class="nc">TenthSecondCounterStreamSource</span><span class="p">(</span><span class="n">StreamSource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Example StreamSource</span>
 <span class="sd">    Start counting when as soon as you construct</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -334,7 +339,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="TenthSecondCounterStreamSource.open"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reset params for first read&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset params for first read&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">open_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">starting_count</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span></div>
@@ -346,7 +351,7 @@
         <span class="k">return</span> <span class="n">_info</span>
 
 <div class="viewcode-block" id="TenthSecondCounterStreamSource.close"><a class="viewcode-back" href="../../../module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Not needed but satisfies the abstract&quot;&quot;&quot;</span></div>
 
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">next_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_count</span>
