@@ -13,7 +13,7 @@ from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
 
 def defaulted_values(source_dict, defaults):
-    """Returns a the values of source_dict where None values are replaced with the
+    """Returns the values of source_dict where None values are replaced with the
     corresponding `default_dict` values.
 
     >>> defaults = {'a': 1, 'b': 2, 'c': 3}
@@ -80,7 +80,6 @@ class BufferReader:
     True
     """
 
-    read = None  # will be set by init
     onclose: Callable
     onopen: Callable
 
@@ -320,7 +319,15 @@ class BufferReader:
             self.last_item = item
         return item
 
-    def read(self, n=None, *, peek=None, ignore_no_item_found=None, strict_n=None):
+    def read(
+        self,
+        n=None,
+        *,
+        peek=None,
+        ignore_no_item_found=None,
+        strict_n=None,
+        blocking=False,
+    ):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
 
@@ -332,6 +339,7 @@ class BufferReader:
         :param ignore_no_item_found: if True, return None when no next item
             instead of raising exception
         :param strict_n: if True, raise ValueError if n items are not available
+        :param blocking: if True, wait to return next item if not yet available
         :return: next item or list of next items if n > 1
         """
         n, ignore_no_item_found, strict_n = defaulted_values(
@@ -345,6 +353,22 @@ class BufferReader:
         #         ignore_no_item_found or self._read_kwargs['ignore_no_item_found']
         # )
         # strict_n = strict_n or self._read_kwargs['strict_n']
+
+        if blocking is True:
+            while True:
+                _read = self.read(
+                    n,
+                    peek=peek,
+                    ignore_no_item_found=True,
+                    strict_n=strict_n,
+                    blocking=False,
+                )
+                if _read is not None:
+                    return _read
+                elif self.is_stopped:
+                    return None
+                else:
+                    time.sleep(self._sleep_time_on_iter_none_s)
 
         with self._buffer.reader_lock() as reader:
             try:

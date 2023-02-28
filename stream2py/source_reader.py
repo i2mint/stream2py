@@ -8,10 +8,11 @@ from abc import ABCMeta, abstractmethod
 import time
 from typing import Optional, Any, Union, NewType, Iterator
 
+from stream2py.protocols import Source
 from stream2py.utility.typing_hints import ComparableType
 
 
-class SourceReader(metaclass=ABCMeta):
+class SourceReader(Source, metaclass=ABCMeta):
     """(deprecated) Abstract class interface to be used by StreamBuffer.
 
     >>> from stream2py import SourceReader
@@ -174,7 +175,7 @@ StreamItem = NewType('StreamItem', Any)
 
 class QuickSourceReader(SourceReader):
     """
-    A `SourceReader` with whose only required merthod is the read method.
+    A `SourceReader` with whose only required method is the read method.
 
     - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)
     - close does nothing

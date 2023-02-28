@@ -5,8 +5,7 @@ from typing import Any, Protocol, runtime_checkable
 
 @runtime_checkable
 class Source(Protocol):
-    """The interface for the StreamSource class.
-    """
+    """The interface for the StreamSource class."""
 
     def key(self, data) -> Any:
         ...

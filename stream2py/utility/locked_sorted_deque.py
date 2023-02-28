@@ -1,5 +1,6 @@
 """Sorted Deque that handles Reader-Writer Priority"""
 from contextlib import contextmanager
+from typing import Generator
 
 from stream2py.utility.reader_writer_lock import RWLock
 from stream2py.utility.sorted_deque import SortedDeque
@@ -37,7 +38,7 @@ class RWLockSortedDeque(RWLock):
         return self._sorted_deque.key
 
     @contextmanager
-    def reader_lock(self):
+    def reader_lock(self) -> Generator[SortedDeque, None, None]:
         try:
             self.reader_acquire()
             yield self._sorted_deque
