@@ -5,6 +5,72 @@
 from inspect import signature, Parameter
 from abc import abstractmethod
 from functools import wraps
+from time import time
+
+
+def identity(x):
+    """Returns the input, as is."""
+    return x
+
+
+class Timer:
+    """A simple timer class that can be used as a context manager or manually
+    started and stopped.
+
+    >>> from time import sleep
+    >>> timer = Timer()
+    >>> timer.start()  # doctest: +SKIP
+    >>> sleep(1)
+    >>> timer.elapsed()  # doctest: +SKIP
+    1.005647897720337
+    >>> timer.stop()
+
+    You can also use a context block. Also, you can specify an egress function that will
+    be called on the output
+
+    >>> with Timer(lambda x: print(f"{int(x / (60 * 60 * 24))} days elapsed")) as timer:
+    ...     sleep(1)
+    ...     timer.elapsed()
+    0 days elapsed
+
+
+    You can reuse the same timer instance, starting and stopping it through a context
+    block:
+
+    >>> timer = Timer(lambda x: int(x / 3600))
+    >>> with timer:
+    ...     sleep(1)
+    ...     t = timer.elapsed()
+    >>> t
+    0
+    >>> with timer:
+    ...     sleep(0.1)
+
+    """
+    def __init__(self, egress=identity):
+        self.egress = egress
+        self.start_time = None
+
+    def start(self):
+        self.start_time = time()
+        return self
+
+    def stop(self, *args, **kwargs):
+        self.start_time = None
+
+    def elapsed(self):
+        try:
+            return self.egress(time() - self.start_time)
+        except TypeError:
+            if self.start_time is None:
+                raise ValueError(
+                    "You need to start the timer before you can get elapsed time. "
+                    "You can do a timer.start() or use a context block "
+                    "(`with timer: ...` or `with Timer() as time: ...`)"
+                )
+
+    __enter__ = start
+    __exit__ = stop
 
 
 class TypeValidationError(TypeError):
