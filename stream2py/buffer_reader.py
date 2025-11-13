@@ -7,7 +7,8 @@ __all__ = ['BufferReader']
 from contextlib import suppress
 import threading
 import time
-from typing import Callable, Union
+from typing import Union
+from collections.abc import Callable
 
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
 
@@ -154,7 +155,7 @@ class BufferReader:
         # Call read with the args fixed by init
         return self.read(**self._read_kwargs_for_next)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: int | float = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep

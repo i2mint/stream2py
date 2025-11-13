@@ -1,6 +1,6 @@
 """Sorted Deque that handles Reader-Writer Priority"""
 from contextlib import contextmanager
-from typing import Generator
+from collections.abc import Generator
 
 from stream2py.utility.reader_writer_lock import RWLock
 from stream2py.utility.sorted_deque import SortedDeque

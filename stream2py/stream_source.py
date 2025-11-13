@@ -14,7 +14,7 @@ from stream2py.stream_buffer import StreamBuffer
 DFLT_READ_SIZE = 1
 DFLT_MAX_LEN = 10000
 
-timestamp_seconds_to_unit_conversion: Union[int, float] = 1e6  # to microseconds
+timestamp_seconds_to_unit_conversion: int | float = 1e6  # to microseconds
 
 
 def defaulted_values(source_dict, defaults):
@@ -76,7 +76,7 @@ class StreamSource(Source, metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: int | float = 0.001):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -86,8 +86,8 @@ class StreamSource(Source, metaclass=ABCMeta):
     def configure_buffer(
         self,
         *,
-        maxlen: Optional[int] = None,
-        sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
+        maxlen: int | None = None,
+        sleep_time_on_read_none_s: int | float | None = None,
         auto_drop=True,
     ):
         """Sets custom buffer parameters."""
@@ -133,7 +133,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         new_reader.onclose = self._handle_reader_closed
         return new_reader
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: int | float = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -141,7 +141,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         self._sleep_time_on_iter_none_s = sleep_time_s
 
     @property
-    def sleep_time_on_read_none_s(self) -> Optional[Union[int, float]]:
+    def sleep_time_on_read_none_s(self) -> int | float | None:
         """Sets default sleep time for StreamBuffer when it reads None from SourceReader.
         Useful when you know the period between data points.
 

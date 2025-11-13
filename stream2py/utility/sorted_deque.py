@@ -59,7 +59,7 @@ class SortedDeque(SortedCollection):
         return self.__class__(self, self._key, self._maxlen)
 
     def __repr__(self):
-        return '%s(%r, key=%s, maxlen=%s)' % (
+        return '{}({!r}, key={}, maxlen={})'.format(
             self.__class__.__name__,
             list(self._items),  # Not sure if this is the best way to do this
             getattr(self._given_key, '__name__', repr(self._given_key)),
@@ -100,7 +100,7 @@ class SortedDeque(SortedCollection):
         try:
             if not k > self._keys[-1]:
                 raise ValueError(
-                    'Item key must be greater than last item key to append: %r' % (k,)
+                    'Item key must be greater than last item key to append: {!r}'.format(k)
                 )
         except IndexError as e:
             if len(self._keys) != 0:
@@ -139,7 +139,7 @@ class SortedDeque(SortedCollection):
         except IndexError as e:
             if len(self._keys) != 0:
                 raise e
-        raise ValueError('No item found with key above: %r' % (k,))
+        raise ValueError('No item found with key above: {!r}'.format(k))
 
     def drop(self, n=1):
         """Remove n items from the left

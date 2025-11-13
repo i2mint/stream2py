@@ -30,7 +30,7 @@ class _SourceBuffer:
         *,
         key=None,
         maxlen: int = 10000,
-        buffer_reader_class: Type[BufferReader] = BufferReader,
+        buffer_reader_class: type[BufferReader] = BufferReader,
     ):
         """StreamBuffer helper class
         Thread safe buffer for reading and writing data items
@@ -118,7 +118,7 @@ class StreamBuffer:
         source_reader: Source,
         *,
         maxlen: int = 100,
-        sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
+        sleep_time_on_read_none_s: int | float | None = None,
         auto_drop=True,
     ):
         """
@@ -207,7 +207,7 @@ class StreamBuffer:
             return self.source_buffer.attach_reader(reader)
 
     @property
-    def source_reader_info(self) -> Optional[dict]:
+    def source_reader_info(self) -> dict | None:
         """A dict with important source info set by SourceReader.
 
         :return: dict or None

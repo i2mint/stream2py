@@ -29,7 +29,8 @@ Example of usage:
 """
 
 import contextlib
-from typing import Callable, Any, Optional
+from typing import Any, Optional
+from collections.abc import Callable
 
 from stream2py import SourceReader, StreamBuffer
 from stream2py.utility.typing_hints import ComparableType, OpenInstance
@@ -37,12 +38,12 @@ from stream2py.utility.typing_hints import ComparableType, OpenInstance
 
 @contextlib.contextmanager
 def mk_stream_buffer(
-    read_stream: Callable[[OpenInstance], Optional[Any]],
+    read_stream: Callable[[OpenInstance], Any | None],
     open_stream: Callable[[], OpenInstance] = None,
     close_stream: Callable[[OpenInstance], None] = None,
     info: Callable[[OpenInstance], dict] = None,
     key: Callable[[Any], ComparableType] = None,
-    maxlen: Optional[int] = 100,
+    maxlen: int | None = 100,
     sleep_time_on_read_none_seconds: float = None,
     auto_drop: bool = True,
     enumerate_data: bool = True,

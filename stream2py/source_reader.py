@@ -6,7 +6,8 @@ __all__ = ['SourceReader']
 
 from abc import ABCMeta, abstractmethod
 import time
-from typing import Optional, Any, Union, NewType, Iterator
+from typing import Optional, Any, Union, NewType
+from collections.abc import Iterator
 
 from stream2py.protocols import Source
 from stream2py.utility.typing_hints import ComparableType
@@ -76,7 +77,7 @@ class SourceReader(Source, metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: int | float = 0.001):
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -120,7 +121,7 @@ class SourceReader(Source, metaclass=ABCMeta):
         )
 
     @property
-    def sleep_time_on_read_none_s(self) -> Optional[Union[int, float]]:
+    def sleep_time_on_read_none_s(self) -> int | float | None:
         """Sets default sleep time for StreamBuffer when it reads None from SourceReader.
         Useful when you know the period between data points.
 
@@ -135,7 +136,7 @@ class SourceReader(Source, metaclass=ABCMeta):
         """
         return None
 
-    timestamp_seconds_to_unit_conversion: Union[int, float] = 1e6  # to microseconds
+    timestamp_seconds_to_unit_conversion: int | float = 1e6  # to microseconds
 
     @classmethod
     def get_timestamp(cls) -> int:
@@ -157,7 +158,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     def stream_buffer(
         self,
         maxlen: int,
-        sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
+        sleep_time_on_read_none_s: int | float | None = None,
         auto_drop=True,
     ):
         from stream2py.stream_buffer import StreamBuffer

@@ -3,7 +3,7 @@ import operator
 import random
 import time
 
-from typing import Iterator
+from collections.abc import Iterator
 from itertools import tee
 import itertools
 from functools import wraps
@@ -116,7 +116,8 @@ def is_monotonic(iterable):
 
 # ---------------------------------------------------------------------------------------
 # A few source readers
-from typing import Iterator, Any
+from typing import Any
+from collections.abc import Iterator
 
 
 class SimpleSourceReader(SourceReader):
