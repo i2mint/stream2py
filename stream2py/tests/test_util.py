@@ -88,8 +88,12 @@ def test_test_objects():
         it_worked = True
     except Exception as e:
         it_worked = False
-        assert isinstance(e, AttributeError)
-        assert e.args[0] == '__enter__'  # well yeah, reader doesn't have an __enter__!
+        # Python 3.11+ raises TypeError instead of AttributeError for context manager protocol
+        assert isinstance(e, (AttributeError, TypeError))
+        if isinstance(e, AttributeError):
+            assert e.args[0] == '__enter__'  # well yeah, reader doesn't have an __enter__!
+        else:  # TypeError
+            assert 'context manager' in str(e)
 
     assert not it_worked
 

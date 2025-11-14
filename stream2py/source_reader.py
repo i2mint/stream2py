@@ -29,6 +29,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     ...     def open(self):
     ...         self.open_count += 1
     ...         self.range_iterator = iter(range(self.start, self.stop))
+    ...         self._closed = False
     ...
     ...     def read(self):
     ...         value = next(self.range_iterator, None)
@@ -40,6 +41,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     ...     def close(self):
     ...         del self.range_iterator
     ...         self.range_iterator = None
+    ...         self._closed = True
     ...
     ...     @property
     ...     def info(self):
@@ -49,12 +51,18 @@ class SourceReader(Source, metaclass=ABCMeta):
     ...         return int(data[1:])
     ...
     >>> source_reader = SimpleCounterString(start=0, stop=10)
+    >>> source_reader.closed
+    True
     >>> source_reader.open()
+    >>> source_reader.closed
+    False
     >>> source_reader.info
     {'start': 0, 'stop': 10, 'open_count': 1}
     >>> source_reader.read()
     's0'
     >>> source_reader.close()
+    >>> source_reader.closed
+    True
     >>> with source_reader:
     ...     source_reader.info
     ...     source_reader.read()
@@ -67,6 +75,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     """
 
     _sleep_time_on_iter_none_s = 0.001
+    _closed = True  # SourceReader starts in closed state
 
     def __iter__(self):
         while True:
@@ -120,6 +129,16 @@ class SourceReader(Source, metaclass=ABCMeta):
         )
 
     @property
+    def closed(self) -> bool:
+        """True if the source reader is closed, False if it's open.
+
+        Similar to io.IOBase.closed property.
+
+        :return: bool indicating whether the source is closed
+        """
+        return self._closed
+
+    @property
     def sleep_time_on_read_none_s(self) -> Optional[Union[int, float]]:
         """Sets default sleep time for StreamBuffer when it reads None from SourceReader.
         Useful when you know the period between data points.
@@ -147,10 +166,12 @@ class SourceReader(Source, metaclass=ABCMeta):
 
     def __enter__(self):
         self.open()
+        self._closed = False
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.close()
+        self._closed = True
 
     enter, exit = __enter__, __exit__
 
@@ -185,6 +206,7 @@ class QuickSourceReader(SourceReader):
 
     read_idx = None
     open_time = None
+    open_instance = None
 
     def __iter__(self) -> Iterator[StreamItem]:
         while True:
@@ -224,9 +246,12 @@ class QuickSourceReader(SourceReader):
     def open(self):
         self.read_idx = 0
         self.open_time = self.get_timestamp()
+        self.open_instance = self
+        self._closed = False
 
     def close(self):
         """A dummy close class"""
+        self._closed = True
 
     @property
     def info(self):
