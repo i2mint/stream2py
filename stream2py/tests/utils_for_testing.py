@@ -139,9 +139,12 @@ class SimpleSourceReader(SourceReader):
 
     # separate indexing concern (could be counter, could be time.time())
     def read(self):
-        output = self._current_index, next(self._data)
-        self._current_index += 1
-        return output
+        try:
+            output = self._current_index, next(self._data)
+            self._current_index += 1
+            return output
+        except StopIteration:
+            return None
 
     def close(self):
         return None

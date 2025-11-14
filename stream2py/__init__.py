@@ -110,7 +110,7 @@ the data is ordered with the key() method and an info property describing the in
             return data[0]
 
         @property
-        def info(self)
+        def info(self):
             return dict(file=self.file, mode=self.mode)
 
 2. The StreamBuffer
