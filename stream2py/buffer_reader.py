@@ -142,17 +142,36 @@ class BufferReader:
 
     def __iter__(self):
         while True:
-            _next = next(self)
+            try:
+                _next = next(self)
+            except StopIteration:
+                # Stream is stopped and exhausted
+                return
+
             if _next is not None:
                 yield _next
             elif self.is_stopped:
-                return None
+                return
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
     def __next__(self):
+        """Return the next item from the buffer.
+
+        Raises StopIteration when the stream is stopped and no more data is available.
+        Returns None when temporarily no data is available but stream is still running.
+
+        This makes BufferReader compatible with Python's iterator protocol while
+        handling the streaming use case where "no data yet" is different from "exhausted".
+        """
         # Call read with the args fixed by init
-        return self.read(**self._read_kwargs_for_next)
+        result = self.read(**self._read_kwargs_for_next)
+
+        # If no data and stream is stopped, raise StopIteration per iterator protocol
+        if result is None and self.is_stopped:
+            raise StopIteration
+
+        return result
 
     def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
         """Set the sleep time of the iter yield loop when next data item is not yet available.

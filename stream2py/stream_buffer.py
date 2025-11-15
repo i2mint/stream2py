@@ -15,6 +15,7 @@ from typing import Optional, Union, Type
 from stream2py.protocols import Source
 from stream2py import BufferReader
 from stream2py.utility.locked_sorted_deque import RWLockSortedDeque
+from stream2py.exceptions import StreamNotStartedError
 
 logger = logging.getLogger(__name__)
 
@@ -193,17 +194,27 @@ class StreamBuffer:
         Reader must be made after start() to have data from said start.
 
         :return: BufferReader instance
+        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet
         """
         with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
-                raise RuntimeError('Readers should be made after starting')
+                raise StreamNotStartedError(
+                    'StreamBuffer must be started before creating readers. '
+                    'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'
+                )
             return self.source_buffer.mk_reader(**read_kwargs)
 
     def attach_reader(self, reader):
-        """Allows a StreamReader instance to read from this buffer."""
+        """Allows a StreamReader instance to read from this buffer.
+
+        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet
+        """
         with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
-                raise RuntimeError('Readers should be made after starting')
+                raise StreamNotStartedError(
+                    'StreamBuffer must be started before attaching readers. '
+                    'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'
+                )
             return self.source_buffer.attach_reader(reader)
 
     @property
