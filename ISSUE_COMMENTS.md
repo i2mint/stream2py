@@ -109,27 +109,27 @@ This would be a simple enhancement on top of the existing blocking implementatio
 
 ## Issue #10: Make BufferReader.__next__() more compatible with builtin next()
 
-📋 **NEEDS WORK**
+✅ **RESOLVED** in this PR
 
-**Status:** Relevant enhancement
+**Status:** Implemented
 
-**Issue:** The Python `next()` function should either raise `StopIteration` or yield a given default value instead of always returning None while the next value is unavailable.
+**Implementation:**
+Modified `BufferReader.__next__()` to properly raise `StopIteration` when the stream is stopped and no data is available, while still returning `None` when temporarily no data is available but the stream is still running.
 
-**Current behavior:**
-`BufferReader.__next__()` returns `None` while next value is unavailable, which doesn't follow the standard Python iterator protocol.
+**Changes Made:**
+- `buffer_reader.py:153-169` - Updated `__next__()` to raise `StopIteration` when `result is None and self.is_stopped`
+- `buffer_reader.py:143-156` - Updated `__iter__()` to catch `StopIteration` (prevents RuntimeError in Python 3.7+)
+- Added comprehensive tests in `test_buffer_reader_stopiteration.py`:
+  - Test that `StopIteration` is raised when stream stopped
+  - Test that `None` is returned when no data but stream still running
+  - Test that builtin `next()` with default value works correctly
+  - Test that for loops stop correctly
 
-**Expected behavior:**
-Should raise `StopIteration` when iterator is exhausted, or return a default value if provided to `next()`.
-
-**Recommendation:**
-Review the current implementation in `buffer_reader.py:153-155` and adjust to match Python's iterator protocol. However, note that stream2py's use case is different from typical finite iterators - streams are potentially infinite and have "no data yet" as a valid state distinct from "exhausted".
-
-**Considerations:**
-- Stream iterators are unbounded, so `StopIteration` should only be raised when the stream is actually stopped/closed
-- May need to distinguish between "no data yet" vs "stream ended"
-- The `is_stopped` property could be used to determine when to raise `StopIteration`
-
-**Effort:** Simple, but needs careful design consideration
+**Benefits:**
+- Now fully compatible with Python's iterator protocol
+- Works correctly with builtin `next(reader, default)`
+- For loops terminate properly when stream stops
+- Distinguishes between "no data yet" (returns None) vs "stream exhausted" (raises StopIteration)
 
 **Reference:** https://docs.python.org/3/library/functions.html#next
 
@@ -137,31 +137,35 @@ Review the current implementation in `buffer_reader.py:153-155` and adjust to ma
 
 ## Issue #18: What should happen if we start to read without starting the reader?
 
-📋 **NEEDS DECISION**
+✅ **ADDRESSED** in this PR
 
-**Status:** Design question
+**Status:** Checks already exist, now documented and tested
 
-**Question:** Should `reader.read()` raise an exception if called before the reader context is entered or the buffer is started?
+**Resolution:**
+The necessary checks already exist! `StreamBuffer.mk_reader()` raises a clear error if called before the buffer is started. Additionally, the BufferReader doesn't require being in a `with` block to function - the context manager is only for cleanup.
 
-**Current behavior:**
-Unclear - may fail with confusing errors depending on internal state.
+**Current Implementation:**
+- `StreamBuffer.mk_reader()` raises `StreamNotStartedError` (formerly `RuntimeError`) if buffer not started
+- BufferReader works fine without context manager
+- Context manager on BufferReader ensures proper cleanup (calls `onclose` callback)
 
-**Recommendation:**
-Add a check in `BufferReader.read()` to raise a clear, informative exception if the buffer hasn't been started. Something like:
+**Changes Made in This PR:**
+- Created custom `StreamNotStartedError` exception with clearer error messages
+- Added comprehensive tests in `test_reader_without_context.py`:
+  - `test_mk_reader_requires_started_buffer()` - verifies error is raised
+  - `test_reader_works_without_context_manager()` - shows readers work without `with` block
+  - `test_context_manager_ensures_cleanup()` - shows context manager benefits
+  - `test_reader_without_context_still_works()` - demonstrates manual cleanup
+  - `test_stream_buffer_with_context()` - shows recommended pattern
 
-```python
-if not self._stop_event or self._buffer is None:
-    raise RuntimeError(
-        "BufferReader must be used within a started StreamBuffer context. "
-        "Call StreamBuffer.start() or use 'with stream_buffer:' before reading."
-    )
-```
-
-**Effort:** Simple (add validation check)
+**Documented Behavior:**
+1. **StreamBuffer must be started** before creating readers - this is enforced
+2. **BufferReader context manager is optional** - used for cleanup, not required for reading
+3. **Recommended pattern**: Use `with StreamBuffer(...) as buffer:` for automatic cleanup
 
 **Related:**
 - See wiki: https://github.com/i2mint/stream2py/wiki/Forwarding-context-management
-- This was partially addressed by `contextualize_with_instance` utility
+- Enhanced by `contextualize_with_instance` utility
 
 ---
 
@@ -236,104 +240,114 @@ Then `BufferReader.range()` could use these methods to return precisely trimmed 
 
 ## Issue #15: Review exception objects raised and figure out custom ones
 
-📋 **NEEDS WORK** (Medium effort)
+✅ **RESOLVED** (Foundation implemented in this PR)
 
-**Status:** Relevant - code quality enhancement
+**Status:** Core exception hierarchy created and integrated
 
-**Description:**
-Currently, the codebase raises generic exceptions (`ValueError`, `RuntimeError`, `TypeError`, etc.). Custom exception classes would provide better error handling and clearer semantics.
+**Implementation:**
+Created comprehensive exception hierarchy in `stream2py/exceptions.py` and integrated it into the codebase.
 
-**Recommendation:**
-1. Audit all exception raising in the codebase
-2. Create custom exception hierarchy, e.g.:
-   ```python
-   class Stream2PyError(Exception):
-       """Base exception for stream2py"""
+**Exception Classes Created:**
+```python
+class Stream2PyError(Exception):
+    """Base exception for all stream2py errors"""
 
-   class StreamNotStartedError(Stream2PyError):
-       """Raised when operations require a started stream"""
+class StreamNotStartedError(Stream2PyError):
+    """Raised when operations require a started stream"""
 
-   class BufferOverflowError(Stream2PyError):
-       """Raised when buffer is full and auto_drop=False"""
+class StreamAlreadyStoppedError(Stream2PyError):
+    """Raised when stream has been stopped"""
 
-   class NoDataAvailableError(Stream2PyError):
-       """Raised when no data is available and ignore_no_item_found=False"""
-   ```
+class BufferError(Stream2PyError):
+    """Base exception for buffer-related errors"""
 
-3. Replace generic exceptions with custom ones where appropriate
-4. Update documentation
+class BufferOverflowError(BufferError):
+    """Raised when buffer is full and auto_drop=False"""
 
-**Benefits:**
-- Easier to catch specific stream2py errors
-- Better error messages
-- Clearer API semantics
+class NoDataAvailableError(BufferError):
+    """Raised when no data is available"""
 
-**Effort:** Medium (requires codebase audit)
+class InvalidDataError(Stream2PyError):
+    """Raised when data doesn't meet expected format"""
+
+class ConfigurationError(Stream2PyError):
+    """Raised when objects are misconfigured"""
+```
+
+**Integration Completed:**
+- Updated `StreamBuffer.mk_reader()` to raise `StreamNotStartedError` with helpful message
+- Updated `StreamBuffer.attach_reader()` to raise `StreamNotStartedError`
+- Updated tests to expect custom exceptions
+- Exported exceptions module from `stream2py.__init__`
+
+**Benefits Realized:**
+- ✅ More informative error messages (e.g., suggests using `with StreamBuffer(...)`)
+- ✅ Easier to catch specific stream2py errors
+- ✅ Clearer API semantics
+- ✅ Better IDE autocomplete support
+
+**Future Work:**
+Continue replacing generic exceptions throughout codebase with appropriate custom exceptions. The foundation is now in place.
 
 ---
 
 ## Issue #13: keyboard_and_audio not working in notebook
 
-📋 **NEEDS WORK** (Medium effort)
+🔧 **EXTERNAL PACKAGE** - Applies to keyboardstream2py
 
-**Status:** Relevant bug
+**Status:** Not applicable to core stream2py
 
-**Issue:** Terminal-based keyboard input using `termios` doesn't work in Jupyter notebooks.
+**Investigation:**
+The `getch.py` file and keyboard functionality referenced in this issue **do not exist in core stream2py**. This functionality has been moved to the separate `keyboardstream2py` package as part of stream2py's plugin architecture.
 
-**Error:**
-```
-termios.error: (25, 'Inappropriate ioctl for device')
-```
-
-**Root cause:**
-The `getch.py` utility tries to use terminal control (`termios.tcgetattr`) which doesn't work in notebook environments where there's no proper terminal.
+**Resolution:**
+This issue applies to the **[keyboardstream2py](https://github.com/i2mint/keyboardstream2py)** package, not core stream2py.
 
 **Recommendation:**
-1. Add conditional imports and environment detection
-2. Provide alternative input methods for notebook environments:
-   - Use `ipywidgets` for notebook input
-   - Fall back to `input()` for basic keyboard reading
-   - Document the limitation clearly
+1. **Move this issue** to the keyboardstream2py repository, OR
+2. **Close this issue** with a comment directing users to report keyboard-specific issues in the appropriate repository
 
-**Example approach:**
-```python
-def _get_input_method():
-    try:
-        # Try to detect if we're in a notebook
-        get_ipython()
-        # Use ipywidgets
-        from ipywidgets import Button, Output
-        return NotebookInputReader()
-    except NameError:
-        # Not in notebook, use terminal
-        from stream2py.utility.getch import getch
-        return TerminalInputReader()
-```
+**For keyboardstream2py maintainers:**
+If this issue is moved to keyboardstream2py, the solution would involve:
+1. Detecting notebook environments
+2. Providing alternative input methods (e.g., `ipywidgets`)
+3. Documenting limitations clearly
 
-**Effort:** Medium
-
-**Alternative:** Document that keyboard input examples only work in terminal, not notebooks.
+**Note:** This follows stream2py's design philosophy of keeping core dependency-free and moving specific functionality to plugin packages.
 
 ---
 
 ## Issue #9: Not skipping tests and linting
 
-❓ **NEEDS CLARIFICATION**
+❓ **NEEDS CLARIFICATION** - CI appears correct
 
-**Status:** Unclear what the specific issue is
+**Status:** Investigated - current setup looks appropriate
 
-**Current state:**
-- CI configuration in `.github/workflows/ci.yml` runs tests on line 43: `pytest -s --doctest-modules -v $PROJECT_NAME`
-- Linting is run on line 40: `pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114`
+**Investigation Results:**
+Reviewed `.github/workflows/ci.yml` thoroughly:
 
-**Question:** What specifically should not be skipped?
+**Tests ARE running:**
+- Line 43: `pytest -s --doctest-modules -v $PROJECT_NAME` - runs all tests including doctests
+- Executes in the "validation" job on every push/PR
 
-**Possible interpretations:**
-1. CI is currently skipping tests/linting when it shouldn't?
-2. Tests are being skipped within the test suite?
-3. Certain files/directories should not be ignored by linting?
+**Linting IS running:**
+- Line 40: `pylint ./$PROJECT_NAME --ignore=tests,examples,scrap --disable=all --enable=C0114`
+- Checks for missing module docstrings
+- Executes in the "validation" job
 
-**Recommendation:** Need clarification from issue author on what the problem is. The CI workflow appears to run both tests and linting.
+**The `--bypass-tests` flag (line 96):**
+- Only used in the "publish" job's `pack check-in` command
+- This is APPROPRIATE because:
+  1. Tests already ran successfully in the validation job (line 47: `needs: validation`)
+  2. This step only commits automated formatting/documentation changes
+  3. No code logic changes happen in this step
+  4. Bypassing here prevents redundant test runs
+
+**Conclusion:**
+The CI configuration appears correct. Tests and linting run on every push/PR. The bypass flags are only used appropriately for automated commits.
+
+**Question for Issue Author:**
+What specifically is being inappropriately skipped? The current setup follows CI best practices. If there's a specific concern, please provide details so we can address it.
 
 ---
 
