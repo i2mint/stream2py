@@ -1,0 +1,105 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stream2py"
+version = "1.0.42"
+description = "Bring data streams to python with ease"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+keywords = ["data stream"]
+authors = [
+    {name = "OtoSense"}
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/i2mint/stream2py"
+Repository = "https://github.com/i2mint/stream2py"
+Documentation = "https://i2mint.github.io/stream2py/index.html"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+docs = [
+    "sphinx>=6.0",
+    "sphinx-rtd-theme>=1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["stream2py"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/stream2py",
+    "/README.md",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = [
+    "**/*.ipynb",
+    ".git",
+    ".venv",
+    "build",
+    "dist",
+    "tests",
+    "examples",
+    "scrap",
+]
+
+[tool.ruff.lint]
+# Select the rules you want to enable.
+# It's best practice to enable whole rule families for consistency.
+# See https://docs.astral.sh/ruff/rules/
+select = [
+    # Docstring Rule (Your request)
+    "D100", # D100: Missing module docstring (Required)
+
+    # Core Error-Catching (always good to have)
+    # "F",    # F: Pyflakes - Logical errors, unused imports (Highly recommended)
+    # "E",    # E: Pycodestyle Errors - Basic style errors (Highly recommended)
+    # "B",    # B: Flake8-Bugbear - Common bug patterns (Highly recommended)
+
+    # Clean-up / Modernization (Highly fixable and low-annoyance)
+    # "UP",   # UP: Pyupgrade - Suggestions for modern Python syntax
+    # "I",    # I: isort - Import sorting (If you don't use a separate tool like Black/Ruff formatter)
+]
+
+# Ignore specific rules that conflict or are too annoying
+ignore = [
+    # Docstring Ignore (Your request)
+    "D203",  # D203: 1 blank line before class docstring (Conflict with other docstring styles)
+
+    # Common Ignores (Enable and uncomment if you find them annoying)
+    "E501",  # E501: Line too long (If you use an auto-formatter like Black/Ruff format, ignore this)
+    "B905",  # B905: `zip()` without an explicit `strict=` parameter
+]
+
+# Configure settings for rule families
+[tool.ruff.lint.pydocstyle]
+convention = "google" # or "numpy" or "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]  # don't enforce docstrings in tests
+"examples/*" = ["D"]
+"scrap/*" = ["D"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["stream2py/tests"]
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
+addopts = [
+    "--doctest-modules",
+    "-v",
+]
