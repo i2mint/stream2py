@@ -5,6 +5,84 @@
 from inspect import signature, Parameter
 from abc import abstractmethod
 from functools import wraps
+from time import perf_counter
+
+
+def identity(x):
+    """Returns the input, as is."""
+    return x
+
+
+class Timer:
+    """A simple timer that can be used as a context manager, or started and stopped
+    manually.
+
+    >>> from time import sleep
+    >>> timer = Timer()
+    >>> timer.start()  # doctest: +SKIP
+    >>> sleep(0.01)
+    >>> timer.elapsed()  # doctest: +SKIP
+    0.010056478977203369
+    >>> timer.stop()
+
+    You can also use a context block, and specify an ``egress`` function that will be
+    called on the elapsed seconds:
+
+    >>> with Timer(lambda x: print(f"{int(x / (60 * 60 * 24))} days elapsed")) as timer:
+    ...     sleep(0.01)
+    ...     timer.elapsed()
+    0 days elapsed
+
+    The same timer instance can be reused across context blocks:
+
+    >>> timer = Timer(lambda x: int(x / 3600))
+    >>> with timer:
+    ...     sleep(0.01)
+    ...     t = timer.elapsed()
+    >>> t
+    0
+    >>> with timer:
+    ...     sleep(0.01)
+
+    Asking for the elapsed time of a timer that isn't running tells you so, instead of
+    failing obscurely:
+
+    >>> Timer().elapsed()  # doctest: +ELLIPSIS
+    Traceback (most recent call last):
+      ...
+    ValueError: The timer is not running....
+
+    Note that elapsed time is measured with ``time.perf_counter``, a monotonic clock, so
+    it is unaffected by system clock adjustments. This also means ``start_time`` is not a
+    wall-clock timestamp; it is only meaningful as a reference point for a difference.
+    """
+
+    def __init__(self, egress=identity):
+        self.egress = egress
+        self.start_time = None
+
+    def start(self):
+        self.start_time = perf_counter()
+        return self
+
+    def stop(self, *args, **kwargs):
+        self.start_time = None
+
+    def elapsed(self):
+        """The (egress-transformed) seconds since the timer was started.
+
+        Raises ``ValueError`` if the timer is not running.
+        """
+        if self.start_time is None:
+            raise ValueError(
+                "The timer is not running, so it has no elapsed time. "
+                "Start it with timer.start(), or use a context block "
+                "(`with timer: ...` or `with Timer() as timer: ...`)."
+            )
+        return self.egress(perf_counter() - self.start_time)
+
+    __enter__ = start
+    __exit__ = stop
 
 
 class TypeValidationError(TypeError):
