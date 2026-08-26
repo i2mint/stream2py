@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.42 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="stream2py.exceptions" href="exceptions.html" />
+    <link rel="prev" title="stream2py" href="../stream2py.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../stream2py.html">stream2py</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.buffer_reader</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader"><code class="docutils literal notranslate"><span class="pre">BufferReader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.is_same_buffer"><code class="docutils literal notranslate"><span class="pre">BufferReader.is_same_buffer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.is_stopped"><code class="docutils literal notranslate"><span class="pre">BufferReader.is_stopped</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.last_item"><code class="docutils literal notranslate"><span class="pre">BufferReader.last_item</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.last_key"><code class="docutils literal notranslate"><span class="pre">BufferReader.last_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.range"><code class="docutils literal notranslate"><span class="pre">BufferReader.range()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.read"><code class="docutils literal notranslate"><span class="pre">BufferReader.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none"><code class="docutils literal notranslate"><span class="pre">BufferReader.set_sleep_time_on_iter_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.source_reader_info"><code class="docutils literal notranslate"><span class="pre">BufferReader.source_reader_info</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.tail"><code class="docutils literal notranslate"><span class="pre">BufferReader.tail()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simply.html">stream2py.simply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/test_util.html">stream2py.tests.test_util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">stream2py.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">stream2py.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">stream2py.buffer_reader</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/stream2py/buffer_reader.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stream2py.buffer_reader">
+<span id="stream2py-buffer-reader"></span><h1>stream2py.buffer_reader<a class="headerlink" href="#module-stream2py.buffer_reader" title="Link to this heading"></a></h1>
+<p>A BufferReader gives data access to any number of consumers and provides methods to seek data such
+as next(), range(), head(), tail().  Each BufferReader instance has it’s own cursor keeping track of
+what data was last seen.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.buffer_reader.</span></span><span class="sig-name descname"><span class="pre">BufferReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utility/locked_sorted_deque.html#stream2py.utility.locked_sorted_deque.RWLockSortedDeque" title="stream2py.utility.locked_sorted_deque.RWLockSortedDeque"><span class="pre">RWLockSortedDeque</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_reader_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_no_item_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader" title="Link to this definition"></a></dt>
+<dd><p>Reader that is constructed from StreamBuffer.mk_reader()</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">stream2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamBuffer</span><span class="p">,</span> <span class="n">BufferReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.examples.source_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleCounterString</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span> <span class="o">=</span> <span class="n">stream_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">buffer_reader</span><span class="p">,</span> <span class="n">BufferReader</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">is_stopped</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="o">==</span> <span class="kc">None</span>  <span class="c1"># None until value is seen</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c1"># get first item</span>
+<span class="go">'s0'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="c1"># check last_item cursor</span>
+<span class="go">'s0'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># next will not update last_item cursor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
+<span class="go">('s1', 's0')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># same as what was peeked but now cursor is updated</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
+<span class="go">('s1', 's1')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">['s5', 's6', 's7', 's8', 's9', 's10']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
+<span class="go">'s10'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span>
+<span class="go">(['s5', 's8'], 's8')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">['s10', 's11', 's12', 's13', 's14', 's15']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span> <span class="c1"># unchanged with peek</span>
+<span class="go">'s8'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_key</span> <span class="c1"># key of last_item</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># only 9 is greater than last item key</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">['s9']</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">head</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_key</span>
+<span class="go">('s0', 's0', 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">tail</span><span class="p">(),</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_item</span><span class="p">,</span> <span class="n">buffer_reader</span><span class="o">.</span><span class="n">last_key</span>
+<span class="go">('s99', 's99', 99)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream_buffer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">buffer_reader</span><span class="o">.</span><span class="n">is_stopped</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.is_same_buffer">
+<span class="sig-name descname"><span class="pre">is_same_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_buffer_reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader.is_same_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.is_same_buffer" title="Link to this definition"></a></dt>
+<dd><p>Check if reader is looking at the same buffer</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.is_stopped">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_stopped</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.is_stopped" title="Link to this definition"></a></dt>
+<dd><p>Checks if stop event has been set by StreamBuffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.last_item">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">last_item</span></span><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.last_item" title="Link to this definition"></a></dt>
+<dd><p>last seen item cursor</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.last_key">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">last_key</span></span><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.last_key" title="Link to this definition"></a></dt>
+<dd><p>key to last seen item cursor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.range">
+<span class="sig-name descname"><span class="pre">range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_no_item_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_new_items</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_le</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_ge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader.range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.range" title="Link to this definition"></a></dt>
+<dd><p>Enables:
+1. Get last n minutes
+2. Give me data I don’t have</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> – starting range key of item inclusive</p></li>
+<li><p><strong>stop</strong> – ending range key of item inclusive</p></li>
+<li><p><strong>step</strong></p></li>
+<li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception.</p></li>
+<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError
+or return None if ignore_no_item_found</p></li>
+<li><p><strong>start_le</strong> – if True, increase the search range to find start less than or equal by
+rounding down if start is in between keys,
+i.e. keys=[0, 10, 20], start=9 will include key=0</p></li>
+<li><p><strong>stop_ge</strong> – if True, raise ValueError when there is no key greater than or equal to
+stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of items in range</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_no_item_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocking</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.read" title="Link to this definition"></a></dt>
+<dd><p>Finds an item with a key greater than the last returned item.
+Raise ValueError if no item found with key above last item.</p>
+<p>Note: Arguments whose values are not specified will be replaced with
+self.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – number of items to return</p></li>
+<li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception</p></li>
+<li><p><strong>strict_n</strong> – if True, raise ValueError if n items are not available</p></li>
+<li><p><strong>blocking</strong> – if True, wait to return next item if not yet available</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>next item or list of next items if n &gt; 1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none">
+<span class="sig-name descname"><span class="pre">set_sleep_time_on_iter_none</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sleep_time_s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader.set_sleep_time_on_iter_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none" title="Link to this definition"></a></dt>
+<dd><p>Set the sleep time of the iter yield loop when next data item is not yet available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sleep_time_s</strong> – seconds to sleep</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.source_reader_info">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">source_reader_info</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></span><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.source_reader_info" title="Link to this definition"></a></dt>
+<dd><p>A dict with important source info set by SourceReader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.tail">
+<span class="sig-name descname"><span class="pre">tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_no_item_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_new_items</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/buffer_reader.html#BufferReader.tail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.tail" title="Link to this definition"></a></dt>
+<dd><p>Finds the last item in buffer. Raise ValueError if no item found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peek</strong> – if True, last_item cursor will not be updated</p></li>
+<li><p><strong>ignore_no_item_found</strong> – if True, return None when no next item
+instead of raising exception</p></li>
+<li><p><strong>only_new_items</strong> – if True and no new items, raise ValueError
+or return None if ignore_no_item_found</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tail item</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../stream2py.html" class="btn btn-neutral float-left" title="stream2py" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exceptions.html" class="btn btn-neutral float-right" title="stream2py.exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

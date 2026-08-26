@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.tests.test_buffer_reader_blocking &mdash; stream2py 1.0.42 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/util.html">stream2py.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility.html">stream2py.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">stream2py.tests.test_buffer_reader_blocking</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stream2py.tests.test_buffer_reader_blocking</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Tests for BufferReader blocking parameter"""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">stream2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamBuffer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.tests.utils_for_testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleSourceReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">count</span>
+
+
+<div class="viewcode-block" id="test_buffer_reader_blocking">
+<a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_buffer_reader_blocking.html#stream2py.tests.test_buffer_reader_blocking.test_buffer_reader_blocking">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_buffer_reader_blocking</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Test that blocking parameter works correctly for BufferReader.read()"""</span>
+    <span class="c1"># Create a source with enough data</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">SimpleSourceReader</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">buffer</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+
+        <span class="c1"># Wait a moment for some data to be available</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="c1"># Non-blocking read should return data immediately when available</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Non-blocking read should return data"</span>
+
+        <span class="c1"># Read a few more items with blocking=False</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="c1"># Read with blocking=True should also work when data is available</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Blocking read should return data when available"</span>
+
+        <span class="c1"># Create a second reader that starts with no data yet read</span>
+        <span class="n">reader2</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+
+        <span class="c1"># The second reader should be able to read with blocking=True</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">reader2</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Blocking read from new reader should get data"</span></div>
+
+
+
+<div class="viewcode-block" id="test_buffer_reader_blocking_stops_on_stop_event">
+<a class="viewcode-back" href="../../../module_docs/stream2py/tests/test_buffer_reader_blocking.html#stream2py.tests.test_buffer_reader_blocking.test_buffer_reader_blocking_stops_on_stop_event">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_buffer_reader_blocking_stops_on_stop_event</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Test that blocking read returns None when buffer is stopped"""</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">SimpleSourceReader</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+
+    <span class="n">buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">buffer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+
+    <span class="c1"># Read all available data</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">blocking_read_after_stop</span><span class="p">():</span>
+        <span class="c1"># This should return None when buffer stops</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="c1"># Start blocking read</span>
+    <span class="n">read_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">blocking_read_after_stop</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">read_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Give it a moment to start blocking</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># Stop the buffer</span>
+    <span class="n">buffer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="c1"># Wait for thread to complete</span>
+    <span class="n">read_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Should have gotten None because buffer stopped</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"Blocking read should return None when stopped"</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

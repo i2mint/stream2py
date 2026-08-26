@@ -1,0 +1,4 @@
+stream2py.utility
+=================
+.. automodule:: stream2py.utility
+   :members:

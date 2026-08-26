@@ -1,0 +1,4 @@
+stream2py.exceptions
+====================
+.. automodule:: stream2py.exceptions
+   :members:

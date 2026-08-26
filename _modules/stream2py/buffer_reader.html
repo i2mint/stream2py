@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.42 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            stream2py
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py.html">stream2py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/util.html">stream2py.util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility.html">stream2py.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">stream2py</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">stream2py.buffer_reader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stream2py.buffer_reader</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">A BufferReader gives data access to any number of consumers and provides methods to seek data such</span>
+<span class="sd">as next(), range(), head(), tail().  Each BufferReader instance has it's own cursor keeping track of</span>
+<span class="sd">what data was last seen."""</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'BufferReader'</span><span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.utility.locked_sorted_deque</span><span class="w"> </span><span class="kn">import</span> <span class="n">RWLockSortedDeque</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">defaulted_values</span><span class="p">(</span><span class="n">source_dict</span><span class="p">,</span> <span class="n">defaults</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns the values of source_dict where None values are replaced with the</span>
+<span class="sd">    corresponding `default_dict` values.</span>
+
+<span class="sd">    &gt;&gt;&gt; defaults = {'a': 1, 'b': 2, 'c': 3}</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({'a': None, 'b': 22, 'c': None}, defaults))</span>
+<span class="sd">    (1, 22, 3)</span>
+<span class="sd">    &gt;&gt;&gt; tuple(defaulted_values({'a': False, 'b': True, 'c': None}, defaults))</span>
+<span class="sd">    (False, True, 3)</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">defaults</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">source_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="BufferReader">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BufferReader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reader that is constructed from StreamBuffer.mk_reader()</span>
+
+<span class="sd">    &gt;&gt;&gt; from stream2py import StreamBuffer, BufferReader</span>
+<span class="sd">    &gt;&gt;&gt; from stream2py.examples.source_reader import SimpleCounterString</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; source_reader = SimpleCounterString(start=0, stop=100)</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer = StreamBuffer(source_reader=source_reader, maxlen=100)</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.start()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader = stream_buffer.mk_reader()</span>
+<span class="sd">    &gt;&gt;&gt; isinstance(buffer_reader, BufferReader)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.is_stopped</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.last_item == None  # None until value is seen</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.next() # get first item</span>
+<span class="sd">    's0'</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.last_item # check last_item cursor</span>
+<span class="sd">    's0'</span>
+<span class="sd">    &gt;&gt;&gt; # next will not update last_item cursor</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.next(peek=True), buffer_reader.last_item</span>
+<span class="sd">    ('s1', 's0')</span>
+<span class="sd">    &gt;&gt;&gt; # same as what was peeked but now cursor is updated</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.next(), buffer_reader.last_item</span>
+<span class="sd">    ('s1', 's1')</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=5, stop=10)</span>
+<span class="sd">    ['s5', 's6', 's7', 's8', 's9', 's10']</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.last_item</span>
+<span class="sd">    's10'</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=5, stop=10, step=3), buffer_reader.last_item</span>
+<span class="sd">    (['s5', 's8'], 's8')</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=10, stop=15, peek=True)</span>
+<span class="sd">    ['s10', 's11', 's12', 's13', 's14', 's15']</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.last_item # unchanged with peek</span>
+<span class="sd">    's8'</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.last_key # key of last_item</span>
+<span class="sd">    8</span>
+<span class="sd">    &gt;&gt;&gt; # only 9 is greater than last item key</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.range(start=0, stop=9, only_new_items=True)</span>
+<span class="sd">    ['s9']</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.head(), buffer_reader.last_item, buffer_reader.last_key</span>
+<span class="sd">    ('s0', 's0', 0)</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.tail(), buffer_reader.last_item, buffer_reader.last_key</span>
+<span class="sd">    ('s99', 's99', 99)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; stream_buffer.stop()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; buffer_reader.is_stopped</span>
+<span class="sd">    True</span>
+<span class="sd">    """</span>
+
+    <span class="n">onclose</span><span class="p">:</span> <span class="n">Callable</span>
+    <span class="n">onopen</span><span class="p">:</span> <span class="n">Callable</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">buffer</span><span class="p">:</span> <span class="n">RWLockSortedDeque</span><span class="p">,</span>
+        <span class="n">source_reader_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">stop_event</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">read_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># TODO: should this be True to be aligned with iter?</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+
+<span class="sd">        The `read_size`, `peek`, `strict_n` and `ignore_no_item_found` parameters</span>
+<span class="sd">        are used as defaults of the</span>
+<span class="sd">        `read` method. More importanty -- since the default read is used by</span>
+<span class="sd">        `__next__` and therefore by `__iter__`, the `read_size` and `peek` these</span>
+<span class="sd">        parameters define the behavior of</span>
+
+<span class="sd">        :param buffer:</span>
+<span class="sd">        :param source_reader_info:</span>
+<span class="sd">        :param stop_event: threading.Event for source read loop</span>
+<span class="sd">        :param read_size: number of items to return by default when reading.</span>
+<span class="sd">            Is also used as the "chunk size" when iterating.</span>
+<span class="sd">        :param peek: if True, by default, last_item cursor will not be updated during a</span>
+<span class="sd">            read</span>
+<span class="sd">        :param ignore_no_item_found: if True, by default return None when no next item</span>
+<span class="sd">            instead of raising exception during a read</span>
+<span class="sd">        :param strict_n: if True, by default a ValueError witll be raised if the</span>
+<span class="sd">            exact number of requested items are not available when reading.</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">RWLockSortedDeque</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stop_event</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span> <span class="o">=</span> <span class="n">source_reader_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="n">buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">stop_event</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_size</span> <span class="o">=</span> <span class="n">read_size</span>  <span class="c1"># read_size used by __next__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">peek</span> <span class="o">=</span> <span class="n">peek</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_no_item_found</span> <span class="o">=</span> <span class="n">ignore_no_item_found</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_n</span> <span class="o">=</span> <span class="n">strict_n</span>
+        <span class="c1"># _read_kwargs will be used as the defaults of the read method as well as</span>
+        <span class="c1"># the kwargs of the __next__ method (with ignore_no_item_found=True forced)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_size</span><span class="p">,</span>
+            <span class="n">peek</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">peek</span><span class="p">,</span>
+            <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
+            <span class="n">strict_n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strict_n</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># The _read_kwargs_for_iter should be the same as the _read_kwargs, but with</span>
+        <span class="c1"># forced ignore_no_item_found=True so that __iter__ always returns a value, and</span>
+        <span class="c1"># doesn't throw an error (because iter is blocking)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs_for_next</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_next</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="c1"># Stream is stopped and exhausted</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">_next</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the next item from the buffer.</span>
+
+<span class="sd">        Raises StopIteration when the stream is stopped and no more data is available.</span>
+<span class="sd">        Returns None when temporarily no data is available but stream is still running.</span>
+
+<span class="sd">        This makes BufferReader compatible with Python's iterator protocol while</span>
+<span class="sd">        handling the streaming use case where "no data yet" is different from "exhausted".</span>
+<span class="sd">        """</span>
+        <span class="c1"># Call read with the args fixed by init</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs_for_next</span><span class="p">)</span>
+
+        <span class="c1"># If no data and stream is stopped, raise StopIteration per iterator protocol</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+<div class="viewcode-block" id="BufferReader.set_sleep_time_on_iter_none">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+
+<span class="sd">        :param sleep_time_s: seconds to sleep</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
+
+
+<div class="viewcode-block" id="BufferReader.is_same_buffer">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.is_same_buffer">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_same_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_buffer_reader</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check if reader is looking at the same buffer"""</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">==</span> <span class="n">other_buffer_reader</span><span class="o">.</span><span class="n">_stop_event</span>
+        <span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Checks if stop event has been set by StreamBuffer.</span>
+
+<span class="sd">        :return: bool</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""A dict with important source info set by SourceReader.</span>
+
+<span class="sd">        :return: dict</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">last_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""key to last seen item cursor"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_getlast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setlast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_dellast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">last_item</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
+        <span class="n">_getlast_item</span><span class="p">,</span> <span class="n">_setlast_item</span><span class="p">,</span> <span class="n">_dellast_item</span><span class="p">,</span> <span class="s1">'last seen item cursor'</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="BufferReader.range">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.range">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">,</span>
+        <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">start_le</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">stop_ge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Enables:</span>
+<span class="sd">        1. Get last n minutes</span>
+<span class="sd">        2. Give me data I don't have</span>
+
+<span class="sd">        :param start: starting range key of item inclusive</span>
+<span class="sd">        :param stop: ending range key of item inclusive</span>
+<span class="sd">        :param step:</span>
+<span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception.</span>
+<span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
+<span class="sd">            or return None if ignore_no_item_found</span>
+<span class="sd">        :param start_le: if True, increase the search range to find start less than or equal by</span>
+<span class="sd">            rounding down if start is in between keys,</span>
+<span class="sd">            i.e. keys=[0, 10, 20], start=9 will include key=0</span>
+<span class="sd">        :param stop_ge: if True, raise ValueError when there is no key greater than or equal to</span>
+<span class="sd">            stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError</span>
+<span class="sd">        :return: list of items in range</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">ignore_no_item_found</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ignore_no_item_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ignore_no_item_found'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">only_new_items</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                    <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span>
+                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">_next_key</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: 'NoneType' object is not subscriptable</span>
+                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">_next_key</span> <span class="k">else</span> <span class="n">_next_key</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
+            <span class="k">if</span> <span class="n">start_le</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span>
+                    <span class="ne">ValueError</span>
+                <span class="p">):</span>  <span class="c1"># ValueError: No item found with key at or below: _start</span>
+                    <span class="n">_start</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="n">_start</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">stop_ge</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">stop</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="n">stop</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
+                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+
+            <span class="n">items</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: list index out of range</span>
+                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">items</span></div>
+
+
+<div class="viewcode-block" id="BufferReader.tail">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.tail">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Finds the last item in buffer. Raise ValueError if no item found.</span>
+
+<span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception</span>
+<span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
+<span class="sd">            or return None if ignore_no_item_found</span>
+<span class="sd">        :return: tail item</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">only_new_items</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_last_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
+                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># TypeError: '&gt;' not supported between instances of type(key) and 'NoneType'</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
+                        <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: deque index out of range</span>
+                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">None</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">item</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">item</span>
+
+<div class="viewcode-block" id="BufferReader.read">
+<a class="viewcode-back" href="../../module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader.read">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">peek</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">strict_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Finds an item with a key greater than the last returned item.</span>
+<span class="sd">        Raise ValueError if no item found with key above last item.</span>
+
+<span class="sd">        Note: Arguments whose values are not specified will be replaced with</span>
+<span class="sd">        self.</span>
+
+<span class="sd">        :param n: number of items to return</span>
+<span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
+<span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+<span class="sd">            instead of raising exception</span>
+<span class="sd">        :param strict_n: if True, raise ValueError if n items are not available</span>
+<span class="sd">        :param blocking: if True, wait to return next item if not yet available</span>
+<span class="sd">        :return: next item or list of next items if n &gt; 1</span>
+<span class="sd">        """</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span> <span class="o">=</span> <span class="n">defaulted_values</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,),</span>
+            <span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># # Is the following alternative clearer or more efficient?</span>
+        <span class="c1"># n = n or self._read_kwargs['n']</span>
+        <span class="c1"># peek = peek or self._read_kwargs['peek']</span>
+        <span class="c1"># ignore_no_item_found = (</span>
+        <span class="c1">#         ignore_no_item_found or self._read_kwargs['ignore_no_item_found']</span>
+        <span class="c1"># )</span>
+        <span class="c1"># strict_n = strict_n or self._read_kwargs['strict_n']</span>
+
+        <span class="k">if</span> <span class="n">blocking</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+                    <span class="n">n</span><span class="p">,</span>
+                    <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span>
+                    <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+                    <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">_read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">_read</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above:</span>
+                <span class="c1"># self.last_key</span>
+                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># TypeError: '&lt;' not supported between instances of 'NoneType' and type(key)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
+                    <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">next_item</span><span class="p">)</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span>
+                <span class="k">if</span> <span class="n">strict_n</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">'Number of items found is less than n: strict_n=</span><span class="si">{</span><span class="n">strict_n</span><span class="si">}</span><span class="s1">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">'</span>
+                    <span class="p">)</span>
+
+                <span class="n">next_items_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_items_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">next_items_list</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
+            <span class="k">return</span> <span class="n">next_item</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">'Deprecated. next is deprecated. Use read method instead'</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">enter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
