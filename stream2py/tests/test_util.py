@@ -1,6 +1,8 @@
 """Testing the util.py module"""
 
-from stream2py.util import contextualize_with_instance
+import pytest
+
+from stream2py.util import contextualize_with_instance, Timer
 
 
 class StreamHasNotBeenStarted(RuntimeError):
@@ -126,3 +128,78 @@ def test_contextualize_with_instance():
         it_worked = False
 
     assert it_worked  # Hurray!
+
+
+# ---------------------------------------------------------------------------------------
+# Timer
+
+
+def test_timer_manual_start_stop():
+    """A manually started timer reports a positive, monotonically growing elapsed time."""
+    timer = Timer()
+    timer.start()
+    first = timer.elapsed()
+    assert first >= 0
+    second = timer.elapsed()
+    assert second >= first  # monotonic clock: never goes backwards
+    timer.stop()
+
+
+def test_timer_as_context_manager():
+    """Entering the context starts the timer and yields the timer itself."""
+    with Timer() as timer:
+        assert isinstance(timer, Timer)
+        assert timer.elapsed() >= 0
+    # leaving the context stops it
+    assert timer.start_time is None
+
+
+def test_timer_egress_is_applied():
+    """The egress function transforms the elapsed seconds."""
+    with Timer(lambda seconds: 'transformed') as timer:
+        assert timer.elapsed() == 'transformed'
+
+
+def test_timer_is_reusable_across_contexts():
+    """The same instance can be re-entered after being stopped."""
+    timer = Timer()
+    with timer:
+        pass
+    assert timer.start_time is None
+    with timer:
+        assert timer.elapsed() >= 0
+    assert timer.start_time is None
+
+
+def test_timer_elapsed_before_start_raises_informatively():
+    """Asking a stopped timer for elapsed time raises ValueError, not TypeError.
+
+    This is the regression guard for the original implementation, which detected the
+    not-started case by catching TypeError from ``time() - None``. That conflated "timer
+    not started" with "egress itself raised TypeError" -- see the test below.
+    """
+    with pytest.raises(ValueError, match='not running'):
+        Timer().elapsed()
+
+
+def test_timer_does_not_swallow_egress_errors():
+    """An exception raised by egress propagates, rather than being silently dropped.
+
+    The original implementation wrapped the whole computation in ``try/except TypeError``
+    and, when ``start_time`` was not None, fell off the end of the function -- returning
+    None and hiding the real error.
+    """
+
+    def broken_egress(seconds):
+        raise TypeError('egress is broken')
+
+    with Timer(broken_egress) as timer:
+        with pytest.raises(TypeError, match='egress is broken'):
+            timer.elapsed()
+
+
+def test_timer_stop_accepts_context_manager_exit_args():
+    """__exit__ is stop(), so it must tolerate the (exc_type, exc, tb) triple."""
+    timer = Timer().start()
+    timer.stop(ValueError, ValueError('x'), None)
+    assert timer.start_time is None
