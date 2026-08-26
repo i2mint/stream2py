@@ -1,10 +1,11 @@
 """READER-WRITER LOCK WITH PRIORITY FOR WRITERS"""
+
 # From: http://code.activestate.com/recipes/577803-reader-writer-lock-with-priority-for-writers/
 # Created by Mateusz Kobos on Fri, 22 Jul 2011
 # Licensed under the MIT License
 import threading
 
-__author__ = 'Mateusz Kobos'
+__author__ = "Mateusz Kobos"
 
 
 class RWLock:

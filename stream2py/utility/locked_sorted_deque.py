@@ -1,4 +1,5 @@
 """Sorted Deque that handles Reader-Writer Priority"""
+
 from contextlib import contextmanager
 from typing import Generator
 

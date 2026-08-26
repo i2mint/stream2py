@@ -22,18 +22,18 @@ class HTTPResponseReader(SourceReader):
     _n_bytes_read: int
     _init_kwargs: dict
     _url: str
-    _response = ''
+    _response = ""
 
     def __init__(
         self,
         url,
         *,
-        method: str = 'GET',
+        method: str = "GET",
         headers: Optional[dict] = None,
-        body: Union[str, bytes] = '',
-        response_format: str = 'bytes',
+        body: Union[str, bytes] = "",
+        response_format: str = "bytes",
         response_read_args: tuple = (),
-        encoding: str = '',
+        encoding: str = "",
     ):
         """
         :param method: The HTTP method to use.
@@ -50,7 +50,7 @@ class HTTPResponseReader(SourceReader):
             encoding=encoding,
         )
         self.data = None
-        if method.upper() == 'GET':
+        if method.upper() == "GET":
             body = None
 
         self._url = url
@@ -82,9 +82,9 @@ class HTTPResponseReader(SourceReader):
         :return: dict
         """
         return {
-            'url': self._url,
-            'n_bytes_read': self._n_bytes_read,
-            'init_kwargs': self._init_kwargs,
+            "url": self._url,
+            "n_bytes_read": self._n_bytes_read,
+            "init_kwargs": self._init_kwargs,
         }
 
     def key(self, data) -> ComparableType:
@@ -99,7 +99,7 @@ class HTTPResponseReader(SourceReader):
 
     def open(self):
         request = urllib.request.Request(
-            self._url, headers=self._init_kwargs['headers']
+            self._url, headers=self._init_kwargs["headers"]
         )
         self._response = urllib.request.urlopen(request)
 
@@ -109,9 +109,8 @@ class HTTPResponseReader(SourceReader):
             self._response = None
 
     def read(self):
-        """Returns a chunk of raw binary data.
-        """
-        encoding = self._init_kwargs.get('encoding')
+        """Returns a chunk of raw binary data."""
+        encoding = self._init_kwargs.get("encoding")
         result = self._response.read(*self.response_read_args)
         timestamp = time.time()
         if encoding:
@@ -126,7 +125,7 @@ def _test_run_HTTPResponseReader(url, **kwargs):
     """
     from pprint import pprint
 
-    output = ''
+    output = ""
 
     source = HTTPResponseReader(url, **kwargs)
     pprint(source.info)
@@ -147,5 +146,5 @@ def _test_run_HTTPResponseReader(url, **kwargs):
         pprint(output)
 
 
-if __name__ == '__main__':
-    _test_run_HTTPResponseReader('https://zombo.com', encoding='utf-8')
+if __name__ == "__main__":
+    _test_run_HTTPResponseReader("https://zombo.com", encoding="utf-8")

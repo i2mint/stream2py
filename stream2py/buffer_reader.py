@@ -2,7 +2,8 @@
 A BufferReader gives data access to any number of consumers and provides methods to seek data such
 as next(), range(), head(), tail().  Each BufferReader instance has it's own cursor keeping track of
 what data was last seen."""
-__all__ = ['BufferReader']
+
+__all__ = ["BufferReader"]
 
 from contextlib import suppress
 import threading
@@ -222,7 +223,7 @@ class BufferReader:
         self._last_key = None
 
     last_item = property(
-        _getlast_item, _setlast_item, _dellast_item, 'last seen item cursor'
+        _getlast_item, _setlast_item, _dellast_item, "last seen item cursor"
     )
 
     def range(
@@ -257,7 +258,7 @@ class BufferReader:
         :return: list of items in range
         """
         if ignore_no_item_found is None:
-            ignore_no_item_found = self._read_kwargs.get('ignore_no_item_found', False)
+            ignore_no_item_found = self._read_kwargs.get("ignore_no_item_found", False)
         with self._buffer.reader_lock() as reader:
             if only_new_items and self.last_key is not None:
                 _next = self.read(
@@ -265,7 +266,9 @@ class BufferReader:
                 )
                 try:
                     _next_key = reader.key(_next)
-                except TypeError as e:  # TypeError: 'NoneType' object is not subscriptable
+                except (
+                    TypeError
+                ) as e:  # TypeError: 'NoneType' object is not subscriptable
                     if ignore_no_item_found:
                         return None
                     raise e
@@ -280,7 +283,9 @@ class BufferReader:
             if stop_ge is True:
                 try:
                     stop = reader.key(reader.find_ge(stop))
-                except ValueError as e:  # ValueError: No item found with key at or above: stop
+                except (
+                    ValueError
+                ) as e:  # ValueError: No item found with key at or above: stop
                     if ignore_no_item_found:
                         return None
                     raise e
@@ -310,7 +315,9 @@ class BufferReader:
             if only_new_items:
                 try:
                     item = reader.find_last_gt(self.last_key)
-                except ValueError as e:  # ValueError: No item found with key above: self.last_key
+                except (
+                    ValueError
+                ) as e:  # ValueError: No item found with key above: self.last_key
                     if ignore_no_item_found:
                         return None
                     raise e
@@ -362,7 +369,11 @@ class BufferReader:
         :return: next item or list of next items if n > 1
         """
         n, ignore_no_item_found, strict_n = defaulted_values(
-            dict(n=n, ignore_no_item_found=ignore_no_item_found, strict_n=strict_n,),
+            dict(
+                n=n,
+                ignore_no_item_found=ignore_no_item_found,
+                strict_n=strict_n,
+            ),
             defaults=self._read_kwargs,
         )
         # # Is the following alternative clearer or more efficient?
@@ -408,7 +419,7 @@ class BufferReader:
                 j = i + n
                 if strict_n and j >= len(reader):
                     raise ValueError(
-                        f'Number of items found is less than n: strict_n={strict_n}, n={n}'
+                        f"Number of items found is less than n: strict_n={strict_n}, n={n}"
                     )
 
                 next_items_list = reader.range_by_index(i, j)
@@ -423,7 +434,7 @@ class BufferReader:
         from warnings import warn
 
         warn(
-            f'Deprecated. next is deprecated. Use read method instead',
+            f"Deprecated. next is deprecated. Use read method instead",
             DeprecationWarning,
         )
         return self.read(

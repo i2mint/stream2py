@@ -1,7 +1,8 @@
 """
 A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
 the data is ordered with the key() method and an info property describing the instance."""
-__all__ = ['SourceReader']
+
+__all__ = ["SourceReader"]
 
 
 from abc import ABCMeta, abstractmethod
@@ -191,7 +192,7 @@ class SourceReader(Source, metaclass=ABCMeta):
         )
 
 
-StreamItem = NewType('StreamItem', Any)
+StreamItem = NewType("StreamItem", Any)
 
 
 class QuickSourceReader(SourceReader):
@@ -256,8 +257,8 @@ class QuickSourceReader(SourceReader):
     @property
     def info(self):
         return {
-            'open_time': self.open_time,
-            'open_instance': str(self.open_instance),
+            "open_time": self.open_time,
+            "open_instance": str(self.open_instance),
         }
 
     def key(self, data: StreamItem):

@@ -252,23 +252,30 @@ Created comprehensive exception hierarchy in `stream2py/exceptions.py` and integ
 class Stream2PyError(Exception):
     """Base exception for all stream2py errors"""
 
+
 class StreamNotStartedError(Stream2PyError):
     """Raised when operations require a started stream"""
+
 
 class StreamAlreadyStoppedError(Stream2PyError):
     """Raised when stream has been stopped"""
 
+
 class BufferError(Stream2PyError):
     """Base exception for buffer-related errors"""
+
 
 class BufferOverflowError(BufferError):
     """Raised when buffer is full and auto_drop=False"""
 
+
 class NoDataAvailableError(BufferError):
     """Raised when no data is available"""
 
+
 class InvalidDataError(Stream2PyError):
     """Raised when data doesn't meet expected format"""
+
 
 class ConfigurationError(Stream2PyError):
     """Raised when objects are misconfigured"""
@@ -529,7 +536,7 @@ keyboard_reader = keyboard_buffer.mk_reader()
 audio_reader = audio_buffer.mk_reader()
 
 for key_event in keyboard_reader:
-    if key_event == 'start_typing':
+    if key_event == "start_typing":
         # Capture audio from 2 seconds before until typing stops
         start_time = current_time - 2.0
         # ... continue recording until typing stops
@@ -579,8 +586,10 @@ Identify common design patterns from example usage and create abstract classes o
 class BufferConsumer(ABC):
     """Base class for consuming from a BufferReader"""
 
+
 class EventTriggeredConsumer(BufferConsumer):
     """Watches one source, triggers actions on events"""
+
 
 class MultiSourceConsumer(BufferConsumer):
     """Coordinates multiple BufferReaders"""

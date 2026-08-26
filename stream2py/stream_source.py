@@ -92,7 +92,7 @@ class StreamSource(Source, metaclass=ABCMeta):
     ):
         """Sets custom buffer parameters."""
         if self._stream_buffer:
-            raise ValueError('Buffer has already been started.')
+            raise ValueError("Buffer has already been started.")
         self._buffer_kwargs = dict(
             maxlen=maxlen,
             sleep_time_on_read_none_s=sleep_time_on_read_none_s,

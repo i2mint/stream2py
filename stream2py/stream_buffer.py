@@ -3,9 +3,10 @@ A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a Sour
 and puts read data onto a thread-safe buffer.
 Second, it is a factory of BufferReaders instances for multiple consumers.
 """
+
 from __future__ import annotations
 
-__all__ = ['StreamBuffer']
+__all__ = ["StreamBuffer"]
 
 import logging
 import threading
@@ -133,9 +134,9 @@ class StreamBuffer:
         :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to
             manually make space.
         """
-        assert isinstance(
-            source_reader, Source
-        ), 'source_reader is not a subclass of SourceReader'
+        assert isinstance(source_reader, Source), (
+            "source_reader is not a subclass of SourceReader"
+        )
         self.source_reader = source_reader
         self._maxlen = maxlen
         self.auto_drop = auto_drop
@@ -170,7 +171,7 @@ class StreamBuffer:
         """
         if self.auto_drop is True:
             raise RuntimeError(
-                'auto_drop must be False to manually drop items from buffer'
+                "auto_drop must be False to manually drop items from buffer"
             )
         self.source_buffer.drop(n)
 
@@ -190,7 +191,7 @@ class StreamBuffer:
         self._next_reader = None
 
     def mk_reader(self, **read_kwargs) -> BufferReader:
-        """ Makes a BufferReader instance for the currently running  StreamBuffer.
+        """Makes a BufferReader instance for the currently running  StreamBuffer.
         Reader must be made after start() to have data from said start.
 
         :return: BufferReader instance
@@ -199,7 +200,7 @@ class StreamBuffer:
         with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
                 raise StreamNotStartedError(
-                    'StreamBuffer must be started before creating readers. '
+                    "StreamBuffer must be started before creating readers. "
                     'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'
                 )
             return self.source_buffer.mk_reader(**read_kwargs)
@@ -212,7 +213,7 @@ class StreamBuffer:
         with self.start_lock:
             if not isinstance(self.source_buffer, _SourceBuffer):
                 raise StreamNotStartedError(
-                    'StreamBuffer must be started before attaching readers. '
+                    "StreamBuffer must be started before attaching readers. "
                     'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'
                 )
             return self.source_buffer.attach_reader(reader)
@@ -290,7 +291,7 @@ class StreamBuffer:
             key=self.source_reader.key,
             maxlen=self._maxlen,
             buffer_reader_class=getattr(
-                self.source_reader, 'buffer_reader_class', BufferReader
+                self.source_reader, "buffer_reader_class", BufferReader
             ),
         )
 
@@ -304,7 +305,7 @@ class StreamBuffer:
 
     def __call__(self):
         """Return next item (entering the context beforehand, if not running).
-        This method is meant to be called under context so that a clean exit is assured. """
+        This method is meant to be called under context so that a clean exit is assured."""
         return next(self)
         # return self._mk_contextualized_iterator()
 

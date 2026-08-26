@@ -111,8 +111,8 @@ def mk_stream_buffer(
             if info is not None:
                 return info(self.open_instance)
             return {
-                'open_time': self.open_time,
-                'open_instance': str(self.open_instance),
+                "open_time": self.open_time,
+                "open_instance": str(self.open_instance),
             }
 
         def key(self, data: Any):

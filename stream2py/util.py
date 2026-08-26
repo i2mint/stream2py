@@ -114,16 +114,16 @@ class ContextualizeCall:
     def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func):
         # validation
         if not callable(func):
-            raise TypeError(f'First argument should be a callable, was: {func}')
+            raise TypeError(f"First argument should be a callable, was: {func}")
         EnterFunctionValidation.validate(
             enter_func,
-            f'Not a valid enter function (should be a callable with at least one arg): '
-            f'{enter_func}',
+            f"Not a valid enter function (should be a callable with at least one arg): "
+            f"{enter_func}",
         )
         ExitFunctionValidation.validate(
             exit_func,
-            f'Not a valid exit function (should be a callable with at least one arg or '
-            f'varadic args): {exit_func}',
+            f"Not a valid exit function (should be a callable with at least one arg or "
+            f"varadic args): {exit_func}",
         )
         # assignment
         self.func = func
@@ -169,7 +169,7 @@ contextualize_with_instance = partial(
     exit_func=forward_to_instance_exit,
 )
 contextualize_with_instance.__doc__ = (
-    'To be applied to a bound method. '
-    'Returns a callable that forwards context enters/exits to the bound instance. '
-    'See ``tests.test_util.test_contextualize_with_instance`` for and example use.'
+    "To be applied to a bound method. "
+    "Returns a callable that forwards context enters/exits to the bound instance. "
+    "See ``tests.test_util.test_contextualize_with_instance`` for and example use."
 )
