@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "stream2py"
-version = "1.0.43"
+version = "1.0.44"
 description = "Bring data streams to python with ease"
 readme = "README.md"
 requires-python = ">=3.10"
