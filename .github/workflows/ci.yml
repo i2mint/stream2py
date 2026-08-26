@@ -33,24 +33,11 @@ jobs:
     permissions:
       contents: write
       pages: write
-    # Transport: this repo's whole `secrets` context, serialized into the one
-    # secret the reusable workflow declares. Double-encoded (toJSON twice) so
-    # the value is a single line — a multiline secret would register its `{`
-    # and `}` lines as global log masks. Any secret name works; there is no
-    # fixed list to fall outside of. (Cross-owner `secrets: inherit` does not
-    # propagate secrets, so it cannot replace this.)
-    #
-    # Note this hands EVERY secret this repo can read — including org-level
-    # ones — to the called workflow. For a minimal secret surface (only the
-    # names you list), regenerate with
-    #   wads-migrate ci-to-stub --transport named
-    #
-    # *Which* of these become job env vars — and which are required — is
-    # driven entirely by [tool.wads.ci.env] in pyproject.toml; nothing is
-    # exported unless declared there (`wads-secrets add VAR_NAME` declares
-    # one and can set its value). Non-sensitive values don't need a secret:
-    # use [tool.wads.ci.env].defaults (committed literals) or a repository
-    # *variable* (`gh variable set NAME`) — declared names fall back to
-    # repo variables automatically.
+    # Transport (NAMED, legacy): explicitly passes only the secrets
+    # listed below (PYPI_PASSWORD + those declared in
+    # [tool.wads.ci.env]). Every name must be in the frozen wads
+    # superset (wads/ci_secrets.py) or GitHub rejects the workflow
+    # at parse time. The default JSON transport has no such limit;
+    # regenerate with `wads-migrate ci-to-stub` to switch.
     secrets:
-      WADS_CI_SECRETS_JSON: ${{ toJSON(toJSON(secrets)) }}
+      PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
