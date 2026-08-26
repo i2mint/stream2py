@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.util &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.util &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -108,6 +108,93 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">signature</span><span class="p">,</span> <span class="n">Parameter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span>
+
+
+<div class="viewcode-block" id="identity">
+<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.identity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns the input, as is."""</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+
+<div class="viewcode-block" id="Timer">
+<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.Timer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Timer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A simple timer that can be used as a context manager, or started and stopped</span>
+<span class="sd">    manually.</span>
+
+<span class="sd">    &gt;&gt;&gt; from time import sleep</span>
+<span class="sd">    &gt;&gt;&gt; timer = Timer()</span>
+<span class="sd">    &gt;&gt;&gt; timer.start()  # doctest: +SKIP</span>
+<span class="sd">    &gt;&gt;&gt; sleep(0.01)</span>
+<span class="sd">    &gt;&gt;&gt; timer.elapsed()  # doctest: +SKIP</span>
+<span class="sd">    0.010056478977203369</span>
+<span class="sd">    &gt;&gt;&gt; timer.stop()</span>
+
+<span class="sd">    You can also use a context block, and specify an ``egress`` function that will be</span>
+<span class="sd">    called on the elapsed seconds:</span>
+
+<span class="sd">    &gt;&gt;&gt; with Timer(lambda x: print(f"{int(x / (60 * 60 * 24))} days elapsed")) as timer:</span>
+<span class="sd">    ...     sleep(0.01)</span>
+<span class="sd">    ...     timer.elapsed()</span>
+<span class="sd">    0 days elapsed</span>
+
+<span class="sd">    The same timer instance can be reused across context blocks:</span>
+
+<span class="sd">    &gt;&gt;&gt; timer = Timer(lambda x: int(x / 3600))</span>
+<span class="sd">    &gt;&gt;&gt; with timer:</span>
+<span class="sd">    ...     sleep(0.01)</span>
+<span class="sd">    ...     t = timer.elapsed()</span>
+<span class="sd">    &gt;&gt;&gt; t</span>
+<span class="sd">    0</span>
+<span class="sd">    &gt;&gt;&gt; with timer:</span>
+<span class="sd">    ...     sleep(0.01)</span>
+
+<span class="sd">    Asking for the elapsed time of a timer that isn't running tells you so, instead of</span>
+<span class="sd">    failing obscurely:</span>
+
+<span class="sd">    &gt;&gt;&gt; Timer().elapsed()  # doctest: +ELLIPSIS</span>
+<span class="sd">    Traceback (most recent call last):</span>
+<span class="sd">      ...</span>
+<span class="sd">    ValueError: The timer is not running....</span>
+
+<span class="sd">    Note that elapsed time is measured with ``time.perf_counter``, a monotonic clock, so</span>
+<span class="sd">    it is unaffected by system clock adjustments. This also means ``start_time`` is not a</span>
+<span class="sd">    wall-clock timestamp; it is only meaningful as a reference point for a difference.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">identity</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">egress</span> <span class="o">=</span> <span class="n">egress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Timer.elapsed">
+<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.Timer.elapsed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">elapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The (egress-transformed) seconds since the timer was started.</span>
+
+<span class="sd">        Raises ``ValueError`` if the timer is not running.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"The timer is not running, so it has no elapsed time. "</span>
+                <span class="s2">"Start it with timer.start(), or use a context block "</span>
+                <span class="s2">"(`with timer: ...` or `with Timer() as timer: ...`)."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">egress</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span></div>
+
+
+    <span class="fm">__enter__</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="fm">__exit__</span> <span class="o">=</span> <span class="n">stop</span></div>
+
 
 
 <div class="viewcode-block" id="TypeValidationError">
@@ -237,16 +324,16 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">):</span>
         <span class="c1"># validation</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">EnterFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
             <span class="n">enter_func</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">'Not a valid enter function (should be a callable with at least one arg): '</span>
-            <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Not a valid enter function (should be a callable with at least one arg): "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">ExitFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
             <span class="n">exit_func</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s1">'Not a valid exit function (should be a callable with at least one arg or '</span>
-            <span class="sa">f</span><span class="s1">'varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Not a valid exit function (should be a callable with at least one arg or "</span>
+            <span class="sa">f</span><span class="s2">"varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># assignment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
@@ -293,9 +380,9 @@
     <span class="n">exit_func</span><span class="o">=</span><span class="n">forward_to_instance_exit</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">contextualize_with_instance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">'To be applied to a bound method. '</span>
-    <span class="s1">'Returns a callable that forwards context enters/exits to the bound instance. '</span>
-    <span class="s1">'See ``tests.test_util.test_contextualize_with_instance`` for and example use.'</span>
+    <span class="s2">"To be applied to a bound method. "</span>
+    <span class="s2">"Returns a callable that forwards context enters/exits to the bound instance. "</span>
+    <span class="s2">"See ``tests.test_util.test_contextualize_with_instance`` for and example use."</span>
 <span class="p">)</span>
 </pre></div>
 

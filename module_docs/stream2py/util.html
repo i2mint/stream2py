@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.util &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.util &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -80,10 +80,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#stream2py.util.ExitFunctionValidation.is_valid"><code class="docutils literal notranslate"><span class="pre">ExitFunctionValidation.is_valid()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#stream2py.util.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stream2py.util.Timer.elapsed"><code class="docutils literal notranslate"><span class="pre">Timer.elapsed()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#stream2py.util.TypeValidationError"><code class="docutils literal notranslate"><span class="pre">TypeValidationError</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#stream2py.util.TypeValidationError.is_valid"><code class="docutils literal notranslate"><span class="pre">TypeValidationError.is_valid()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#stream2py.util.identity"><code class="docutils literal notranslate"><span class="pre">identity()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="utility.html">stream2py.utility</a></li>
@@ -190,6 +195,59 @@ special methods, they’ll have to wrap <cite>func</cite> themselves.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="stream2py.util.Timer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">Timer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">egress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;function</span> <span class="pre">identity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/util.html#Timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.Timer" title="Link to this definition"></a></dt>
+<dd><p>A simple timer that can be used as a context manager, or started and stopped
+manually.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">sleep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="o">.</span><span class="n">elapsed</span><span class="p">()</span>
+<span class="go">0.010056478977203369</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also use a context block, and specify an <code class="docutils literal notranslate"><span class="pre">egress</span></code> function that will be
+called on the elapsed seconds:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Timer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">24</span><span class="p">))</span><span class="si">}</span><span class="s2"> days elapsed"</span><span class="p">))</span> <span class="k">as</span> <span class="n">timer</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">timer</span><span class="o">.</span><span class="n">elapsed</span><span class="p">()</span>
+<span class="go">0 days elapsed</span>
+</pre></div>
+</div>
+<p>The same timer instance can be reused across context blocks:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">timer</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">t</span> <span class="o">=</span> <span class="n">timer</span><span class="o">.</span><span class="n">elapsed</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">timer</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Asking for the elapsed time of a timer that isn’t running tells you so, instead of
+failing obscurely:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timer</span><span class="p">()</span><span class="o">.</span><span class="n">elapsed</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">  </span><span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">The timer is not running....</span>
+</pre></div>
+</div>
+<p>Note that elapsed time is measured with <code class="docutils literal notranslate"><span class="pre">time.perf_counter</span></code>, a monotonic clock, so
+it is unaffected by system clock adjustments. This also means <code class="docutils literal notranslate"><span class="pre">start_time</span></code> is not a
+wall-clock timestamp; it is only meaningful as a reference point for a difference.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.util.Timer.elapsed">
+<span class="sig-name descname"><span class="pre">elapsed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/util.html#Timer.elapsed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.Timer.elapsed" title="Link to this definition"></a></dt>
+<dd><p>The (egress-transformed) seconds since the timer was started.</p>
+<p>Raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if the timer is not running.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py exception">
 <dt class="sig sig-object py" id="stream2py.util.TypeValidationError">
 <span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">TypeValidationError</span></span><a class="reference internal" href="../../_modules/stream2py/util.html#TypeValidationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.TypeValidationError" title="Link to this definition"></a></dt>
@@ -200,6 +258,12 @@ special methods, they’ll have to wrap <cite>func</cite> themselves.</p>
 <dd><p>Returns True if and only if obj is considered valid</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream2py.util.identity">
+<span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/stream2py/util.html#identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.identity" title="Link to this definition"></a></dt>
+<dd><p>Returns the input, as is.</p>
 </dd></dl>
 
 </section>

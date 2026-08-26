@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_source &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.stream_source &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -202,7 +202,7 @@
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Sets custom buffer parameters."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Buffer has already been started.'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Buffer has already been started."</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span>
             <span class="n">sleep_time_on_read_none_s</span><span class="o">=</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span>

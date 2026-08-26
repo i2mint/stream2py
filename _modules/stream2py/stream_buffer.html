@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.stream_buffer &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.stream_buffer &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -106,9 +106,10 @@
 <span class="sd">and puts read data onto a thread-safe buffer.</span>
 <span class="sd">Second, it is a factory of BufferReaders instances for multiple consumers.</span>
 <span class="sd">"""</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'StreamBuffer'</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"StreamBuffer"</span><span class="p">]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
@@ -238,9 +239,9 @@
 <span class="sd">        :param auto_drop: False to stop reading when buffer is full and use StreamBuffer.drop() to</span>
 <span class="sd">            manually make space.</span>
 <span class="sd">        """</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">source_reader</span><span class="p">,</span> <span class="n">Source</span>
-        <span class="p">),</span> <span class="s1">'source_reader is not a subclass of SourceReader'</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_reader</span><span class="p">,</span> <span class="n">Source</span><span class="p">),</span> <span class="p">(</span>
+            <span class="s2">"source_reader is not a subclass of SourceReader"</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span> <span class="o">=</span> <span class="n">source_reader</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span> <span class="o">=</span> <span class="n">maxlen</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="o">=</span> <span class="n">auto_drop</span>
@@ -277,7 +278,7 @@
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s1">'auto_drop must be False to manually drop items from buffer'</span>
+                <span class="s2">"auto_drop must be False to manually drop items from buffer"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
@@ -306,7 +307,7 @@
 <div class="viewcode-block" id="StreamBuffer.mk_reader">
 <a class="viewcode-back" href="../../module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer.mk_reader">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">""" Makes a BufferReader instance for the currently running  StreamBuffer.</span>
+<span class="w">        </span><span class="sd">"""Makes a BufferReader instance for the currently running  StreamBuffer.</span>
 <span class="sd">        Reader must be made after start() to have data from said start.</span>
 
 <span class="sd">        :return: BufferReader instance</span>
@@ -315,7 +316,7 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
-                    <span class="s1">'StreamBuffer must be started before creating readers. '</span>
+                    <span class="s2">"StreamBuffer must be started before creating readers. "</span>
                     <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">(</span><span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span></div>
@@ -331,7 +332,7 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
-                    <span class="s1">'StreamBuffer must be started before attaching readers. '</span>
+                    <span class="s2">"StreamBuffer must be started before attaching readers. "</span>
                     <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">attach_reader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span></div>
@@ -410,7 +411,7 @@
             <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
             <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">,</span>
             <span class="n">buffer_reader_class</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s1">'buffer_reader_class'</span><span class="p">,</span> <span class="n">BufferReader</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"buffer_reader_class"</span><span class="p">,</span> <span class="n">BufferReader</span>
             <span class="p">),</span>
         <span class="p">)</span>
 
@@ -424,7 +425,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Return next item (entering the context beforehand, if not running).</span>
-<span class="sd">        This method is meant to be called under context so that a clean exit is assured. """</span>
+<span class="sd">        This method is meant to be called under context so that a clean exit is assured."""</span>
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># return self._mk_contextualized_iterator()</span>
 

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.buffer_reader &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.buffer_reader &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -105,7 +105,8 @@
 <span class="sd">A BufferReader gives data access to any number of consumers and provides methods to seek data such</span>
 <span class="sd">as next(), range(), head(), tail().  Each BufferReader instance has it's own cursor keeping track of</span>
 <span class="sd">what data was last seen."""</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'BufferReader'</span><span class="p">]</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"BufferReader"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">suppress</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
@@ -333,7 +334,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">last_item</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
-        <span class="n">_getlast_item</span><span class="p">,</span> <span class="n">_setlast_item</span><span class="p">,</span> <span class="n">_dellast_item</span><span class="p">,</span> <span class="s1">'last seen item cursor'</span>
+        <span class="n">_getlast_item</span><span class="p">,</span> <span class="n">_setlast_item</span><span class="p">,</span> <span class="n">_dellast_item</span><span class="p">,</span> <span class="s2">"last seen item cursor"</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="BufferReader.range">
@@ -370,7 +371,7 @@
 <span class="sd">        :return: list of items in range</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">ignore_no_item_found</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ignore_no_item_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'ignore_no_item_found'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">ignore_no_item_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ignore_no_item_found"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">only_new_items</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
@@ -378,7 +379,9 @@
                 <span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">_next_key</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: 'NoneType' object is not subscriptable</span>
+                <span class="k">except</span> <span class="p">(</span>
+                    <span class="ne">TypeError</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># TypeError: 'NoneType' object is not subscriptable</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
                     <span class="k">raise</span> <span class="n">e</span>
@@ -393,7 +396,9 @@
             <span class="k">if</span> <span class="n">stop_ge</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">stop</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="n">stop</span><span class="p">))</span>
-                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
+                <span class="k">except</span> <span class="p">(</span>
+                    <span class="ne">ValueError</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
                     <span class="k">raise</span> <span class="n">e</span>
@@ -426,7 +431,9 @@
             <span class="k">if</span> <span class="n">only_new_items</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_last_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
+                <span class="k">except</span> <span class="p">(</span>
+                    <span class="ne">ValueError</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
                     <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
                         <span class="k">return</span> <span class="kc">None</span>
                     <span class="k">raise</span> <span class="n">e</span>
@@ -481,7 +488,11 @@
 <span class="sd">        :return: next item or list of next items if n &gt; 1</span>
 <span class="sd">        """</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span> <span class="o">=</span> <span class="n">defaulted_values</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,),</span>
+            <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
+                <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+            <span class="p">),</span>
             <span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># # Is the following alternative clearer or more efficient?</span>
@@ -527,7 +538,7 @@
                 <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span>
                 <span class="k">if</span> <span class="n">strict_n</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">'Number of items found is less than n: strict_n=</span><span class="si">{</span><span class="n">strict_n</span><span class="si">}</span><span class="s1">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">'</span>
+                        <span class="sa">f</span><span class="s2">"Number of items found is less than n: strict_n=</span><span class="si">{</span><span class="n">strict_n</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
 
                 <span class="n">next_items_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
@@ -543,7 +554,7 @@
         <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
         <span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">'Deprecated. next is deprecated. Use read method instead'</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Deprecated. next is deprecated. Use read method instead"</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>

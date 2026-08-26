@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.tests.test_util &mdash; stream2py 1.0.42 documentation</title>
+  <title>stream2py.tests.test_util &mdash; stream2py 1.0.43 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=887fefd6"></script>
+      <script src="../../../_static/documentation_options.js?v=2c076bcf"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -68,12 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="test_source_reader.html">stream2py.tests.test_source_reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test_stream_source.html">stream2py.tests.test_stream_source</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.tests.test_util</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#stream2py.tests.test_util.StreamHasNotBeenStarted"><code class="docutils literal notranslate"><span class="pre">StreamHasNotBeenStarted</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stream2py.tests.test_util.test_contextualize_with_instance"><code class="docutils literal notranslate"><span class="pre">test_contextualize_with_instance()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stream2py.tests.test_util.test_test_objects"><code class="docutils literal notranslate"><span class="pre">test_test_objects()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">stream2py.tests.test_util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../util.html">stream2py.util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">stream2py.utility</a></li>
@@ -108,32 +103,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-stream2py.tests.test_util">
-<span id="stream2py-tests-test-util"></span><h1>stream2py.tests.test_util<a class="headerlink" href="#module-stream2py.tests.test_util" title="Link to this heading"></a></h1>
-<p>Testing the util.py module</p>
-<dl class="py exception">
-<dt class="sig sig-object py" id="stream2py.tests.test_util.StreamHasNotBeenStarted">
-<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.tests.test_util.</span></span><span class="sig-name descname"><span class="pre">StreamHasNotBeenStarted</span></span><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#StreamHasNotBeenStarted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.tests.test_util.StreamHasNotBeenStarted" title="Link to this definition"></a></dt>
-<dd><p>Raised when an action requires the stream to be ‘on’</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="stream2py.tests.test_util.test_contextualize_with_instance">
-<span class="sig-prename descclassname"><span class="pre">stream2py.tests.test_util.</span></span><span class="sig-name descname"><span class="pre">test_contextualize_with_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#test_contextualize_with_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.tests.test_util.test_contextualize_with_instance" title="Link to this definition"></a></dt>
-<dd><p>To understand the context of this test, the reader should consider the
-test_test_objects, or even better, see:</p>
-<p>issue: <a class="reference external" href="https://github.com/i2mint/stream2py/issues/18">https://github.com/i2mint/stream2py/issues/18</a></p>
-<p>wiki: <a class="reference external" href="https://github.com/i2mint/stream2py/wiki/Forwarding-context-management">https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</a></p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="stream2py.tests.test_util.test_test_objects">
-<span class="sig-prename descclassname"><span class="pre">stream2py.tests.test_util.</span></span><span class="sig-name descname"><span class="pre">test_test_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/stream2py/tests/test_util.html#test_test_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.tests.test_util.test_test_objects" title="Link to this definition"></a></dt>
-<dd><p>This test tests the test objects themselves, to make sure they have the
-expected behavior, commenting at the same time on what kind of behavior we’d
-like to have the power to create, which we get through contextualize_with_instance</p>
-</dd></dl>
-
+  <section id="stream2py-tests-test-util">
+<h1>stream2py.tests.test_util<a class="headerlink" href="#stream2py-tests-test-util" title="Link to this heading"></a></h1>
 </section>
 
 
