@@ -74,3 +74,17 @@ def test_buffer_reader_blocking_stops_on_stop_event():
     # Should have gotten None because buffer stopped
     assert len(results) == 1
     assert results[0] is None, "Blocking read should return None when stopped"
+
+
+def test_buffer_reader_blocking_timeout():
+    """A blocking read gives up after ``timeout`` seconds, and only then."""
+    with StreamBuffer(SimpleSourceReader(range(3)), maxlen=100) as buffer:
+        reader = buffer.mk_reader()
+        assert wait_until(lambda: len(buffer.source_buffer) >= 3)
+        # data available: timeout is irrelevant
+        assert reader.read(n=3, blocking=True, timeout=5) is not None
+        # no more data: returns None once the timeout has elapsed
+        start = time.monotonic()
+        assert reader.read(blocking=True, timeout=0.3) is None
+        elapsed = time.monotonic() - start
+        assert 0.3 <= elapsed < 2
