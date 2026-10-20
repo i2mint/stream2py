@@ -88,3 +88,16 @@ def test_buffer_reader_blocking_timeout():
         assert reader.read(blocking=True, timeout=0.3) is None
         elapsed = time.monotonic() - start
         assert 0.3 <= elapsed < 2
+
+
+def test_buffer_reader_blocking_default_from_mk_reader():
+    """``mk_reader(blocking=True, timeout=...)`` makes reads block by default."""
+    with StreamBuffer(SimpleSourceReader(range(3)), maxlen=100) as buffer:
+        reader = buffer.mk_reader(blocking=True, timeout=0.3)
+        assert wait_until(lambda: len(buffer.source_buffer) >= 3)
+        assert reader.read(n=3) is not None
+        start = time.monotonic()
+        assert reader.read() is None  # waited ~timeout instead of raising
+        assert 0.3 <= time.monotonic() - start < 2
+        # explicit blocking=False overrides the default
+        assert reader.read(blocking=False, ignore_no_item_found=True) is None
