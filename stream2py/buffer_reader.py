@@ -264,7 +264,9 @@ class BufferReader:
             NotImplementedError is raised before anything is read). Implies
             ``start_le=True`` so the chunk containing ``start`` is included, and is
             incompatible with ``step``. The ``last_item`` cursor still moves to the
-            last *buffer* item, not the trimmed one.
+            last *buffer* item, not the trimmed one. With ``only_new_items`` the
+            joined item starts after the cursor. When nothing is found the result is
+            the same as without ``join`` (``[]``, ``None`` or an exception).
         :return: list of items in range (a single joined item if ``join``)
         """
         if join:
@@ -294,6 +296,7 @@ class BufferReader:
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
+            trim_start = _start  # where the joined item must begin, before start_le widens
             if start_le is True:
                 with suppress(
                     ValueError
@@ -319,7 +322,7 @@ class BufferReader:
                     return None
                 raise e
         if join and items:
-            return self._trim_and_join(items, start, stop)
+            return self._trim_and_join(items, trim_start, stop)
         return items
 
     def _trim_and_join(self, items, start, stop):

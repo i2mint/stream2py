@@ -146,7 +146,9 @@ class SourceReader(Source, metaclass=ABCMeta):
         """(Optional) The part of ``item`` whose keys fall within ``[start, stop]``.
 
         ``None`` for a bound means unbounded on that side; an item that needs no
-        trimming can be returned as is. See ``join_items``.
+        trimming can be returned as is. See ``join_items``. Must be pure (items in the
+        buffer are shared, never mutate them) and keyed on absolute keys: it is applied
+        once per bound, so a lone item is sliced twice (``start`` then ``stop``).
 
         :param item: a data item as returned by ``read``
         :return: a data item of the same kind, possibly shorter

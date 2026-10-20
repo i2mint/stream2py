@@ -100,6 +100,8 @@ class _SourceBuffer:
     def attach_reader(self, reader):
         reader._buffer = self._buffer
         reader._stop_event = self._stop_event
+        reader._join_items = self._join_items
+        reader._slice_item = self._slice_item
 
 
 class StreamBuffer:

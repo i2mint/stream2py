@@ -22,10 +22,8 @@ def test_inject_buffer_reader():
         assert reader.custom_function() is test_msg
 
 
-def test_range_join_trims_and_joins_chunks():
-    """i2mint/stream2py#14: range(join=True) returns the exact span as one item."""
-    import pytest
-    from stream2py import SourceReader, StreamBuffer
+def _chunks_source_class():
+    from stream2py import SourceReader
 
     class Chunks(SourceReader):
         """Items are (first_key, [values...]); value i sits at key first_key + i."""
@@ -57,6 +55,16 @@ def test_range_join_trims_and_joins_chunks():
         def join_items(self, items):
             return (items[0][0], [v for _, vs in items for v in vs])
 
+    return Chunks
+
+
+def test_range_join_trims_and_joins_chunks():
+    """i2mint/stream2py#14: range(join=True) returns the exact span as one item."""
+    import pytest
+    from stream2py import SourceReader, StreamBuffer
+
+    Chunks = _chunks_source_class()
+
     class NoJoin(Chunks):
         slice_item = SourceReader.slice_item
         join_items = SourceReader.join_items
@@ -79,3 +87,18 @@ def test_range_join_trims_and_joins_chunks():
         reader = sb.mk_reader()
         with pytest.raises(NotImplementedError):
             reader.range(0, 5, join=True)
+
+
+def test_range_join_only_new_items_starts_after_cursor():
+    import time
+
+    from stream2py import StreamBuffer
+    from stream2py.tests.test_buffer_reader import _chunks_source_class
+
+    with StreamBuffer(source_reader=_chunks_source_class()(), maxlen=10) as sb:
+        reader = sb.mk_reader()
+        time.sleep(0.3)
+        reader.range(0, 5)  # cursor now on the chunk with key 4
+        assert reader.last_key == 4
+        joined = reader.range(0, 13, join=True, only_new_items=True)
+        assert joined[0] == 8  # nothing at or before the cursor chunk is repeated
