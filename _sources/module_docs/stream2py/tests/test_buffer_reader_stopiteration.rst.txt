@@ -1,4 +1,0 @@
-stream2py.tests.test_buffer_reader_stopiteration
-================================================
-.. automodule:: stream2py.tests.test_buffer_reader_stopiteration
-   :members:

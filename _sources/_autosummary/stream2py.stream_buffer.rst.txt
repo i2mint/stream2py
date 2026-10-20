@@ -1,0 +1,12 @@
+stream2py.stream\_buffer
+========================
+
+.. automodule:: stream2py.stream_buffer
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      StreamBuffer
+   

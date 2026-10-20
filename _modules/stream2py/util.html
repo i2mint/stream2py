@@ -1,416 +1,809 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+<html lang="en" data-accent-color="pink" data-content_root="../../">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.util &mdash; stream2py 1.0.43 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
-
-  
-      <script src="../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=2c076bcf"></script>
-      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            stream2py
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>stream2py.util - stream2py</title><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="stream2py.util"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../index.html">
+      
+      
+      <strong>stream2py</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py.html">stream2py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/exceptions.html">stream2py.exceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/util.html">stream2py.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility.html">stream2py.utility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/stream2py.html">stream2py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.simply.html">stream2py.simply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.sources.html">stream2py.sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.sources.http.html">stream2py.sources.http</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.util.html">stream2py.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/stream2py.utility.html">stream2py.utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.utility.locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.utility.reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.utility.sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.utility.sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/stream2py.utility.typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">stream2py</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">stream2py.util</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for stream2py.util</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Util functions. Functions that are used by, or can be used with, stream2py objects</span>
-<span class="sd">(but do not depend on stream2py objects themselves)</span>
-<span class="sd">"""</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">signature</span><span class="p">,</span> <span class="n">Parameter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span>
-
-
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">stream2py</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">stream2py.util</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <h1>Source code for stream2py.util</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">"""Util functions. Functions that are used by, or can be used with, stream2py objects</span>
+</span><span data-line="2"><span class="sd">(but do not depend on stream2py objects themselves)</span>
+</span><span data-line="3"><span class="sd">"""</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">signature</span><span class="p">,</span> <span class="n">Parameter</span>
+</span><span data-line="6"><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+</span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span>
+</span><span data-line="9">
+</span><span data-line="10">
 <div class="viewcode-block" id="identity">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.identity">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Returns the input, as is."""</span>
-    <span class="k">return</span> <span class="n">x</span></div>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.identity">[docs]</a>
+</span><span data-line="11"><span class="k">def</span><span class="w"> </span><span class="nf">identity</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span data-line="12"><span class="w">    </span><span class="sd">"""Returns the input, as is."""</span>
+</span><span data-line="13">    <span class="k">return</span> <span class="n">x</span></div>
 
-
-
+</span><span data-line="14">
+</span><span data-line="15">
 <div class="viewcode-block" id="Timer">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.Timer">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Timer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""A simple timer that can be used as a context manager, or started and stopped</span>
-<span class="sd">    manually.</span>
-
-<span class="sd">    &gt;&gt;&gt; from time import sleep</span>
-<span class="sd">    &gt;&gt;&gt; timer = Timer()</span>
-<span class="sd">    &gt;&gt;&gt; timer.start()  # doctest: +SKIP</span>
-<span class="sd">    &gt;&gt;&gt; sleep(0.01)</span>
-<span class="sd">    &gt;&gt;&gt; timer.elapsed()  # doctest: +SKIP</span>
-<span class="sd">    0.010056478977203369</span>
-<span class="sd">    &gt;&gt;&gt; timer.stop()</span>
-
-<span class="sd">    You can also use a context block, and specify an ``egress`` function that will be</span>
-<span class="sd">    called on the elapsed seconds:</span>
-
-<span class="sd">    &gt;&gt;&gt; with Timer(lambda x: print(f"{int(x / (60 * 60 * 24))} days elapsed")) as timer:</span>
-<span class="sd">    ...     sleep(0.01)</span>
-<span class="sd">    ...     timer.elapsed()</span>
-<span class="sd">    0 days elapsed</span>
-
-<span class="sd">    The same timer instance can be reused across context blocks:</span>
-
-<span class="sd">    &gt;&gt;&gt; timer = Timer(lambda x: int(x / 3600))</span>
-<span class="sd">    &gt;&gt;&gt; with timer:</span>
-<span class="sd">    ...     sleep(0.01)</span>
-<span class="sd">    ...     t = timer.elapsed()</span>
-<span class="sd">    &gt;&gt;&gt; t</span>
-<span class="sd">    0</span>
-<span class="sd">    &gt;&gt;&gt; with timer:</span>
-<span class="sd">    ...     sleep(0.01)</span>
-
-<span class="sd">    Asking for the elapsed time of a timer that isn't running tells you so, instead of</span>
-<span class="sd">    failing obscurely:</span>
-
-<span class="sd">    &gt;&gt;&gt; Timer().elapsed()  # doctest: +ELLIPSIS</span>
-<span class="sd">    Traceback (most recent call last):</span>
-<span class="sd">      ...</span>
-<span class="sd">    ValueError: The timer is not running....</span>
-
-<span class="sd">    Note that elapsed time is measured with ``time.perf_counter``, a monotonic clock, so</span>
-<span class="sd">    it is unaffected by system clock adjustments. This also means ``start_time`` is not a</span>
-<span class="sd">    wall-clock timestamp; it is only meaningful as a reference point for a difference.</span>
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">identity</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">egress</span> <span class="o">=</span> <span class="n">egress</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
-
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.Timer">[docs]</a>
+</span><span data-line="16"><span class="k">class</span><span class="w"> </span><span class="nc">Timer</span><span class="p">:</span>
+</span><span data-line="17"><span class="w">    </span><span class="sd">"""A simple timer that can be used as a context manager, or started and stopped</span>
+</span><span data-line="18"><span class="sd">    manually.</span>
+</span><span data-line="19">
+</span><span data-line="20"><span class="sd">    &gt;&gt;&gt; from time import sleep</span>
+</span><span data-line="21"><span class="sd">    &gt;&gt;&gt; timer = Timer()</span>
+</span><span data-line="22"><span class="sd">    &gt;&gt;&gt; timer.start()  # doctest: +SKIP</span>
+</span><span data-line="23"><span class="sd">    &gt;&gt;&gt; sleep(0.01)</span>
+</span><span data-line="24"><span class="sd">    &gt;&gt;&gt; timer.elapsed()  # doctest: +SKIP</span>
+</span><span data-line="25"><span class="sd">    0.010056478977203369</span>
+</span><span data-line="26"><span class="sd">    &gt;&gt;&gt; timer.stop()</span>
+</span><span data-line="27">
+</span><span data-line="28"><span class="sd">    You can also use a context block, and specify an ``egress`` function that will be</span>
+</span><span data-line="29"><span class="sd">    called on the elapsed seconds:</span>
+</span><span data-line="30">
+</span><span data-line="31"><span class="sd">    &gt;&gt;&gt; with Timer(lambda x: print(f"{int(x / (60 * 60 * 24))} days elapsed")) as timer:</span>
+</span><span data-line="32"><span class="sd">    ...     sleep(0.01)</span>
+</span><span data-line="33"><span class="sd">    ...     timer.elapsed()</span>
+</span><span data-line="34"><span class="sd">    0 days elapsed</span>
+</span><span data-line="35">
+</span><span data-line="36"><span class="sd">    The same timer instance can be reused across context blocks:</span>
+</span><span data-line="37">
+</span><span data-line="38"><span class="sd">    &gt;&gt;&gt; timer = Timer(lambda x: int(x / 3600))</span>
+</span><span data-line="39"><span class="sd">    &gt;&gt;&gt; with timer:</span>
+</span><span data-line="40"><span class="sd">    ...     sleep(0.01)</span>
+</span><span data-line="41"><span class="sd">    ...     t = timer.elapsed()</span>
+</span><span data-line="42"><span class="sd">    &gt;&gt;&gt; t</span>
+</span><span data-line="43"><span class="sd">    0</span>
+</span><span data-line="44"><span class="sd">    &gt;&gt;&gt; with timer:</span>
+</span><span data-line="45"><span class="sd">    ...     sleep(0.01)</span>
+</span><span data-line="46">
+</span><span data-line="47"><span class="sd">    Asking for the elapsed time of a timer that isn't running tells you so, instead of</span>
+</span><span data-line="48"><span class="sd">    failing obscurely:</span>
+</span><span data-line="49">
+</span><span data-line="50"><span class="sd">    &gt;&gt;&gt; Timer().elapsed()  # doctest: +ELLIPSIS</span>
+</span><span data-line="51"><span class="sd">    Traceback (most recent call last):</span>
+</span><span data-line="52"><span class="sd">      ...</span>
+</span><span data-line="53"><span class="sd">    ValueError: The timer is not running....</span>
+</span><span data-line="54">
+</span><span data-line="55"><span class="sd">    Note that elapsed time is measured with ``time.perf_counter``, a monotonic clock, so</span>
+</span><span data-line="56"><span class="sd">    it is unaffected by system clock adjustments. This also means ``start_time`` is not a</span>
+</span><span data-line="57"><span class="sd">    wall-clock timestamp; it is only meaningful as a reference point for a difference.</span>
+</span><span data-line="58"><span class="sd">    """</span>
+</span><span data-line="59">
+</span><span data-line="60">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">identity</span><span class="p">):</span>
+</span><span data-line="61">        <span class="bp">self</span><span class="o">.</span><span class="n">egress</span> <span class="o">=</span> <span class="n">egress</span>
+</span><span data-line="62">        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="63">
+</span><span data-line="64">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="65">        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+</span><span data-line="66">        <span class="k">return</span> <span class="bp">self</span>
+</span><span data-line="67">
+</span><span data-line="68">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="69">        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="70">
 <div class="viewcode-block" id="Timer.elapsed">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.Timer.elapsed">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">elapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""The (egress-transformed) seconds since the timer was started.</span>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.Timer.elapsed">[docs]</a>
+</span><span data-line="71">    <span class="k">def</span><span class="w"> </span><span class="nf">elapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="72"><span class="w">        </span><span class="sd">"""The (egress-transformed) seconds since the timer was started.</span>
+</span><span data-line="73">
+</span><span data-line="74"><span class="sd">        Raises ``ValueError`` if the timer is not running.</span>
+</span><span data-line="75"><span class="sd">        """</span>
+</span><span data-line="76">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="77">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="78">                <span class="s2">"The timer is not running, so it has no elapsed time. "</span>
+</span><span data-line="79">                <span class="s2">"Start it with timer.start(), or use a context block "</span>
+</span><span data-line="80">                <span class="s2">"(`with timer: ...` or `with Timer() as timer: ...`)."</span>
+</span><span data-line="81">            <span class="p">)</span>
+</span><span data-line="82">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">egress</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span></div>
 
-<span class="sd">        Raises ``ValueError`` if the timer is not running.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"The timer is not running, so it has no elapsed time. "</span>
-                <span class="s2">"Start it with timer.start(), or use a context block "</span>
-                <span class="s2">"(`with timer: ...` or `with Timer() as timer: ...`)."</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">egress</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span></div>
+</span><span data-line="83">
+</span><span data-line="84">    <span class="fm">__enter__</span> <span class="o">=</span> <span class="n">start</span>
+</span><span data-line="85">    <span class="fm">__exit__</span> <span class="o">=</span> <span class="n">stop</span></div>
 
-
-    <span class="fm">__enter__</span> <span class="o">=</span> <span class="n">start</span>
-    <span class="fm">__exit__</span> <span class="o">=</span> <span class="n">stop</span></div>
-
-
-
+</span><span data-line="86">
+</span><span data-line="87">
 <div class="viewcode-block" id="TypeValidationError">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.TypeValidationError">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TypeValidationError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Raised if an object is not valid"""</span>
-
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.TypeValidationError">[docs]</a>
+</span><span data-line="88"><span class="k">class</span><span class="w"> </span><span class="nc">TypeValidationError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+</span><span data-line="89"><span class="w">    </span><span class="sd">"""Raised if an object is not valid"""</span>
+</span><span data-line="90">
 <div class="viewcode-block" id="TypeValidationError.is_valid">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.TypeValidationError.is_valid">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Returns True if and only if obj is considered valid"""</span></div>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.TypeValidationError.is_valid">[docs]</a>
+</span><span data-line="91">    <span class="nd">@staticmethod</span>
+</span><span data-line="92">    <span class="nd">@abstractmethod</span>
+</span><span data-line="93">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="94"><span class="w">        </span><span class="sd">"""Returns True if and only if obj is considered valid"""</span></div>
 
+</span><span data-line="95">
+</span><span data-line="96">    <span class="nd">@classmethod</span>
+</span><span data-line="97">    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="98">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="99">            <span class="k">raise</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">null_enter_func</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">obj</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">null_exit_func</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
-    <span class="k">return</span> <span class="kc">None</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">mininum_n_args</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">mininum_n_args</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""True if and only if the function has a variadic positional argument (i.e.</span>
-<span class="sd">    *args)"""</span>
-    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-    <span class="p">)</span>
-
-
+</span><span data-line="100">
+</span><span data-line="101">
+</span><span data-line="102"><span class="k">def</span><span class="w"> </span><span class="nf">null_enter_func</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="103">    <span class="k">return</span> <span class="n">obj</span>
+</span><span data-line="104">
+</span><span data-line="105">
+</span><span data-line="106"><span class="k">def</span><span class="w"> </span><span class="nf">null_exit_func</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
+</span><span data-line="107">    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="108">
+</span><span data-line="109">
+</span><span data-line="110"><span class="k">def</span><span class="w"> </span><span class="nf">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">mininum_n_args</span><span class="p">):</span>
+</span><span data-line="111">    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">mininum_n_args</span>
+</span><span data-line="112">
+</span><span data-line="113">
+</span><span data-line="114"><span class="k">def</span><span class="w"> </span><span class="nf">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span data-line="115"><span class="w">    </span><span class="sd">"""True if and only if the function has a variadic positional argument (i.e.</span>
+</span><span data-line="116"><span class="sd">    *args)"""</span>
+</span><span data-line="117">    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
+</span><span data-line="118">        <span class="n">x</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span data-line="119">    <span class="p">)</span>
+</span><span data-line="120">
+</span><span data-line="121">
 <div class="viewcode-block" id="EnterFunctionValidation">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.EnterFunctionValidation">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">EnterFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __enter__ function"""</span>
-
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.EnterFunctionValidation">[docs]</a>
+</span><span data-line="122"><span class="k">class</span><span class="w"> </span><span class="nc">EnterFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
+</span><span data-line="123"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __enter__ function"""</span>
+</span><span data-line="124">
 <div class="viewcode-block" id="EnterFunctionValidation.is_valid">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.EnterFunctionValidation.is_valid">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.EnterFunctionValidation.is_valid">[docs]</a>
+</span><span data-line="125">    <span class="nd">@staticmethod</span>
+</span><span data-line="126">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="127">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 </div>
 
-
-
+</span><span data-line="128">
+</span><span data-line="129">
 <div class="viewcode-block" id="ExitFunctionValidation">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.ExitFunctionValidation">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ExitFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __exit__ function"""</span>
-
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ExitFunctionValidation">[docs]</a>
+</span><span data-line="130"><span class="k">class</span><span class="w"> </span><span class="nc">ExitFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
+</span><span data-line="131"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __exit__ function"""</span>
+</span><span data-line="132">
 <div class="viewcode-block" id="ExitFunctionValidation.is_valid">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.ExitFunctionValidation.is_valid">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-            <span class="n">_callable_has_a_variadic_pos</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="p">)</span></div>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ExitFunctionValidation.is_valid">[docs]</a>
+</span><span data-line="133">    <span class="nd">@staticmethod</span>
+</span><span data-line="134">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="135">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+</span><span data-line="136">            <span class="n">_callable_has_a_variadic_pos</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span data-line="137">        <span class="p">)</span></div>
 </div>
 
-
-
-<span class="c1"># TODO: If needed:</span>
-<span class="c1">#  A more general Contextualizer would proxy/delegate all methods (including special</span>
-<span class="c1">#  ones) to the wrapped</span>
+</span><span data-line="138">
+</span><span data-line="139">
+</span><span data-line="140"><span class="c1"># TODO: If needed:</span>
+</span><span data-line="141"><span class="c1">#  A more general Contextualizer would proxy/delegate all methods (including special</span>
+</span><span data-line="142"><span class="c1">#  ones) to the wrapped</span>
 <div class="viewcode-block" id="ContextualizeCall">
-<a class="viewcode-back" href="../../module_docs/stream2py/util.html#stream2py.util.ContextualizeCall">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ContextualizeCall</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Wraps a callable so that it also becomes a context manager.</span>
+<a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ContextualizeCall">[docs]</a>
+</span><span data-line="143"><span class="k">class</span><span class="w"> </span><span class="nc">ContextualizeCall</span><span class="p">:</span>
+</span><span data-line="144"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="145"><span class="sd">    Wraps a callable so that it also becomes a context manager.</span>
+</span><span data-line="146">
+</span><span data-line="147"><span class="sd">    Both enter and exit functions can be specified.</span>
+</span><span data-line="148">
+</span><span data-line="149"><span class="sd">    This can be used, for instance, when the proper use of a function depends on some</span>
+</span><span data-line="150"><span class="sd">    objects being "in context" (i.e. calling the enter/exit of some objects).</span>
+</span><span data-line="151">
+</span><span data-line="152"><span class="sd">    This happens, for instance, when we want to use a method that depends on its</span>
+</span><span data-line="153"><span class="sd">    instance being in context. For convenience, this use case is implemented by the</span>
+</span><span data-line="154"><span class="sd">    ``contextualize_with_instance`` function of this module.</span>
+</span><span data-line="155">
+</span><span data-line="156"><span class="sd">    Below is a simple doctest, but check out more significant tests in the tests folder.</span>
+</span><span data-line="157"><span class="sd">    You can also check out:</span>
+</span><span data-line="158">
+</span><span data-line="159"><span class="sd">    This issue: https://github.com/i2mint/stream2py/issues/18</span>
+</span><span data-line="160">
+</span><span data-line="161"><span class="sd">    This wiki: https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</span>
+</span><span data-line="162">
+</span><span data-line="163"><span class="sd">    &gt;&gt;&gt; f = lambda x: x + 1</span>
+</span><span data-line="164"><span class="sd">    &gt;&gt;&gt; hasattr(f, '__enter__') and hasattr(f, '__exit__')</span>
+</span><span data-line="165"><span class="sd">    False</span>
+</span><span data-line="166"><span class="sd">    &gt;&gt;&gt; g = ContextualizeCall(f)</span>
+</span><span data-line="167"><span class="sd">    &gt;&gt;&gt; hasattr(g, '__enter__') and hasattr(g, '__exit__')</span>
+</span><span data-line="168"><span class="sd">    True</span>
+</span><span data-line="169"><span class="sd">    &gt;&gt;&gt; with g:</span>
+</span><span data-line="170"><span class="sd">    ...     print(g(2))</span>
+</span><span data-line="171"><span class="sd">    3</span>
+</span><span data-line="172">
+</span><span data-line="173"><span class="sd">    In the example above we get the default null enter and exit functions.</span>
+</span><span data-line="174"><span class="sd">    They do nothing.</span>
+</span><span data-line="175"><span class="sd">    Let's specify some that do something:</span>
+</span><span data-line="176">
+</span><span data-line="177"><span class="sd">    &gt;&gt;&gt; h = ContextualizeCall(f,</span>
+</span><span data-line="178"><span class="sd">    ...     enter_func=lambda self: print('entering...'),</span>
+</span><span data-line="179"><span class="sd">    ...     exit_func=lambda self, *errs: print('exiting...'),</span>
+</span><span data-line="180"><span class="sd">    ... )</span>
+</span><span data-line="181"><span class="sd">    &gt;&gt;&gt; with h:</span>
+</span><span data-line="182"><span class="sd">    ...     print(h(2))</span>
+</span><span data-line="183"><span class="sd">    entering...</span>
+</span><span data-line="184"><span class="sd">    3</span>
+</span><span data-line="185"><span class="sd">    exiting...</span>
+</span><span data-line="186">
+</span><span data-line="187"><span class="sd">    Note: A ``ContextualizeCall`` instance will delegate all other attributes to the</span>
+</span><span data-line="188"><span class="sd">    wrapped `func` except for special methods. If a user needs to also delegate these</span>
+</span><span data-line="189"><span class="sd">    special methods, they'll have to wrap `func` themselves.</span>
+</span><span data-line="190"><span class="sd">    """</span>
+</span><span data-line="191">
+</span><span data-line="192">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">):</span>
+</span><span data-line="193">        <span class="c1"># validation</span>
+</span><span data-line="194">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span data-line="195">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="196">        <span class="n">EnterFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+</span><span data-line="197">            <span class="n">enter_func</span><span class="p">,</span>
+</span><span data-line="198">            <span class="sa">f</span><span class="s2">"Not a valid enter function (should be a callable with at least one arg): "</span>
+</span><span data-line="199">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="200">        <span class="p">)</span>
+</span><span data-line="201">        <span class="n">ExitFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+</span><span data-line="202">            <span class="n">exit_func</span><span class="p">,</span>
+</span><span data-line="203">            <span class="sa">f</span><span class="s2">"Not a valid exit function (should be a callable with at least one arg or "</span>
+</span><span data-line="204">            <span class="sa">f</span><span class="s2">"varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="205">        <span class="p">)</span>
+</span><span data-line="206">        <span class="c1"># assignment</span>
+</span><span data-line="207">        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+</span><span data-line="208">        <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span> <span class="o">=</span> <span class="n">enter_func</span>
+</span><span data-line="209">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span> <span class="o">=</span> <span class="n">exit_func</span>
+</span><span data-line="210">        <span class="c1"># wrapping self with attributes of func (signature, name, etc.)</span>
+</span><span data-line="211">        <span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
+</span><span data-line="212">
+</span><span data-line="213">    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="214">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span data-line="215">
+</span><span data-line="216">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="217">        <span class="c1">#         print(f'{type(self).__name__}.__enter__')</span>
+</span><span data-line="218">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+</span><span data-line="219">
+</span><span data-line="220">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+</span><span data-line="221">        <span class="c1">#         print(f'{type(self).__name__}.__exit__')</span>
+</span><span data-line="222">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
+</span><span data-line="223">
+</span><span data-line="224">    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
+</span><span data-line="225">        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span></div>
 
-<span class="sd">    Both enter and exit functions can be specified.</span>
-
-<span class="sd">    This can be used, for instance, when the proper use of a function depends on some</span>
-<span class="sd">    objects being "in context" (i.e. calling the enter/exit of some objects).</span>
-
-<span class="sd">    This happens, for instance, when we want to use a method that depends on its</span>
-<span class="sd">    instance being in context. For convenience, this use case is implemented by the</span>
-<span class="sd">    ``contextualize_with_instance`` function of this module.</span>
-
-<span class="sd">    Below is a simple doctest, but check out more significant tests in the tests folder.</span>
-<span class="sd">    You can also check out:</span>
-
-<span class="sd">    This issue: https://github.com/i2mint/stream2py/issues/18</span>
-
-<span class="sd">    This wiki: https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</span>
-
-<span class="sd">    &gt;&gt;&gt; f = lambda x: x + 1</span>
-<span class="sd">    &gt;&gt;&gt; hasattr(f, '__enter__') and hasattr(f, '__exit__')</span>
-<span class="sd">    False</span>
-<span class="sd">    &gt;&gt;&gt; g = ContextualizeCall(f)</span>
-<span class="sd">    &gt;&gt;&gt; hasattr(g, '__enter__') and hasattr(g, '__exit__')</span>
-<span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; with g:</span>
-<span class="sd">    ...     print(g(2))</span>
-<span class="sd">    3</span>
-
-<span class="sd">    In the example above we get the default null enter and exit functions.</span>
-<span class="sd">    They do nothing.</span>
-<span class="sd">    Let's specify some that do something:</span>
-
-<span class="sd">    &gt;&gt;&gt; h = ContextualizeCall(f,</span>
-<span class="sd">    ...     enter_func=lambda self: print('entering...'),</span>
-<span class="sd">    ...     exit_func=lambda self, *errs: print('exiting...'),</span>
-<span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; with h:</span>
-<span class="sd">    ...     print(h(2))</span>
-<span class="sd">    entering...</span>
-<span class="sd">    3</span>
-<span class="sd">    exiting...</span>
-
-<span class="sd">    Note: A ``ContextualizeCall`` instance will delegate all other attributes to the</span>
-<span class="sd">    wrapped `func` except for special methods. If a user needs to also delegate these</span>
-<span class="sd">    special methods, they'll have to wrap `func` themselves.</span>
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">):</span>
-        <span class="c1"># validation</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">EnterFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
-            <span class="n">enter_func</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">"Not a valid enter function (should be a callable with at least one arg): "</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">ExitFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
-            <span class="n">exit_func</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">"Not a valid exit function (should be a callable with at least one arg or "</span>
-            <span class="sa">f</span><span class="s2">"varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="c1"># assignment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span> <span class="o">=</span> <span class="n">enter_func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span> <span class="o">=</span> <span class="n">exit_func</span>
-        <span class="c1"># wrapping self with attributes of func (signature, name, etc.)</span>
-        <span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1">#         print(f'{type(self).__name__}.__enter__')</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-        <span class="c1">#         print(f'{type(self).__name__}.__exit__')</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span></div>
-
-
-
-<span class="c1"># ---------------------------------------------------------------------------------------</span>
-<span class="c1"># Using these general objects for the particular case of having bound methods forward</span>
-<span class="c1"># their context</span>
-<span class="c1"># management to the instances they're bound to</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_enter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_exit</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">exception_info</span><span class="p">)</span>
-
-
-<span class="n">contextualize_with_instance</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-    <span class="n">ContextualizeCall</span><span class="p">,</span>
-    <span class="n">enter_func</span><span class="o">=</span><span class="n">forward_to_instance_enter</span><span class="p">,</span>
-    <span class="n">exit_func</span><span class="o">=</span><span class="n">forward_to_instance_exit</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">contextualize_with_instance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">"To be applied to a bound method. "</span>
-    <span class="s2">"Returns a callable that forwards context enters/exits to the bound instance. "</span>
-    <span class="s2">"See ``tests.test_util.test_contextualize_with_instance`` for and example use."</span>
-<span class="p">)</span>
-</pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
+</span><span data-line="226">
+</span><span data-line="227">
+</span><span data-line="228"><span class="c1"># ---------------------------------------------------------------------------------------</span>
+</span><span data-line="229"><span class="c1"># Using these general objects for the particular case of having bound methods forward</span>
+</span><span data-line="230"><span class="c1"># their context</span>
+</span><span data-line="231"><span class="c1"># management to the instances they're bound to</span>
+</span><span data-line="232">
+</span><span data-line="233"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</span><span data-line="234">
+</span><span data-line="235">
+</span><span data-line="236"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_enter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="237">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
+</span><span data-line="238">
+</span><span data-line="239">
+</span><span data-line="240"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_exit</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
+</span><span data-line="241">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">exception_info</span><span class="p">)</span>
+</span><span data-line="242">
+</span><span data-line="243">
+</span><span data-line="244"><span class="n">contextualize_with_instance</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="245">    <span class="n">ContextualizeCall</span><span class="p">,</span>
+</span><span data-line="246">    <span class="n">enter_func</span><span class="o">=</span><span class="n">forward_to_instance_enter</span><span class="p">,</span>
+</span><span data-line="247">    <span class="n">exit_func</span><span class="o">=</span><span class="n">forward_to_instance_exit</span><span class="p">,</span>
+</span><span data-line="248"><span class="p">)</span>
+</span><span data-line="249"><span class="n">contextualize_with_instance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="250">    <span class="s2">"To be applied to a bound method. "</span>
+</span><span data-line="251">    <span class="s2">"Returns a callable that forwards context enters/exits to the bound instance. "</span>
+</span><span data-line="252">    <span class="s2">"See ``tests.test_util.test_contextualize_with_instance`` for and example use."</span>
+</span><span data-line="253"><span class="p">)</span>
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
   </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      <script src="../../_static/documentation_options.js?v=e78efb02"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../_static/shibuya.js?v=50760d75"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
-</body>
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script></body>
 </html>

@@ -1,0 +1,31 @@
+stream2py.util
+==============
+
+.. automodule:: stream2py.util
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      forward_to_instance_enter
+      forward_to_instance_exit
+      identity
+      null_enter_func
+      null_exit_func
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ContextualizeCall
+      Timer
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      EnterFunctionValidation
+      ExitFunctionValidation
+      TypeValidationError
+   

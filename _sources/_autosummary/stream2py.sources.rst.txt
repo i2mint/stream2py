@@ -1,0 +1,13 @@
+stream2py.sources
+=================
+
+.. automodule:: stream2py.sources
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   http

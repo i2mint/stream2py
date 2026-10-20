@@ -1,0 +1,12 @@
+stream2py.utility.sorted\_collection
+====================================
+
+.. automodule:: stream2py.utility.sorted_collection
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SortedCollection
+   

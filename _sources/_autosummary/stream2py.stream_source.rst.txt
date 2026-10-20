@@ -1,0 +1,18 @@
+stream2py.stream\_source
+========================
+
+.. automodule:: stream2py.stream_source
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      defaulted_values
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      StreamSource
+   

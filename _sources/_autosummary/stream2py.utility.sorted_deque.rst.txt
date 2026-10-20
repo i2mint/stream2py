@@ -1,0 +1,12 @@
+stream2py.utility.sorted\_deque
+===============================
+
+.. automodule:: stream2py.utility.sorted_deque
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SortedDeque
+   

@@ -1,0 +1,12 @@
+stream2py.utility.typing\_hints
+===============================
+
+.. automodule:: stream2py.utility.typing_hints
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ComparableType
+   

@@ -1,0 +1,12 @@
+stream2py.utility.locked\_sorted\_deque
+=======================================
+
+.. automodule:: stream2py.utility.locked_sorted_deque
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      RWLockSortedDeque
+   

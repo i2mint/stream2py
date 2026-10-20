@@ -1,0 +1,19 @@
+stream2py.exceptions
+====================
+
+.. automodule:: stream2py.exceptions
+
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      BufferError
+      BufferOverflowError
+      ConfigurationError
+      InvalidDataError
+      NoDataAvailableError
+      Stream2PyError
+      StreamAlreadyStoppedError
+      StreamNotStartedError
+   

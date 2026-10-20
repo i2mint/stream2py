@@ -1,0 +1,35 @@
+# stream2py
+
+> Bring data streams to python with ease
+
+
+## Pages
+
+- [stream2py](index.html.md): Documentation hosted here.
+- [API reference](api.html.md): | &#96;stream2py&#96;   |    |
+- [stream2py](_autosummary/stream2py.html.md): Stream2py enables you to create a single asynchronous Source Reader and simply distribute
+- [stream2py.buffer_reader](_autosummary/stream2py.buffer_reader.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
+- [stream2py.exceptions](_autosummary/stream2py.exceptions.html.md): Custom exception classes for stream2py
+- [stream2py.protocols](_autosummary/stream2py.protocols.html.md): Defines protocols for classes to avoid circular imports
+- [stream2py.simply](_autosummary/stream2py.simply.html.md): Helper Function to construct a SourceReader and StreamBuffer in one
+- [stream2py.source_reader](_autosummary/stream2py.source_reader.html.md): A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
+- [stream2py.sources](_autosummary/stream2py.sources.html.md): A few light weight (builtin-only ) source readers you can use
+- [stream2py.sources.http](_autosummary/stream2py.sources.http.html.md): | &#96;HTTPResponseReader&#96;(url, &#92;&#42;&#91;, method, ...&#93;)   |    |
+- [stream2py.stream_buffer](_autosummary/stream2py.stream_buffer.html.md): A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a SourceReader
+- [stream2py.stream_source](_autosummary/stream2py.stream_source.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
+- [stream2py.util](_autosummary/stream2py.util.html.md): Util functions. Functions that are used by, or can be used with, stream2py objects
+- [stream2py.utility](_autosummary/stream2py.utility.html.md): Low-level building blocks used by stream2py’s buffers and readers.
+- [stream2py.utility.locked_sorted_deque](_autosummary/stream2py.utility.locked_sorted_deque.html.md): Sorted Deque that handles Reader-Writer Priority
+- [stream2py.utility.reader_writer_lock](_autosummary/stream2py.utility.reader_writer_lock.html.md): READER-WRITER LOCK WITH PRIORITY FOR WRITERS
+- [stream2py.utility.sorted_collection](_autosummary/stream2py.utility.sorted_collection.html.md): Sequence sorted by a key function.
+- [stream2py.utility.sorted_deque](_autosummary/stream2py.utility.sorted_deque.html.md): Deque sorted by a key function.
+- [stream2py.utility.typing_hints](_autosummary/stream2py.utility.typing_hints.html.md): Typing hints
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 06:42 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+
+## Optional
+
+- [stream2py.md](stream2py.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

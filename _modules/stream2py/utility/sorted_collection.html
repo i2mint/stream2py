@@ -1,507 +1,900 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
+<html lang="en" data-accent-color="pink" data-content_root="../../../">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stream2py.utility.sorted_collection &mdash; stream2py 1.0.43 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
-
-  
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=2c076bcf"></script>
-      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="../../../_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
-            stream2py
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>stream2py.utility.sorted_collection - stream2py</title><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="../../../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="stream2py.utility.sorted_collection"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../../../index.html">
+      
+      
+      <strong>stream2py</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../../../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py.html">stream2py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/exceptions.html">stream2py.exceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/simply.html">stream2py.simply</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources.html">stream2py.sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/util.html">stream2py.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility.html">stream2py.utility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/stream2py.html">stream2py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.simply.html">stream2py.simply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.sources.html">stream2py.sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.sources.http.html">stream2py.sources.http</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.util.html">stream2py.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/stream2py.utility.html">stream2py.utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.utility.locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.utility.sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.utility.sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/stream2py.utility.typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">stream2py</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">stream2py.utility.sorted_collection</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for stream2py.utility.sorted_collection</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Sequence sorted by a key function."""</span>
-<span class="c1"># Take from: https://code.activestate.com/recipes/577197-sortedcollection/</span>
-<span class="c1"># Found from: https://docs.python.org/3.7/library/bisect.html</span>
-<span class="c1"># Created by Raymond Hettinger on Fri, 16 Apr 2010</span>
-<span class="c1"># Licensed under the MIT License</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
-
-
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../../index.html"><span itemprop="name">stream2py</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../../index.html"><span itemprop="name">Module code</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="2" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">stream2py.utility.sorted_collection</strong>
+        <meta itemprop="position" content="3" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <h1>Source code for stream2py.utility.sorted_collection</h1><div class="highlight"><pre>
+<span></span><span data-line="1"><span class="sd">"""Sequence sorted by a key function."""</span>
+</span><span data-line="2"><span class="c1"># Take from: https://code.activestate.com/recipes/577197-sortedcollection/</span>
+</span><span data-line="3"><span class="c1"># Found from: https://docs.python.org/3.7/library/bisect.html</span>
+</span><span data-line="4"><span class="c1"># Created by Raymond Hettinger on Fri, 16 Apr 2010</span>
+</span><span data-line="5"><span class="c1"># Licensed under the MIT License</span>
+</span><span data-line="6">
+</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
+</span><span data-line="8">
+</span><span data-line="9">
 <div class="viewcode-block" id="SortedCollection">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SortedCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Sequence sorted by a key function.</span>
-
-<span class="sd">    SortedCollection() is much easier to work with than using bisect() directly.</span>
-<span class="sd">    It supports key functions like those use in sorted(), min(), and max().</span>
-<span class="sd">    The result of the key function call is saved so that keys can be searched</span>
-<span class="sd">    efficiently.</span>
-
-<span class="sd">    Instead of returning an insertion-point which can be hard to interpret, the</span>
-<span class="sd">    five find-methods return a specific item in the sequence. They can scan for</span>
-<span class="sd">    exact matches, the last item less-than-or-equal to a key, or the first item</span>
-<span class="sd">    greater-than-or-equal to a key.</span>
-
-<span class="sd">    Once found, an item's ordinal position can be located with the index() method.</span>
-<span class="sd">    New items can be added with the insert() and insert_right() methods.</span>
-<span class="sd">    Old items can be deleted with the remove() method.</span>
-
-<span class="sd">    The usual sequence methods are provided to support indexing, slicing,</span>
-<span class="sd">    length lookup, clearing, copying, forward and reverse iteration, contains</span>
-<span class="sd">    checking, item counts, item removal, and a nice looking repr.</span>
-
-<span class="sd">    Finding and indexing are O(log n) operations while iteration and insertion</span>
-<span class="sd">    are O(n).  The initial sort is O(n log n).</span>
-
-<span class="sd">    The key function is stored in the 'key' attibute for easy introspection or</span>
-<span class="sd">    so that you can assign a new key function (triggering an automatic re-sort).</span>
-
-<span class="sd">    In short, the class was designed to handle all of the common use cases for</span>
-<span class="sd">    bisect but with a simpler API and support for key functions.</span>
-
-<span class="sd">    &gt;&gt;&gt; from pprint import pprint</span>
-<span class="sd">    &gt;&gt;&gt; from operator import itemgetter</span>
-
-<span class="sd">    &gt;&gt;&gt; s = SortedCollection(key=itemgetter(2))</span>
-<span class="sd">    &gt;&gt;&gt; for record in [</span>
-<span class="sd">    ...         ('roger', 'young', 30),</span>
-<span class="sd">    ...         ('angela', 'jones', 28),</span>
-<span class="sd">    ...         ('bill', 'smith', 22),</span>
-<span class="sd">    ...         ('david', 'thomas', 32)]:</span>
-<span class="sd">    ...     s.insert(record)</span>
-
-<span class="sd">    &gt;&gt;&gt; pprint(list(s))         # show records sorted by age</span>
-<span class="sd">    [('bill', 'smith', 22),</span>
-<span class="sd">     ('angela', 'jones', 28),</span>
-<span class="sd">     ('roger', 'young', 30),</span>
-<span class="sd">     ('david', 'thomas', 32)]</span>
-
-<span class="sd">    &gt;&gt;&gt; s.find_le(29)           # find oldest person aged 29 or younger</span>
-<span class="sd">    ('angela', 'jones', 28)</span>
-<span class="sd">    &gt;&gt;&gt; s.find_lt(28)           # find oldest person under 28</span>
-<span class="sd">    ('bill', 'smith', 22)</span>
-<span class="sd">    &gt;&gt;&gt; s.find_gt(28)           # find youngest person over 28</span>
-<span class="sd">    ('roger', 'young', 30)</span>
-
-<span class="sd">    &gt;&gt;&gt; r = s.find_ge(32)       # find youngest person aged 32 or older</span>
-<span class="sd">    &gt;&gt;&gt; s.index(r)              # get the index of their record</span>
-<span class="sd">    3</span>
-<span class="sd">    &gt;&gt;&gt; s[3]                    # fetch the record at that index</span>
-<span class="sd">    ('david', 'thomas', 32)</span>
-
-<span class="sd">    &gt;&gt;&gt; s.key = itemgetter(0)   # now sort by first name</span>
-<span class="sd">    &gt;&gt;&gt; pprint(list(s))</span>
-<span class="sd">    [('angela', 'jones', 28),</span>
-<span class="sd">     ('bill', 'smith', 22),</span>
-<span class="sd">     ('david', 'thomas', 32),</span>
-<span class="sd">     ('roger', 'young', 30)]</span>
-
-<span class="sd">    """</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">key</span>
-        <span class="n">decorated</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">key</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">decorated</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">decorated</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_getkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_setkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_delkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setkey</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-
-    <span class="n">key</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getkey</span><span class="p">,</span> <span class="n">_setkey</span><span class="p">,</span> <span class="n">_delkey</span><span class="p">,</span> <span class="s2">"key function"</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, key=</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">,</span> <span class="s2">"__name__"</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">)),</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span>
-
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection">[docs]</a>
+</span><span data-line="10"><span class="k">class</span><span class="w"> </span><span class="nc">SortedCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</span><span data-line="11"><span class="w">    </span><span class="sd">"""Sequence sorted by a key function.</span>
+</span><span data-line="12">
+</span><span data-line="13"><span class="sd">    SortedCollection() is much easier to work with than using bisect() directly.</span>
+</span><span data-line="14"><span class="sd">    It supports key functions like those use in sorted(), min(), and max().</span>
+</span><span data-line="15"><span class="sd">    The result of the key function call is saved so that keys can be searched</span>
+</span><span data-line="16"><span class="sd">    efficiently.</span>
+</span><span data-line="17">
+</span><span data-line="18"><span class="sd">    Instead of returning an insertion-point which can be hard to interpret, the</span>
+</span><span data-line="19"><span class="sd">    five find-methods return a specific item in the sequence. They can scan for</span>
+</span><span data-line="20"><span class="sd">    exact matches, the last item less-than-or-equal to a key, or the first item</span>
+</span><span data-line="21"><span class="sd">    greater-than-or-equal to a key.</span>
+</span><span data-line="22">
+</span><span data-line="23"><span class="sd">    Once found, an item's ordinal position can be located with the index() method.</span>
+</span><span data-line="24"><span class="sd">    New items can be added with the insert() and insert_right() methods.</span>
+</span><span data-line="25"><span class="sd">    Old items can be deleted with the remove() method.</span>
+</span><span data-line="26">
+</span><span data-line="27"><span class="sd">    The usual sequence methods are provided to support indexing, slicing,</span>
+</span><span data-line="28"><span class="sd">    length lookup, clearing, copying, forward and reverse iteration, contains</span>
+</span><span data-line="29"><span class="sd">    checking, item counts, item removal, and a nice looking repr.</span>
+</span><span data-line="30">
+</span><span data-line="31"><span class="sd">    Finding and indexing are O(log n) operations while iteration and insertion</span>
+</span><span data-line="32"><span class="sd">    are O(n).  The initial sort is O(n log n).</span>
+</span><span data-line="33">
+</span><span data-line="34"><span class="sd">    The key function is stored in the 'key' attibute for easy introspection or</span>
+</span><span data-line="35"><span class="sd">    so that you can assign a new key function (triggering an automatic re-sort).</span>
+</span><span data-line="36">
+</span><span data-line="37"><span class="sd">    In short, the class was designed to handle all of the common use cases for</span>
+</span><span data-line="38"><span class="sd">    bisect but with a simpler API and support for key functions.</span>
+</span><span data-line="39">
+</span><span data-line="40"><span class="sd">    &gt;&gt;&gt; from pprint import pprint</span>
+</span><span data-line="41"><span class="sd">    &gt;&gt;&gt; from operator import itemgetter</span>
+</span><span data-line="42">
+</span><span data-line="43"><span class="sd">    &gt;&gt;&gt; s = SortedCollection(key=itemgetter(2))</span>
+</span><span data-line="44"><span class="sd">    &gt;&gt;&gt; for record in [</span>
+</span><span data-line="45"><span class="sd">    ...         ('roger', 'young', 30),</span>
+</span><span data-line="46"><span class="sd">    ...         ('angela', 'jones', 28),</span>
+</span><span data-line="47"><span class="sd">    ...         ('bill', 'smith', 22),</span>
+</span><span data-line="48"><span class="sd">    ...         ('david', 'thomas', 32)]:</span>
+</span><span data-line="49"><span class="sd">    ...     s.insert(record)</span>
+</span><span data-line="50">
+</span><span data-line="51"><span class="sd">    &gt;&gt;&gt; pprint(list(s))         # show records sorted by age</span>
+</span><span data-line="52"><span class="sd">    [('bill', 'smith', 22),</span>
+</span><span data-line="53"><span class="sd">     ('angela', 'jones', 28),</span>
+</span><span data-line="54"><span class="sd">     ('roger', 'young', 30),</span>
+</span><span data-line="55"><span class="sd">     ('david', 'thomas', 32)]</span>
+</span><span data-line="56">
+</span><span data-line="57"><span class="sd">    &gt;&gt;&gt; s.find_le(29)           # find oldest person aged 29 or younger</span>
+</span><span data-line="58"><span class="sd">    ('angela', 'jones', 28)</span>
+</span><span data-line="59"><span class="sd">    &gt;&gt;&gt; s.find_lt(28)           # find oldest person under 28</span>
+</span><span data-line="60"><span class="sd">    ('bill', 'smith', 22)</span>
+</span><span data-line="61"><span class="sd">    &gt;&gt;&gt; s.find_gt(28)           # find youngest person over 28</span>
+</span><span data-line="62"><span class="sd">    ('roger', 'young', 30)</span>
+</span><span data-line="63">
+</span><span data-line="64"><span class="sd">    &gt;&gt;&gt; r = s.find_ge(32)       # find youngest person aged 32 or older</span>
+</span><span data-line="65"><span class="sd">    &gt;&gt;&gt; s.index(r)              # get the index of their record</span>
+</span><span data-line="66"><span class="sd">    3</span>
+</span><span data-line="67"><span class="sd">    &gt;&gt;&gt; s[3]                    # fetch the record at that index</span>
+</span><span data-line="68"><span class="sd">    ('david', 'thomas', 32)</span>
+</span><span data-line="69">
+</span><span data-line="70"><span class="sd">    &gt;&gt;&gt; s.key = itemgetter(0)   # now sort by first name</span>
+</span><span data-line="71"><span class="sd">    &gt;&gt;&gt; pprint(list(s))</span>
+</span><span data-line="72"><span class="sd">    [('angela', 'jones', 28),</span>
+</span><span data-line="73"><span class="sd">     ('bill', 'smith', 22),</span>
+</span><span data-line="74"><span class="sd">     ('david', 'thomas', 32),</span>
+</span><span data-line="75"><span class="sd">     ('roger', 'young', 30)]</span>
+</span><span data-line="76">
+</span><span data-line="77"><span class="sd">    """</span>
+</span><span data-line="78">
+</span><span data-line="79">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="80">        <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span> <span class="o">=</span> <span class="n">key</span>
+</span><span data-line="81">        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">key</span>
+</span><span data-line="82">        <span class="n">decorated</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">key</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">)</span>
+</span><span data-line="83">        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">decorated</span><span class="p">]</span>
+</span><span data-line="84">        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">decorated</span><span class="p">]</span>
+</span><span data-line="85">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span>
+</span><span data-line="86">
+</span><span data-line="87">    <span class="k">def</span><span class="w"> </span><span class="nf">_getkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="88">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
+</span><span data-line="89">
+</span><span data-line="90">    <span class="k">def</span><span class="w"> </span><span class="nf">_setkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span data-line="91">        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
+</span><span data-line="92">            <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+</span><span data-line="93">
+</span><span data-line="94">    <span class="k">def</span><span class="w"> </span><span class="nf">_delkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="95">        <span class="bp">self</span><span class="o">.</span><span class="n">_setkey</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</span><span data-line="96">
+</span><span data-line="97">    <span class="n">key</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getkey</span><span class="p">,</span> <span class="n">_setkey</span><span class="p">,</span> <span class="n">_delkey</span><span class="p">,</span> <span class="s2">"key function"</span><span class="p">)</span>
+</span><span data-line="98">
+</span><span data-line="99">    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="100">        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span>
+</span><span data-line="101">
+</span><span data-line="102">    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="103">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span>
+</span><span data-line="104">
+</span><span data-line="105">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="106">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+</span><span data-line="107">
+</span><span data-line="108">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+</span><span data-line="109">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="110">
+</span><span data-line="111">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="112">        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+</span><span data-line="113">
+</span><span data-line="114">    <span class="k">def</span><span class="w"> </span><span class="fm">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="115">        <span class="k">return</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+</span><span data-line="116">
+</span><span data-line="117">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="118">        <span class="k">return</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, key=</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span>
+</span><span data-line="119">            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+</span><span data-line="120">            <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span>
+</span><span data-line="121">            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">,</span> <span class="s2">"__name__"</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">)),</span>
+</span><span data-line="122">        <span class="p">)</span>
+</span><span data-line="123">
+</span><span data-line="124">    <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="125">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">)</span>
+</span><span data-line="126">
+</span><span data-line="127">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="128">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="129">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="130">        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="131">        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span>
+</span><span data-line="132">
 <div class="viewcode-block" id="SortedCollection.index">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.index">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Find the position of an item.  Raise ValueError if not found."""</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.index">[docs]</a>
+</span><span data-line="133">    <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="134"><span class="w">        </span><span class="sd">"""Find the position of an item.  Raise ValueError if not found."""</span>
+</span><span data-line="135">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="136">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="137">        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="138">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span></div>
 
-
+</span><span data-line="139">
 <div class="viewcode-block" id="SortedCollection.count">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.count">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return number of occurrences of item"""</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.count">[docs]</a>
+</span><span data-line="140">    <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="141"><span class="w">        </span><span class="sd">"""Return number of occurrences of item"""</span>
+</span><span data-line="142">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="143">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="144">        <span class="n">j</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="145">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
-
+</span><span data-line="146">
 <div class="viewcode-block" id="SortedCollection.insert">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the left"""</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">[docs]</a>
+</span><span data-line="147">    <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="148"><span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the left"""</span>
+</span><span data-line="149">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="150">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="151">        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="152">        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
-
+</span><span data-line="153">
 <div class="viewcode-block" id="SortedCollection.insert_right">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert_right">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">insert_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the right"""</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert_right">[docs]</a>
+</span><span data-line="154">    <span class="k">def</span><span class="w"> </span><span class="nf">insert_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="155"><span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the right"""</span>
+</span><span data-line="156">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="157">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="158">        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="159">        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
 
-
+</span><span data-line="160">
 <div class="viewcode-block" id="SortedCollection.remove">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Remove first occurence of item.  Raise ValueError if not found"""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">[docs]</a>
+</span><span data-line="161">    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="162"><span class="w">        </span><span class="sd">"""Remove first occurence of item.  Raise ValueError if not found"""</span>
+</span><span data-line="163">        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span data-line="164">        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="165">        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
 
-
+</span><span data-line="166">
 <div class="viewcode-block" id="SortedCollection.find">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return first item with a key == k.  Raise ValueError if not found."""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key equal to: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find">[docs]</a>
+</span><span data-line="167">    <span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="168"><span class="w">        </span><span class="sd">"""Return first item with a key == k.  Raise ValueError if not found."""</span>
+</span><span data-line="169">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="170">        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="171">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="172">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key equal to: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
 
-
+</span><span data-line="173">
 <div class="viewcode-block" id="SortedCollection.find_le">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_le">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">find_le</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return last item with a key &lt;= k.  Raise ValueError if not found."""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key at or below: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_le">[docs]</a>
+</span><span data-line="174">    <span class="k">def</span><span class="w"> </span><span class="nf">find_le</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="175"><span class="w">        </span><span class="sd">"""Return last item with a key &lt;= k.  Raise ValueError if not found."""</span>
+</span><span data-line="176">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="177">        <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+</span><span data-line="178">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span><span data-line="179">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key at or below: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
 
-
+</span><span data-line="180">
 <div class="viewcode-block" id="SortedCollection.find_lt">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_lt">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">find_lt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return last item with a key &lt; k.  Raise ValueError if not found."""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key below: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_lt">[docs]</a>
+</span><span data-line="181">    <span class="k">def</span><span class="w"> </span><span class="nf">find_lt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="182"><span class="w">        </span><span class="sd">"""Return last item with a key &lt; k.  Raise ValueError if not found."""</span>
+</span><span data-line="183">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="184">        <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
+</span><span data-line="185">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span><span data-line="186">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key below: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
 
-
+</span><span data-line="187">
 <div class="viewcode-block" id="SortedCollection.find_ge">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_ge">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">find_ge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return first item with a key &gt;= equal to k.  Raise ValueError if not found"""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key at or above: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_ge">[docs]</a>
+</span><span data-line="188">    <span class="k">def</span><span class="w"> </span><span class="nf">find_ge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="189"><span class="w">        </span><span class="sd">"""Return first item with a key &gt;= equal to k.  Raise ValueError if not found"""</span>
+</span><span data-line="190">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="191">        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="192">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="193">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key at or above: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
 
-
+</span><span data-line="194">
 <div class="viewcode-block" id="SortedCollection.find_gt">
-<a class="viewcode-back" href="../../../module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_gt">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return first item with a key &gt; k.  Raise ValueError if not found"""</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key above: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.find_gt">[docs]</a>
+</span><span data-line="195">    <span class="k">def</span><span class="w"> </span><span class="nf">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="196"><span class="w">        </span><span class="sd">"""Return first item with a key &gt; k.  Raise ValueError if not found"""</span>
+</span><span data-line="197">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+</span><span data-line="198">        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="199">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="200">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No item found with key above: </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span></div>
 </div>
 
-
-
-<span class="c1"># ---------------------------  Simple demo and tests  -------------------------</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">ve2no</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Convert ValueError result to -1"""</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_index</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Location of match or -1 if not found"""</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">i</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""First item with a key equal to k. -1 if not found"""</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">item</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_le</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Last item with a key less-than or equal to k."""</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">item</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_lt</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Last item with a key less-than k."""</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">item</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_ge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""First item with a key-value greater-than or equal to k."""</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">item</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_gt</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""First item with a key-value greater-than or equal to k."""</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">item</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">item</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-
-    <span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">choice</span>
-
-    <span class="n">pool</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">choice</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-            <span class="n">sc</span> <span class="o">=</span> <span class="n">SortedCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">probe</span> <span class="ow">in</span> <span class="n">pool</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_index</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_le</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_le</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_lt</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_lt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_ge</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_ge</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_gt</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_gt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">sc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># test __getitem__</span>
-                <span class="k">assert</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sc</span>  <span class="c1"># test __contains__ and __iter__</span>
-                <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="n">sc</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># test count()</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span>  <span class="c1"># test __len__</span>
-            <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">sc</span><span class="p">)))</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
-            <span class="p">)</span>  <span class="c1"># test __reversed__</span>
-            <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># test copy()</span>
-            <span class="n">sc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># test clear()</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-
-    <span class="n">sd</span> <span class="o">=</span> <span class="n">SortedCollection</span><span class="p">(</span><span class="s2">"The quick Brown Fox jumped"</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_keys</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"brown"</span><span class="p">,</span> <span class="s2">"fox"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"the"</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_items</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"Brown"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="nb">repr</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
-        <span class="o">==</span> <span class="s2">"SortedCollection(['Brown', 'Fox', 'jumped', 'quick', 'The'], key=lower)"</span>
-    <span class="p">)</span>
-    <span class="n">sd</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
-    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">sd</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"The"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"Brown"</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sd</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sd</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">item</span> <span class="o">==</span> <span class="n">sd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">sd</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s2">"jUmPeD"</span><span class="p">)</span>
-    <span class="n">sd</span><span class="o">.</span><span class="n">insert_right</span><span class="p">(</span><span class="s2">"QuIcK"</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_keys</span> <span class="o">==</span> <span class="p">[</span>
-        <span class="s2">"BROWN"</span><span class="p">,</span>
-        <span class="s2">"FOX"</span><span class="p">,</span>
-        <span class="s2">"JUMPED"</span><span class="p">,</span>
-        <span class="s2">"JUMPED"</span><span class="p">,</span>
-        <span class="s2">"QUICK"</span><span class="p">,</span>
-        <span class="s2">"QUICK"</span><span class="p">,</span>
-        <span class="s2">"THE"</span><span class="p">,</span>
-    <span class="p">]</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_items</span> <span class="o">==</span> <span class="p">[</span>
-        <span class="s2">"Brown"</span><span class="p">,</span>
-        <span class="s2">"Fox"</span><span class="p">,</span>
-        <span class="s2">"jUmPeD"</span><span class="p">,</span>
-        <span class="s2">"jumped"</span><span class="p">,</span>
-        <span class="s2">"quick"</span><span class="p">,</span>
-        <span class="s2">"QuIcK"</span><span class="p">,</span>
-        <span class="s2">"The"</span><span class="p">,</span>
-    <span class="p">]</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jUmPeD"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"GOAT"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Fox"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="s2">"GOAT"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jUmPeD"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"FOX"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Fox"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"jumped"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"QuIcK"</span>
-    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">sd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"xyzpdq"</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Oops, failed to notify of missing value"</span>
-    <span class="n">sd</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"jumped"</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"Brown"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"jUmPeD"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"QuIcK"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">]</span>
-
-    <span class="kn">import</span><span class="w"> </span><span class="nn">doctest</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">itemgetter</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">())</span>
-</pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
+</span><span data-line="201">
+</span><span data-line="202">
+</span><span data-line="203"><span class="c1"># ---------------------------  Simple demo and tests  -------------------------</span>
+</span><span data-line="204"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+</span><span data-line="205">
+</span><span data-line="206">    <span class="k">def</span><span class="w"> </span><span class="nf">ve2no</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+</span><span data-line="207"><span class="w">        </span><span class="sd">"""Convert ValueError result to -1"""</span>
+</span><span data-line="208">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="209">            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</span><span data-line="210">        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span data-line="211">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="212">
+</span><span data-line="213">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_index</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="214"><span class="w">        </span><span class="sd">"""Location of match or -1 if not found"""</span>
+</span><span data-line="215">        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</span><span data-line="216">            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="217">                <span class="k">return</span> <span class="n">i</span>
+</span><span data-line="218">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="219">
+</span><span data-line="220">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="221"><span class="w">        </span><span class="sd">"""First item with a key equal to k. -1 if not found"""</span>
+</span><span data-line="222">        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+</span><span data-line="223">            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="224">                <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="225">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="226">
+</span><span data-line="227">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_le</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="228"><span class="w">        </span><span class="sd">"""Last item with a key less-than or equal to k."""</span>
+</span><span data-line="229">        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</span><span data-line="230">            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="231">                <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="232">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="233">
+</span><span data-line="234">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_lt</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="235"><span class="w">        </span><span class="sd">"""Last item with a key less-than k."""</span>
+</span><span data-line="236">        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">seq</span><span class="p">):</span>
+</span><span data-line="237">            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="238">                <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="239">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="240">
+</span><span data-line="241">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_ge</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="242"><span class="w">        </span><span class="sd">"""First item with a key-value greater-than or equal to k."""</span>
+</span><span data-line="243">        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+</span><span data-line="244">            <span class="k">if</span> <span class="n">item</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="245">                <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="246">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="247">
+</span><span data-line="248">    <span class="k">def</span><span class="w"> </span><span class="nf">slow_find_gt</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+</span><span data-line="249"><span class="w">        </span><span class="sd">"""First item with a key-value greater-than or equal to k."""</span>
+</span><span data-line="250">        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">:</span>
+</span><span data-line="251">            <span class="k">if</span> <span class="n">item</span> <span class="o">&gt;</span> <span class="n">k</span><span class="p">:</span>
+</span><span data-line="252">                <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="253">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</span><span data-line="254">
+</span><span data-line="255">    <span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">choice</span>
+</span><span data-line="256">
+</span><span data-line="257">    <span class="n">pool</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">]</span>
+</span><span data-line="258">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
+</span><span data-line="259">        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+</span><span data-line="260">            <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">choice</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+</span><span data-line="261">            <span class="n">sc</span> <span class="o">=</span> <span class="n">SortedCollection</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span data-line="262">            <span class="n">s</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</span><span data-line="263">            <span class="k">for</span> <span class="n">probe</span> <span class="ow">in</span> <span class="n">pool</span><span class="p">:</span>
+</span><span data-line="264">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_index</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="265">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="266">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_le</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_le</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="267">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_lt</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_lt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="268">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_ge</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_ge</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="269">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">ve2no</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">find_gt</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">slow_find_gt</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">probe</span><span class="p">))</span>
+</span><span data-line="270">            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</span><span data-line="271">                <span class="k">assert</span> <span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">sc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># test __getitem__</span>
+</span><span data-line="272">                <span class="k">assert</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sc</span>  <span class="c1"># test __contains__ and __iter__</span>
+</span><span data-line="273">                <span class="k">assert</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="n">sc</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># test count()</span>
+</span><span data-line="274">            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span>  <span class="c1"># test __len__</span>
+</span><span data-line="275">            <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">sc</span><span class="p">)))</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span>
+</span><span data-line="276">                <span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+</span><span data-line="277">            <span class="p">)</span>  <span class="c1"># test __reversed__</span>
+</span><span data-line="278">            <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span> <span class="o">==</span> <span class="nb">list</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>  <span class="c1"># test copy()</span>
+</span><span data-line="279">            <span class="n">sc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>  <span class="c1"># test clear()</span>
+</span><span data-line="280">            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span data-line="281">
+</span><span data-line="282">    <span class="n">sd</span> <span class="o">=</span> <span class="n">SortedCollection</span><span class="p">(</span><span class="s2">"The quick Brown Fox jumped"</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
+</span><span data-line="283">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_keys</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"brown"</span><span class="p">,</span> <span class="s2">"fox"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"the"</span><span class="p">]</span>
+</span><span data-line="284">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_items</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"Brown"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">]</span>
+</span><span data-line="285">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span>
+</span><span data-line="286">    <span class="k">assert</span> <span class="p">(</span>
+</span><span data-line="287">        <span class="nb">repr</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+</span><span data-line="288">        <span class="o">==</span> <span class="s2">"SortedCollection(['Brown', 'Fox', 'jumped', 'quick', 'The'], key=lower)"</span>
+</span><span data-line="289">    <span class="p">)</span>
+</span><span data-line="290">    <span class="n">sd</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span>
+</span><span data-line="291">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="nb">str</span><span class="o">.</span><span class="n">upper</span>
+</span><span data-line="292">    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+</span><span data-line="293">    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">sd</span><span class="p">))</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"The"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"Brown"</span><span class="p">]</span>
+</span><span data-line="294">    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sd</span><span class="p">:</span>
+</span><span data-line="295">        <span class="k">assert</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sd</span>
+</span><span data-line="296">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
+</span><span data-line="297">        <span class="k">assert</span> <span class="n">item</span> <span class="o">==</span> <span class="n">sd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span data-line="298">    <span class="n">sd</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s2">"jUmPeD"</span><span class="p">)</span>
+</span><span data-line="299">    <span class="n">sd</span><span class="o">.</span><span class="n">insert_right</span><span class="p">(</span><span class="s2">"QuIcK"</span><span class="p">)</span>
+</span><span data-line="300">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_keys</span> <span class="o">==</span> <span class="p">[</span>
+</span><span data-line="301">        <span class="s2">"BROWN"</span><span class="p">,</span>
+</span><span data-line="302">        <span class="s2">"FOX"</span><span class="p">,</span>
+</span><span data-line="303">        <span class="s2">"JUMPED"</span><span class="p">,</span>
+</span><span data-line="304">        <span class="s2">"JUMPED"</span><span class="p">,</span>
+</span><span data-line="305">        <span class="s2">"QUICK"</span><span class="p">,</span>
+</span><span data-line="306">        <span class="s2">"QUICK"</span><span class="p">,</span>
+</span><span data-line="307">        <span class="s2">"THE"</span><span class="p">,</span>
+</span><span data-line="308">    <span class="p">]</span>
+</span><span data-line="309">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">_items</span> <span class="o">==</span> <span class="p">[</span>
+</span><span data-line="310">        <span class="s2">"Brown"</span><span class="p">,</span>
+</span><span data-line="311">        <span class="s2">"Fox"</span><span class="p">,</span>
+</span><span data-line="312">        <span class="s2">"jUmPeD"</span><span class="p">,</span>
+</span><span data-line="313">        <span class="s2">"jumped"</span><span class="p">,</span>
+</span><span data-line="314">        <span class="s2">"quick"</span><span class="p">,</span>
+</span><span data-line="315">        <span class="s2">"QuIcK"</span><span class="p">,</span>
+</span><span data-line="316">        <span class="s2">"The"</span><span class="p">,</span>
+</span><span data-line="317">    <span class="p">]</span>
+</span><span data-line="318">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jumped"</span><span class="p">,</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span>
+</span><span data-line="319">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="s2">"JUMPED"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jUmPeD"</span>
+</span><span data-line="320">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="s2">"GOAT"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Fox"</span>
+</span><span data-line="321">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="s2">"GOAT"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"jUmPeD"</span>
+</span><span data-line="322">    <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"FOX"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Fox"</span>
+</span><span data-line="323">    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"jumped"</span>
+</span><span data-line="324">    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">]</span>
+</span><span data-line="325">    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"QuIcK"</span>
+</span><span data-line="326">    <span class="k">assert</span> <span class="n">sd</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"jumped"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">]</span>
+</span><span data-line="327">    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sd</span><span class="p">):</span>
+</span><span data-line="328">        <span class="k">assert</span> <span class="n">sd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="n">i</span>
+</span><span data-line="329">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="330">        <span class="n">sd</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"xyzpdq"</span><span class="p">)</span>
+</span><span data-line="331">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span><span data-line="332">        <span class="k">pass</span>
+</span><span data-line="333">    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="334">        <span class="k">assert</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Oops, failed to notify of missing value"</span>
+</span><span data-line="335">    <span class="n">sd</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"jumped"</span><span class="p">)</span>
+</span><span data-line="336">    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"Brown"</span><span class="p">,</span> <span class="s2">"Fox"</span><span class="p">,</span> <span class="s2">"jUmPeD"</span><span class="p">,</span> <span class="s2">"quick"</span><span class="p">,</span> <span class="s2">"QuIcK"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">]</span>
+</span><span data-line="337">
+</span><span data-line="338">    <span class="kn">import</span><span class="w"> </span><span class="nn">doctest</span>
+</span><span data-line="339">    <span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">itemgetter</span>
+</span><span data-line="340">
+</span><span data-line="341">    <span class="nb">print</span><span class="p">(</span><span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">())</span>
+</span></pre></div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
   </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      <script src="../../../_static/documentation_options.js?v=e78efb02"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+      <script src="../../../_static/shibuya.js?v=50760d75"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
-</body>
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script></body>
 </html>

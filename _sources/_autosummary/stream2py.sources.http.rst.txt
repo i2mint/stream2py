@@ -1,0 +1,12 @@
+stream2py.sources.http
+======================
+
+.. automodule:: stream2py.sources.http
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      HTTPResponseReader
+   

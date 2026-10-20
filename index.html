@@ -1,260 +1,266 @@
-
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
+<html lang="en" data-accent-color="pink" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to stream2py’s documentation! &mdash; stream2py 1.0.43 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>stream2py</title><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API reference" href="api.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d88b86f9" />
+    <link rel="stylesheet" type="text/css" href="_static/shibuya.css?v=2ceb65ce" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_autodoc_typehints.css?v=057ac668" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link media="print" rel="stylesheet" type="text/css" href="_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    
+  <meta property="og:type" content="website"/><meta property="og:title" content="stream2py"/>
+    <meta name="twitter:card" content="summary"/>
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=2c076bcf"></script>
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+</head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="#">
+      
+      
+      <strong>stream2py</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/stream2py.html">stream2py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.buffer_reader.html">stream2py.buffer_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.exceptions.html">stream2py.exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.protocols.html">stream2py.protocols</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.simply.html">stream2py.simply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.source_reader.html">stream2py.source_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.sources.html">stream2py.sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.sources.http.html">stream2py.sources.http</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.stream_buffer.html">stream2py.stream_buffer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.stream_source.html">stream2py.stream_source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.util.html">stream2py.util</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/stream2py.utility.html">stream2py.utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.utility.locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.utility.reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.utility.sorted_collection.html">stream2py.utility.sorted_collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.utility.sorted_deque.html">stream2py.utility.sorted_deque</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/stream2py.utility.typing_hints.html">stream2py.utility.typing_hints</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#">stream2py</a><ul>
+<li><a class="reference internal" href="#plugins">Plugins</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-stream2py-is-for">What <code class="docutils literal notranslate"><span class="pre">stream2py</span></code> is for</a><ul>
+<li><a class="reference internal" href="#reduce-vocabulary-entropy">Reduce vocabulary entropy</a></li>
+<li><a class="reference internal" href="#go-back-in-time">Go back in time</a></li>
+<li><a class="reference internal" href="#multi-readers">Multi readers</a></li>
+<li><a class="reference internal" href="#timestamp-correctly">Timestamp correctly</a></li>
+</ul>
+</li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="#"><span itemprop="name">stream2py</span></a>
+        <meta itemprop="position" content="1" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="relative min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+  <article class="yue dark-code" role="main">
+          <!-- generated by epythet -->
+<p><a class="reference external" href="https://i2mint.github.io/stream2py/index.html">Documentation hosted here</a>.</p>
+<p>To install: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">stream2py</span></code></p>
+<section id="stream2py">
+<h1>stream2py<a class="headerlink" href="#stream2py" title="Link to this heading">#</a></h1>
+<p>Bring data streams to python, with ease.</p>
+<p>One of the goals of the suite of i2i tools is to get from idea 2 implementation without all the fuss.
+We’ve got py2store to do that for the storage (reading or writing) concern,
+and others (e.g. py2cli, py2ws, py2dash) to take care of exposing python functions to the world (of command line interfaces, webservices, browser dashboards, etc.).</p>
+<p>Here, we address the stream acquisition concern.
+As always, we aim at offering as-simple-as-drawing-a-simple-drawing means to get things done.</p>
+<section id="plugins">
+<h2>Plugins<a class="headerlink" href="#plugins" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">stream2py</span></code> has the core functionality, and is completely dependency-free (only builtin python).</p>
+<p>That said, to work with specific stream sources, you can install plugins that will allow you to work with them.
+At the time of writing this we have:</p>
+<ul class="simple">
+<li><p>Audio: <a class="reference external" href="https://github.com/i2mint/audiostream2py">audiostream2py</a></p></li>
+<li><p>Keyboard inputs: <a class="reference external" href="https://github.com/i2mint/keyboardstream2py">keyboardstream2py</a></p></li>
+<li><p>PLC (Programmable Logic Controller): <a class="reference external" href="https://github.com/i2mint/plcstream2py">plcstream2py</a></p></li>
+<li><p>Computer health stats: <a class="reference external" href="https://github.com/i2mint/pchealthstream2py">pchealthstream2py</a></p></li>
+<li><p>Video: <a class="reference external" href="https://github.com/i2mint/videostream2py">videostream2py</a></p></li>
+<li><p>Flask: <a class="reference external" href="https://github.com/i2mint/flaskstream2py">flaskstream2py</a></p></li>
+</ul>
+</section>
+</section>
+<section id="what-stream2py-is-for">
+<h1>What <code class="docutils literal notranslate"><span class="pre">stream2py</span></code> is for<a class="headerlink" href="#what-stream2py-is-for" title="Link to this heading">#</a></h1>
+<section id="reduce-vocabulary-entropy">
+<h2>Reduce vocabulary entropy<a class="headerlink" href="#reduce-vocabulary-entropy" title="Link to this heading">#</a></h2>
+<p>One way we do this is by reducing the vocabulary entropy:
+We don’t want to have to think about how every specific source calls a read, or a size,
+or a time to pause before reads,
+or what format THAT particular sensor is encoding it’s data in,
+having you shuffle through documentation pages before you can figure out how to start doing
+the fun stuff,
+which happens to be the stuff that actually produces value. And, oh, once you figure it out,
+if you don’t use it for a few months or years, next time you need to do something similar, you’ll have to figure it all out again.</p>
+<p>No. That’s just a waste of time of time. Instead, we say you do that at most once.
+You don’t have to do it at all if the community (us) already provided you with the their-language-to-our-consistent-language adapter for the stream you want to hook into. And if it’s something new, well you’ll have to figure it out, but you then write the adapter once, and now you (1) can use the rest of stream2py’s tools and (2) you don’t have to do it again.</p>
+</section>
+<section id="go-back-in-time">
+<h2>Go back in time<a class="headerlink" href="#go-back-in-time" title="Link to this heading">#</a></h2>
+<p>We also address the problem of impermanence.</p>
+<p>Think of the streams that different sensors such as audio, vibration, video offer, or even “industrial” signals such as wifi, can bus data, PLC, etc. They happen, and they’re gone. Sure, they usually have buffers, but these are typically just big enough to get the data from high frequency reads – not enough to have the time for some more involved analysis that smart systems require.</p>
+<p>We address this problem by</p>
+</section>
+<section id="multi-readers">
+<h2>Multi readers<a class="headerlink" href="#multi-readers" title="Link to this heading">#</a></h2>
+<p>It often happens that you want to do more than one thing with a stream.
+Say store it, visualize it in real time, and direct it to a analysis pipeline.
+In order for this to be possible with no hiccups, some things need to be taken care of.
+We did, so you don’t have to.</p>
+</section>
+<section id="timestamp-correctly">
+<h2>Timestamp correctly<a class="headerlink" href="#timestamp-correctly" title="Link to this heading">#</a></h2>
+<p>In our extensive experience with people (the write code to store stream data),
+we’ve noticed that many engineers, when faced with the task to timestamp the segments of
+stream that they’re saving, follow a design pattern that goes like this
+(a) get the stream data
+(b) ask the system what date/time it is
+(c) use that (and perhaps, just to make even more likely for the timestamp to be interpreted
+incorrectly, call it the “offset_date”)</p>
+<p>The problem with this design pattern is that it’s all pattern and no design.
+It is <strong>not</strong> the timestamp of the beginning of the segment:
+That time happened <strong>after</strong> the <strong>end</strong> of the event of the end of the segment occurred,
+and even more so, <strong>after</strong> the system that will timestamp and store.
+Further, there is a lot of wiggle room in the delay accumulated between the actual event,
+and the moment we ask the system what time it is.
+Sometimes it doesn’t matter, but sometimes it does:
+For example, if we want to align with some other timestamped data,
+or use these timestamps to determine if there’s gaps or overlaps between the segments
+we’ve acquired.</p>
+<p>Point is, stream2py will give you the tools to tackle that problem properly.
+It does so by having the stream2py buffers mentioned above keep data flow statistics that readers can then use to
+more precisely timestamp what they read.</p>
+<p><a class="reference external" href="https://i2mint.github.io/stream2py/index.html">Documentation here</a>.</p>
+<p class="epythet-aggregates">This documentation as a single file: <a href="stream2py.md">stream2py.md</a> (Markdown, for agents).</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-20 06:42 UTC from <a href="https://github.com/i2mint/stream2py/commit/5ad7c98ca576ecd85cf32e066494676a89749254">5ad7c98</a> (master) · stream2py 1.0.44 · <a href="about-this-build.html">about this build</a></p>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-next">
+    <a href="api.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">API reference</div>
+      </div>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright">
+  <p>
+    Made with
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials">
+  <a href="https://github.com/i2mint/stream2py" aria-label="GitHub">
+    <iconify-icon icon="simple-icons:github"></iconify-icon>
+  </a></div>
+    </div>
+  </div>
+</footer>
+      <script src="_static/documentation_options.js?v=e78efb02"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="stream2py" href="module_docs/stream2py.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="#" class="icon icon-home">
-            stream2py
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py.html">stream2py</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/exceptions.html">stream2py.exceptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/protocols.html">stream2py.protocols</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/simply.html">stream2py.simply</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/source_reader.html">stream2py.source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources.html">stream2py.sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_source.html">stream2py.stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/util.html">stream2py.util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility.html">stream2py.utility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">stream2py</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to stream2py’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-stream2py-s-documentation">
-<h1>Welcome to stream2py’s documentation!<a class="headerlink" href="#welcome-to-stream2py-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py.html">stream2py</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py.html#the-rationale">The Rationale</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py.html#how-to-use">How to use</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/buffer_reader.html">stream2py.buffer_reader</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/buffer_reader.html#stream2py.buffer_reader.BufferReader"><code class="docutils literal notranslate"><span class="pre">BufferReader</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/exceptions.html">stream2py.exceptions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.BufferError"><code class="docutils literal notranslate"><span class="pre">BufferError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.BufferOverflowError"><code class="docutils literal notranslate"><span class="pre">BufferOverflowError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.InvalidDataError"><code class="docutils literal notranslate"><span class="pre">InvalidDataError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.NoDataAvailableError"><code class="docutils literal notranslate"><span class="pre">NoDataAvailableError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.Stream2PyError"><code class="docutils literal notranslate"><span class="pre">Stream2PyError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.StreamAlreadyStoppedError"><code class="docutils literal notranslate"><span class="pre">StreamAlreadyStoppedError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/exceptions.html#stream2py.exceptions.StreamNotStartedError"><code class="docutils literal notranslate"><span class="pre">StreamNotStartedError</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/protocols.html">stream2py.protocols</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/protocols.html#stream2py.protocols.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/simply.html">stream2py.simply</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/simply.html#stream2py.simply.mk_stream_buffer"><code class="docutils literal notranslate"><span class="pre">mk_stream_buffer()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/source_reader.html">stream2py.source_reader</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/source_reader.html#stream2py.source_reader.SourceReader"><code class="docutils literal notranslate"><span class="pre">SourceReader</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources.html">stream2py.sources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/sources/http.html">HTTP Response streaming reader with no external dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_buffer.html">stream2py.stream_buffer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/stream_buffer.html#stream2py.stream_buffer.StreamBuffer"><code class="docutils literal notranslate"><span class="pre">StreamBuffer</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/stream_source.html">stream2py.stream_source</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/stream_source.html#stream2py.stream_source.StreamSource"><code class="docutils literal notranslate"><span class="pre">StreamSource</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/stream_source.html#stream2py.stream_source.defaulted_values"><code class="docutils literal notranslate"><span class="pre">defaulted_values()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader.html">stream2py.tests.test_buffer_reader</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader.html#stream2py.tests.test_buffer_reader.test_inject_buffer_reader"><code class="docutils literal notranslate"><span class="pre">test_inject_buffer_reader()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_blocking.html">stream2py.tests.test_buffer_reader_blocking</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_blocking.html#stream2py.tests.test_buffer_reader_blocking.test_buffer_reader_blocking"><code class="docutils literal notranslate"><span class="pre">test_buffer_reader_blocking()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_blocking.html#stream2py.tests.test_buffer_reader_blocking.test_buffer_reader_blocking_stops_on_stop_event"><code class="docutils literal notranslate"><span class="pre">test_buffer_reader_blocking_stops_on_stop_event()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_buffer_reader_stopiteration.html">stream2py.tests.test_buffer_reader_stopiteration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_lock_sorted_deque.html">stream2py.tests.test_lock_sorted_deque</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_quick_source_reader.html">stream2py.tests.test_quick_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_reader_without_context.html">stream2py.tests.test_reader_without_context</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_source_reader.html">stream2py.tests.test_source_reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_buffer.html">stream2py.tests.test_stream_buffer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_stream_source.html">stream2py.tests.test_stream_source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/test_util.html">stream2py.tests.test_util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html">stream2py.tests.utils_for_testing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.RandomFloatSource"><code class="docutils literal notranslate"><span class="pre">RandomFloatSource</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.SimpleSourceReader"><code class="docutils literal notranslate"><span class="pre">SimpleSourceReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterSourceReader"><code class="docutils literal notranslate"><span class="pre">TenthSecondCounterSourceReader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.TenthSecondCounterStreamSource"><code class="docutils literal notranslate"><span class="pre">TenthSecondCounterStreamSource</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_decreasing"><code class="docutils literal notranslate"><span class="pre">is_decreasing()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_increasing"><code class="docutils literal notranslate"><span class="pre">is_increasing()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_monotonic"><code class="docutils literal notranslate"><span class="pre">is_monotonic()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_non_decreasing"><code class="docutils literal notranslate"><span class="pre">is_non_decreasing()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.is_non_increasing"><code class="docutils literal notranslate"><span class="pre">is_non_increasing()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/tests/utils_for_testing.html#stream2py.tests.utils_for_testing.pairwise"><code class="docutils literal notranslate"><span class="pre">pairwise()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/util.html">stream2py.util</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.ContextualizeCall"><code class="docutils literal notranslate"><span class="pre">ContextualizeCall</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.EnterFunctionValidation"><code class="docutils literal notranslate"><span class="pre">EnterFunctionValidation</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.ExitFunctionValidation"><code class="docutils literal notranslate"><span class="pre">ExitFunctionValidation</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.TypeValidationError"><code class="docutils literal notranslate"><span class="pre">TypeValidationError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/util.html#stream2py.util.identity"><code class="docutils literal notranslate"><span class="pre">identity()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility.html">stream2py.utility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/locked_sorted_deque.html">stream2py.utility.locked_sorted_deque</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/locked_sorted_deque.html#stream2py.utility.locked_sorted_deque.RWLockSortedDeque"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html">stream2py.utility.reader_writer_lock</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLock"><code class="docutils literal notranslate"><span class="pre">RWLock</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader"><code class="docutils literal notranslate"><span class="pre">Reader</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/reader_writer_lock.html#stream2py.utility.reader_writer_lock.Writer"><code class="docutils literal notranslate"><span class="pre">Writer</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/sorted_collection.html">stream2py.utility.sorted_collection</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection"><code class="docutils literal notranslate"><span class="pre">SortedCollection</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/sorted_deque.html">stream2py.utility.sorted_deque</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque"><code class="docutils literal notranslate"><span class="pre">SortedDeque</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/stream2py/utility/typing_hints.html">stream2py.utility.typing_hints</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/stream2py/utility/typing_hints.html#stream2py.utility.typing_hints.ComparableType"><code class="docutils literal notranslate"><span class="pre">ComparableType</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 1.0.43</p>
-<p>Last change: Aug 26, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/stream2py.html" class="btn btn-neutral float-right" title="stream2py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+      <script src="_static/copybutton.js?v=fd10adb8"></script>
+      <script src="_static/shibuya.js?v=50760d75"></script></body>
 </html>

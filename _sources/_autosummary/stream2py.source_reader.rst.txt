@@ -1,0 +1,12 @@
+stream2py.source\_reader
+========================
+
+.. automodule:: stream2py.source_reader
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SourceReader
+   

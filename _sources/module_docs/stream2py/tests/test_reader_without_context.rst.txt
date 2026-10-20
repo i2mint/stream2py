@@ -1,4 +1,0 @@
-stream2py.tests.test_reader_without_context
-===========================================
-.. automodule:: stream2py.tests.test_reader_without_context
-   :members:

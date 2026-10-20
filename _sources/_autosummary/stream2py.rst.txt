@@ -1,0 +1,22 @@
+﻿stream2py
+=========
+
+.. automodule:: stream2py
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   buffer_reader
+   exceptions
+   protocols
+   simply
+   source_reader
+   sources
+   stream_buffer
+   stream_source
+   util
+   utility

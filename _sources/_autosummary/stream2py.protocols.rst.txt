@@ -1,0 +1,12 @@
+stream2py.protocols
+===================
+
+.. automodule:: stream2py.protocols
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Source
+   

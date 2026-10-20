@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-20T06:42:20Z",
+  "package": {
+    "name": "stream2py",
+    "version": "1.0.44",
+    "display_name": "stream2py",
+    "source": "pyproject.toml"
+  },
+  "git": {
+    "available": true,
+    "commit": "5ad7c98ca576ecd85cf32e066494676a89749254",
+    "short_commit": "5ad7c98",
+    "branch": "master",
+    "tags": [],
+    "dirty": false,
+    "remote_url": "https://github.com/i2mint/stream2py",
+    "commit_url": "https://github.com/i2mint/stream2py/commit/5ad7c98ca576ecd85cf32e066494676a89749254",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "i2mint/stream2py",
+    "sha": "5ad7c98ca576ecd85cf32e066494676a89749254",
+    "sha_in_history": true,
+    "ref": "refs/heads/master",
+    "ref_name": "master",
+    "run_id": "39381696167",
+    "run_url": "https://github.com/i2mint/stream2py/actions/runs/39381696167",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.18",
+    "sphinx": "9.1.1",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "shibuya",
+    "accent": "#823774",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/",
+      "examples/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 17,
+    "objects_documented": 97
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "1.0.44",
+    "relation": "same",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 5ad7c98ca576ecd85cf32e066494676a89749254\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "warnings": [],
+  "alignment": {
+    "aligned": true,
+    "notes": []
+  }
+}

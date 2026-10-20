@@ -1,0 +1,28 @@
+# stream2py
+
+> Bring data streams to python with ease
+
+
+## Pages in this subsection
+
+- [stream2py](stream2py.html.md): Stream2py enables you to create a single asynchronous Source Reader and simply distribute
+- [stream2py.buffer_reader](stream2py.buffer_reader.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
+- [stream2py.exceptions](stream2py.exceptions.html.md): Custom exception classes for stream2py
+- [stream2py.protocols](stream2py.protocols.html.md): Defines protocols for classes to avoid circular imports
+- [stream2py.simply](stream2py.simply.html.md): Helper Function to construct a SourceReader and StreamBuffer in one
+- [stream2py.source_reader](stream2py.source_reader.html.md): A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
+- [stream2py.sources](stream2py.sources.html.md): A few light weight (builtin-only ) source readers you can use
+- [stream2py.sources.http](stream2py.sources.http.html.md): | &#96;HTTPResponseReader&#96;(url, &#92;&#42;&#91;, method, ...&#93;)   |    |
+- [stream2py.stream_buffer](stream2py.stream_buffer.html.md): A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a SourceReader
+- [stream2py.stream_source](stream2py.stream_source.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
+- [stream2py.util](stream2py.util.html.md): Util functions. Functions that are used by, or can be used with, stream2py objects
+- [stream2py.utility](stream2py.utility.html.md): Low-level building blocks used by stream2py’s buffers and readers.
+- [stream2py.utility.locked_sorted_deque](stream2py.utility.locked_sorted_deque.html.md): Sorted Deque that handles Reader-Writer Priority
+- [stream2py.utility.reader_writer_lock](stream2py.utility.reader_writer_lock.html.md): READER-WRITER LOCK WITH PRIORITY FOR WRITERS
+- [stream2py.utility.sorted_collection](stream2py.utility.sorted_collection.html.md): Sequence sorted by a key function.
+- [stream2py.utility.sorted_deque](stream2py.utility.sorted_deque.html.md): Deque sorted by a key function.
+- [stream2py.utility.typing_hints](stream2py.utility.typing_hints.html.md): Typing hints
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

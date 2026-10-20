@@ -1,0 +1,12 @@
+stream2py.simply
+================
+
+.. automodule:: stream2py.simply
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      mk_stream_buffer
+   

@@ -1,4 +1,0 @@
-stream2py.tests.test_buffer_reader_blocking
-===========================================
-.. automodule:: stream2py.tests.test_buffer_reader_blocking
-   :members:

@@ -1,0 +1,17 @@
+stream2py.utility
+=================
+
+.. automodule:: stream2py.utility
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   locked_sorted_deque
+   reader_writer_lock
+   sorted_collection
+   sorted_deque
+   typing_hints
