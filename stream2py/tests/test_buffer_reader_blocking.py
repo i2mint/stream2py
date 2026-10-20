@@ -2,7 +2,7 @@
 import time
 import threading
 from stream2py import StreamBuffer
-from stream2py.tests.utils_for_testing import SimpleSourceReader
+from stream2py.tests.utils_for_testing import SimpleSourceReader, wait_until
 from itertools import count
 
 
@@ -15,7 +15,7 @@ def test_buffer_reader_blocking():
         reader = buffer.mk_reader()
 
         # Wait a moment for some data to be available
-        time.sleep(0.2)
+        assert wait_until(lambda: len(buffer.source_buffer) >= 6)
 
         # Non-blocking read should return data immediately when available
         result = reader.read(blocking=False, ignore_no_item_found=True)
@@ -47,7 +47,7 @@ def test_buffer_reader_blocking_stops_on_stop_event():
     reader = buffer.mk_reader()
 
     # Read all available data
-    time.sleep(0.1)
+    assert wait_until(lambda: len(buffer.source_buffer) >= 5)
     while reader.read(blocking=False, ignore_no_item_found=True) is not None:
         pass
 

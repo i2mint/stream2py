@@ -1,4 +1,7 @@
-from stream2py.tests.utils_for_testing import TenthSecondCounterStreamSource
+from stream2py.tests.utils_for_testing import (
+    TenthSecondCounterStreamSource,
+    wait_until,
+)
 import time
 
 
@@ -6,7 +9,7 @@ def test_stream_source():
     source = TenthSecondCounterStreamSource()  # source
     with source.open_reader() as sc_reader:
         sc_buf = source._stream_buffer
-        time.sleep(2)
+        assert wait_until(lambda: len(sc_buf.source_buffer) >= 20)  # ~2s of data
         assert source.info['bt'] != 0, source.info
         print('data as shown is (timestamp, count) at every tenth of a second')
         while True:
@@ -85,7 +88,7 @@ def test_stream_source():
             ), 'new readers should now have the same last_item cursor position'
 
             # print some data from old and new reader and see they are different
-            time.sleep(1.5)
+            assert wait_until(lambda: len(sc_buf.source_buffer) >= 3)
             print('comparing first start reader values to second start')
             while True:
                 r22 = sc_reader22.read(n=1, ignore_no_item_found=True)

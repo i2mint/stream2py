@@ -271,3 +271,18 @@ class TenthSecondCounterStreamSource(StreamSource):
         return None
 
     key = operator.itemgetter(0)  # (timestamp_us, count) -> timestamp_us
+
+
+def wait_until(condition, *, timeout=10.0, interval=0.01):
+    """Poll ``condition()`` until it is truthy or ``timeout`` seconds pass.
+
+    Use instead of a fixed ``time.sleep`` before asserting on data produced by a
+    background thread: a fixed sleep is too short on a loaded (or single-core) runner.
+    Returns the final truthiness of ``condition()`` so callers can ``assert`` it.
+    """
+    deadline = time.monotonic() + timeout
+    while not condition():
+        if time.monotonic() >= deadline:
+            return bool(condition())
+        time.sleep(interval)
+    return True

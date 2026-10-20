@@ -1,7 +1,7 @@
 """Tests for using readers without context manager (Issue #18)"""
 import pytest
 from stream2py import StreamBuffer
-from stream2py.tests.utils_for_testing import SimpleSourceReader
+from stream2py.tests.utils_for_testing import SimpleSourceReader, wait_until
 from stream2py.exceptions import StreamNotStartedError
 
 
@@ -26,8 +26,7 @@ def test_reader_works_without_context_manager():
     reader = buffer.mk_reader()
 
     # Reading should work fine without context manager
-    import time
-    time.sleep(0.1)  # Let some data accumulate
+    assert wait_until(lambda: len(buffer.source_buffer) >= 2)  # some data accumulated
 
     item = reader.read(ignore_no_item_found=True)
     assert item is not None
@@ -84,8 +83,7 @@ def test_stream_buffer_with_context():
     with StreamBuffer(source, maxlen=100) as buffer:
         reader = buffer.mk_reader()
 
-        import time
-        time.sleep(0.1)
+        assert wait_until(lambda: len(buffer.source_buffer) >= 1)
 
         item = reader.read(ignore_no_item_found=True)
         assert item is not None
