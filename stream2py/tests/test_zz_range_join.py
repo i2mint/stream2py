@@ -1,85 +1,78 @@
-"""range(join=True) (i2mint/stream2py#14). Named test_zz_ so it runs last: its
-threaded sources must not compete with the timing-sensitive tests before it."""
+"""range(join=True) (i2mint/stream2py#14).
 
-def _chunks_source_class():
-    import time
+Deliberately thread-free: the buffer and reader are driven directly, so these tests
+can't compete for CPU with the timing-sensitive threaded tests around them."""
+import threading
 
-    from stream2py import SourceReader
+import pytest
 
-    class Chunks(SourceReader):
-        """Items are (first_key, [values...]); value i sits at key first_key + i."""
+from stream2py import SourceReader
+from stream2py.stream_buffer import _SourceBuffer, _overridden
 
-        def __init__(self, size=4, n=5):
-            self.size, self.n = size, n
 
-        def open(self):
-            self._it = iter(range(self.n))
+class Chunks(SourceReader):
+    """Items are (first_key, [values...]); value i sits at key first_key + i."""
 
-        def read(self):
-            i = next(self._it, None)
-            if i is None:
-                time.sleep(0.01)  # don't spin the reader thread once exhausted
-                return None
-            return (i * self.size, list(range(i * self.size, (i + 1) * self.size)))
+    def open(self):
+        pass
 
-        def close(self):
-            pass
+    def read(self):
+        return None
 
-        def key(self, data):
-            return data[0]
+    def close(self):
+        pass
 
-        def slice_item(self, item, start=None, stop=None):
-            first, values = item
-            lo = 0 if start is None else max(start - first, 0)
-            hi = len(values) if stop is None else stop - first + 1
-            return (first + lo, values[lo:hi])
+    def key(self, data):
+        return data[0]
 
-        def join_items(self, items):
-            return (items[0][0], [v for _, vs in items for v in vs])
+    def slice_item(self, item, start=None, stop=None):
+        first, values = item
+        lo = 0 if start is None else max(start - first, 0)
+        hi = len(values) if stop is None else stop - first + 1
+        return (first + lo, values[lo:hi])
 
-    return Chunks
+    def join_items(self, items):
+        return (items[0][0], [v for _, vs in items for v in vs])
+
+
+class NoJoin(Chunks):
+    slice_item = SourceReader.slice_item
+    join_items = SourceReader.join_items
+
+
+def _reader(source, n=5, size=4):
+    sb = _SourceBuffer(
+        {},
+        threading.Event(),
+        key=source.key,
+        join_items=_overridden(source, "join_items"),
+        slice_item=_overridden(source, "slice_item"),
+    )
+    for i in range(n):
+        sb.append((i * size, list(range(i * size, (i + 1) * size))))
+    return sb.mk_reader()
 
 
 def test_range_join_trims_and_joins_chunks():
-    """i2mint/stream2py#14: range(join=True) returns the exact span as one item."""
-    import pytest
-    from stream2py import SourceReader, StreamBuffer
-
-    Chunks = _chunks_source_class()
-
-    class NoJoin(Chunks):
-        slice_item = SourceReader.slice_item
-        join_items = SourceReader.join_items
-
-    import time
-
-    with StreamBuffer(source_reader=Chunks(), maxlen=10) as sb:
-        reader = sb.mk_reader()
-        time.sleep(0.3)
-        assert reader.range(6, 13, join=True) == (6, list(range(6, 14)))
-        assert reader.last_key == 12  # cursor stays on a real buffer item
-        assert reader.range(5, 5, join=True, peek=True) == (5, [5])
-        assert reader.range(0, 19, join=True) == (0, list(range(20)))
-        # default behaviour is unchanged: whole chunks, from the first key >= start
-        assert [k for k, _ in reader.range(6, 13)] == [8, 12]
-        with pytest.raises(ValueError):
-            reader.range(0, 5, step=2, join=True)
-
-    with StreamBuffer(source_reader=NoJoin(), maxlen=10) as sb:
-        reader = sb.mk_reader()
-        with pytest.raises(NotImplementedError):
-            reader.range(0, 5, join=True)
+    reader = _reader(Chunks())
+    assert reader.range(6, 13, join=True) == (6, list(range(6, 14)))
+    assert reader.last_key == 12  # cursor stays on a real buffer item
+    assert reader.range(5, 5, join=True, peek=True) == (5, [5])
+    assert reader.range(0, 19, join=True) == (0, list(range(20)))
+    # default behaviour is unchanged: whole chunks, from the first key >= start
+    assert [k for k, _ in reader.range(6, 13)] == [8, 12]
+    with pytest.raises(ValueError):
+        reader.range(0, 5, step=2, join=True)
 
 
 def test_range_join_only_new_items_starts_after_cursor():
-    import time
+    reader = _reader(Chunks())
+    reader.range(0, 5)  # cursor now on the chunk with key 4
+    assert reader.last_key == 4
+    assert reader.range(0, 13, join=True, only_new_items=True)[0] == 8
 
-    from stream2py import StreamBuffer
 
-    with StreamBuffer(source_reader=_chunks_source_class()(), maxlen=10) as sb:
-        reader = sb.mk_reader()
-        time.sleep(0.3)
-        reader.range(0, 5)  # cursor now on the chunk with key 4
-        assert reader.last_key == 4
-        joined = reader.range(0, 13, join=True, only_new_items=True)
-        assert joined[0] == 8  # nothing at or before the cursor chunk is repeated
+def test_range_join_needs_the_source_to_implement_it():
+    assert _overridden(NoJoin(), "join_items") is None
+    with pytest.raises(NotImplementedError):
+        _reader(NoJoin()).range(0, 5, join=True)
