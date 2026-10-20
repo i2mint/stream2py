@@ -23,6 +23,8 @@ def test_inject_buffer_reader():
 
 
 def _chunks_source_class():
+    import time
+
     from stream2py import SourceReader
 
     class Chunks(SourceReader):
@@ -37,6 +39,7 @@ def _chunks_source_class():
         def read(self):
             i = next(self._it, None)
             if i is None:
+                time.sleep(0.01)  # don't spin the reader thread once exhausted
                 return None
             return (i * self.size, list(range(i * self.size, (i + 1) * self.size)))
 
