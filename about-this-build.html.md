@@ -2,16 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-10-20 06:42 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/5ad7c98ca576ecd85cf32e066494676a89749254"><code>5ad7c98</code></a> on branch <code>master</code>, for **stream2py 1.0.44** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 07:26 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/27f12033cb9c1fa2adbbf8e2b1f6af4310490441"><code>27f1203</code></a> on branch <code>master</code>, for **stream2py 1.0.45** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (1.0.45) is behind the latest release on PyPI (1.0.46): `pip install stream2py` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/5ad7c98ca576ecd85cf32e066494676a89749254"><code>5ad7c98ca576ecd85cf32e066494676a89749254</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/27f12033cb9c1fa2adbbf8e2b1f6af4310490441"><code>27f12033cb9c1fa2adbbf8e2b1f6af4310490441</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -22,9 +24,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/39381696167">39381696167</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/39386287908">39386287908</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>5ad7c98ca576ecd85cf32e066494676a89749254</code> (in the history of the built commit) |
+| Event commit | <code>27f12033cb9c1fa2adbbf8e2b1f6af4310490441</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -49,13 +51,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.44/">1.0.44</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.46/">1.0.46</a>, newer than the documented version (1.0.45).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout 5ad7c98ca576ecd85cf32e066494676a89749254
+git checkout 27f12033cb9c1fa2adbbf8e2b1f6af4310490441
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

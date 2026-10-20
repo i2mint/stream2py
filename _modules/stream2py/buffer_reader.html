@@ -440,210 +440,212 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="296">                <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span> <span class="k">if</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">_next_key</span> <span class="k">else</span> <span class="n">_next_key</span>
 </span><span data-line="297">            <span class="k">else</span><span class="p">:</span>
 </span><span data-line="298">                <span class="n">_start</span> <span class="o">=</span> <span class="n">start</span>
-</span><span data-line="299">            <span class="n">trim_start</span> <span class="o">=</span> <span class="n">_start</span>  <span class="c1"># where the joined item must begin, before start_le widens</span>
-</span><span data-line="300">            <span class="k">if</span> <span class="n">start_le</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="301">                <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span>
-</span><span data-line="302">                    <span class="ne">ValueError</span>
-</span><span data-line="303">                <span class="p">):</span>  <span class="c1"># ValueError: No item found with key at or below: _start</span>
-</span><span data-line="304">                    <span class="n">_start</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="n">_start</span><span class="p">))</span>
-</span><span data-line="305">            <span class="k">if</span> <span class="n">stop_ge</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="306">                <span class="k">try</span><span class="p">:</span>
-</span><span data-line="307">                    <span class="n">stop</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="n">stop</span><span class="p">))</span>
-</span><span data-line="308">                <span class="k">except</span> <span class="p">(</span>
-</span><span data-line="309">                    <span class="ne">ValueError</span>
-</span><span data-line="310">                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
-</span><span data-line="311">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
-</span><span data-line="312">                        <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="313">                    <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="314">
-</span><span data-line="315">            <span class="n">items</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+</span><span data-line="299">            <span class="n">trim_start</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="300">                <span class="n">_start</span>  <span class="c1"># where the joined item must begin, before start_le widens</span>
+</span><span data-line="301">            <span class="p">)</span>
+</span><span data-line="302">            <span class="k">if</span> <span class="n">start_le</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="303">                <span class="k">with</span> <span class="n">suppress</span><span class="p">(</span>
+</span><span data-line="304">                    <span class="ne">ValueError</span>
+</span><span data-line="305">                <span class="p">):</span>  <span class="c1"># ValueError: No item found with key at or below: _start</span>
+</span><span data-line="306">                    <span class="n">_start</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_le</span><span class="p">(</span><span class="n">_start</span><span class="p">))</span>
+</span><span data-line="307">            <span class="k">if</span> <span class="n">stop_ge</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="308">                <span class="k">try</span><span class="p">:</span>
+</span><span data-line="309">                    <span class="n">stop</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">find_ge</span><span class="p">(</span><span class="n">stop</span><span class="p">))</span>
+</span><span data-line="310">                <span class="k">except</span> <span class="p">(</span>
+</span><span data-line="311">                    <span class="ne">ValueError</span>
+</span><span data-line="312">                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key at or above: stop</span>
+</span><span data-line="313">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+</span><span data-line="314">                        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="315">                    <span class="k">raise</span> <span class="n">e</span>
 </span><span data-line="316">
-</span><span data-line="317">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-</span><span data-line="318">            <span class="k">try</span><span class="p">:</span>
-</span><span data-line="319">                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span data-line="320">            <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: list index out of range</span>
-</span><span data-line="321">                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
-</span><span data-line="322">                    <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="323">                <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="324">        <span class="k">if</span> <span class="n">join</span> <span class="ow">and</span> <span class="n">items</span><span class="p">:</span>
-</span><span data-line="325">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trim_and_join</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">trim_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
-</span><span data-line="326">        <span class="k">return</span> <span class="n">items</span></div>
+</span><span data-line="317">            <span class="n">items</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+</span><span data-line="318">
+</span><span data-line="319">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+</span><span data-line="320">            <span class="k">try</span><span class="p">:</span>
+</span><span data-line="321">                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span data-line="322">            <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: list index out of range</span>
+</span><span data-line="323">                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+</span><span data-line="324">                    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="325">                <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="326">        <span class="k">if</span> <span class="n">join</span> <span class="ow">and</span> <span class="n">items</span><span class="p">:</span>
+</span><span data-line="327">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trim_and_join</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">trim_start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
+</span><span data-line="328">        <span class="k">return</span> <span class="n">items</span></div>
 
-</span><span data-line="327">
-</span><span data-line="328">    <span class="k">def</span><span class="w"> </span><span class="nf">_trim_and_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
-</span><span data-line="329"><span class="w">        </span><span class="sd">"""Trim the first and last of ``items`` to ``[start, stop]`` and join them.</span>
-</span><span data-line="330">
-</span><span data-line="331"><span class="sd">        Only the ends can overhang the query (the keys are ordered), and a single</span>
-</span><span data-line="332"><span class="sd">        item is both ends at once."""</span>
-</span><span data-line="333">        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-</span><span data-line="334">        <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="335">        <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
-</span><span data-line="336">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_join_items</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
-</span><span data-line="337">
+</span><span data-line="329">
+</span><span data-line="330">    <span class="k">def</span><span class="w"> </span><span class="nf">_trim_and_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">):</span>
+</span><span data-line="331"><span class="w">        </span><span class="sd">"""Trim the first and last of ``items`` to ``[start, stop]`` and join them.</span>
+</span><span data-line="332">
+</span><span data-line="333"><span class="sd">        Only the ends can overhang the query (the keys are ordered), and a single</span>
+</span><span data-line="334"><span class="sd">        item is both ends at once."""</span>
+</span><span data-line="335">        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</span><span data-line="336">        <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="337">        <span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
+</span><span data-line="338">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_join_items</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+</span><span data-line="339">
 <div class="viewcode-block" id="BufferReader.tail">
 <a class="viewcode-back" href="../../_autosummary/stream2py.buffer_reader.html#stream2py.buffer_reader.BufferReader.tail">[docs]</a>
-</span><span data-line="338">    <span class="k">def</span><span class="w"> </span><span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-</span><span data-line="339"><span class="w">        </span><span class="sd">"""Finds the last item in buffer. Raise ValueError if no item found.</span>
-</span><span data-line="340">
-</span><span data-line="341"><span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
-</span><span data-line="342"><span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
-</span><span data-line="343"><span class="sd">            instead of raising exception</span>
-</span><span data-line="344"><span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
-</span><span data-line="345"><span class="sd">            or return None if ignore_no_item_found</span>
-</span><span data-line="346"><span class="sd">        :return: tail item</span>
-</span><span data-line="347"><span class="sd">        """</span>
-</span><span data-line="348">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-</span><span data-line="349">            <span class="k">if</span> <span class="n">only_new_items</span><span class="p">:</span>
-</span><span data-line="350">                <span class="k">try</span><span class="p">:</span>
-</span><span data-line="351">                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_last_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
-</span><span data-line="352">                <span class="k">except</span> <span class="p">(</span>
-</span><span data-line="353">                    <span class="ne">ValueError</span>
-</span><span data-line="354">                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
-</span><span data-line="355">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
-</span><span data-line="356">                        <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="357">                    <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="358">                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="359">                    <span class="c1"># TypeError: '&gt;' not supported between instances of type(key) and 'NoneType'</span>
-</span><span data-line="360">                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
-</span><span data-line="361">                        <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span data-line="362">                    <span class="k">else</span><span class="p">:</span>
-</span><span data-line="363">                        <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="364">            <span class="k">else</span><span class="p">:</span>
-</span><span data-line="365">                <span class="k">try</span><span class="p">:</span>
-</span><span data-line="366">                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span data-line="367">                <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: deque index out of range</span>
-</span><span data-line="368">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
-</span><span data-line="369">                        <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="370">                    <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="371">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-</span><span data-line="372">            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
-</span><span data-line="373">        <span class="k">return</span> <span class="n">item</span></div>
+</span><span data-line="340">    <span class="k">def</span><span class="w"> </span><span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">only_new_items</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span data-line="341"><span class="w">        </span><span class="sd">"""Finds the last item in buffer. Raise ValueError if no item found.</span>
+</span><span data-line="342">
+</span><span data-line="343"><span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
+</span><span data-line="344"><span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+</span><span data-line="345"><span class="sd">            instead of raising exception</span>
+</span><span data-line="346"><span class="sd">        :param only_new_items: if True and no new items, raise ValueError</span>
+</span><span data-line="347"><span class="sd">            or return None if ignore_no_item_found</span>
+</span><span data-line="348"><span class="sd">        :return: tail item</span>
+</span><span data-line="349"><span class="sd">        """</span>
+</span><span data-line="350">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+</span><span data-line="351">            <span class="k">if</span> <span class="n">only_new_items</span><span class="p">:</span>
+</span><span data-line="352">                <span class="k">try</span><span class="p">:</span>
+</span><span data-line="353">                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_last_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
+</span><span data-line="354">                <span class="k">except</span> <span class="p">(</span>
+</span><span data-line="355">                    <span class="ne">ValueError</span>
+</span><span data-line="356">                <span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above: self.last_key</span>
+</span><span data-line="357">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+</span><span data-line="358">                        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="359">                    <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="360">                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="361">                    <span class="c1"># TypeError: '&gt;' not supported between instances of type(key) and 'NoneType'</span>
+</span><span data-line="362">                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
+</span><span data-line="363">                        <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span data-line="364">                    <span class="k">else</span><span class="p">:</span>
+</span><span data-line="365">                        <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="366">            <span class="k">else</span><span class="p">:</span>
+</span><span data-line="367">                <span class="k">try</span><span class="p">:</span>
+</span><span data-line="368">                    <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span data-line="369">                <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># IndexError: deque index out of range</span>
+</span><span data-line="370">                    <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+</span><span data-line="371">                        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="372">                    <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="373">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+</span><span data-line="374">            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
+</span><span data-line="375">        <span class="k">return</span> <span class="n">item</span></div>
 
-</span><span data-line="374">
-</span><span data-line="375">    <span class="k">def</span><span class="w"> </span><span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-</span><span data-line="376">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-</span><span data-line="377">            <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span data-line="378">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-</span><span data-line="379">            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
-</span><span data-line="380">        <span class="k">return</span> <span class="n">item</span>
-</span><span data-line="381">
+</span><span data-line="376">
+</span><span data-line="377">    <span class="k">def</span><span class="w"> </span><span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span data-line="378">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+</span><span data-line="379">            <span class="n">item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span data-line="380">        <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+</span><span data-line="381">            <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">item</span>
+</span><span data-line="382">        <span class="k">return</span> <span class="n">item</span>
+</span><span data-line="383">
 <div class="viewcode-block" id="BufferReader.read">
 <a class="viewcode-back" href="../../_autosummary/stream2py.buffer_reader.html#stream2py.buffer_reader.BufferReader.read">[docs]</a>
-</span><span data-line="382">    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span>
-</span><span data-line="383">        <span class="bp">self</span><span class="p">,</span>
-</span><span data-line="384">        <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="385">        <span class="o">*</span><span class="p">,</span>
-</span><span data-line="386">        <span class="n">peek</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="387">        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="388">        <span class="n">strict_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="389">        <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span data-line="390">    <span class="p">):</span>
-</span><span data-line="391"><span class="w">        </span><span class="sd">"""Finds an item with a key greater than the last returned item.</span>
-</span><span data-line="392"><span class="sd">        Raise ValueError if no item found with key above last item.</span>
-</span><span data-line="393">
-</span><span data-line="394"><span class="sd">        Note: Arguments whose values are not specified will be replaced with</span>
-</span><span data-line="395"><span class="sd">        self.</span>
-</span><span data-line="396">
-</span><span data-line="397"><span class="sd">        :param n: number of items to return</span>
-</span><span data-line="398"><span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
-</span><span data-line="399"><span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
-</span><span data-line="400"><span class="sd">            instead of raising exception</span>
-</span><span data-line="401"><span class="sd">        :param strict_n: if True, raise ValueError if n items are not available</span>
-</span><span data-line="402"><span class="sd">        :param blocking: if True, wait to return next item if not yet available</span>
-</span><span data-line="403"><span class="sd">        :return: next item or list of next items if n &gt; 1</span>
-</span><span data-line="404"><span class="sd">        """</span>
-</span><span data-line="405">        <span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span> <span class="o">=</span> <span class="n">defaulted_values</span><span class="p">(</span>
-</span><span data-line="406">            <span class="nb">dict</span><span class="p">(</span>
-</span><span data-line="407">                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
-</span><span data-line="408">                <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
-</span><span data-line="409">                <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
-</span><span data-line="410">            <span class="p">),</span>
-</span><span data-line="411">            <span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span>
-</span><span data-line="412">        <span class="p">)</span>
-</span><span data-line="413">        <span class="c1"># # Is the following alternative clearer or more efficient?</span>
-</span><span data-line="414">        <span class="c1"># n = n or self._read_kwargs['n']</span>
-</span><span data-line="415">        <span class="c1"># peek = peek or self._read_kwargs['peek']</span>
-</span><span data-line="416">        <span class="c1"># ignore_no_item_found = (</span>
-</span><span data-line="417">        <span class="c1">#         ignore_no_item_found or self._read_kwargs['ignore_no_item_found']</span>
-</span><span data-line="418">        <span class="c1"># )</span>
-</span><span data-line="419">        <span class="c1"># strict_n = strict_n or self._read_kwargs['strict_n']</span>
-</span><span data-line="420">
-</span><span data-line="421">        <span class="k">if</span> <span class="n">blocking</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="422">            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="423">                <span class="n">_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-</span><span data-line="424">                    <span class="n">n</span><span class="p">,</span>
-</span><span data-line="425">                    <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span>
-</span><span data-line="426">                    <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span data-line="427">                    <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
-</span><span data-line="428">                    <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-</span><span data-line="429">                <span class="p">)</span>
-</span><span data-line="430">                <span class="k">if</span> <span class="n">_read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="431">                    <span class="k">return</span> <span class="n">_read</span>
-</span><span data-line="432">                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
-</span><span data-line="433">                    <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="434">                <span class="k">else</span><span class="p">:</span>
-</span><span data-line="435">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
-</span><span data-line="436">
-</span><span data-line="437">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
-</span><span data-line="438">            <span class="k">try</span><span class="p">:</span>
-</span><span data-line="439">                <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
-</span><span data-line="440">            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above:</span>
-</span><span data-line="441">                <span class="c1"># self.last_key</span>
-</span><span data-line="442">                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
-</span><span data-line="443">                    <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="444">                <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="445">            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="446">                <span class="c1"># TypeError: '&lt;' not supported between instances of 'NoneType' and type(key)</span>
-</span><span data-line="447">                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
-</span><span data-line="448">                    <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span data-line="449">                <span class="k">else</span><span class="p">:</span>
-</span><span data-line="450">                    <span class="k">raise</span> <span class="n">e</span>
-</span><span data-line="451">            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-</span><span data-line="452">                <span class="n">i</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">next_item</span><span class="p">)</span>
-</span><span data-line="453">                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span>
-</span><span data-line="454">                <span class="k">if</span> <span class="n">strict_n</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
-</span><span data-line="455">                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="456">                        <span class="sa">f</span><span class="s2">"Number of items found is less than n: strict_n=</span><span class="si">{</span><span class="n">strict_n</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span>
-</span><span data-line="457">                    <span class="p">)</span>
-</span><span data-line="458">
-</span><span data-line="459">                <span class="n">next_items_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
-</span><span data-line="460">                <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-</span><span data-line="461">                    <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_items_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</span><span data-line="462">                <span class="k">return</span> <span class="n">next_items_list</span>
-</span><span data-line="463">            <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
-</span><span data-line="464">                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
-</span><span data-line="465">            <span class="k">return</span> <span class="n">next_item</span></div>
+</span><span data-line="384">    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span>
+</span><span data-line="385">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="386">        <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="387">        <span class="o">*</span><span class="p">,</span>
+</span><span data-line="388">        <span class="n">peek</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="389">        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="390">        <span class="n">strict_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span data-line="391">        <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span data-line="392">    <span class="p">):</span>
+</span><span data-line="393"><span class="w">        </span><span class="sd">"""Finds an item with a key greater than the last returned item.</span>
+</span><span data-line="394"><span class="sd">        Raise ValueError if no item found with key above last item.</span>
+</span><span data-line="395">
+</span><span data-line="396"><span class="sd">        Note: Arguments whose values are not specified will be replaced with</span>
+</span><span data-line="397"><span class="sd">        self.</span>
+</span><span data-line="398">
+</span><span data-line="399"><span class="sd">        :param n: number of items to return</span>
+</span><span data-line="400"><span class="sd">        :param peek: if True, last_item cursor will not be updated</span>
+</span><span data-line="401"><span class="sd">        :param ignore_no_item_found: if True, return None when no next item</span>
+</span><span data-line="402"><span class="sd">            instead of raising exception</span>
+</span><span data-line="403"><span class="sd">        :param strict_n: if True, raise ValueError if n items are not available</span>
+</span><span data-line="404"><span class="sd">        :param blocking: if True, wait to return next item if not yet available</span>
+</span><span data-line="405"><span class="sd">        :return: next item or list of next items if n &gt; 1</span>
+</span><span data-line="406"><span class="sd">        """</span>
+</span><span data-line="407">        <span class="n">n</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span> <span class="o">=</span> <span class="n">defaulted_values</span><span class="p">(</span>
+</span><span data-line="408">            <span class="nb">dict</span><span class="p">(</span>
+</span><span data-line="409">                <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+</span><span data-line="410">                <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span>
+</span><span data-line="411">                <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+</span><span data-line="412">            <span class="p">),</span>
+</span><span data-line="413">            <span class="n">defaults</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_kwargs</span><span class="p">,</span>
+</span><span data-line="414">        <span class="p">)</span>
+</span><span data-line="415">        <span class="c1"># # Is the following alternative clearer or more efficient?</span>
+</span><span data-line="416">        <span class="c1"># n = n or self._read_kwargs['n']</span>
+</span><span data-line="417">        <span class="c1"># peek = peek or self._read_kwargs['peek']</span>
+</span><span data-line="418">        <span class="c1"># ignore_no_item_found = (</span>
+</span><span data-line="419">        <span class="c1">#         ignore_no_item_found or self._read_kwargs['ignore_no_item_found']</span>
+</span><span data-line="420">        <span class="c1"># )</span>
+</span><span data-line="421">        <span class="c1"># strict_n = strict_n or self._read_kwargs['strict_n']</span>
+</span><span data-line="422">
+</span><span data-line="423">        <span class="k">if</span> <span class="n">blocking</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="424">            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="425">                <span class="n">_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+</span><span data-line="426">                    <span class="n">n</span><span class="p">,</span>
+</span><span data-line="427">                    <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span>
+</span><span data-line="428">                    <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span data-line="429">                    <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span><span class="p">,</span>
+</span><span data-line="430">                    <span class="n">blocking</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span data-line="431">                <span class="p">)</span>
+</span><span data-line="432">                <span class="k">if</span> <span class="n">_read</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="433">                    <span class="k">return</span> <span class="n">_read</span>
+</span><span data-line="434">                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stopped</span><span class="p">:</span>
+</span><span data-line="435">                    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="436">                <span class="k">else</span><span class="p">:</span>
+</span><span data-line="437">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+</span><span data-line="438">
+</span><span data-line="439">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">reader_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+</span><span data-line="440">            <span class="k">try</span><span class="p">:</span>
+</span><span data-line="441">                <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">find_gt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_key</span><span class="p">)</span>
+</span><span data-line="442">            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># ValueError: No item found with key above:</span>
+</span><span data-line="443">                <span class="c1"># self.last_key</span>
+</span><span data-line="444">                <span class="k">if</span> <span class="n">ignore_no_item_found</span><span class="p">:</span>
+</span><span data-line="445">                    <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="446">                <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="447">            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="448">                <span class="c1"># TypeError: '&lt;' not supported between instances of 'NoneType' and type(key)</span>
+</span><span data-line="449">                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first time reading a value from buffer</span>
+</span><span data-line="450">                    <span class="n">next_item</span> <span class="o">=</span> <span class="n">reader</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span data-line="451">                <span class="k">else</span><span class="p">:</span>
+</span><span data-line="452">                    <span class="k">raise</span> <span class="n">e</span>
+</span><span data-line="453">            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+</span><span data-line="454">                <span class="n">i</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">next_item</span><span class="p">)</span>
+</span><span data-line="455">                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n</span>
+</span><span data-line="456">                <span class="k">if</span> <span class="n">strict_n</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+</span><span data-line="457">                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+</span><span data-line="458">                        <span class="sa">f</span><span class="s2">"Number of items found is less than n: strict_n=</span><span class="si">{</span><span class="n">strict_n</span><span class="si">}</span><span class="s2">, n=</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span>
+</span><span data-line="459">                    <span class="p">)</span>
+</span><span data-line="460">
+</span><span data-line="461">                <span class="n">next_items_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">range_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+</span><span data-line="462">                <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+</span><span data-line="463">                    <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_items_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span data-line="464">                <span class="k">return</span> <span class="n">next_items_list</span>
+</span><span data-line="465">            <span class="k">if</span> <span class="ow">not</span> <span class="n">peek</span><span class="p">:</span>
+</span><span data-line="466">                <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="n">next_item</span>
+</span><span data-line="467">            <span class="k">return</span> <span class="n">next_item</span></div>
 
-</span><span data-line="466">
-</span><span data-line="467">    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-</span><span data-line="468">        <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
-</span><span data-line="469">
-</span><span data-line="470">        <span class="n">warn</span><span class="p">(</span>
-</span><span data-line="471">            <span class="sa">f</span><span class="s2">"Deprecated. next is deprecated. Use read method instead"</span><span class="p">,</span>
-</span><span data-line="472">            <span class="ne">DeprecationWarning</span><span class="p">,</span>
-</span><span data-line="473">        <span class="p">)</span>
-</span><span data-line="474">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-</span><span data-line="475">            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span>
-</span><span data-line="476">        <span class="p">)</span>
-</span><span data-line="477">
-</span><span data-line="478">    <span class="k">def</span><span class="w"> </span><span class="nf">enter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="479">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-</span><span data-line="480">
-</span><span data-line="481">    <span class="k">def</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="482">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span data-line="483">
-</span><span data-line="484">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="485">        <span class="k">return</span> <span class="bp">self</span>
-</span><span data-line="486">
-</span><span data-line="487">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="488">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
-</span><span data-line="489">            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">()</span>
-</span><span data-line="490">
-</span><span data-line="491">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="492">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
-</span><span data-line="493">
-</span><span data-line="494">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-</span><span data-line="495">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
+</span><span data-line="468">
+</span><span data-line="469">    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span><span data-line="470">        <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+</span><span data-line="471">
+</span><span data-line="472">        <span class="n">warn</span><span class="p">(</span>
+</span><span data-line="473">            <span class="sa">f</span><span class="s2">"Deprecated. next is deprecated. Use read method instead"</span><span class="p">,</span>
+</span><span data-line="474">            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+</span><span data-line="475">        <span class="p">)</span>
+</span><span data-line="476">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+</span><span data-line="477">            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">peek</span><span class="o">=</span><span class="n">peek</span><span class="p">,</span> <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="n">ignore_no_item_found</span><span class="p">,</span> <span class="n">strict_n</span><span class="o">=</span><span class="n">strict_n</span>
+</span><span data-line="478">        <span class="p">)</span>
+</span><span data-line="479">
+</span><span data-line="480">    <span class="k">def</span><span class="w"> </span><span class="nf">enter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="481">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+</span><span data-line="482">
+</span><span data-line="483">    <span class="k">def</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="484">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span data-line="485">
+</span><span data-line="486">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="487">        <span class="k">return</span> <span class="bp">self</span>
+</span><span data-line="488">
+</span><span data-line="489">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="490">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
+</span><span data-line="491">            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">()</span>
+</span><span data-line="492">
+</span><span data-line="493">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="494">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
+</span><span data-line="495">
+</span><span data-line="496">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+</span><span data-line="497">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -672,7 +674,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=e78efb02"></script>
+      <script src="../../_static/documentation_options.js?v=43f67f1b"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
