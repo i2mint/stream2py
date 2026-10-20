@@ -90,6 +90,8 @@ class BufferReader:
         source_reader_info: dict,
         stop_event: threading.Event,
         *,
+        blocking=False,
+        timeout=None,
         read_size=1,
         peek=False,
         strict_n=False,
@@ -106,6 +108,9 @@ class BufferReader:
         :param buffer:
         :param source_reader_info:
         :param stop_event: threading.Event for source read loop
+        :param blocking: if True, by default ``read`` waits for the next item when
+            none is available yet (see ``read``). Iteration is unaffected.
+        :param timeout: default ``timeout`` of blocking reads (``None``: no limit)
         :param read_size: number of items to return by default when reading.
             Is also used as the "chunk size" when iterating.
         :param peek: if True, by default, last_item cursor will not be updated during a
@@ -130,6 +135,8 @@ class BufferReader:
         self.peek = peek
         self.ignore_no_item_found = ignore_no_item_found
         self.strict_n = strict_n
+        self.blocking = blocking
+        self.timeout = timeout
         # _read_kwargs will be used as the defaults of the read method as well as
         # the kwargs of the __next__ method (with ignore_no_item_found=True forced)
         self._read_kwargs = dict(
@@ -388,7 +395,7 @@ class BufferReader:
         peek=None,
         ignore_no_item_found=None,
         strict_n=None,
-        blocking=False,
+        blocking=None,
         timeout=None,
     ):
         """Finds an item with a key greater than the last returned item.
@@ -402,8 +409,10 @@ class BufferReader:
         :param ignore_no_item_found: if True, return None when no next item
             instead of raising exception
         :param strict_n: if True, raise ValueError if n items are not available
-        :param blocking: if True, wait to return next item if not yet available
-        :param timeout: only used when ``blocking`` is True. Maximum number of seconds
+        :param blocking: if True, wait to return next item if not yet available.
+            Defaults to the reader's ``blocking`` (False unless set at construction).
+        :param timeout: only used when ``blocking`` is True. Defaults to the reader's
+            ``timeout``. Maximum number of seconds
             to wait; ``None`` (default) waits until an item is available or the stream
             stops. When it runs out, returns None (as when the stream stops).
         :return: next item or list of next items if n > 1
@@ -424,6 +433,10 @@ class BufferReader:
         # )
         # strict_n = strict_n or self._read_kwargs['strict_n']
 
+        if blocking is None:
+            blocking = self.blocking
+        if timeout is None:
+            timeout = self.timeout
         if blocking is True:
             deadline = None if timeout is None else time.monotonic() + timeout
             while True:
