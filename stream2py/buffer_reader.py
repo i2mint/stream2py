@@ -296,7 +296,9 @@ class BufferReader:
                 _start = start if start > _next_key else _next_key
             else:
                 _start = start
-            trim_start = _start  # where the joined item must begin, before start_le widens
+            trim_start = (
+                _start  # where the joined item must begin, before start_le widens
+            )
             if start_le is True:
                 with suppress(
                     ValueError
