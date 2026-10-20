@@ -24,7 +24,7 @@
 - [stream2py.utility.sorted_collection](_autosummary/stream2py.utility.sorted_collection.html.md): Sequence sorted by a key function.
 - [stream2py.utility.sorted_deque](_autosummary/stream2py.utility.sorted_deque.html.md): Deque sorted by a key function.
 - [stream2py.utility.typing_hints](_autosummary/stream2py.utility.typing_hints.html.md): Typing hints
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 09:53 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-20 11:28 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 
