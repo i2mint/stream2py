@@ -389,6 +389,7 @@ class BufferReader:
         ignore_no_item_found=None,
         strict_n=None,
         blocking=False,
+        timeout=None,
     ):
         """Finds an item with a key greater than the last returned item.
         Raise ValueError if no item found with key above last item.
@@ -402,6 +403,9 @@ class BufferReader:
             instead of raising exception
         :param strict_n: if True, raise ValueError if n items are not available
         :param blocking: if True, wait to return next item if not yet available
+        :param timeout: only used when ``blocking`` is True. Maximum number of seconds
+            to wait; ``None`` (default) waits until an item is available or the stream
+            stops. When it runs out, returns None (as when the stream stops).
         :return: next item or list of next items if n > 1
         """
         n, ignore_no_item_found, strict_n = defaulted_values(
@@ -421,6 +425,7 @@ class BufferReader:
         # strict_n = strict_n or self._read_kwargs['strict_n']
 
         if blocking is True:
+            deadline = None if timeout is None else time.monotonic() + timeout
             while True:
                 _read = self.read(
                     n,
@@ -433,8 +438,13 @@ class BufferReader:
                     return _read
                 elif self.is_stopped:
                     return None
-                else:
+                elif deadline is None:
                     time.sleep(self._sleep_time_on_iter_none_s)
+                else:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        return None
+                    time.sleep(min(self._sleep_time_on_iter_none_s, remaining))
 
         with self._buffer.reader_lock() as reader:
             try:
