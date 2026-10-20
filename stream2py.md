@@ -1,4 +1,4 @@
-> built 2026-10-20 07:39 UTC from ac903b4 (master) · stream2py 1.0.46. Details: build_info.json
+> built 2026-10-20 09:53 UTC from bc49188 (master) · stream2py 1.0.47. Details: build_info.json
 
 # index.html.md
 
@@ -107,7 +107,7 @@ what data was last seen.
 | [`BufferReader`](_autosummary/stream2py.buffer_reader.html.md#stream2py.buffer_reader.BufferReader)(buffer, source_reader_info, ...)   | Reader that is constructed from StreamBuffer.mk_reader()   |
 |--------------------------------------------------------------------------------------------------|------------------------------------------------------------|
 
-### *class* stream2py.buffer_reader.BufferReader(buffer, source_reader_info, stop_event, , read_size=1, peek=False, strict_n=False, ignore_no_item_found=False)
+### *class* stream2py.buffer_reader.BufferReader(buffer, source_reader_info, stop_event, , blocking=False, timeout=None, read_size=1, peek=False, strict_n=False, ignore_no_item_found=False)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -216,7 +216,7 @@ Enables:
 * **Returns:**
   list of items in range (a single joined item if `join`)
 
-#### read(n=None, , peek=None, ignore_no_item_found=None, strict_n=None, blocking=False, timeout=None)
+#### read(n=None, , peek=None, ignore_no_item_found=None, strict_n=None, blocking=None, timeout=None)
 
 Finds an item with a key greater than the last returned item.
 Raise ValueError if no item found with key above last item.
@@ -231,8 +231,10 @@ self.
   * **ignore_no_item_found** – if True, return None when no next item
     instead of raising exception
   * **strict_n** – if True, raise ValueError if n items are not available
-  * **blocking** – if True, wait to return next item if not yet available
-  * **timeout** – only used when `blocking` is True. Maximum number of seconds
+  * **blocking** – if True, wait to return next item if not yet available.
+    Defaults to the reader’s `blocking` (False unless set at construction).
+  * **timeout** – only used when `blocking` is True. Defaults to the reader’s
+    `timeout`. Maximum number of seconds
     to wait; `None` (default) waits until an item is available or the stream
     stops. When it runs out, returns None (as when the stream stops).
 * **Returns:**
@@ -1658,18 +1660,18 @@ Bases: [`Protocol`](https://docs.python.org/3/library/typing.html#typing.Protoco
 
 # About this build
 
-This documentation was built on **2026-10-20 07:39 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/ac903b48cb3eabe17c6a3f08d3db0fae099479e0"><code>ac903b4</code></a> on branch <code>master</code>, for **stream2py 1.0.46** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 09:53 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/bc49188cdb04d1a582574fd710c77f3845383cba"><code>bc49188</code></a> on branch <code>master</code>, for **stream2py 1.0.47** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (1.0.46) is behind the latest release on PyPI (1.0.47): `pip install stream2py` gives newer code than these docs describe.
+- The documented version (1.0.47) is behind the latest release on PyPI (1.0.48): `pip install stream2py` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/ac903b48cb3eabe17c6a3f08d3db0fae099479e0"><code>ac903b48cb3eabe17c6a3f08d3db0fae099479e0</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/bc49188cdb04d1a582574fd710c77f3845383cba"><code>bc49188cdb04d1a582574fd710c77f3845383cba</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -1680,9 +1682,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/39387677871">39387677871</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/39403700767">39403700767</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>ac903b48cb3eabe17c6a3f08d3db0fae099479e0</code> (in the history of the built commit) |
+| Event commit | <code>bc49188cdb04d1a582574fd710c77f3845383cba</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -1707,13 +1709,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.47/">1.0.47</a>, newer than the documented version (1.0.46).
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.48/">1.0.48</a>, newer than the documented version (1.0.47).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout ac903b48cb3eabe17c6a3f08d3db0fae099479e0
+git checkout bc49188cdb04d1a582574fd710c77f3845383cba
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
