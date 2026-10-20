@@ -75,7 +75,6 @@ def test_range_join_only_new_items_starts_after_cursor():
     import time
 
     from stream2py import StreamBuffer
-    from stream2py.tests.test_buffer_reader import _chunks_source_class
 
     with StreamBuffer(source_reader=_chunks_source_class()(), maxlen=10) as sb:
         reader = sb.mk_reader()
