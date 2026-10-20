@@ -24,6 +24,21 @@ DFLT_SLEEP_TIME_ON_READ_NONE_S = 0.3
 DFLT_MAX_LEN = 10000
 
 
+def _overridden(source_reader, name):
+    """The bound method ``name`` if the source reader really implements it, else None.
+
+    ``SourceReader`` defines ``join_items``/``slice_item`` as raising stubs, so
+    presence on the object doesn't mean support."""
+    method = getattr(source_reader, name, None)
+    if method is None:
+        return None
+    from stream2py.source_reader import SourceReader
+
+    if getattr(type(source_reader), name, None) is getattr(SourceReader, name, None):
+        return None
+    return method
+
+
 class _SourceBuffer:
     def __init__(
         self,
@@ -33,6 +48,8 @@ class _SourceBuffer:
         key=None,
         maxlen: int = 10000,
         buffer_reader_class: Type[BufferReader] = BufferReader,
+        join_items=None,
+        slice_item=None,
     ):
         """StreamBuffer helper class
         Thread safe buffer for reading and writing data items
@@ -46,6 +63,8 @@ class _SourceBuffer:
         self._buffer = RWLockSortedDeque([], key=key, maxlen=maxlen)
         self._source_reader_info = source_reader_info
         self.buffer_reader_class = buffer_reader_class
+        self._join_items = join_items
+        self._slice_item = slice_item
 
     def __len__(self):
         return len(self._buffer)
@@ -67,16 +86,22 @@ class _SourceBuffer:
             writer.drop(n)
 
     def mk_reader(self, **read_kwargs):
-        return self.buffer_reader_class(
+        reader = self.buffer_reader_class(
             buffer=self._buffer,
             source_reader_info=self._source_reader_info,
             stop_event=self._stop_event,
             **read_kwargs,
         )
+        # set after construction so custom buffer_reader_classes need not know about them
+        reader._join_items = self._join_items
+        reader._slice_item = self._slice_item
+        return reader
 
     def attach_reader(self, reader):
         reader._buffer = self._buffer
         reader._stop_event = self._stop_event
+        reader._join_items = self._join_items
+        reader._slice_item = self._slice_item
 
 
 class StreamBuffer:
@@ -293,6 +318,8 @@ class StreamBuffer:
             buffer_reader_class=getattr(
                 self.source_reader, "buffer_reader_class", BufferReader
             ),
+            join_items=_overridden(self.source_reader, "join_items"),
+            slice_item=_overridden(self.source_reader, "slice_item"),
         )
 
     # def _mk_contextualized_iterator(self):

@@ -39,7 +39,9 @@ def test_next_returns_none_when_no_data_but_running():
 
         # Read all available data quickly
         import time
-        time.sleep(0.1)  # Let some data accumulate
+        deadline = time.time() + 5  # wait for data rather than hope 0.1s is enough on a loaded runner
+        while not len(buffer.source_buffer) and time.time() < deadline:
+            time.sleep(0.01)
 
         # Read until we get None (no more data available yet)
         items = []
