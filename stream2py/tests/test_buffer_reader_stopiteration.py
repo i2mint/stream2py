@@ -1,7 +1,7 @@
 """Tests for BufferReader StopIteration behavior (Issue #10)"""
 import pytest
 from stream2py import StreamBuffer
-from stream2py.tests.utils_for_testing import SimpleSourceReader
+from stream2py.tests.utils_for_testing import SimpleSourceReader, wait_until
 
 
 def test_next_raises_stopiteration_when_stopped():
@@ -38,10 +38,7 @@ def test_next_returns_none_when_no_data_but_running():
         reader = buffer.mk_reader()
 
         # Read all available data quickly
-        import time
-        deadline = time.time() + 5  # wait for data rather than hope 0.1s is enough on a loaded runner
-        while not len(buffer.source_buffer) and time.time() < deadline:
-            time.sleep(0.01)
+        assert wait_until(lambda: len(buffer.source_buffer) >= 1)
 
         # Read until we get None (no more data available yet)
         items = []
@@ -65,8 +62,7 @@ def test_builtin_next_with_default():
     buffer.start()
     reader = buffer.mk_reader()
 
-    import time
-    time.sleep(0.1)
+    assert wait_until(lambda: len(buffer.source_buffer) >= 2)
 
     # Read items
     item1 = next(reader, 'default')
@@ -80,8 +76,6 @@ def test_builtin_next_with_default():
 
     # When stopped and no data, should raise StopIteration
     # and the default should be returned by builtin next()
-    time.sleep(0.1)
-
     # Consume any remaining data
     while True:
         try:
@@ -104,8 +98,7 @@ def test_for_loop_stops_correctly():
     buffer = StreamBuffer(source, maxlen=100)
     buffer.start()
 
-    import time
-    time.sleep(0.2)  # Let all data load
+    assert wait_until(lambda: len(buffer.source_buffer) >= 10)  # all data loaded
 
     buffer.stop()  # Stop before iterating
 
