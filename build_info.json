@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-20T07:26:33Z",
+  "built_at": "2026-10-20T07:39:08Z",
   "package": {
     "name": "stream2py",
-    "version": "1.0.45",
+    "version": "1.0.46",
     "display_name": "stream2py",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "27f12033cb9c1fa2adbbf8e2b1f6af4310490441",
-    "short_commit": "27f1203",
+    "commit": "ac903b48cb3eabe17c6a3f08d3db0fae099479e0",
+    "short_commit": "ac903b4",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/stream2py",
-    "commit_url": "https://github.com/i2mint/stream2py/commit/27f12033cb9c1fa2adbbf8e2b1f6af4310490441",
+    "commit_url": "https://github.com/i2mint/stream2py/commit/ac903b48cb3eabe17c6a3f08d3db0fae099479e0",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/stream2py",
-    "sha": "27f12033cb9c1fa2adbbf8e2b1f6af4310490441",
+    "sha": "ac903b48cb3eabe17c6a3f08d3db0fae099479e0",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "39386287908",
-    "run_url": "https://github.com/i2mint/stream2py/actions/runs/39386287908",
+    "run_id": "39387677871",
+    "run_url": "https://github.com/i2mint/stream2py/actions/runs/39387677871",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -60,16 +60,16 @@
   },
   "pypi": {
     "checked": true,
-    "latest": "1.0.46",
+    "latest": "1.0.47",
     "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 27f12033cb9c1fa2adbbf8e2b1f6af4310490441\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout ac903b48cb3eabe17c6a3f08d3db0fae099479e0\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": false,
     "notes": [
-      "The documented version (1.0.45) is behind the latest release on PyPI (1.0.46): `pip install stream2py` gives newer code than these docs describe."
+      "The documented version (1.0.46) is behind the latest release on PyPI (1.0.47): `pip install stream2py` gives newer code than these docs describe."
     ]
   }
 }

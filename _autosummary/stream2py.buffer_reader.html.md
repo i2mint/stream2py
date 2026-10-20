@@ -118,7 +118,7 @@ Enables:
 * **Returns:**
   list of items in range (a single joined item if `join`)
 
-#### read(n=None, , peek=None, ignore_no_item_found=None, strict_n=None, blocking=False)
+#### read(n=None, , peek=None, ignore_no_item_found=None, strict_n=None, blocking=False, timeout=None)
 
 Finds an item with a key greater than the last returned item.
 Raise ValueError if no item found with key above last item.
@@ -134,6 +134,9 @@ self.
     instead of raising exception
   * **strict_n** – if True, raise ValueError if n items are not available
   * **blocking** – if True, wait to return next item if not yet available
+  * **timeout** – only used when `blocking` is True. Maximum number of seconds
+    to wait; `None` (default) waits until an item is available or the stream
+    stops. When it runs out, returns None (as when the stream stops).
 * **Returns:**
   next item or list of next items if n > 1
 
