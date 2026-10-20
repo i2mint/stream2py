@@ -129,6 +129,30 @@ class SourceReader(Source, metaclass=ABCMeta):
             "Implement the 'key' method to convert data into a comparable value to sort by"
         )
 
+    def join_items(self, items: list) -> Any:
+        """(Optional) Join consecutive data items into one data item.
+
+        Implement together with ``slice_item`` to let ``BufferReader.range(...,
+        join=True)`` return the exact span asked for, as a single item (e.g. several
+        waveform chunks concatenated). Not abstract: sources whose items can't be
+        joined just don't override it.
+
+        :param items: non-empty list of data items, in key order
+        :return: one data item
+        """
+        raise NotImplementedError("Implement 'join_items' to support range(join=True)")
+
+    def slice_item(self, item: Any, start=None, stop=None) -> Any:
+        """(Optional) The part of ``item`` whose keys fall within ``[start, stop]``.
+
+        ``None`` for a bound means unbounded on that side; an item that needs no
+        trimming can be returned as is. See ``join_items``.
+
+        :param item: a data item as returned by ``read``
+        :return: a data item of the same kind, possibly shorter
+        """
+        raise NotImplementedError("Implement 'slice_item' to support range(join=True)")
+
     @property
     def closed(self) -> bool:
         """True if the source reader is closed, False if it's open.

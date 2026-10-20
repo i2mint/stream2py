@@ -122,6 +122,8 @@ class BufferReader:
         self._buffer = buffer
         self._last_item = None
         self._last_key = None
+        self._join_items = None  # set by the buffer from the source reader, if offered
+        self._slice_item = None
         self._stop_event = stop_event
         self._sleep_time_on_iter_none_s = 0.1
         self.read_size = read_size  # read_size used by __next__
@@ -237,6 +239,7 @@ class BufferReader:
         only_new_items=False,
         start_le=False,
         stop_ge=False,
+        join=False,
     ):
         """Enables:
         1. Get last n minutes
@@ -255,8 +258,24 @@ class BufferReader:
             i.e. keys=[0, 10, 20], start=9 will include key=0
         :param stop_ge: if True, raise ValueError when there is no key greater than or equal to
             stop in buffer, if ignore_no_item_found is also True, return None instead of ValueError
-        :return: list of items in range
+        :param join: if True, return ONE item instead of a list: the items in range
+            trimmed to exactly ``[start, stop]`` and joined, using the source reader's
+            ``slice_item`` and ``join_items`` (both must be implemented, otherwise
+            NotImplementedError is raised before anything is read). Implies
+            ``start_le=True`` so the chunk containing ``start`` is included, and is
+            incompatible with ``step``. The ``last_item`` cursor still moves to the
+            last *buffer* item, not the trimmed one.
+        :return: list of items in range (a single joined item if ``join``)
         """
+        if join:
+            if step is not None:
+                raise ValueError("range(join=True) doesn't support step")
+            if self._join_items is None or self._slice_item is None:
+                raise NotImplementedError(
+                    "range(join=True) needs the source reader to implement both "
+                    "join_items(items) and slice_item(item, start, stop)"
+                )
+            start_le = True
         if ignore_no_item_found is None:
             ignore_no_item_found = self._read_kwargs.get("ignore_no_item_found", False)
         with self._buffer.reader_lock() as reader:
@@ -299,7 +318,19 @@ class BufferReader:
                 if ignore_no_item_found:
                     return None
                 raise e
+        if join and items:
+            return self._trim_and_join(items, start, stop)
         return items
+
+    def _trim_and_join(self, items, start, stop):
+        """Trim the first and last of ``items`` to ``[start, stop]`` and join them.
+
+        Only the ends can overhang the query (the keys are ordered), and a single
+        item is both ends at once."""
+        items = list(items)
+        items[0] = self._slice_item(items[0], start, None)
+        items[-1] = self._slice_item(items[-1], None, stop)
+        return self._join_items(items)
 
     def tail(self, *, peek=False, ignore_no_item_found=False, only_new_items=False):
         """Finds the last item in buffer. Raise ValueError if no item found.
