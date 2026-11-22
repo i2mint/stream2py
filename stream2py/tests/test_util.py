@@ -205,10 +205,6 @@ def test_timer_stop_accepts_context_manager_exit_args():
     assert timer.start_time is None
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="https://github.com/i2mint/stream2py/issues/33: the variadic check is not called",
-)
 def test_exit_function_validation_rejects_a_one_argument_function():
     from stream2py.util import ExitFunctionValidation
 
