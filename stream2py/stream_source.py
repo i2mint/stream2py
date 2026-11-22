@@ -63,7 +63,7 @@ class StreamSource(Source, metaclass=ABCMeta):
     _sleep_time_on_iter_none_s = 0.001
     _stream_buffer: StreamBuffer = None
 
-    def __init__(self, *, reader_cls=BufferReader):
+    def __init__(self, *, reader_cls=BufferReader) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         self._reader_cls = reader_cls
 
@@ -78,7 +78,7 @@ class StreamSource(Source, metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -102,15 +102,15 @@ class StreamSource(Source, metaclass=ABCMeta):
         )
         return self
 
-    def _ensure_buffer(self):
+    def _ensure_buffer(self) -> None:
         if not self._stream_buffer:
             self._stream_buffer = StreamBuffer(self, **self._buffer_kwargs)
             self._stream_buffer.start()
 
-    def _handle_reader_open(self):
+    def _handle_reader_open(self) -> None:
         self._open_readers += 1
 
-    def _handle_reader_closed(self):
+    def _handle_reader_closed(self) -> None:
         self._open_readers -= 1
         if self._open_readers <= 0:
             self.exit()
@@ -135,7 +135,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         new_reader.onclose = self._handle_reader_closed
         return new_reader
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -166,7 +166,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         """
         return int(time.time() * cls.timestamp_seconds_to_unit_conversion)
 
-    def exit(self):
+    def exit(self) -> None:
         """Alias of ``__exit__``."""
         if self._stream_buffer:
             self._stream_buffer.stop()

@@ -35,7 +35,7 @@ class HTTPResponseReader(SourceReader):
         response_format: str = "bytes",
         response_read_args: tuple = (),
         encoding: str = "",
-    ):
+    ) -> None:
         """
         :param method: The HTTP method to use.
         :param headers: The HTTP headers to pass with the request.
@@ -98,14 +98,14 @@ class HTTPResponseReader(SourceReader):
         return data
         # return self._data[data[0]:data[1]]
 
-    def open(self):
+    def open(self) -> None:
         """Open the resource."""
         request = urllib.request.Request(
             self._url, headers=self._init_kwargs["headers"]
         )
         self._response = urllib.request.urlopen(request)
 
-    def close(self):
+    def close(self) -> None:
         """Close the resource."""
         if self._response:
             self._response.__exit__()
@@ -121,7 +121,7 @@ class HTTPResponseReader(SourceReader):
         return timestamp, result
 
 
-def _test_run_HTTPResponseReader(url, **kwargs):
+def _test_run_HTTPResponseReader(url, **kwargs) -> None:
     """Run HTTPResponseReader and print some stuff
 
     :param readerClass: HTTPResponseReader class or subclass

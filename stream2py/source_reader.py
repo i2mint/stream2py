@@ -87,7 +87,7 @@ class SourceReader(Source, metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -260,7 +260,7 @@ class QuickSourceReader(SourceReader):
         """
         return data is not None
 
-    def when_no_data(self, _next=None):
+    def when_no_data(self, _next=None) -> None:
         """Action taken when data is not valid (not yielded in iteration).
         Usually, the action is to sleep for a fixed amount of seconds to give a
         chance for the source data production to catch up, without hogging resources
@@ -274,13 +274,13 @@ class QuickSourceReader(SourceReader):
         """
         time.sleep(self._sleep_time_on_iter_none_s)
 
-    def open(self):
+    def open(self) -> None:
         self.read_idx = 0
         self.open_time = self.get_timestamp()
         self.open_instance = self
         self._closed = False
 
-    def close(self):
+    def close(self) -> None:
         """A dummy close class"""
         self._closed = True
 

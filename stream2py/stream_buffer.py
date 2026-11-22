@@ -50,7 +50,7 @@ class _SourceBuffer:
         buffer_reader_class: Type[BufferReader] = BufferReader,
         join_items=None,
         slice_item=None,
-    ):
+    ) -> None:
         """StreamBuffer helper class
         Thread safe buffer for reading and writing data items
 
@@ -66,7 +66,7 @@ class _SourceBuffer:
         self._join_items = join_items
         self._slice_item = slice_item
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._buffer)
 
     @property
@@ -77,11 +77,11 @@ class _SourceBuffer:
     def source_reader_info(self):
         return self._source_reader_info
 
-    def append(self, item):
+    def append(self, item) -> None:
         with self._buffer.writer_lock() as writer:
             writer.append(item)
 
-    def drop(self, n=1):
+    def drop(self, n=1) -> None:
         with self._buffer.writer_lock() as writer:
             writer.drop(n)
 
@@ -97,7 +97,7 @@ class _SourceBuffer:
         reader._slice_item = self._slice_item
         return reader
 
-    def attach_reader(self, reader):
+    def attach_reader(self, reader) -> None:
         reader._buffer = self._buffer
         reader._stop_event = self._stop_event
         reader._join_items = self._join_items
@@ -147,7 +147,7 @@ class StreamBuffer:
         maxlen: int = 100,
         sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
         auto_drop=True,
-    ):
+    ) -> None:
         """
         TODO: option to auto restart source on read exception
 
@@ -190,7 +190,7 @@ class StreamBuffer:
             self._next_reader = self.mk_reader()
         return next(self._next_reader)
 
-    def drop(self, n=1):
+    def drop(self, n=1) -> None:
         """Manually drop items from buffer when auto_drop is False
 
         :param n: number of items to drop from the left side
@@ -202,7 +202,7 @@ class StreamBuffer:
             )
         self.source_buffer.drop(n)
 
-    def start(self):
+    def start(self) -> None:
         """Open and start reading from source_reader into buffer"""
         with self.start_lock:
             if self._stop_event and not self._stop_event.is_set():
@@ -211,7 +211,7 @@ class StreamBuffer:
             self._open()
             self._read_to_buffer_thread.start()
 
-    def stop(self):
+    def stop(self) -> None:
         """Stop reading and close source_reader"""
         self._stop_event.set()
         time.sleep(1)
@@ -280,7 +280,7 @@ class StreamBuffer:
 
     enter, exit = __enter__, __exit__
 
-    def _run(self):
+    def _run(self) -> None:
         try:
             while not self._stop_event.is_set():
                 # check if buffer is full and skip read or append
@@ -301,7 +301,7 @@ class StreamBuffer:
             except Exception as e:
                 logger.error(e)
 
-    def _set_read_to_buffer_thread_and_source_buffer(self):
+    def _set_read_to_buffer_thread_and_source_buffer(self) -> None:
         """Initialize source and buffer
         Makes a new run thread, and stop event that is unique to this run session"""
         if self._stop_event and not self._stop_event.is_set():
@@ -310,7 +310,7 @@ class StreamBuffer:
         self._read_to_buffer_thread = threading.Thread(target=self._run, daemon=True)
         self._stop_event = threading.Event()
 
-    def _open(self):
+    def _open(self) -> None:
         """First thing called after start/run
         Calls source_reader.open() and then sets up source_buffer with latest
         source_reader.info"""
@@ -341,7 +341,7 @@ class StreamBuffer:
         return next(self)
         # return self._mk_contextualized_iterator()
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Stop the resource when garbage collected, ignoring errors."""
         try:
             self.__exit__(None, None, None)

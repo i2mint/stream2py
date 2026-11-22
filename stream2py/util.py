@@ -57,7 +57,7 @@ class Timer:
     wall-clock timestamp; it is only meaningful as a reference point for a difference.
     """
 
-    def __init__(self, egress=identity):
+    def __init__(self, egress=identity) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         self.egress = egress
         self.start_time = None
@@ -67,7 +67,7 @@ class Timer:
         self.start_time = perf_counter()
         return self
 
-    def stop(self, *args, **kwargs):
+    def stop(self, *args, **kwargs) -> None:
         """Stop (reset) the timer."""
         self.start_time = None
 
@@ -108,7 +108,7 @@ def null_enter_func(obj):
     return obj
 
 
-def null_exit_func(obj, *exception_info):
+def null_exit_func(obj, *exception_info) -> None:
     """An exit function that does nothing."""
     return None
 
@@ -197,7 +197,7 @@ class ContextualizeCall:
     special methods, they'll have to wrap `func` themselves.
     """
 
-    def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func):
+    def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         # validation
         if not callable(func):

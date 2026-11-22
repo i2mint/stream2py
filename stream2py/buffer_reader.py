@@ -96,7 +96,7 @@ class BufferReader:
         peek=False,
         strict_n=False,
         ignore_no_item_found=False,  # TODO: should this be True to be aligned with iter?
-    ):
+    ) -> None:
         """
 
         The `read_size`, `peek`, `strict_n` and `ignore_no_item_found` parameters
@@ -184,7 +184,7 @@ class BufferReader:
 
         return result
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1):
+    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -222,11 +222,11 @@ class BufferReader:
     def _getlast_item(self):
         return self._last_item
 
-    def _setlast_item(self, item):
+    def _setlast_item(self, item) -> None:
         self._last_key = self._buffer.key(item)
         self._last_item = item
 
-    def _dellast_item(self):
+    def _dellast_item(self) -> None:
         del self._last_item
         self._last_item = None
         del self._last_key
@@ -515,7 +515,7 @@ class BufferReader:
         """Open the resource."""
         return self
 
-    def close(self):
+    def close(self) -> None:
         """Close the resource."""
         if self.onclose:
             self.onclose()

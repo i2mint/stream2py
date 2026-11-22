@@ -19,7 +19,7 @@ class SortedDeque(SortedCollection):
     Added an append method for cases where the new item to insert is known to be the last.
     """
 
-    def __init__(self, iterable=(), key=None, maxlen=None):
+    def __init__(self, iterable=(), key=None, maxlen=None) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         SortedCollection.__init__(self, iterable, key)
         self._keys = deque(self._keys, maxlen=maxlen)
@@ -42,20 +42,20 @@ class SortedDeque(SortedCollection):
     def _getmaxlen(self):
         return self._maxlen
 
-    def _setmaxlen(self, maxlen):
+    def _setmaxlen(self, maxlen) -> None:
         if maxlen is not self._maxlen:
             self.__init__(self._items, key=self._key, maxlen=maxlen)
 
-    def _delmaxlen(self):
+    def _delmaxlen(self) -> None:
         self._setmaxlen(None)
 
     maxlen = property(_getmaxlen, _setmaxlen, _delmaxlen, "maxlen function")
 
-    def _setkey(self, key):
+    def _setkey(self, key) -> None:
         if key is not self._key:
             self.__init__(self._items, key=key, maxlen=self._maxlen)
 
-    def clear(self):
+    def clear(self) -> None:
         """Remove all items."""
         self.__init__([], self._key, self._maxlen)
 
@@ -63,7 +63,7 @@ class SortedDeque(SortedCollection):
         """A shallow copy with the same key."""
         return self.__class__(self, self._key, self._maxlen)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Show the contents and key."""
         return "%s(%r, key=%s, maxlen=%s)" % (
             self.__class__.__name__,
@@ -76,7 +76,7 @@ class SortedDeque(SortedCollection):
         """Pickle support: rebuild from items and key."""
         return self.__class__, (self._items, self._given_key, self._maxlen)
 
-    def __contains__(self, item):
+    def __contains__(self, item) -> bool:
         """Whether the item is present (compared by key first)."""
         k = self._key(item)
         i = bisect_left(self._keys, k)
@@ -97,7 +97,7 @@ class SortedDeque(SortedCollection):
         j = bisect_right(self._keys, k)
         return sum(1 for chk_item in islice(self._items, i, j) if chk_item == item)
 
-    def append(self, item):
+    def append(self, item) -> None:
         """Append item to the end and maintain key indexing.
         Raise ValueError if item key is not greater than last item key.
 
@@ -149,7 +149,7 @@ class SortedDeque(SortedCollection):
                 raise e
         raise ValueError("No item found with key above: %r" % (k,))
 
-    def drop(self, n=1):
+    def drop(self, n=1) -> None:
         """Remove n items from the left
 
         :param n:
