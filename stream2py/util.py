@@ -197,7 +197,9 @@ class ContextualizeCall:
     special methods, they'll have to wrap `func` themselves.
     """
 
-    def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func) -> None:
+    def __init__(
+        self, func, enter_func=null_enter_func, exit_func=null_exit_func
+    ) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         # validation
         if not callable(func):

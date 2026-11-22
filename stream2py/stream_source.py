@@ -78,7 +78,9 @@ class StreamSource(Source, metaclass=ABCMeta):
             else:
                 time.sleep(self._sleep_time_on_iter_none_s)
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.001) -> None:
+    def set_sleep_time_on_iter_none(
+        self, sleep_time_s: Union[int, float] = 0.001
+    ) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep
@@ -135,7 +137,9 @@ class StreamSource(Source, metaclass=ABCMeta):
         new_reader.onclose = self._handle_reader_closed
         return new_reader
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1) -> None:
+    def set_sleep_time_on_iter_none(
+        self, sleep_time_s: Union[int, float] = 0.1
+    ) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep

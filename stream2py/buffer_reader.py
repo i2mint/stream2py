@@ -184,7 +184,9 @@ class BufferReader:
 
         return result
 
-    def set_sleep_time_on_iter_none(self, sleep_time_s: Union[int, float] = 0.1) -> None:
+    def set_sleep_time_on_iter_none(
+        self, sleep_time_s: Union[int, float] = 0.1
+    ) -> None:
         """Set the sleep time of the iter yield loop when next data item is not yet available.
 
         :param sleep_time_s: seconds to sleep

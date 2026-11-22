@@ -12,13 +12,15 @@ No dependencies (standard library only). [Documentation](https://i2mint.github.i
 from stream2py import StreamBuffer
 from stream2py.examples.source_reader import SimpleCounterString
 
-source = SimpleCounterString(start=0, stop=100)  # a toy source that reads 's0', 's1', ...
+source = SimpleCounterString(
+    start=0, stop=100
+)  # a toy source that reads 's0', 's1', ...
 
 with StreamBuffer(source_reader=source, maxlen=100) as buffer:
-    saver = buffer.mk_reader()    # one consumer, say, writing to disk
+    saver = buffer.mk_reader()  # one consumer, say, writing to disk
     plotter = buffer.mk_reader()  # another, drawing a live plot
-    assert (saver.next(), saver.next()) == ('s0', 's1')
-    assert plotter.next() == 's0'  # each reader has its own cursor
+    assert (saver.next(), saver.next()) == ("s0", "s1")
+    assert plotter.next() == "s0"  # each reader has its own cursor
 ```
 
 A real source is any object with `open`, `read`, `close` and a `key` to order reads by (the `stream2py.protocols.Source` protocol; plugins below ship ready-made ones), or, for quick cases, three functions given to `stream2py.simply.mk_stream_buffer`.
