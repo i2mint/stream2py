@@ -93,6 +93,9 @@ bisect but with a simpler API and support for key functions.
 
 Remove all items.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### copy()
 
 A shallow copy with the same key.
@@ -129,9 +132,15 @@ Find the position of an item.  Raise ValueError if not found.
 
 Insert a new item.  If equal keys are found, add to the left
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### insert_right(item)
 
 Insert a new item.  If equal keys are found, add to the right
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* key
 
@@ -140,3 +149,6 @@ key function
 #### remove(item)
 
 Remove first occurence of item.  Raise ValueError if not found
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

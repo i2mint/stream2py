@@ -62,6 +62,8 @@ Manually drop items from buffer when auto_drop is False
 
 * **Parameters:**
   **n** – number of items to drop from the left side
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
 
 #### enter()
@@ -106,6 +108,12 @@ A dict with important source info set by SourceReader.
 
 Open and start reading from source_reader into buffer
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### stop()
 
 Stop reading and close source_reader
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

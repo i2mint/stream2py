@@ -202,7 +202,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="63">    <span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="mf">0.001</span>
 </span><span data-line="64">    <span class="n">_stream_buffer</span><span class="p">:</span> <span class="n">StreamBuffer</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span data-line="65">
-</span><span data-line="66">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reader_cls</span><span class="o">=</span><span class="n">BufferReader</span><span class="p">):</span>
+</span><span data-line="66">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reader_cls</span><span class="o">=</span><span class="n">BufferReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="67"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
 </span><span data-line="68">        <span class="bp">self</span><span class="o">.</span><span class="n">_reader_cls</span> <span class="o">=</span> <span class="n">reader_cls</span>
 </span><span data-line="69">
@@ -217,7 +217,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="78">            <span class="k">else</span><span class="p">:</span>
 </span><span data-line="79">                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 </span><span data-line="80">
-</span><span data-line="81">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
+</span><span data-line="81">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="82"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 </span><span data-line="83">
 </span><span data-line="84"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
@@ -244,15 +244,15 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="103">        <span class="k">return</span> <span class="bp">self</span></div>
 
 </span><span data-line="104">
-</span><span data-line="105">    <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="105">    <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="106">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
 </span><span data-line="107">            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span> <span class="o">=</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer_kwargs</span><span class="p">)</span>
 </span><span data-line="108">            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </span><span data-line="109">
-</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_reader_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_reader_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="111">        <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span data-line="112">
-</span><span data-line="113">    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_reader_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="113">    <span class="k">def</span><span class="w"> </span><span class="nf">_handle_reader_closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="114">        <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">-=</span> <span class="mi">1</span>
 </span><span data-line="115">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_readers</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
 </span><span data-line="116">            <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
@@ -282,7 +282,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="137">
 <div class="viewcode-block" id="StreamSource.set_sleep_time_on_iter_none">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_source.html#stream2py.stream_source.StreamSource.set_sleep_time_on_iter_none">[docs]</a>
-</span><span data-line="138">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+</span><span data-line="138">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="139"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 </span><span data-line="140">
 </span><span data-line="141"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
@@ -319,7 +319,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="168">
 <div class="viewcode-block" id="StreamSource.exit">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_source.html#stream2py.stream_source.StreamSource.exit">[docs]</a>
-</span><span data-line="169">    <span class="k">def</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="169">    <span class="k">def</span><span class="w"> </span><span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="170"><span class="w">        </span><span class="sd">"""Alias of ``__exit__``."""</span>
 </span><span data-line="171">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="p">:</span>
 </span><span data-line="172">            <span class="bp">self</span><span class="o">.</span><span class="n">_stream_buffer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
@@ -354,7 +354,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

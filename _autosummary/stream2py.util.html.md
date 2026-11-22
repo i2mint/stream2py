@@ -168,6 +168,9 @@ Start the timer and return it.
 
 Stop (reset) the timer.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### *exception* stream2py.util.TypeValidationError
 
 Bases: [`TypeError`](https://docs.python.org/3/builtins/exceptions.html#TypeError)
@@ -204,3 +207,6 @@ An enter function that returns the object itself.
 ### stream2py.util.null_exit_func(obj, \*exception_info)
 
 An exit function that does nothing.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

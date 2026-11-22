@@ -70,6 +70,9 @@ True
 
 Close the resource.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### enter()
 
 Alias of `__enter__`.
@@ -172,6 +175,8 @@ Set the sleep time of the iter yield loop when next data item is not yet availab
 
 * **Parameters:**
   **sleep_time_s** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/builtins/functions.html#int), [`float`](https://docs.python.org/3/builtins/functions.html#float)]) – seconds to sleep
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* source_reader_info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 

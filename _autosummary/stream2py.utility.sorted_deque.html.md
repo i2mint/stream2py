@@ -28,12 +28,17 @@ Raise ValueError if item key is not greater than last item key.
 
 * **Parameters:**
   **item** – item to append
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
   None
 
 #### clear()
 
 Remove all items.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### copy()
 
@@ -49,6 +54,8 @@ Remove n items from the left
 
 * **Parameters:**
   **n**
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
 
 #### find_last_gt(k)

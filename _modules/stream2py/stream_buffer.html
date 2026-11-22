@@ -184,7 +184,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="50">        <span class="n">buffer_reader_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BufferReader</span><span class="p">]</span> <span class="o">=</span> <span class="n">BufferReader</span><span class="p">,</span>
 </span><span data-line="51">        <span class="n">join_items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="52">        <span class="n">slice_item</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="53">    <span class="p">):</span>
+</span><span data-line="53">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="54"><span class="w">        </span><span class="sd">"""StreamBuffer helper class</span>
 </span><span data-line="55"><span class="sd">        Thread safe buffer for reading and writing data items</span>
 </span><span data-line="56">
@@ -200,7 +200,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="66">        <span class="bp">self</span><span class="o">.</span><span class="n">_join_items</span> <span class="o">=</span> <span class="n">join_items</span>
 </span><span data-line="67">        <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span> <span class="o">=</span> <span class="n">slice_item</span>
 </span><span data-line="68">
-</span><span data-line="69">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="69">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span data-line="70">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span>
 </span><span data-line="71">
 </span><span data-line="72">    <span class="nd">@property</span>
@@ -211,11 +211,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="77">    <span class="k">def</span><span class="w"> </span><span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span data-line="78">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_reader_info</span>
 </span><span data-line="79">
-</span><span data-line="80">    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="80">    <span class="k">def</span><span class="w"> </span><span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="81">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">writer_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
 </span><span data-line="82">            <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="83">
-</span><span data-line="84">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span data-line="84">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="85">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">writer_lock</span><span class="p">()</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
 </span><span data-line="86">            <span class="n">writer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </span><span data-line="87">
@@ -231,7 +231,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="97">        <span class="n">reader</span><span class="o">.</span><span class="n">_slice_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice_item</span>
 </span><span data-line="98">        <span class="k">return</span> <span class="n">reader</span>
 </span><span data-line="99">
-</span><span data-line="100">    <span class="k">def</span><span class="w"> </span><span class="nf">attach_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
+</span><span data-line="100">    <span class="k">def</span><span class="w"> </span><span class="nf">attach_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="101">        <span class="n">reader</span><span class="o">.</span><span class="n">_buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span>
 </span><span data-line="102">        <span class="n">reader</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span>
 </span><span data-line="103">        <span class="n">reader</span><span class="o">.</span><span class="n">_join_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_join_items</span>
@@ -283,7 +283,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="147">        <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
 </span><span data-line="148">        <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="149">        <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span data-line="150">    <span class="p">):</span>
+</span><span data-line="150">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="151"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="152"><span class="sd">        TODO: option to auto restart source on read exception</span>
 </span><span data-line="153">
@@ -328,7 +328,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="192">
 <div class="viewcode-block" id="StreamBuffer.drop">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.drop">[docs]</a>
-</span><span data-line="193">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span data-line="193">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="194"><span class="w">        </span><span class="sd">"""Manually drop items from buffer when auto_drop is False</span>
 </span><span data-line="195">
 </span><span data-line="196"><span class="sd">        :param n: number of items to drop from the left side</span>
@@ -343,7 +343,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="204">
 <div class="viewcode-block" id="StreamBuffer.start">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.start">[docs]</a>
-</span><span data-line="205">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="205">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="206"><span class="w">        </span><span class="sd">"""Open and start reading from source_reader into buffer"""</span>
 </span><span data-line="207">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
 </span><span data-line="208">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
@@ -355,7 +355,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="213">
 <div class="viewcode-block" id="StreamBuffer.stop">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.stop">[docs]</a>
-</span><span data-line="214">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="214">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="215"><span class="w">        </span><span class="sd">"""Stop reading and close source_reader"""</span>
 </span><span data-line="216">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 </span><span data-line="217">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -431,7 +431,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="280">
 </span><span data-line="281">    <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span> <span class="o">=</span> <span class="fm">__enter__</span><span class="p">,</span> <span class="fm">__exit__</span>
 </span><span data-line="282">
-</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="284">        <span class="k">try</span><span class="p">:</span>
 </span><span data-line="285">            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
 </span><span data-line="286">                <span class="c1"># check if buffer is full and skip read or append</span>
@@ -452,7 +452,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="301">            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span data-line="302">                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </span><span data-line="303">
-</span><span data-line="304">    <span class="k">def</span><span class="w"> </span><span class="nf">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="304">    <span class="k">def</span><span class="w"> </span><span class="nf">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="305"><span class="w">        </span><span class="sd">"""Initialize source and buffer</span>
 </span><span data-line="306"><span class="sd">        Makes a new run thread, and stop event that is unique to this run session"""</span>
 </span><span data-line="307">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
@@ -461,7 +461,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="310">        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span data-line="311">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 </span><span data-line="312">
-</span><span data-line="313">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="313">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="314"><span class="w">        </span><span class="sd">"""First thing called after start/run</span>
 </span><span data-line="315"><span class="sd">        Calls source_reader.open() and then sets up source_buffer with latest</span>
 </span><span data-line="316"><span class="sd">        source_reader.info"""</span>
@@ -492,7 +492,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="341">        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </span><span data-line="342">        <span class="c1"># return self._mk_contextualized_iterator()</span>
 </span><span data-line="343">
-</span><span data-line="344">    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="344">    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="345"><span class="w">        </span><span class="sd">"""Stop the resource when garbage collected, ignoring errors."""</span>
 </span><span data-line="346">        <span class="k">try</span><span class="p">:</span>
 </span><span data-line="347">            <span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -526,7 +526,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

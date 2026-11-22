@@ -43,17 +43,29 @@ Communications of the ACM, 1971 (via [3])
 
 Acquire the lock for reading (shared).
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### reader_release()
 
 Release a read lock.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### writer_acquire()
 
 Acquire the lock for writing (exclusive).
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### writer_release()
 
 Release the write lock.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### *class* stream2py.utility.reader_writer_lock.RWLockTestCase(methodName='runTest')
 
@@ -65,17 +77,29 @@ Unit tests for [`RWLock`](#stream2py.utility.reader_writer_lock.RWLock).
 
 Check many writers priority.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### test_readers_nonexclusive_access()
 
 Check readers nonexclusive access.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### test_writer_priority()
 
 Check writer priority.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### test_writers_exclusive_access()
 
 Check writers exclusive access.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### *class* stream2py.utility.reader_writer_lock.Reader(buffer_, rw_lock, init_sleep_time, sleep_time)
 
@@ -99,6 +123,9 @@ Time of exit from the critical section
 
 Thread body: wait, take the lock, do the work, release.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### *class* stream2py.utility.reader_writer_lock.Writer(buffer_, rw_lock, init_sleep_time, sleep_time, to_write)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
@@ -116,3 +143,6 @@ Time of exit from the critical section
 #### run()
 
 Thread body: wait, take the lock, do the work, release.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)

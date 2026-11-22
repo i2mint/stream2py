@@ -1,4 +1,4 @@
-> built 2026-11-22 19:12 UTC from c061641 (master) · stream2py 1.0.49. Details: build_info.json
+> built 2026-11-22 19:30 UTC from 204f0b3 (master) · stream2py 1.0.50. Details: build_info.json
 
 # index.html.md
 
@@ -168,6 +168,9 @@ True
 
 Close the resource.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### enter()
 
 Alias of `__enter__`.
@@ -270,6 +273,8 @@ Set the sleep time of the iter yield loop when next data item is not yet availab
 
 * **Parameters:**
   **sleep_time_s** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/builtins/functions.html#int), [`float`](https://docs.python.org/3/builtins/functions.html#float)]) – seconds to sleep
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* source_reader_info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 
@@ -833,6 +838,8 @@ Set the sleep time of the iter yield loop when next data item is not yet availab
 
 * **Parameters:**
   **sleep_time_s** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/builtins/functions.html#int), [`float`](https://docs.python.org/3/builtins/functions.html#float)]) – seconds to sleep
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* sleep_time_on_read_none_s *: [Union](https://docs.python.org/3/library/typing.html#typing.Union)[[int](https://docs.python.org/3/builtins/functions.html#int), [float](https://docs.python.org/3/builtins/functions.html#float), [None](https://docs.python.org/3/builtins/constants.html#None)]*
 
@@ -903,6 +910,9 @@ Source reader that streams the raw bytes of an HTTP response.
 
 Close the resource.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *property* info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 
 Provides a dict with init kwargs and read status
@@ -936,6 +946,9 @@ Returns a slice of the data retrieved.
 #### open()
 
 Open the resource.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### read()
 
@@ -1008,6 +1021,8 @@ Manually drop items from buffer when auto_drop is False
 
 * **Parameters:**
   **n** – number of items to drop from the left side
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
 
 #### enter()
@@ -1052,9 +1067,15 @@ A dict with important source info set by SourceReader.
 
 Open and start reading from source_reader into buffer
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### stop()
 
 Stop reading and close source_reader
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/stream2py.stream_source.html.md
@@ -1112,6 +1133,9 @@ Sets custom buffer parameters.
 
 Alias of `__exit__`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds
@@ -1139,6 +1163,8 @@ Set the sleep time of the iter yield loop when next data item is not yet availab
 
 * **Parameters:**
   **sleep_time_s** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/builtins/functions.html#int), [`float`](https://docs.python.org/3/builtins/functions.html#float)]) – seconds to sleep
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* sleep_time_on_read_none_s *: [Union](https://docs.python.org/3/library/typing.html#typing.Union)[[int](https://docs.python.org/3/builtins/functions.html#int), [float](https://docs.python.org/3/builtins/functions.html#float), [None](https://docs.python.org/3/builtins/constants.html#None)]*
 
@@ -1341,6 +1367,9 @@ Start the timer and return it.
 
 Stop (reset) the timer.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### *exception* stream2py.util.TypeValidationError
 
 Bases: [`TypeError`](https://docs.python.org/3/builtins/exceptions.html#TypeError)
@@ -1377,6 +1406,9 @@ An enter function that returns the object itself.
 ### stream2py.util.null_exit_func(obj, \*exception_info)
 
 An exit function that does nothing.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/stream2py.utility.html.md
@@ -1501,17 +1533,29 @@ Communications of the ACM, 1971 (via [3])
 
 Acquire the lock for reading (shared).
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### reader_release()
 
 Release a read lock.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### writer_acquire()
 
 Acquire the lock for writing (exclusive).
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### writer_release()
 
 Release the write lock.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### *class* stream2py.utility.reader_writer_lock.RWLockTestCase(methodName='runTest')
 
@@ -1523,17 +1567,29 @@ Unit tests for [`RWLock`](_autosummary/stream2py.utility.reader_writer_lock.html
 
 Check many writers priority.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### test_readers_nonexclusive_access()
 
 Check readers nonexclusive access.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### test_writer_priority()
 
 Check writer priority.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### test_writers_exclusive_access()
 
 Check writers exclusive access.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 ### *class* stream2py.utility.reader_writer_lock.Reader(buffer_, rw_lock, init_sleep_time, sleep_time)
 
@@ -1557,6 +1613,9 @@ Time of exit from the critical section
 
 Thread body: wait, take the lock, do the work, release.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 ### *class* stream2py.utility.reader_writer_lock.Writer(buffer_, rw_lock, init_sleep_time, sleep_time, to_write)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
@@ -1574,6 +1633,9 @@ Time of exit from the critical section
 #### run()
 
 Thread body: wait, take the lock, do the work, release.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/stream2py.utility.sorted_collection.html.md
@@ -1673,6 +1735,9 @@ bisect but with a simpler API and support for key functions.
 
 Remove all items.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### copy()
 
 A shallow copy with the same key.
@@ -1709,9 +1774,15 @@ Find the position of an item.  Raise ValueError if not found.
 
 Insert a new item.  If equal keys are found, add to the left
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### insert_right(item)
 
 Insert a new item.  If equal keys are found, add to the right
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* key
 
@@ -1720,6 +1791,9 @@ key function
 #### remove(item)
 
 Remove first occurence of item.  Raise ValueError if not found
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
 # _autosummary/stream2py.utility.sorted_deque.html.md
@@ -1754,12 +1828,17 @@ Raise ValueError if item key is not greater than last item key.
 
 * **Parameters:**
   **item** – item to append
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
   None
 
 #### clear()
 
 Remove all items.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### copy()
 
@@ -1775,6 +1854,8 @@ Remove n items from the left
 
 * **Parameters:**
   **n**
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 * **Returns:**
 
 #### find_last_gt(k)
@@ -1843,18 +1924,16 @@ Protocol for keys that support `<` and `>`.
 
 # About this build
 
-This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641</code></a> on branch <code>master</code>, for **stream2py 1.0.49** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:30 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3</code></a> on branch <code>master</code>, for **stream2py 1.0.50** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (1.0.49) is behind the latest release on PyPI (1.0.50): `pip install stream2py` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641fe8fa509c46d0510bb15f304017f19de3</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3346e320fd7932ab17c703735df76d2770</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -1865,9 +1944,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45059224453">45059224453</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45060948555">45060948555</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>c061641fe8fa509c46d0510bb15f304017f19de3</code> (in the history of the built commit) |
+| Event commit | <code>204f0b3346e320fd7932ab17c703735df76d2770</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -1892,13 +1971,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, newer than the documented version (1.0.49).
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout c061641fe8fa509c46d0510bb15f304017f19de3
+git checkout 204f0b3346e320fd7932ab17c703735df76d2770
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

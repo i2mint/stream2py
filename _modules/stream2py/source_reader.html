@@ -225,7 +225,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="89">
 <div class="viewcode-block" id="SourceReader.set_sleep_time_on_iter_none">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">[docs]</a>
-</span><span data-line="90">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
+</span><span data-line="90">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="91"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 </span><span data-line="92">
 </span><span data-line="93"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
@@ -421,7 +421,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="260"><span class="sd">        """</span>
 </span><span data-line="261">        <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </span><span data-line="262">
-</span><span data-line="263">    <span class="k">def</span><span class="w"> </span><span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="263">    <span class="k">def</span><span class="w"> </span><span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="264"><span class="w">        </span><span class="sd">"""Action taken when data is not valid (not yielded in iteration).</span>
 </span><span data-line="265"><span class="sd">        Usually, the action is to sleep for a fixed amount of seconds to give a</span>
 </span><span data-line="266"><span class="sd">        chance for the source data production to catch up, without hogging resources</span>
@@ -435,13 +435,13 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="274"><span class="sd">        """</span>
 </span><span data-line="275">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
 </span><span data-line="276">
-</span><span data-line="277">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="277">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="278">        <span class="bp">self</span><span class="o">.</span><span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span data-line="279">        <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
 </span><span data-line="280">        <span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span> <span class="o">=</span> <span class="bp">self</span>
 </span><span data-line="281">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
 </span><span data-line="282">
-</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="284"><span class="w">        </span><span class="sd">"""A dummy close class"""</span>
 </span><span data-line="285">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span data-line="286">
@@ -481,7 +481,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

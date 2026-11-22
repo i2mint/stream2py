@@ -232,7 +232,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="96">        <span class="n">peek</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 </span><span data-line="97">        <span class="n">strict_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 </span><span data-line="98">        <span class="n">ignore_no_item_found</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># TODO: should this be True to be aligned with iter?</span>
-</span><span data-line="99">    <span class="p">):</span>
+</span><span data-line="99">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="100"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="101">
 </span><span data-line="102"><span class="sd">        The `read_size`, `peek`, `strict_n` and `ignore_no_item_found` parameters</span>
@@ -322,7 +322,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="186">
 <div class="viewcode-block" id="BufferReader.set_sleep_time_on_iter_none">
 <a class="viewcode-back" href="../../_autosummary/stream2py.buffer_reader.html#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none">[docs]</a>
-</span><span data-line="187">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+</span><span data-line="187">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="188"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
 </span><span data-line="189">
 </span><span data-line="190"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
@@ -364,11 +364,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="222">    <span class="k">def</span><span class="w"> </span><span class="nf">_getlast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span data-line="223">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span>
 </span><span data-line="224">
-</span><span data-line="225">    <span class="k">def</span><span class="w"> </span><span class="nf">_setlast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="225">    <span class="k">def</span><span class="w"> </span><span class="nf">_setlast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="226">        <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="227">        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="n">item</span>
 </span><span data-line="228">
-</span><span data-line="229">    <span class="k">def</span><span class="w"> </span><span class="nf">_dellast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="229">    <span class="k">def</span><span class="w"> </span><span class="nf">_dellast_item</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="230">        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span>
 </span><span data-line="231">        <span class="bp">self</span><span class="o">.</span><span class="n">_last_item</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span data-line="232">        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_key</span>
@@ -683,7 +683,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="517">
 <div class="viewcode-block" id="BufferReader.close">
 <a class="viewcode-back" href="../../_autosummary/stream2py.buffer_reader.html#stream2py.buffer_reader.BufferReader.close">[docs]</a>
-</span><span data-line="518">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="518">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="519"><span class="w">        </span><span class="sd">"""Close the resource."""</span>
 </span><span data-line="520">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
 </span><span data-line="521">            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">()</span></div>
@@ -724,7 +724,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

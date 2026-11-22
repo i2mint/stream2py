@@ -5,19 +5,17 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641</code></a> on branch <code>master</code>, for **stream2py 1.0.49** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:30 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3</code></a> on branch <code>master</code>, for **stream2py 1.0.50** (from <code>pyproject.toml</code>).
 
-:::{warning}
-The documentation and the package may be misaligned:
-
-- The documented version (1.0.49) is behind the latest release on PyPI (1.0.50): `pip install stream2py` gives newer code than these docs describe.
+:::{note}
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 :::
 
 ## Source
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641fe8fa509c46d0510bb15f304017f19de3</code></a> |
+| Commit | <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3346e320fd7932ab17c703735df76d2770</code></a> |
 | Branch | <code>master</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -28,9 +26,9 @@ The documentation and the package may be misaligned:
 | | |
 |---|---|
 | Repository | <code>i2mint/stream2py</code> |
-| Run | <a href="https://github.com/i2mint/stream2py/actions/runs/45059224453">45059224453</a> |
+| Run | <a href="https://github.com/i2mint/stream2py/actions/runs/45060948555">45060948555</a> |
 | Ref | <code>refs/heads/master</code> |
-| Event commit | <code>c061641fe8fa509c46d0510bb15f304017f19de3</code> (in the history of the built commit) |
+| Event commit | <code>204f0b3346e320fd7932ab17c703735df76d2770</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -55,13 +53,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, newer than the documented version (1.0.49).
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout c061641fe8fa509c46d0510bb15f304017f19de3
+git checkout 204f0b3346e320fd7932ab17c703735df76d2770
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

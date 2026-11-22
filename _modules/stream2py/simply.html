@@ -224,7 +224,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="88">        <span class="n">sleep_time_on_read_none_s</span> <span class="o">=</span> <span class="n">sleep_time_on_read_none_seconds</span>
 </span><span data-line="89">        <span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span data-line="90">
-</span><span data-line="91">        <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="91">        <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="92">            <span class="bp">self</span><span class="o">.</span><span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span data-line="93">            <span class="k">if</span> <span class="n">open_stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="94">                <span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span> <span class="o">=</span> <span class="n">open_stream</span><span class="p">()</span>
@@ -238,7 +238,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="102">
 </span><span data-line="103">            <span class="k">return</span> <span class="n">read_data</span>
 </span><span data-line="104">
-</span><span data-line="105">        <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="105">        <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="106">            <span class="k">if</span> <span class="n">close_stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="107">                <span class="n">close_stream</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span><span class="p">)</span>
 </span><span data-line="108">
@@ -296,7 +296,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

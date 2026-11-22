@@ -196,7 +196,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="57"><span class="sd">    wall-clock timestamp; it is only meaningful as a reference point for a difference.</span>
 </span><span data-line="58"><span class="sd">    """</span>
 </span><span data-line="59">
-</span><span data-line="60">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">identity</span><span class="p">):</span>
+</span><span data-line="60">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">egress</span><span class="o">=</span><span class="n">identity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="61"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
 </span><span data-line="62">        <span class="bp">self</span><span class="o">.</span><span class="n">egress</span> <span class="o">=</span> <span class="n">egress</span>
 </span><span data-line="63">        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
@@ -211,7 +211,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="69">
 <div class="viewcode-block" id="Timer.stop">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.Timer.stop">[docs]</a>
-</span><span data-line="70">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="70">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="71"><span class="w">        </span><span class="sd">"""Stop (reset) the timer."""</span>
 </span><span data-line="72">        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span></div>
 
@@ -271,7 +271,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="110">
 <div class="viewcode-block" id="null_exit_func">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.null_exit_func">[docs]</a>
-</span><span data-line="111"><span class="k">def</span><span class="w"> </span><span class="nf">null_exit_func</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
+</span><span data-line="111"><span class="k">def</span><span class="w"> </span><span class="nf">null_exit_func</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="112"><span class="w">    </span><span class="sd">"""An exit function that does nothing."""</span>
 </span><span data-line="113">    <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -375,7 +375,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="197"><span class="sd">    special methods, they'll have to wrap `func` themselves.</span>
 </span><span data-line="198"><span class="sd">    """</span>
 </span><span data-line="199">
-</span><span data-line="200">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">):</span>
+</span><span data-line="200">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="201"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
 </span><span data-line="202">        <span class="c1"># validation</span>
 </span><span data-line="203">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -478,7 +478,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

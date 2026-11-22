@@ -212,7 +212,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="76">
 </span><span data-line="77"><span class="sd">    """</span>
 </span><span data-line="78">
-</span><span data-line="79">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="79">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterable</span><span class="o">=</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="80"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
 </span><span data-line="81">        <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span> <span class="o">=</span> <span class="n">key</span>
 </span><span data-line="82">        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">key</span>
@@ -224,18 +224,18 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="88">    <span class="k">def</span><span class="w"> </span><span class="nf">_getkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span data-line="89">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
 </span><span data-line="90">
-</span><span data-line="91">    <span class="k">def</span><span class="w"> </span><span class="nf">_setkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+</span><span data-line="91">    <span class="k">def</span><span class="w"> </span><span class="nf">_setkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="92">        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
 </span><span data-line="93">            <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
 </span><span data-line="94">
-</span><span data-line="95">    <span class="k">def</span><span class="w"> </span><span class="nf">_delkey</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="95">    <span class="k">def</span><span class="w"> </span><span class="nf">_delkey</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="96">        <span class="bp">self</span><span class="o">.</span><span class="n">_setkey</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 </span><span data-line="97">
 </span><span data-line="98">    <span class="n">key</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getkey</span><span class="p">,</span> <span class="n">_setkey</span><span class="p">,</span> <span class="n">_delkey</span><span class="p">,</span> <span class="s2">"key function"</span><span class="p">)</span>
 </span><span data-line="99">
 <div class="viewcode-block" id="SortedCollection.clear">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.clear">[docs]</a>
-</span><span data-line="100">    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="100">    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="101"><span class="w">        </span><span class="sd">"""Remove all items."""</span>
 </span><span data-line="102">        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span></div>
 
@@ -247,7 +247,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="106">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">)</span></div>
 
 </span><span data-line="107">
-</span><span data-line="108">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="108">    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span data-line="109"><span class="w">        </span><span class="sd">"""Number of items."""</span>
 </span><span data-line="110">        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
 </span><span data-line="111">
@@ -263,7 +263,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="121"><span class="w">        </span><span class="sd">"""Iterate over the items in reverse."""</span>
 </span><span data-line="122">        <span class="k">return</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
 </span><span data-line="123">
-</span><span data-line="124">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="124">    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="125"><span class="w">        </span><span class="sd">"""Show the contents and key."""</span>
 </span><span data-line="126">        <span class="k">return</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, key=</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="p">(</span>
 </span><span data-line="127">            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
@@ -275,7 +275,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="133"><span class="w">        </span><span class="sd">"""Pickle support: rebuild from items and key."""</span>
 </span><span data-line="134">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_given_key</span><span class="p">)</span>
 </span><span data-line="135">
-</span><span data-line="136">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="136">    <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span data-line="137"><span class="w">        </span><span class="sd">"""Whether the item is present (compared by key first)."""</span>
 </span><span data-line="138">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="139">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -304,7 +304,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="156">
 <div class="viewcode-block" id="SortedCollection.insert">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert">[docs]</a>
-</span><span data-line="157">    <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="157">    <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="158"><span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the left"""</span>
 </span><span data-line="159">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="160">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -314,7 +314,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="163">
 <div class="viewcode-block" id="SortedCollection.insert_right">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.insert_right">[docs]</a>
-</span><span data-line="164">    <span class="k">def</span><span class="w"> </span><span class="nf">insert_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="164">    <span class="k">def</span><span class="w"> </span><span class="nf">insert_right</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="165"><span class="w">        </span><span class="sd">"""Insert a new item.  If equal keys are found, add to the right"""</span>
 </span><span data-line="166">        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="167">        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
@@ -324,7 +324,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="170">
 <div class="viewcode-block" id="SortedCollection.remove">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.sorted_collection.html#stream2py.utility.sorted_collection.SortedCollection.remove">[docs]</a>
-</span><span data-line="171">    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</span><span data-line="171">    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="172"><span class="w">        </span><span class="sd">"""Remove first occurence of item.  Raise ValueError if not found"""</span>
 </span><span data-line="173">        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 </span><span data-line="174">        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -549,7 +549,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../../_static/documentation_options.js?v=9c1456b3"></script>
+      <script src="../../../_static/documentation_options.js?v=7f3031e1"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>

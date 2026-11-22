@@ -51,6 +51,9 @@ Sets custom buffer parameters.
 
 Alias of `__exit__`.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds
@@ -78,6 +81,8 @@ Set the sleep time of the iter yield loop when next data item is not yet availab
 
 * **Parameters:**
   **sleep_time_s** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`int`](https://docs.python.org/3/builtins/functions.html#int), [`float`](https://docs.python.org/3/builtins/functions.html#float)]) – seconds to sleep
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### *property* sleep_time_on_read_none_s *: [Union](https://docs.python.org/3/library/typing.html#typing.Union)[[int](https://docs.python.org/3/builtins/functions.html#int), [float](https://docs.python.org/3/builtins/functions.html#float), [None](https://docs.python.org/3/builtins/constants.html#None)]*
 

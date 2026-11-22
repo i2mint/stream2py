@@ -17,6 +17,9 @@ Source reader that streams the raw bytes of an HTTP response.
 
 Close the resource.
 
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *property* info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 
 Provides a dict with init kwargs and read status
@@ -50,6 +53,9 @@ Returns a slice of the data retrieved.
 #### open()
 
 Open the resource.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 #### read()
 
