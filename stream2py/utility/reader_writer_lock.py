@@ -99,6 +99,7 @@ import copy
 
 class Writer(threading.Thread):
     """Thread that appends to a shared buffer under the write lock (used by the lock tests)."""
+
     def __init__(self, buffer_, rw_lock, init_sleep_time, sleep_time, to_write):
         """
         @param buffer_: common buffer_ shared by the readers and writers
@@ -134,6 +135,7 @@ class Writer(threading.Thread):
 
 class Reader(threading.Thread):
     """Thread that copies a shared buffer under the read lock (used by the lock tests)."""
+
     def __init__(self, buffer_, rw_lock, init_sleep_time, sleep_time):
         """
         @param buffer_: common buffer shared by the readers and writers
@@ -169,6 +171,7 @@ class Reader(threading.Thread):
 
 class RWLockTestCase(unittest.TestCase):
     """Unit tests for :class:`RWLock`."""
+
     def test_readers_nonexclusive_access(self):
         """Check readers nonexclusive access."""
         (buffer_, rw_lock, threads) = self.__init_variables()
