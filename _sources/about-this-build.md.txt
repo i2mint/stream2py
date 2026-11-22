@@ -5,7 +5,7 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-11-22 19:30 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3</code></a> on branch <code>master</code>, for **stream2py 1.0.50** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 23:28 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5"><code>2ff08e0</code></a> on branch <code>master</code>, for **stream2py 1.0.50** (from <code>pyproject.toml</code>).
 
 :::{note}
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -15,7 +15,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770"><code>204f0b3346e320fd7932ab17c703735df76d2770</code></a> |
+| Commit | <a href="https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5"><code>2ff08e0ee38b044d26f6b0e8870b33415a8eedd5</code></a> |
 | Branch | <code>master</code> |
 | Tags at this commit | none |
 | Working tree | clean |
@@ -26,9 +26,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | | |
 |---|---|
 | Repository | <code>i2mint/stream2py</code> |
-| Run | <a href="https://github.com/i2mint/stream2py/actions/runs/45060948555">45060948555</a> |
+| Run | <a href="https://github.com/i2mint/stream2py/actions/runs/45083204841">45083204841</a> |
 | Ref | <code>refs/heads/master</code> |
-| Event commit | <code>204f0b3346e320fd7932ab17c703735df76d2770</code> (in the history of the built commit) |
+| Event commit | <code>2ff08e0ee38b044d26f6b0e8870b33415a8eedd5</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -59,7 +59,7 @@ Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>,
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout 204f0b3346e320fd7932ab17c703735df76d2770
+git checkout 2ff08e0ee38b044d26f6b0e8870b33415a8eedd5
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

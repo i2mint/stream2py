@@ -5,7 +5,7 @@
 
 ## Pages
 
-- [stream2py](index.html.md): Documentation hosted here.
+- [stream2py](index.html.md): Bring data streams to Python, with ease. Wrap a source (a microphone, a sensor, a socket, a keyboard...
 - [API reference](api.html.md): | &#96;stream2py&#96;   |    |
 - [stream2py](_autosummary/stream2py.html.md): Stream2py enables you to create a single asynchronous Source Reader and simply distribute
 - [stream2py.buffer_reader](_autosummary/stream2py.buffer_reader.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
@@ -24,7 +24,7 @@
 - [stream2py.utility.sorted_collection](_autosummary/stream2py.utility.sorted_collection.html.md): Sequence sorted by a key function.
 - [stream2py.utility.sorted_deque](_autosummary/stream2py.utility.sorted_deque.html.md): Deque sorted by a key function.
 - [stream2py.utility.typing_hints](_autosummary/stream2py.utility.typing_hints.html.md): Typing hints
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 19:30 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 23:28 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
 
 ## Optional
 

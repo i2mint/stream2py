@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T19:30:55Z",
+  "built_at": "2026-11-22T23:28:26Z",
   "package": {
     "name": "stream2py",
     "version": "1.0.50",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "204f0b3346e320fd7932ab17c703735df76d2770",
-    "short_commit": "204f0b3",
+    "commit": "2ff08e0ee38b044d26f6b0e8870b33415a8eedd5",
+    "short_commit": "2ff08e0",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/stream2py",
-    "commit_url": "https://github.com/i2mint/stream2py/commit/204f0b3346e320fd7932ab17c703735df76d2770",
+    "commit_url": "https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/stream2py",
-    "sha": "204f0b3346e320fd7932ab17c703735df76d2770",
+    "sha": "2ff08e0ee38b044d26f6b0e8870b33415a8eedd5",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45060948555",
-    "run_url": "https://github.com/i2mint/stream2py/actions/runs/45060948555",
+    "run_id": "45083204841",
+    "run_url": "https://github.com/i2mint/stream2py/actions/runs/45083204841",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -64,7 +64,7 @@
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 204f0b3346e320fd7932ab17c703735df76d2770\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 2ff08e0ee38b044d26f6b0e8870b33415a8eedd5\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,
