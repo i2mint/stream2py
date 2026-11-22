@@ -1,4 +1,4 @@
-> built 2026-11-22 17:23 UTC from 49cbec1 (master) · stream2py 1.0.49. Details: build_info.json
+> built 2026-11-22 19:12 UTC from c061641 (master) · stream2py 1.0.49. Details: build_info.json
 
 # index.html.md
 
@@ -1843,16 +1843,18 @@ Protocol for keys that support `<` and `>`.
 
 # About this build
 
-This documentation was built on **2026-11-22 17:23 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/49cbec179f57217247e80a9d1908e7efa4ab2471"><code>49cbec1</code></a> on branch <code>master</code>, for **stream2py 1.0.49** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641</code></a> on branch <code>master</code>, for **stream2py 1.0.49** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (1.0.49) is behind the latest release on PyPI (1.0.50): `pip install stream2py` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/49cbec179f57217247e80a9d1908e7efa4ab2471"><code>49cbec179f57217247e80a9d1908e7efa4ab2471</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/c061641fe8fa509c46d0510bb15f304017f19de3"><code>c061641fe8fa509c46d0510bb15f304017f19de3</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -1863,9 +1865,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45048944372">45048944372</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45059224453">45059224453</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>49cbec179f57217247e80a9d1908e7efa4ab2471</code> (in the history of the built commit) |
+| Event commit | <code>c061641fe8fa509c46d0510bb15f304017f19de3</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -1890,13 +1892,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.49/">1.0.49</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, newer than the documented version (1.0.49).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout 49cbec179f57217247e80a9d1908e7efa4ab2471
+git checkout c061641fe8fa509c46d0510bb15f304017f19de3
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

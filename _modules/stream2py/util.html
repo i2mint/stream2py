@@ -314,8 +314,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="140">    <span class="nd">@staticmethod</span>
 </span><span data-line="141">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 </span><span data-line="142"><span class="w">        </span><span class="sd">"""Whether ``obj`` is a valid function of this kind."""</span>
-</span><span data-line="143">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-</span><span data-line="144">            <span class="n">_callable_has_a_variadic_pos</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span data-line="143">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span>
+</span><span data-line="144">            <span class="n">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </span><span data-line="145">        <span class="p">)</span></div>
 </div>
 
