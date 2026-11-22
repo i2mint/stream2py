@@ -19,6 +19,7 @@ from stream2py.utility.typing_hints import ComparableType
 
 class HTTPResponseReader(SourceReader):
     """Source reader that streams the raw bytes of an HTTP response."""
+
     _request: urllib.request.Request
     _n_bytes_read: int
     _init_kwargs: dict
