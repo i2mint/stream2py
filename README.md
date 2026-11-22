@@ -1,6 +1,6 @@
 # stream2py
 
-Bring data streams to Python, with ease. Wrap a source (a microphone, a sensor, a socket, a keyboard) once, and stream2py buffers it in a background thread and hands out as many independent readers as you need, so you can store, plot and analyse the same stream at the same time without losing data.
+Bring data streams to Python, with ease. Wrap a source (a microphone, a sensor, a socket, a keyboard) once, and stream2py buffers it in a background thread and hands out as many independent readers as you need, so you can store, plot and analyse the same stream at the same time without losing data. Compared with a hand-rolled thread feeding a `queue.Queue`, where a second consumer steals the first one's items, each reader here has its own cursor over a shared buffer.
 
 ```
 pip install stream2py
@@ -23,13 +23,10 @@ with StreamBuffer(source_reader=source, maxlen=100) as buffer:
 
 A real source is any object with `open`, `read`, `close` and a `key` to order reads by (the `stream2py.protocols.Source` protocol; plugins below ship ready-made ones), or, for quick cases, three functions given to `stream2py.simply.mk_stream_buffer`.
 
-stream2py is part of the i2i tools ("idea to implementation"): `dol` and `py2store` handle the storage concern, `py2http`, `front` and others expose functions to the world, and stream2py handles stream acquisition.
-
 ## Plugins
 
-`stream2py` has the core functionality, and is completely dependency-free (only builtin python). 
-
-That said, to work with specific stream sources, you can install plugins that will allow you to work with them. At the time of writing this we have:
+Plugins wrap specific sources:
+- HTTP responses: built in, `stream2py.sources.http.HTTPResponseReader`
 - Audio: [audiostream2py](https://github.com/i2mint/audiostream2py)
 - Keyboard inputs: [keyboardstream2py](https://github.com/i2mint/keyboardstream2py)
 - PLC (Programmable Logic Controller): [plcstream2py](https://github.com/i2mint/plcstream2py)
@@ -37,6 +34,8 @@ That said, to work with specific stream sources, you can install plugins that wi
 - Video: [videostream2py](https://github.com/i2mint/videostream2py)
 - Flask: [flaskstream2py](https://github.com/i2mint/flaskstream2py)
 
+
+stream2py is part of the i2i tools ("idea to implementation"): `dol` handles the storage concern, `py2http`, `front` and others expose functions to the world, and stream2py handles stream acquisition.
 
 # What `stream2py` is for
 
