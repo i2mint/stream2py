@@ -1,39 +1,39 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-20T11:28:28Z",
+  "built_at": "2026-11-22T17:23:17Z",
   "package": {
     "name": "stream2py",
-    "version": "1.0.48",
+    "version": "1.0.49",
     "display_name": "stream2py",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1",
-    "short_commit": "07dc7cf",
+    "commit": "49cbec179f57217247e80a9d1908e7efa4ab2471",
+    "short_commit": "49cbec1",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/stream2py",
-    "commit_url": "https://github.com/i2mint/stream2py/commit/07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1",
+    "commit_url": "https://github.com/i2mint/stream2py/commit/49cbec179f57217247e80a9d1908e7efa4ab2471",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/stream2py",
-    "sha": "07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1",
+    "sha": "49cbec179f57217247e80a9d1908e7efa4ab2471",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "39414913420",
-    "run_url": "https://github.com/i2mint/stream2py/actions/runs/39414913420",
+    "run_id": "45048944372",
+    "run_url": "https://github.com/i2mint/stream2py/actions/runs/45048944372",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.19",
+    "epythet": "0.2.23",
     "sphinx": "9.1.1",
     "docutils": "0.22.4",
-    "python": "3.12.15"
+    "python": "3.12.16"
   },
   "config": {
     "theme": "auto",
@@ -56,20 +56,18 @@
   },
   "site": {
     "modules_documented": 17,
-    "objects_documented": 97
+    "objects_documented": 139
   },
   "pypi": {
     "checked": true,
     "latest": "1.0.49",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1\npip install \"epythet==0.2.19\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/i2mint/stream2py && cd stream2py\ngit checkout 49cbec179f57217247e80a9d1908e7efa4ab2471\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (1.0.48) is behind the latest release on PyPI (1.0.49): `pip install stream2py` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }

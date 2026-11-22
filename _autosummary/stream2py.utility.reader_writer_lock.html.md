@@ -6,9 +6,9 @@ READER-WRITER LOCK WITH PRIORITY FOR WRITERS
 
 | [`RWLock`](#stream2py.utility.reader_writer_lock.RWLock)()                                       | Synchronization object used in a solution of so-called second readers-writers problem.   |
 |-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| [`RWLockTestCase`](#stream2py.utility.reader_writer_lock.RWLockTestCase)([methodName])                   |                                                                                          |
-| [`Reader`](#stream2py.utility.reader_writer_lock.Reader)(buffer_, rw_lock, init_sleep_time, ...) |                                                                                          |
-| [`Writer`](#stream2py.utility.reader_writer_lock.Writer)(buffer_, rw_lock, init_sleep_time, ...) |                                                                                          |
+| [`RWLockTestCase`](#stream2py.utility.reader_writer_lock.RWLockTestCase)([methodName])                   | Unit tests for [`RWLock`](#stream2py.utility.reader_writer_lock.RWLock).                  |
+| [`Reader`](#stream2py.utility.reader_writer_lock.Reader)(buffer_, rw_lock, init_sleep_time, ...) | Thread that copies a shared buffer under the read lock (used by the lock tests).         |
+| [`Writer`](#stream2py.utility.reader_writer_lock.Writer)(buffer_, rw_lock, init_sleep_time, ...) | Thread that appends to a shared buffer under the write lock (used by the lock tests).    |
 
 ### *class* stream2py.utility.reader_writer_lock.RWLock
 
@@ -39,13 +39,49 @@ Communications of the ACM, 1971 (via [3])
 
 [3] [http://en.wikipedia.org/wiki/Readers-writers_problem](http://en.wikipedia.org/wiki/Readers-writers_problem)
 
+#### reader_acquire()
+
+Acquire the lock for reading (shared).
+
+#### reader_release()
+
+Release a read lock.
+
+#### writer_acquire()
+
+Acquire the lock for writing (exclusive).
+
+#### writer_release()
+
+Release the write lock.
+
 ### *class* stream2py.utility.reader_writer_lock.RWLockTestCase(methodName='runTest')
 
 Bases: [`TestCase`](https://docs.python.org/3/library/unittest.html#unittest.TestCase)
 
+Unit tests for [`RWLock`](#stream2py.utility.reader_writer_lock.RWLock).
+
+#### test_many_writers_priority()
+
+Check many writers priority.
+
+#### test_readers_nonexclusive_access()
+
+Check readers nonexclusive access.
+
+#### test_writer_priority()
+
+Check writer priority.
+
+#### test_writers_exclusive_access()
+
+Check writers exclusive access.
+
 ### *class* stream2py.utility.reader_writer_lock.Reader(buffer_, rw_lock, init_sleep_time, sleep_time)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
+
+Thread that copies a shared buffer under the read lock (used by the lock tests).
 
 #### buffer_read
 
@@ -61,16 +97,13 @@ Time of exit from the critical section
 
 #### run()
 
-Method representing the thread’s activity.
-
-You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.
+Thread body: wait, take the lock, do the work, release.
 
 ### *class* stream2py.utility.reader_writer_lock.Writer(buffer_, rw_lock, init_sleep_time, sleep_time, to_write)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
+
+Thread that appends to a shared buffer under the write lock (used by the lock tests).
 
 #### entry_time
 
@@ -82,9 +115,4 @@ Time of exit from the critical section
 
 #### run()
 
-Method representing the thread’s activity.
-
-You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.
+Thread body: wait, take the lock, do the work, release.

@@ -102,7 +102,15 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#stream2py.protocols.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a><ul>
+<li><a class="reference internal" href="#stream2py.protocols.Source.close"><code class="docutils literal notranslate"><span class="pre">Source.close()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source.info"><code class="docutils literal notranslate"><span class="pre">Source.info</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source.key"><code class="docutils literal notranslate"><span class="pre">Source.key()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source.open"><code class="docutils literal notranslate"><span class="pre">Source.open()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source.read"><code class="docutils literal notranslate"><span class="pre">Source.read()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.protocols.Source.sleep_time_on_read_none_s"><code class="docutils literal notranslate"><span class="pre">Source.sleep_time_on_read_none_s</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -159,6 +167,62 @@ data-aria-dark="Switch to auto color mode">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.protocols.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/protocols.html#Source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.protocols.Source" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Protocol" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></a></p>
 <p>The interface for the StreamSource class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/protocols.html#Source.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.protocols.Source.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.info">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><span class="pre">dict</span></a></span><a class="headerlink" href="#stream2py.protocols.Source.info" title="Link to this definition">#</a></dt>
+<dd><p>Information about the source.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.key">
+<span class="sig-name descname"><span class="pre">key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/protocols.html#Source.key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.protocols.Source.key" title="Link to this definition">#</a></dt>
+<dd><p>Sort key of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/protocols.html#Source.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.protocols.Source.open" title="Link to this definition">#</a></dt>
+<dd><p>Open the resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/protocols.html#Source.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.protocols.Source.read" title="Link to this definition">#</a></dt>
+<dd><p>Read the next item, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if nothing is ready.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.protocols.Source.sleep_time_on_read_none_s">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">sleep_time_on_read_none_s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#stream2py.protocols.Source.sleep_time_on_read_none_s" title="Link to this definition">#</a></dt>
+<dd><p>Seconds to wait when <code class="docutils literal notranslate"><span class="pre">read</span></code> returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -203,7 +267,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

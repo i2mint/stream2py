@@ -103,10 +103,16 @@ data-aria-dark="Switch to auto color mode">
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader"><code class="docutils literal notranslate"><span class="pre">BufferReader</span></code></a><ul>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.close"><code class="docutils literal notranslate"><span class="pre">BufferReader.close()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.enter"><code class="docutils literal notranslate"><span class="pre">BufferReader.enter()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.exit"><code class="docutils literal notranslate"><span class="pre">BufferReader.exit()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.head"><code class="docutils literal notranslate"><span class="pre">BufferReader.head()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.is_same_buffer"><code class="docutils literal notranslate"><span class="pre">BufferReader.is_same_buffer()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.is_stopped"><code class="docutils literal notranslate"><span class="pre">BufferReader.is_stopped</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.last_item"><code class="docutils literal notranslate"><span class="pre">BufferReader.last_item</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.last_key"><code class="docutils literal notranslate"><span class="pre">BufferReader.last_key</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.next"><code class="docutils literal notranslate"><span class="pre">BufferReader.next()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.open"><code class="docutils literal notranslate"><span class="pre">BufferReader.open()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.range"><code class="docutils literal notranslate"><span class="pre">BufferReader.range()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.read"><code class="docutils literal notranslate"><span class="pre">BufferReader.read()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.buffer_reader.BufferReader.set_sleep_time_on_iter_none"><code class="docutils literal notranslate"><span class="pre">BufferReader.set_sleep_time_on_iter_none()</span></code></a></li>
@@ -225,6 +231,30 @@ what data was last seen.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resource.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.enter">
+<span class="sig-name descname"><span class="pre">enter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.enter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.enter" title="Link to this definition">#</a></dt>
+<dd><p>Alias of <code class="docutils literal notranslate"><span class="pre">__enter__</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.exit">
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.exit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.exit" title="Link to this definition">#</a></dt>
+<dd><p>Alias of <code class="docutils literal notranslate"><span class="pre">__exit__</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.head">
+<span class="sig-name descname"><span class="pre">head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.head"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.head" title="Link to this definition">#</a></dt>
+<dd><p>The first item in the buffer; with <code class="docutils literal notranslate"><span class="pre">peek=True</span></code> the read cursor is not moved.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.is_same_buffer">
 <span class="sig-name descname"><span class="pre">is_same_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other_buffer_reader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.is_same_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.is_same_buffer" title="Link to this definition">#</a></dt>
 <dd><p>Check if reader is looking at the same buffer</p>
@@ -251,6 +281,18 @@ what data was last seen.</p>
 <dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.last_key">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">last_key</span></span><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.last_key" title="Link to this definition">#</a></dt>
 <dd><p>key to last seen item cursor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">peek</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_no_item_found</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.next" title="Link to this definition">#</a></dt>
+<dd><p>Deprecated alias of <a class="reference internal" href="#stream2py.buffer_reader.BufferReader.read" title="stream2py.buffer_reader.BufferReader.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.buffer_reader.BufferReader.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/buffer_reader.html#BufferReader.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.buffer_reader.BufferReader.open" title="Link to this definition">#</a></dt>
+<dd><p>Open the resource.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -412,7 +454,7 @@ or return None if ignore_no_item_found</p></li>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

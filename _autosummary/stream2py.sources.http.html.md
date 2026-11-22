@@ -4,18 +4,18 @@
 
 ### Classes
 
-| [`HTTPResponseReader`](#stream2py.sources.http.HTTPResponseReader)(url, \*[, method, ...])   |    |
-|-----------------------------------------------------------------------------------------------|----|
+| [`HTTPResponseReader`](#stream2py.sources.http.HTTPResponseReader)(url, \*[, method, ...])   | Source reader that streams the raw bytes of an HTTP response.   |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
 
 ### *class* stream2py.sources.http.HTTPResponseReader(url, , method='GET', headers=None, body='', response_format='bytes', response_read_args=(), encoding='')
 
 Bases: [`SourceReader`](stream2py.source_reader.html.md#stream2py.source_reader.SourceReader)
 
+Source reader that streams the raw bytes of an HTTP response.
+
 #### close()
 
-Close and clean up source reader.
-Will be called when StreamBuffer stops or if an exception is raised during read and append
-loop.
+Close the resource.
 
 #### *property* info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 
@@ -49,8 +49,7 @@ Returns a slice of the data retrieved.
 
 #### open()
 
-Set up source to be read and set some source info affected by open time like the time of
-open. Will be called in StreamBuffer immediately before first read.
+Open the resource.
 
 #### read()
 

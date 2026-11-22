@@ -167,246 +167,284 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="31"><span class="sd">    """</span>
 </span><span data-line="32">
 </span><span data-line="33">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="34">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span> <span class="o">=</span> <span class="n">_LightSwitch</span><span class="p">()</span>
-</span><span data-line="35">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span> <span class="o">=</span> <span class="n">_LightSwitch</span><span class="p">()</span>
-</span><span data-line="36">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-</span><span data-line="37">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-</span><span data-line="38">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-</span><span data-line="39"><span class="w">        </span><span class="sd">"""A lock giving an even higher priority to the writer in certain</span>
-</span><span data-line="40"><span class="sd">        cases (see [2] for a discussion)"""</span>
-</span><span data-line="41">
-</span><span data-line="42">    <span class="k">def</span><span class="w"> </span><span class="nf">reader_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="43">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="44">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="45">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="p">)</span>
-</span><span data-line="46">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="47">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="48">
-</span><span data-line="49">    <span class="k">def</span><span class="w"> </span><span class="nf">reader_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="50">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="p">)</span>
-</span><span data-line="51">
-</span><span data-line="52">    <span class="k">def</span><span class="w"> </span><span class="nf">writer_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="53">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="p">)</span>
-</span><span data-line="54">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="55">
-</span><span data-line="56">    <span class="k">def</span><span class="w"> </span><span class="nf">writer_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="57">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="58">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="p">)</span></div>
+</span><span data-line="34"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
+</span><span data-line="35">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span> <span class="o">=</span> <span class="n">_LightSwitch</span><span class="p">()</span>
+</span><span data-line="36">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span> <span class="o">=</span> <span class="n">_LightSwitch</span><span class="p">()</span>
+</span><span data-line="37">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span data-line="38">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span data-line="39">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span data-line="40"><span class="w">        </span><span class="sd">"""A lock giving an even higher priority to the writer in certain</span>
+</span><span data-line="41"><span class="sd">        cases (see [2] for a discussion)"""</span>
+</span><span data-line="42">
+<div class="viewcode-block" id="RWLock.reader_acquire">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLock.reader_acquire">[docs]</a>
+</span><span data-line="43">    <span class="k">def</span><span class="w"> </span><span class="nf">reader_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="44"><span class="w">        </span><span class="sd">"""Acquire the lock for reading (shared)."""</span>
+</span><span data-line="45">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span data-line="46">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span data-line="47">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="p">)</span>
+</span><span data-line="48">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span data-line="49">        <span class="bp">self</span><span class="o">.</span><span class="n">__readers_queue</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+</span><span data-line="50">
+<div class="viewcode-block" id="RWLock.reader_release">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLock.reader_release">[docs]</a>
+</span><span data-line="51">    <span class="k">def</span><span class="w"> </span><span class="nf">reader_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="52"><span class="w">        </span><span class="sd">"""Release a read lock."""</span>
+</span><span data-line="53">        <span class="bp">self</span><span class="o">.</span><span class="n">__read_switch</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="p">)</span></div>
+
+</span><span data-line="54">
+<div class="viewcode-block" id="RWLock.writer_acquire">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLock.writer_acquire">[docs]</a>
+</span><span data-line="55">    <span class="k">def</span><span class="w"> </span><span class="nf">writer_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="56"><span class="w">        </span><span class="sd">"""Acquire the lock for writing (exclusive)."""</span>
+</span><span data-line="57">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="p">)</span>
+</span><span data-line="58">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span></div>
 
 </span><span data-line="59">
-</span><span data-line="60">
-</span><span data-line="61"><span class="k">class</span><span class="w"> </span><span class="nc">_LightSwitch</span><span class="p">:</span>
-</span><span data-line="62"><span class="w">    </span><span class="sd">"""An auxiliary "light switch"-like object. The first thread turns on the</span>
-</span><span data-line="63"><span class="sd">    "switch", the last one turns it off (see [1, sec. 4.2.2] for details)."""</span>
+<div class="viewcode-block" id="RWLock.writer_release">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLock.writer_release">[docs]</a>
+</span><span data-line="60">    <span class="k">def</span><span class="w"> </span><span class="nf">writer_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="61"><span class="w">        </span><span class="sd">"""Release the write lock."""</span>
+</span><span data-line="62">        <span class="bp">self</span><span class="o">.</span><span class="n">__no_writers</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span data-line="63">        <span class="bp">self</span><span class="o">.</span><span class="n">__write_switch</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__no_readers</span><span class="p">)</span></div>
+</div>
+
 </span><span data-line="64">
-</span><span data-line="65">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="66">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span data-line="67">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-</span><span data-line="68">
-</span><span data-line="69">    <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
-</span><span data-line="70">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="71">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span data-line="72">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-</span><span data-line="73">            <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="74">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="75">
-</span><span data-line="76">    <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
-</span><span data-line="77">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
-</span><span data-line="78">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">-=</span> <span class="mi">1</span>
-</span><span data-line="79">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span><span data-line="80">            <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="81">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</span><span data-line="82">
-</span><span data-line="83">
-</span><span data-line="84"><span class="c1">##</span>
-</span><span data-line="85"><span class="c1">## Unit testing code</span>
-</span><span data-line="86"><span class="c1">## =================</span>
-</span><span data-line="87"><span class="c1">##</span>
+</span><span data-line="65">
+</span><span data-line="66"><span class="k">class</span><span class="w"> </span><span class="nc">_LightSwitch</span><span class="p">:</span>
+</span><span data-line="67"><span class="w">    </span><span class="sd">"""An auxiliary "light switch"-like object. The first thread turns on the</span>
+</span><span data-line="68"><span class="sd">    "switch", the last one turns it off (see [1, sec. 4.2.2] for details)."""</span>
+</span><span data-line="69">
+</span><span data-line="70">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="71">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span data-line="72">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+</span><span data-line="73">
+</span><span data-line="74">    <span class="k">def</span><span class="w"> </span><span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
+</span><span data-line="75">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span data-line="76">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span data-line="77">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span data-line="78">            <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span data-line="79">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span data-line="80">
+</span><span data-line="81">    <span class="k">def</span><span class="w"> </span><span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="p">):</span>
+</span><span data-line="82">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+</span><span data-line="83">        <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span data-line="84">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span data-line="85">            <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span data-line="86">        <span class="bp">self</span><span class="o">.</span><span class="n">__mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</span><span data-line="87">
 </span><span data-line="88">
-</span><span data-line="89"><span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
-</span><span data-line="90"><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
-</span><span data-line="91"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-</span><span data-line="92"><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+</span><span data-line="89"><span class="c1">##</span>
+</span><span data-line="90"><span class="c1">## Unit testing code</span>
+</span><span data-line="91"><span class="c1">## =================</span>
+</span><span data-line="92"><span class="c1">##</span>
 </span><span data-line="93">
-</span><span data-line="94">
+</span><span data-line="94"><span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
+</span><span data-line="95"><span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+</span><span data-line="96"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span data-line="97"><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+</span><span data-line="98">
+</span><span data-line="99">
 <div class="viewcode-block" id="Writer">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.Writer">[docs]</a>
-</span><span data-line="95"><span class="k">class</span><span class="w"> </span><span class="nc">Writer</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-</span><span data-line="96">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">,</span> <span class="n">to_write</span><span class="p">):</span>
-</span><span data-line="97"><span class="w">        </span><span class="sd">"""</span>
-</span><span data-line="98"><span class="sd">        @param buffer_: common buffer_ shared by the readers and writers</span>
-</span><span data-line="99"><span class="sd">        @type buffer_: list</span>
-</span><span data-line="100"><span class="sd">        @type rw_lock: L{RWLock}</span>
-</span><span data-line="101"><span class="sd">        @param init_sleep_time: sleep time before doing any action</span>
-</span><span data-line="102"><span class="sd">        @type init_sleep_time: C{float}</span>
-</span><span data-line="103"><span class="sd">        @param sleep_time: sleep time while in critical section</span>
-</span><span data-line="104"><span class="sd">        @type sleep_time: C{float}</span>
-</span><span data-line="105"><span class="sd">        @param to_write: data that will be appended to the buffer</span>
-</span><span data-line="106"><span class="sd">        """</span>
-</span><span data-line="107">        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span data-line="108">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span> <span class="o">=</span> <span class="n">buffer_</span>
-</span><span data-line="109">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span> <span class="o">=</span> <span class="n">rw_lock</span>
-</span><span data-line="110">        <span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span> <span class="o">=</span> <span class="n">init_sleep_time</span>
-</span><span data-line="111">        <span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span> <span class="o">=</span> <span class="n">sleep_time</span>
-</span><span data-line="112">        <span class="bp">self</span><span class="o">.</span><span class="n">__to_write</span> <span class="o">=</span> <span class="n">to_write</span>
-</span><span data-line="113">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="114"><span class="w">        </span><span class="sd">"""Time of entry to the critical section"""</span>
-</span><span data-line="115">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="116"><span class="w">        </span><span class="sd">"""Time of exit from the critical section"""</span>
-</span><span data-line="117">
+</span><span data-line="100"><span class="k">class</span><span class="w"> </span><span class="nc">Writer</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+</span><span data-line="101"><span class="w">    </span><span class="sd">"""Thread that appends to a shared buffer under the write lock (used by the lock tests)."""</span>
+</span><span data-line="102">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">,</span> <span class="n">to_write</span><span class="p">):</span>
+</span><span data-line="103"><span class="w">        </span><span class="sd">"""</span>
+</span><span data-line="104"><span class="sd">        @param buffer_: common buffer_ shared by the readers and writers</span>
+</span><span data-line="105"><span class="sd">        @type buffer_: list</span>
+</span><span data-line="106"><span class="sd">        @type rw_lock: L{RWLock}</span>
+</span><span data-line="107"><span class="sd">        @param init_sleep_time: sleep time before doing any action</span>
+</span><span data-line="108"><span class="sd">        @type init_sleep_time: C{float}</span>
+</span><span data-line="109"><span class="sd">        @param sleep_time: sleep time while in critical section</span>
+</span><span data-line="110"><span class="sd">        @type sleep_time: C{float}</span>
+</span><span data-line="111"><span class="sd">        @param to_write: data that will be appended to the buffer</span>
+</span><span data-line="112"><span class="sd">        """</span>
+</span><span data-line="113">        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span data-line="114">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span> <span class="o">=</span> <span class="n">buffer_</span>
+</span><span data-line="115">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span> <span class="o">=</span> <span class="n">rw_lock</span>
+</span><span data-line="116">        <span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span> <span class="o">=</span> <span class="n">init_sleep_time</span>
+</span><span data-line="117">        <span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span> <span class="o">=</span> <span class="n">sleep_time</span>
+</span><span data-line="118">        <span class="bp">self</span><span class="o">.</span><span class="n">__to_write</span> <span class="o">=</span> <span class="n">to_write</span>
+</span><span data-line="119">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="120"><span class="w">        </span><span class="sd">"""Time of entry to the critical section"""</span>
+</span><span data-line="121">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="122"><span class="w">        </span><span class="sd">"""Time of exit from the critical section"""</span>
+</span><span data-line="123">
 <div class="viewcode-block" id="Writer.run">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.Writer.run">[docs]</a>
-</span><span data-line="118">    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="119">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span><span class="p">)</span>
-</span><span data-line="120">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">writer_acquire</span><span class="p">()</span>
-</span><span data-line="121">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span data-line="122">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span><span class="p">)</span>
-</span><span data-line="123">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__to_write</span><span class="p">)</span>
-</span><span data-line="124">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span data-line="125">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">writer_release</span><span class="p">()</span></div>
+</span><span data-line="124">    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="125"><span class="w">        </span><span class="sd">"""Thread body: wait, take the lock, do the work, release."""</span>
+</span><span data-line="126">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span><span class="p">)</span>
+</span><span data-line="127">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">writer_acquire</span><span class="p">()</span>
+</span><span data-line="128">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span data-line="129">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span><span class="p">)</span>
+</span><span data-line="130">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__to_write</span><span class="p">)</span>
+</span><span data-line="131">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span data-line="132">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">writer_release</span><span class="p">()</span></div>
 </div>
 
-</span><span data-line="126">
-</span><span data-line="127">
+</span><span data-line="133">
+</span><span data-line="134">
 <div class="viewcode-block" id="Reader">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader">[docs]</a>
-</span><span data-line="128"><span class="k">class</span><span class="w"> </span><span class="nc">Reader</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
-</span><span data-line="129">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">):</span>
-</span><span data-line="130"><span class="w">        </span><span class="sd">"""</span>
-</span><span data-line="131"><span class="sd">        @param buffer_: common buffer shared by the readers and writers</span>
-</span><span data-line="132"><span class="sd">        @type buffer_: list</span>
-</span><span data-line="133"><span class="sd">        @type rw_lock: L{RWLock}</span>
-</span><span data-line="134"><span class="sd">        @param init_sleep_time: sleep time before doing any action</span>
-</span><span data-line="135"><span class="sd">        @type init_sleep_time: C{float}</span>
-</span><span data-line="136"><span class="sd">        @param sleep_time: sleep time while in critical section</span>
-</span><span data-line="137"><span class="sd">        @type sleep_time: C{float}</span>
-</span><span data-line="138"><span class="sd">        """</span>
-</span><span data-line="139">        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span data-line="140">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span> <span class="o">=</span> <span class="n">buffer_</span>
-</span><span data-line="141">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span> <span class="o">=</span> <span class="n">rw_lock</span>
-</span><span data-line="142">        <span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span> <span class="o">=</span> <span class="n">init_sleep_time</span>
-</span><span data-line="143">        <span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span> <span class="o">=</span> <span class="n">sleep_time</span>
-</span><span data-line="144">        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_read</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="145"><span class="w">        </span><span class="sd">"""a copy of a the buffer read while in critical section"""</span>
-</span><span data-line="146">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="147"><span class="w">        </span><span class="sd">"""Time of entry to the critical section"""</span>
-</span><span data-line="148">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="149"><span class="w">        </span><span class="sd">"""Time of exit from the critical section"""</span>
-</span><span data-line="150">
+</span><span data-line="135"><span class="k">class</span><span class="w"> </span><span class="nc">Reader</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+</span><span data-line="136"><span class="w">    </span><span class="sd">"""Thread that copies a shared buffer under the read lock (used by the lock tests)."""</span>
+</span><span data-line="137">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">init_sleep_time</span><span class="p">,</span> <span class="n">sleep_time</span><span class="p">):</span>
+</span><span data-line="138"><span class="w">        </span><span class="sd">"""</span>
+</span><span data-line="139"><span class="sd">        @param buffer_: common buffer shared by the readers and writers</span>
+</span><span data-line="140"><span class="sd">        @type buffer_: list</span>
+</span><span data-line="141"><span class="sd">        @type rw_lock: L{RWLock}</span>
+</span><span data-line="142"><span class="sd">        @param init_sleep_time: sleep time before doing any action</span>
+</span><span data-line="143"><span class="sd">        @type init_sleep_time: C{float}</span>
+</span><span data-line="144"><span class="sd">        @param sleep_time: sleep time while in critical section</span>
+</span><span data-line="145"><span class="sd">        @type sleep_time: C{float}</span>
+</span><span data-line="146"><span class="sd">        """</span>
+</span><span data-line="147">        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span data-line="148">        <span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span> <span class="o">=</span> <span class="n">buffer_</span>
+</span><span data-line="149">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span> <span class="o">=</span> <span class="n">rw_lock</span>
+</span><span data-line="150">        <span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span> <span class="o">=</span> <span class="n">init_sleep_time</span>
+</span><span data-line="151">        <span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span> <span class="o">=</span> <span class="n">sleep_time</span>
+</span><span data-line="152">        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_read</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="153"><span class="w">        </span><span class="sd">"""a copy of a the buffer read while in critical section"""</span>
+</span><span data-line="154">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="155"><span class="w">        </span><span class="sd">"""Time of entry to the critical section"""</span>
+</span><span data-line="156">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="157"><span class="w">        </span><span class="sd">"""Time of exit from the critical section"""</span>
+</span><span data-line="158">
 <div class="viewcode-block" id="Reader.run">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.Reader.run">[docs]</a>
-</span><span data-line="151">    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="152">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span><span class="p">)</span>
-</span><span data-line="153">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">reader_acquire</span><span class="p">()</span>
-</span><span data-line="154">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span data-line="155">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span><span class="p">)</span>
-</span><span data-line="156">        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_read</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span><span class="p">)</span>
-</span><span data-line="157">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span><span data-line="158">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">reader_release</span><span class="p">()</span></div>
+</span><span data-line="159">    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="160"><span class="w">        </span><span class="sd">"""Thread body: wait, take the lock, do the work, release."""</span>
+</span><span data-line="161">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__init_sleep_time</span><span class="p">)</span>
+</span><span data-line="162">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">reader_acquire</span><span class="p">()</span>
+</span><span data-line="163">        <span class="bp">self</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span data-line="164">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__sleep_time</span><span class="p">)</span>
+</span><span data-line="165">        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_read</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__buffer</span><span class="p">)</span>
+</span><span data-line="166">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span><span data-line="167">        <span class="bp">self</span><span class="o">.</span><span class="n">__rw_lock</span><span class="o">.</span><span class="n">reader_release</span><span class="p">()</span></div>
 </div>
 
-</span><span data-line="159">
-</span><span data-line="160">
+</span><span data-line="168">
+</span><span data-line="169">
 <div class="viewcode-block" id="RWLockTestCase">
 <a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase">[docs]</a>
-</span><span data-line="161"><span class="k">class</span><span class="w"> </span><span class="nc">RWLockTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-</span><span data-line="162">    <span class="k">def</span><span class="w"> </span><span class="nf">test_readers_nonexclusive_access</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="163">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
-</span><span data-line="164">
-</span><span data-line="165">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="166">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-</span><span data-line="167">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span>
-</span><span data-line="168">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="169">
-</span><span data-line="170">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
-</span><span data-line="171">
-</span><span data-line="172">        <span class="c1">## The third reader should enter after the second one but it should</span>
-</span><span data-line="173">        <span class="c1">## exit before the second one exits</span>
-</span><span data-line="174">        <span class="c1">## (i.e. the readers should be in the critical section</span>
-</span><span data-line="175">        <span class="c1">## at the same time)</span>
-</span><span data-line="176">
-</span><span data-line="177">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="178">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="179">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="180">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="181">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="182">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span><span class="p">)</span>
-</span><span data-line="183">
-</span><span data-line="184">    <span class="k">def</span><span class="w"> </span><span class="nf">test_writers_exclusive_access</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="185">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
-</span><span data-line="186">
-</span><span data-line="187">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-</span><span data-line="188">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-</span><span data-line="189">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="190">
-</span><span data-line="191">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
-</span><span data-line="192">
-</span><span data-line="193">        <span class="c1">## The second writer should wait for the first one to exit</span>
+</span><span data-line="170"><span class="k">class</span><span class="w"> </span><span class="nc">RWLockTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</span><span data-line="171"><span class="w">    </span><span class="sd">"""Unit tests for :class:`RWLock`."""</span>
+<div class="viewcode-block" id="RWLockTestCase.test_readers_nonexclusive_access">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase.test_readers_nonexclusive_access">[docs]</a>
+</span><span data-line="172">    <span class="k">def</span><span class="w"> </span><span class="nf">test_readers_nonexclusive_access</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="173"><span class="w">        </span><span class="sd">"""Check readers nonexclusive access."""</span>
+</span><span data-line="174">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
+</span><span data-line="175">
+</span><span data-line="176">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="177">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span data-line="178">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">))</span>
+</span><span data-line="179">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="180">
+</span><span data-line="181">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+</span><span data-line="182">
+</span><span data-line="183">        <span class="c1">## The third reader should enter after the second one but it should</span>
+</span><span data-line="184">        <span class="c1">## exit before the second one exits</span>
+</span><span data-line="185">        <span class="c1">## (i.e. the readers should be in the critical section</span>
+</span><span data-line="186">        <span class="c1">## at the same time)</span>
+</span><span data-line="187">
+</span><span data-line="188">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="189">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="190">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="191">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="192">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="193">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span><span class="p">)</span></div>
+
 </span><span data-line="194">
-</span><span data-line="195">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="196">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="197">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span><span class="p">)</span>
+<div class="viewcode-block" id="RWLockTestCase.test_writers_exclusive_access">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writers_exclusive_access">[docs]</a>
+</span><span data-line="195">    <span class="k">def</span><span class="w"> </span><span class="nf">test_writers_exclusive_access</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="196"><span class="w">        </span><span class="sd">"""Check writers exclusive access."""</span>
+</span><span data-line="197">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
 </span><span data-line="198">
-</span><span data-line="199">    <span class="k">def</span><span class="w"> </span><span class="nf">test_writer_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="200">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
-</span><span data-line="201">
-</span><span data-line="202">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-</span><span data-line="203">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">))</span>
-</span><span data-line="204">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-</span><span data-line="205">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="206">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="207">
-</span><span data-line="208">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
-</span><span data-line="209">
-</span><span data-line="210">        <span class="c1">## The second writer should go before the second and the third reader</span>
-</span><span data-line="211">
-</span><span data-line="212">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="213">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="214">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="215">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="216">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="217">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="218">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="219">
-</span><span data-line="220">    <span class="k">def</span><span class="w"> </span><span class="nf">test_many_writers_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="221">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
+</span><span data-line="199">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span data-line="200">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span data-line="201">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="202">
+</span><span data-line="203">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+</span><span data-line="204">
+</span><span data-line="205">        <span class="c1">## The second writer should wait for the first one to exit</span>
+</span><span data-line="206">
+</span><span data-line="207">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="208">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="209">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span><span class="p">)</span></div>
+
+</span><span data-line="210">
+<div class="viewcode-block" id="RWLockTestCase.test_writer_priority">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writer_priority">[docs]</a>
+</span><span data-line="211">    <span class="k">def</span><span class="w"> </span><span class="nf">test_writer_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="212"><span class="w">        </span><span class="sd">"""Check writer priority."""</span>
+</span><span data-line="213">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
+</span><span data-line="214">
+</span><span data-line="215">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span data-line="216">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">))</span>
+</span><span data-line="217">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span data-line="218">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="219">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="220">
+</span><span data-line="221">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
 </span><span data-line="222">
-</span><span data-line="223">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-</span><span data-line="224">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
-</span><span data-line="225">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-</span><span data-line="226">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="227">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-</span><span data-line="228">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-</span><span data-line="229">
-</span><span data-line="230">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
-</span><span data-line="231">
-</span><span data-line="232">        <span class="c1">## The two last writers should go first -- after the first reader and</span>
-</span><span data-line="233">        <span class="c1">## before the second and the third reader</span>
-</span><span data-line="234">
-</span><span data-line="235">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="236">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="237">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
-</span><span data-line="238">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="239">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="240">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="241">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="242">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="243">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
-</span><span data-line="244">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="223">        <span class="c1">## The second writer should go before the second and the third reader</span>
+</span><span data-line="224">
+</span><span data-line="225">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="226">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="227">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="228">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="229">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="230">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="231">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span></div>
+
+</span><span data-line="232">
+<div class="viewcode-block" id="RWLockTestCase.test_many_writers_priority">
+<a class="viewcode-back" href="../../../_autosummary/stream2py.utility.reader_writer_lock.html#stream2py.utility.reader_writer_lock.RWLockTestCase.test_many_writers_priority">[docs]</a>
+</span><span data-line="233">    <span class="k">def</span><span class="w"> </span><span class="nf">test_many_writers_priority</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="234"><span class="w">        </span><span class="sd">"""Check many writers priority."""</span>
+</span><span data-line="235">        <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__init_variables</span><span class="p">()</span>
+</span><span data-line="236">
+</span><span data-line="237">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</span><span data-line="238">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
+</span><span data-line="239">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</span><span data-line="240">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="241">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Reader</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</span><span data-line="242">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Writer</span><span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span><span data-line="243">
+</span><span data-line="244">        <span class="bp">self</span><span class="o">.</span><span class="n">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
 </span><span data-line="245">
-</span><span data-line="246">    <span class="nd">@staticmethod</span>
-</span><span data-line="247">    <span class="k">def</span><span class="w"> </span><span class="nf">__init_variables</span><span class="p">():</span>
-</span><span data-line="248">        <span class="n">buffer_</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span data-line="249">        <span class="n">rw_lock</span> <span class="o">=</span> <span class="n">RWLock</span><span class="p">()</span>
-</span><span data-line="250">        <span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span data-line="251">        <span class="k">return</span> <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span>
-</span><span data-line="252">
-</span><span data-line="253">    <span class="nd">@staticmethod</span>
-</span><span data-line="254">    <span class="k">def</span><span class="w"> </span><span class="nf">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">):</span>
-</span><span data-line="255">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-</span><span data-line="256">            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span data-line="257">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-</span><span data-line="258">            <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+</span><span data-line="246">        <span class="c1">## The two last writers should go first -- after the first reader and</span>
+</span><span data-line="247">        <span class="c1">## before the second and the third reader</span>
+</span><span data-line="248">
+</span><span data-line="249">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="250">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="251">        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">buffer_read</span><span class="p">)</span>
+</span><span data-line="252">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="253">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="254">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="255">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="256">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="257">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span>
+</span><span data-line="258">        <span class="bp">self</span><span class="o">.</span><span class="n">assert_</span><span class="p">(</span><span class="n">threads</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">exit_time</span> <span class="o">&lt;=</span> <span class="n">threads</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">entry_time</span><span class="p">)</span></div>
+
+</span><span data-line="259">
+</span><span data-line="260">    <span class="nd">@staticmethod</span>
+</span><span data-line="261">    <span class="k">def</span><span class="w"> </span><span class="nf">__init_variables</span><span class="p">():</span>
+</span><span data-line="262">        <span class="n">buffer_</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="263">        <span class="n">rw_lock</span> <span class="o">=</span> <span class="n">RWLock</span><span class="p">()</span>
+</span><span data-line="264">        <span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span data-line="265">        <span class="k">return</span> <span class="p">(</span><span class="n">buffer_</span><span class="p">,</span> <span class="n">rw_lock</span><span class="p">,</span> <span class="n">threads</span><span class="p">)</span>
+</span><span data-line="266">
+</span><span data-line="267">    <span class="nd">@staticmethod</span>
+</span><span data-line="268">    <span class="k">def</span><span class="w"> </span><span class="nf">__start_and_join_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">):</span>
+</span><span data-line="269">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+</span><span data-line="270">            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span data-line="271">        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
+</span><span data-line="272">            <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -435,7 +473,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../../../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>

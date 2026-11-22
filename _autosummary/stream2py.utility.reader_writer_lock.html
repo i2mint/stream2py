@@ -102,8 +102,20 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock"><code class="docutils literal notranslate"><span class="pre">RWLock</span></code></a></li>
-<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock"><code class="docutils literal notranslate"><span class="pre">RWLock</span></code></a><ul>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock.reader_acquire"><code class="docutils literal notranslate"><span class="pre">RWLock.reader_acquire()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock.reader_release"><code class="docutils literal notranslate"><span class="pre">RWLock.reader_release()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock.writer_acquire"><code class="docutils literal notranslate"><span class="pre">RWLock.writer_acquire()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock.writer_release"><code class="docutils literal notranslate"><span class="pre">RWLock.writer_release()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase</span></code></a><ul>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_many_writers_priority"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase.test_many_writers_priority()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_readers_nonexclusive_access"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase.test_readers_nonexclusive_access()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writer_priority"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase.test_writer_priority()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writers_exclusive_access"><code class="docutils literal notranslate"><span class="pre">RWLockTestCase.test_writers_exclusive_access()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.Reader"><code class="docutils literal notranslate"><span class="pre">Reader</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.Reader.buffer_read"><code class="docutils literal notranslate"><span class="pre">Reader.buffer_read</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.reader_writer_lock.Reader.entry_time"><code class="docutils literal notranslate"><span class="pre">Reader.entry_time</span></code></a></li>
@@ -170,13 +182,13 @@ data-aria-dark="Switch to auto color mode">
 <td><p>Synchronization object used in a solution of so-called second readers-writers problem.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLockTestCase" title="stream2py.utility.reader_writer_lock.RWLockTestCase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RWLockTestCase</span></code></a>([methodName])</p></td>
-<td><p></p></td>
+<td><p>Unit tests for <a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock" title="stream2py.utility.reader_writer_lock.RWLock"><code class="xref py py-class docutils literal notranslate"><span class="pre">RWLock</span></code></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stream2py.utility.reader_writer_lock.Reader" title="stream2py.utility.reader_writer_lock.Reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Reader</span></code></a>(buffer_, rw_lock, init_sleep_time, ...)</p></td>
-<td><p></p></td>
+<td><p>Thread that copies a shared buffer under the read lock (used by the lock tests).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#stream2py.utility.reader_writer_lock.Writer" title="stream2py.utility.reader_writer_lock.Writer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Writer</span></code></a>(buffer_, rw_lock, init_sleep_time, ...)</p></td>
-<td><p></p></td>
+<td><p>Thread that appends to a shared buffer under the write lock (used by the lock tests).</p></td>
 </tr>
 </tbody>
 </table>
@@ -212,18 +224,68 @@ with a modification – adding an additional lock (C{self.__readers_queue})
 </span></pre></div>
 </div>
 <p>[3] <a class="reference external" href="http://en.wikipedia.org/wiki/Readers-writers_problem">http://en.wikipedia.org/wiki/Readers-writers_problem</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLock.reader_acquire">
+<span class="sig-name descname"><span class="pre">reader_acquire</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLock.reader_acquire"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLock.reader_acquire" title="Link to this definition">#</a></dt>
+<dd><p>Acquire the lock for reading (shared).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLock.reader_release">
+<span class="sig-name descname"><span class="pre">reader_release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLock.reader_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLock.reader_release" title="Link to this definition">#</a></dt>
+<dd><p>Release a read lock.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLock.writer_acquire">
+<span class="sig-name descname"><span class="pre">writer_acquire</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLock.writer_acquire"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLock.writer_acquire" title="Link to this definition">#</a></dt>
+<dd><p>Acquire the lock for writing (exclusive).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLock.writer_release">
+<span class="sig-name descname"><span class="pre">writer_release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLock.writer_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLock.writer_release" title="Link to this definition">#</a></dt>
+<dd><p>Release the write lock.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLockTestCase">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.utility.reader_writer_lock.</span></span><span class="sig-name descname"><span class="pre">RWLockTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLockTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLockTestCase" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/unittest.html#unittest.TestCase" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></a></p>
+<p>Unit tests for <a class="reference internal" href="#stream2py.utility.reader_writer_lock.RWLock" title="stream2py.utility.reader_writer_lock.RWLock"><code class="xref py py-class docutils literal notranslate"><span class="pre">RWLock</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLockTestCase.test_many_writers_priority">
+<span class="sig-name descname"><span class="pre">test_many_writers_priority</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLockTestCase.test_many_writers_priority"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_many_writers_priority" title="Link to this definition">#</a></dt>
+<dd><p>Check many writers priority.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLockTestCase.test_readers_nonexclusive_access">
+<span class="sig-name descname"><span class="pre">test_readers_nonexclusive_access</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLockTestCase.test_readers_nonexclusive_access"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_readers_nonexclusive_access" title="Link to this definition">#</a></dt>
+<dd><p>Check readers nonexclusive access.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLockTestCase.test_writer_priority">
+<span class="sig-name descname"><span class="pre">test_writer_priority</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLockTestCase.test_writer_priority"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writer_priority" title="Link to this definition">#</a></dt>
+<dd><p>Check writer priority.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.RWLockTestCase.test_writers_exclusive_access">
+<span class="sig-name descname"><span class="pre">test_writers_exclusive_access</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#RWLockTestCase.test_writers_exclusive_access"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.RWLockTestCase.test_writers_exclusive_access" title="Link to this definition">#</a></dt>
+<dd><p>Check writers exclusive access.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Reader">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.utility.reader_writer_lock.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rw_lock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_sleep_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#Reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Reader" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></a></p>
+<p>Thread that copies a shared buffer under the read lock (used by the lock tests).</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Reader.buffer_read">
 <span class="sig-name descname"><span class="pre">buffer_read</span></span><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Reader.buffer_read" title="Link to this definition">#</a></dt>
@@ -245,11 +307,7 @@ with a modification – adding an additional lock (C{self.__readers_queue})
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Reader.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#Reader.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Reader.run" title="Link to this definition">#</a></dt>
-<dd><p>Method representing the thread’s activity.</p>
-<p>You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.</p>
+<dd><p>Thread body: wait, take the lock, do the work, release.</p>
 </dd></dl>
 
 </dd></dl>
@@ -258,6 +316,7 @@ from the args and kwargs arguments, respectively.</p>
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Writer">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.utility.reader_writer_lock.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rw_lock</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_sleep_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_write</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Writer" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Thread</span></code></a></p>
+<p>Thread that appends to a shared buffer under the write lock (used by the lock tests).</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Writer.entry_time">
 <span class="sig-name descname"><span class="pre">entry_time</span></span><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Writer.entry_time" title="Link to this definition">#</a></dt>
@@ -273,11 +332,7 @@ from the args and kwargs arguments, respectively.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.utility.reader_writer_lock.Writer.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/reader_writer_lock.html#Writer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.reader_writer_lock.Writer.run" title="Link to this definition">#</a></dt>
-<dd><p>Method representing the thread’s activity.</p>
-<p>You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.</p>
+<dd><p>Thread body: wait, take the lock, do the work, release.</p>
 </dd></dl>
 
 </dd></dl>
@@ -324,7 +379,7 @@ from the args and kwargs arguments, respectively.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -89,6 +89,14 @@ bisect but with a simpler API and support for key functions.
  ('roger', 'young', 30)]
 ```
 
+#### clear()
+
+Remove all items.
+
+#### copy()
+
+A shallow copy with the same key.
+
 #### count(item)
 
 Return number of occurrences of item

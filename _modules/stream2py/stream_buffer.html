@@ -316,182 +316,188 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="180">        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span data-line="181">
 </span><span data-line="182">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="183">        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
-</span><span data-line="184">        <span class="k">yield from</span> <span class="nb">iter</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-</span><span data-line="185">
-</span><span data-line="186">    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="187">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="188">            <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
-</span><span data-line="189">        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span><span class="p">)</span>
-</span><span data-line="190">
+</span><span data-line="183"><span class="w">        </span><span class="sd">"""Iterate over the items."""</span>
+</span><span data-line="184">        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+</span><span data-line="185">        <span class="k">yield from</span> <span class="nb">iter</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+</span><span data-line="186">
+</span><span data-line="187">    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="188"><span class="w">        </span><span class="sd">"""The next item."""</span>
+</span><span data-line="189">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="190">            <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>
+</span><span data-line="191">        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span><span class="p">)</span>
+</span><span data-line="192">
 <div class="viewcode-block" id="StreamBuffer.drop">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.drop">[docs]</a>
-</span><span data-line="191">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-</span><span data-line="192"><span class="w">        </span><span class="sd">"""Manually drop items from buffer when auto_drop is False</span>
-</span><span data-line="193">
-</span><span data-line="194"><span class="sd">        :param n: number of items to drop from the left side</span>
-</span><span data-line="195"><span class="sd">        :return:</span>
-</span><span data-line="196"><span class="sd">        """</span>
-</span><span data-line="197">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="198">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-</span><span data-line="199">                <span class="s2">"auto_drop must be False to manually drop items from buffer"</span>
-</span><span data-line="200">            <span class="p">)</span>
-</span><span data-line="201">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
+</span><span data-line="193">    <span class="k">def</span><span class="w"> </span><span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span data-line="194"><span class="w">        </span><span class="sd">"""Manually drop items from buffer when auto_drop is False</span>
+</span><span data-line="195">
+</span><span data-line="196"><span class="sd">        :param n: number of items to drop from the left side</span>
+</span><span data-line="197"><span class="sd">        :return:</span>
+</span><span data-line="198"><span class="sd">        """</span>
+</span><span data-line="199">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="200">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+</span><span data-line="201">                <span class="s2">"auto_drop must be False to manually drop items from buffer"</span>
+</span><span data-line="202">            <span class="p">)</span>
+</span><span data-line="203">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">n</span><span class="p">)</span></div>
 
-</span><span data-line="202">
+</span><span data-line="204">
 <div class="viewcode-block" id="StreamBuffer.start">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.start">[docs]</a>
-</span><span data-line="203">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="204"><span class="w">        </span><span class="sd">"""Open and start reading from source_reader into buffer"""</span>
-</span><span data-line="205">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
-</span><span data-line="206">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-</span><span data-line="207">                <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-</span><span data-line="208">            <span class="bp">self</span><span class="o">.</span><span class="n">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">()</span>
-</span><span data-line="209">            <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
-</span><span data-line="210">            <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+</span><span data-line="205">    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="206"><span class="w">        </span><span class="sd">"""Open and start reading from source_reader into buffer"""</span>
+</span><span data-line="207">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+</span><span data-line="208">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+</span><span data-line="209">                <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</span><span data-line="210">            <span class="bp">self</span><span class="o">.</span><span class="n">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">()</span>
+</span><span data-line="211">            <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
+</span><span data-line="212">            <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
-</span><span data-line="211">
+</span><span data-line="213">
 <div class="viewcode-block" id="StreamBuffer.stop">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.stop">[docs]</a>
-</span><span data-line="212">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="213"><span class="w">        </span><span class="sd">"""Stop reading and close source_reader"""</span>
-</span><span data-line="214">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-</span><span data-line="215">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span data-line="216">        <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="kc">None</span></div>
+</span><span data-line="214">    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="215"><span class="w">        </span><span class="sd">"""Stop reading and close source_reader"""</span>
+</span><span data-line="216">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</span><span data-line="217">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span data-line="218">        <span class="bp">self</span><span class="o">.</span><span class="n">_next_reader</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-</span><span data-line="217">
+</span><span data-line="219">
 <div class="viewcode-block" id="StreamBuffer.mk_reader">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.mk_reader">[docs]</a>
-</span><span data-line="218">    <span class="k">def</span><span class="w"> </span><span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
-</span><span data-line="219"><span class="w">        </span><span class="sd">"""Makes a BufferReader instance for the currently running  StreamBuffer.</span>
-</span><span data-line="220"><span class="sd">        Reader must be made after start() to have data from said start.</span>
-</span><span data-line="221">
-</span><span data-line="222"><span class="sd">        :return: BufferReader instance</span>
-</span><span data-line="223"><span class="sd">        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet</span>
-</span><span data-line="224"><span class="sd">        """</span>
-</span><span data-line="225">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
-</span><span data-line="226">            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
-</span><span data-line="227">                <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
-</span><span data-line="228">                    <span class="s2">"StreamBuffer must be started before creating readers. "</span>
-</span><span data-line="229">                    <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
-</span><span data-line="230">                <span class="p">)</span>
-</span><span data-line="231">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">(</span><span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span></div>
+</span><span data-line="220">    <span class="k">def</span><span class="w"> </span><span class="nf">mk_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BufferReader</span><span class="p">:</span>
+</span><span data-line="221"><span class="w">        </span><span class="sd">"""Makes a BufferReader instance for the currently running  StreamBuffer.</span>
+</span><span data-line="222"><span class="sd">        Reader must be made after start() to have data from said start.</span>
+</span><span data-line="223">
+</span><span data-line="224"><span class="sd">        :return: BufferReader instance</span>
+</span><span data-line="225"><span class="sd">        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet</span>
+</span><span data-line="226"><span class="sd">        """</span>
+</span><span data-line="227">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+</span><span data-line="228">            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
+</span><span data-line="229">                <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
+</span><span data-line="230">                    <span class="s2">"StreamBuffer must be started before creating readers. "</span>
+</span><span data-line="231">                    <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
+</span><span data-line="232">                <span class="p">)</span>
+</span><span data-line="233">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">(</span><span class="o">**</span><span class="n">read_kwargs</span><span class="p">)</span></div>
 
-</span><span data-line="232">
+</span><span data-line="234">
 <div class="viewcode-block" id="StreamBuffer.attach_reader">
 <a class="viewcode-back" href="../../_autosummary/stream2py.stream_buffer.html#stream2py.stream_buffer.StreamBuffer.attach_reader">[docs]</a>
-</span><span data-line="233">    <span class="k">def</span><span class="w"> </span><span class="nf">attach_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
-</span><span data-line="234"><span class="w">        </span><span class="sd">"""Allows a StreamReader instance to read from this buffer.</span>
-</span><span data-line="235">
-</span><span data-line="236"><span class="sd">        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet</span>
-</span><span data-line="237"><span class="sd">        """</span>
-</span><span data-line="238">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
-</span><span data-line="239">            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
-</span><span data-line="240">                <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
-</span><span data-line="241">                    <span class="s2">"StreamBuffer must be started before attaching readers. "</span>
-</span><span data-line="242">                    <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
-</span><span data-line="243">                <span class="p">)</span>
-</span><span data-line="244">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">attach_reader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span></div>
+</span><span data-line="235">    <span class="k">def</span><span class="w"> </span><span class="nf">attach_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
+</span><span data-line="236"><span class="w">        </span><span class="sd">"""Allows a StreamReader instance to read from this buffer.</span>
+</span><span data-line="237">
+</span><span data-line="238"><span class="sd">        :raises StreamNotStartedError: if the StreamBuffer hasn't been started yet</span>
+</span><span data-line="239"><span class="sd">        """</span>
+</span><span data-line="240">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+</span><span data-line="241">            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">,</span> <span class="n">_SourceBuffer</span><span class="p">):</span>
+</span><span data-line="242">                <span class="k">raise</span> <span class="n">StreamNotStartedError</span><span class="p">(</span>
+</span><span data-line="243">                    <span class="s2">"StreamBuffer must be started before attaching readers. "</span>
+</span><span data-line="244">                    <span class="s1">'Call StreamBuffer.start() or use "with StreamBuffer(...) as buffer:"'</span>
+</span><span data-line="245">                <span class="p">)</span>
+</span><span data-line="246">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">attach_reader</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span></div>
 
-</span><span data-line="245">
-</span><span data-line="246">    <span class="nd">@property</span>
-</span><span data-line="247">    <span class="k">def</span><span class="w"> </span><span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
-</span><span data-line="248"><span class="w">        </span><span class="sd">"""A dict with important source info set by SourceReader.</span>
-</span><span data-line="249">
-</span><span data-line="250"><span class="sd">        :return: dict or None</span>
-</span><span data-line="251"><span class="sd">        """</span>
-</span><span data-line="252">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">:</span>
-</span><span data-line="253">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">source_reader_info</span>
-</span><span data-line="254">        <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="255">
-</span><span data-line="256">    <span class="nd">@property</span>
-</span><span data-line="257">    <span class="k">def</span><span class="w"> </span><span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="258"><span class="w">        </span><span class="sd">"""Checks if stop event has been set.</span>
-</span><span data-line="259">
-</span><span data-line="260"><span class="sd">        :return: bool</span>
-</span><span data-line="261"><span class="sd">        """</span>
-</span><span data-line="262">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
-</span><span data-line="263">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-</span><span data-line="264">
-</span><span data-line="265">    <span class="nd">@property</span>
-</span><span data-line="266">    <span class="k">def</span><span class="w"> </span><span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="267">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">join</span>
-</span><span data-line="268">
-</span><span data-line="269">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="270">        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span><span data-line="271">        <span class="k">return</span> <span class="bp">self</span>
-</span><span data-line="272">
-</span><span data-line="273">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-</span><span data-line="274">        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-</span><span data-line="275">
-</span><span data-line="276">    <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span> <span class="o">=</span> <span class="fm">__enter__</span><span class="p">,</span> <span class="fm">__exit__</span>
-</span><span data-line="277">
-</span><span data-line="278">    <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="279">        <span class="k">try</span><span class="p">:</span>
-</span><span data-line="280">            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-</span><span data-line="281">                <span class="c1"># check if buffer is full and skip read or append</span>
-</span><span data-line="282">                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">:</span>
-</span><span data-line="283">                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span data-line="284">                <span class="k">else</span><span class="p">:</span>
-</span><span data-line="285">                    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="286">
-</span><span data-line="287">                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="288">                    <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span data-line="247">
+</span><span data-line="248">    <span class="nd">@property</span>
+</span><span data-line="249">    <span class="k">def</span><span class="w"> </span><span class="nf">source_reader_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+</span><span data-line="250"><span class="w">        </span><span class="sd">"""A dict with important source info set by SourceReader.</span>
+</span><span data-line="251">
+</span><span data-line="252"><span class="sd">        :return: dict or None</span>
+</span><span data-line="253"><span class="sd">        """</span>
+</span><span data-line="254">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">:</span>
+</span><span data-line="255">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">source_reader_info</span>
+</span><span data-line="256">        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="257">
+</span><span data-line="258">    <span class="nd">@property</span>
+</span><span data-line="259">    <span class="k">def</span><span class="w"> </span><span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="260"><span class="w">        </span><span class="sd">"""Checks if stop event has been set.</span>
+</span><span data-line="261">
+</span><span data-line="262"><span class="sd">        :return: bool</span>
+</span><span data-line="263"><span class="sd">        """</span>
+</span><span data-line="264">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_lock</span><span class="p">:</span>
+</span><span data-line="265">            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+</span><span data-line="266">
+</span><span data-line="267">    <span class="nd">@property</span>
+</span><span data-line="268">    <span class="k">def</span><span class="w"> </span><span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="269"><span class="w">        </span><span class="sd">"""Join the thread that fills the buffer."""</span>
+</span><span data-line="270">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span><span class="o">.</span><span class="n">join</span>
+</span><span data-line="271">
+</span><span data-line="272">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="273"><span class="w">        </span><span class="sd">"""Enter the context (start or open the resource) and return it."""</span>
+</span><span data-line="274">        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span data-line="275">        <span class="k">return</span> <span class="bp">self</span>
+</span><span data-line="276">
+</span><span data-line="277">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+</span><span data-line="278"><span class="w">        </span><span class="sd">"""Leave the context (stop or close the resource)."""</span>
+</span><span data-line="279">        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</span><span data-line="280">
+</span><span data-line="281">    <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span> <span class="o">=</span> <span class="fm">__enter__</span><span class="p">,</span> <span class="fm">__exit__</span>
+</span><span data-line="282">
+</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="284">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="285">            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+</span><span data-line="286">                <span class="c1"># check if buffer is full and skip read or append</span>
+</span><span data-line="287">                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_drop</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">:</span>
+</span><span data-line="288">                    <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span><span data-line="289">                <span class="k">else</span><span class="p">:</span>
-</span><span data-line="290">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span><span class="p">)</span>
-</span><span data-line="291">        <span class="k">finally</span><span class="p">:</span>
-</span><span data-line="292">            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-</span><span data-line="293">                <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-</span><span data-line="294">            <span class="k">try</span><span class="p">:</span>
-</span><span data-line="295">                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span data-line="296">            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="297">                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-</span><span data-line="298">
-</span><span data-line="299">    <span class="k">def</span><span class="w"> </span><span class="nf">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="300"><span class="w">        </span><span class="sd">"""Initialize source and buffer</span>
-</span><span data-line="301"><span class="sd">        Makes a new run thread, and stop event that is unique to this run session"""</span>
-</span><span data-line="302">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-</span><span data-line="303">            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-</span><span data-line="304">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="305">        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span data-line="306">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-</span><span data-line="307">
-</span><span data-line="308">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="309"><span class="w">        </span><span class="sd">"""First thing called after start/run</span>
-</span><span data-line="310"><span class="sd">        Calls source_reader.open() and then sets up source_buffer with latest</span>
-</span><span data-line="311"><span class="sd">        source_reader.info"""</span>
-</span><span data-line="312">        <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-</span><span data-line="313">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="n">_SourceBuffer</span><span class="p">(</span>
-</span><span data-line="314">            <span class="n">source_reader_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
-</span><span data-line="315">            <span class="n">stop_event</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">,</span>
-</span><span data-line="316">            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-</span><span data-line="317">            <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">,</span>
-</span><span data-line="318">            <span class="n">buffer_reader_class</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
-</span><span data-line="319">                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"buffer_reader_class"</span><span class="p">,</span> <span class="n">BufferReader</span>
-</span><span data-line="320">            <span class="p">),</span>
-</span><span data-line="321">            <span class="n">join_items</span><span class="o">=</span><span class="n">_overridden</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"join_items"</span><span class="p">),</span>
-</span><span data-line="322">            <span class="n">slice_item</span><span class="o">=</span><span class="n">_overridden</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"slice_item"</span><span class="p">),</span>
-</span><span data-line="323">        <span class="p">)</span>
-</span><span data-line="324">
-</span><span data-line="325">    <span class="c1"># def _mk_contextualized_iterator(self):</span>
-</span><span data-line="326">    <span class="c1">#     """Return next item (entering the context beforehand, if not running).</span>
-</span><span data-line="327">    <span class="c1">#     This method is meant to be called under context so that a clean exit is assured.</span>
-</span><span data-line="328">    <span class="c1">#     """</span>
-</span><span data-line="329">    <span class="c1">#     if not self.is_running:</span>
-</span><span data-line="330">    <span class="c1">#         self.__enter__()</span>
-</span><span data-line="331">    <span class="c1">#     return self.__next__()</span>
-</span><span data-line="332">
-</span><span data-line="333">    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="334"><span class="w">        </span><span class="sd">"""Return next item (entering the context beforehand, if not running).</span>
-</span><span data-line="335"><span class="sd">        This method is meant to be called under context so that a clean exit is assured."""</span>
-</span><span data-line="336">        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span data-line="337">        <span class="c1"># return self._mk_contextualized_iterator()</span>
-</span><span data-line="338">
-</span><span data-line="339">    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="340">        <span class="k">try</span><span class="p">:</span>
-</span><span data-line="341">            <span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="342">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-</span><span data-line="343">            <span class="k">pass</span></div>
+</span><span data-line="290">                    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="291">
+</span><span data-line="292">                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="293">                    <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span data-line="294">                <span class="k">else</span><span class="p">:</span>
+</span><span data-line="295">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_read_none_s</span><span class="p">)</span>
+</span><span data-line="296">        <span class="k">finally</span><span class="p">:</span>
+</span><span data-line="297">            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+</span><span data-line="298">                <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</span><span data-line="299">            <span class="k">try</span><span class="p">:</span>
+</span><span data-line="300">                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span data-line="301">            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span data-line="302">                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span><span data-line="303">
+</span><span data-line="304">    <span class="k">def</span><span class="w"> </span><span class="nf">_set_read_to_buffer_thread_and_source_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="305"><span class="w">        </span><span class="sd">"""Initialize source and buffer</span>
+</span><span data-line="306"><span class="sd">        Makes a new run thread, and stop event that is unique to this run session"""</span>
+</span><span data-line="307">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+</span><span data-line="308">            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</span><span data-line="309">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="310">        <span class="bp">self</span><span class="o">.</span><span class="n">_read_to_buffer_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span data-line="311">        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+</span><span data-line="312">
+</span><span data-line="313">    <span class="k">def</span><span class="w"> </span><span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="314"><span class="w">        </span><span class="sd">"""First thing called after start/run</span>
+</span><span data-line="315"><span class="sd">        Calls source_reader.open() and then sets up source_buffer with latest</span>
+</span><span data-line="316"><span class="sd">        source_reader.info"""</span>
+</span><span data-line="317">        <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+</span><span data-line="318">        <span class="bp">self</span><span class="o">.</span><span class="n">source_buffer</span> <span class="o">=</span> <span class="n">_SourceBuffer</span><span class="p">(</span>
+</span><span data-line="319">            <span class="n">source_reader_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+</span><span data-line="320">            <span class="n">stop_event</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">,</span>
+</span><span data-line="321">            <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+</span><span data-line="322">            <span class="n">maxlen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maxlen</span><span class="p">,</span>
+</span><span data-line="323">            <span class="n">buffer_reader_class</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span>
+</span><span data-line="324">                <span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"buffer_reader_class"</span><span class="p">,</span> <span class="n">BufferReader</span>
+</span><span data-line="325">            <span class="p">),</span>
+</span><span data-line="326">            <span class="n">join_items</span><span class="o">=</span><span class="n">_overridden</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"join_items"</span><span class="p">),</span>
+</span><span data-line="327">            <span class="n">slice_item</span><span class="o">=</span><span class="n">_overridden</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_reader</span><span class="p">,</span> <span class="s2">"slice_item"</span><span class="p">),</span>
+</span><span data-line="328">        <span class="p">)</span>
+</span><span data-line="329">
+</span><span data-line="330">    <span class="c1"># def _mk_contextualized_iterator(self):</span>
+</span><span data-line="331">    <span class="c1">#     """Return next item (entering the context beforehand, if not running).</span>
+</span><span data-line="332">    <span class="c1">#     This method is meant to be called under context so that a clean exit is assured.</span>
+</span><span data-line="333">    <span class="c1">#     """</span>
+</span><span data-line="334">    <span class="c1">#     if not self.is_running:</span>
+</span><span data-line="335">    <span class="c1">#         self.__enter__()</span>
+</span><span data-line="336">    <span class="c1">#     return self.__next__()</span>
+</span><span data-line="337">
+</span><span data-line="338">    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="339"><span class="w">        </span><span class="sd">"""Return next item (entering the context beforehand, if not running).</span>
+</span><span data-line="340"><span class="sd">        This method is meant to be called under context so that a clean exit is assured."""</span>
+</span><span data-line="341">        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span data-line="342">        <span class="c1"># return self._mk_contextualized_iterator()</span>
+</span><span data-line="343">
+</span><span data-line="344">    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="345"><span class="w">        </span><span class="sd">"""Stop the resource when garbage collected, ignoring errors."""</span>
+</span><span data-line="346">        <span class="k">try</span><span class="p">:</span>
+</span><span data-line="347">            <span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="348">        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span data-line="349">            <span class="k">pass</span></div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -520,7 +526,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

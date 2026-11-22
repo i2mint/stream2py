@@ -92,6 +92,17 @@ Similar to io.IOBase.closed property.
 * **Returns:**
   bool indicating whether the source is closed
 
+#### enter()
+
+Enter the context (start or open the resource) and return it.
+
+#### exit(exc_type, exc_val, exc_tb)
+
+Leave the context (stop or close the resource).
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds
@@ -184,3 +195,7 @@ once per bound, so a lone item is sliced twice (`start` then `stop`).
   [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
 * **Returns:**
   a data item of the same kind, possibly shorter
+
+#### stream_buffer(maxlen, sleep_time_on_read_none_s=None, auto_drop=True)
+
+A `StreamBuffer` fed by this reader, holding up to `maxlen` items.

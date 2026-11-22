@@ -102,7 +102,12 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque</span></code></a><ul>
+<li><a class="reference internal" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.key"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque.key</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.reader_lock"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque.reader_lock()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.writer_lock"><code class="docutils literal notranslate"><span class="pre">RWLockSortedDeque.writer_lock()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -180,6 +185,29 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="16"><span class="go">(('plc', 100000, 100000), 'new data')</span>
 </span></pre></div>
 </div>
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.utility.locked_sorted_deque.RWLockSortedDeque.key">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.key" title="Link to this definition">#</a></dt>
+<dd><p>Sort key of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.locked_sorted_deque.RWLockSortedDeque.reader_lock">
+<span class="sig-name descname"><span class="pre">reader_lock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/locked_sorted_deque.html#RWLockSortedDeque.reader_lock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.reader_lock" title="Link to this definition">#</a></dt>
+<dd><p>Context manager yielding the deque under a shared (reader) lock.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generator" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code></a>[<a class="reference internal" href="stream2py.utility.sorted_deque.html#stream2py.utility.sorted_deque.SortedDeque" title="stream2py.utility.sorted_deque.SortedDeque"><code class="xref py py-class docutils literal notranslate"><span class="pre">SortedDeque</span></code></a>, <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span>, <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.locked_sorted_deque.RWLockSortedDeque.writer_lock">
+<span class="sig-name descname"><span class="pre">writer_lock</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/locked_sorted_deque.html#RWLockSortedDeque.writer_lock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.locked_sorted_deque.RWLockSortedDeque.writer_lock" title="Link to this definition">#</a></dt>
+<dd><p>Context manager yielding the deque under the exclusive (writer) lock.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -224,7 +252,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -143,21 +143,39 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="7"><span class="k">class</span><span class="w"> </span><span class="nc">Source</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 </span><span data-line="8"><span class="w">    </span><span class="sd">"""The interface for the StreamSource class."""</span>
 </span><span data-line="9">
-</span><span data-line="10">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span> <span class="o">...</span>
-</span><span data-line="11">
-</span><span data-line="12">    <span class="nd">@property</span>
-</span><span data-line="13">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span data-line="14">        <span class="k">return</span> <span class="p">{}</span>
-</span><span data-line="15">
-</span><span data-line="16">    <span class="nd">@property</span>
-</span><span data-line="17">    <span class="k">def</span><span class="w"> </span><span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span data-line="18">        <span class="k">return</span> <span class="mi">0</span>
-</span><span data-line="19">
-</span><span data-line="20">    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span> <span class="o">...</span>
-</span><span data-line="21">
-</span><span data-line="22">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
-</span><span data-line="23">
-</span><span data-line="24">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span></div>
+<div class="viewcode-block" id="Source.key">
+<a class="viewcode-back" href="../../_autosummary/stream2py.protocols.html#stream2py.protocols.Source.key">[docs]</a>
+</span><span data-line="10">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span data-line="11"><span class="w">        </span><span class="sd">"""Sort key of ``data``."""</span></div>
+
+</span><span data-line="12">
+</span><span data-line="13">    <span class="nd">@property</span>
+</span><span data-line="14">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="15"><span class="w">        </span><span class="sd">"""Information about the source."""</span>
+</span><span data-line="16">        <span class="k">return</span> <span class="p">{}</span>
+</span><span data-line="17">
+</span><span data-line="18">    <span class="nd">@property</span>
+</span><span data-line="19">    <span class="k">def</span><span class="w"> </span><span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span data-line="20"><span class="w">        </span><span class="sd">"""Seconds to wait when ``read`` returns ``None``."""</span>
+</span><span data-line="21">        <span class="k">return</span> <span class="mi">0</span>
+</span><span data-line="22">
+<div class="viewcode-block" id="Source.read">
+<a class="viewcode-back" href="../../_autosummary/stream2py.protocols.html#stream2py.protocols.Source.read">[docs]</a>
+</span><span data-line="23">    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span data-line="24"><span class="w">        </span><span class="sd">"""Read the next item, or ``None`` if nothing is ready."""</span></div>
+
+</span><span data-line="25">
+<div class="viewcode-block" id="Source.open">
+<a class="viewcode-back" href="../../_autosummary/stream2py.protocols.html#stream2py.protocols.Source.open">[docs]</a>
+</span><span data-line="26">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="27"><span class="w">        </span><span class="sd">"""Open the resource."""</span></div>
+
+</span><span data-line="28">
+<div class="viewcode-block" id="Source.close">
+<a class="viewcode-back" href="../../_autosummary/stream2py.protocols.html#stream2py.protocols.Source.close">[docs]</a>
+</span><span data-line="29">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="30"><span class="w">        </span><span class="sd">"""Close the resource."""</span></div>
+</div>
 
 </span></pre></div>
         </article><button class="back-to-top" type="button">
@@ -186,7 +204,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

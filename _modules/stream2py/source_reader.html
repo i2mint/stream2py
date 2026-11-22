@@ -215,238 +215,245 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="79">    <span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># SourceReader starts in closed state</span>
 </span><span data-line="80">
 </span><span data-line="81">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="82">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="83">            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span data-line="84">            <span class="k">if</span> <span class="n">_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="85">                <span class="k">yield</span> <span class="n">_next</span>
-</span><span data-line="86">            <span class="k">else</span><span class="p">:</span>
-</span><span data-line="87">                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
-</span><span data-line="88">
+</span><span data-line="82"><span class="w">        </span><span class="sd">"""Iterate over the items."""</span>
+</span><span data-line="83">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="84">            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span data-line="85">            <span class="k">if</span> <span class="n">_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="86">                <span class="k">yield</span> <span class="n">_next</span>
+</span><span data-line="87">            <span class="k">else</span><span class="p">:</span>
+</span><span data-line="88">                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+</span><span data-line="89">
 <div class="viewcode-block" id="SourceReader.set_sleep_time_on_iter_none">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none">[docs]</a>
-</span><span data-line="89">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
-</span><span data-line="90"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
-</span><span data-line="91">
-</span><span data-line="92"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
-</span><span data-line="93"><span class="sd">        """</span>
-</span><span data-line="94">        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
+</span><span data-line="90">    <span class="k">def</span><span class="w"> </span><span class="nf">set_sleep_time_on_iter_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep_time_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">):</span>
+</span><span data-line="91"><span class="w">        </span><span class="sd">"""Set the sleep time of the iter yield loop when next data item is not yet available.</span>
+</span><span data-line="92">
+</span><span data-line="93"><span class="sd">        :param sleep_time_s: seconds to sleep</span>
+</span><span data-line="94"><span class="sd">        """</span>
+</span><span data-line="95">        <span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span> <span class="o">=</span> <span class="n">sleep_time_s</span></div>
 
-</span><span data-line="95">
+</span><span data-line="96">
 <div class="viewcode-block" id="SourceReader.open">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.open">[docs]</a>
-</span><span data-line="96">    <span class="nd">@abstractmethod</span>
-</span><span data-line="97">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="98"><span class="w">        </span><span class="sd">"""Set up source to be read and set some source info affected by open time like the time of</span>
-</span><span data-line="99"><span class="sd">        open. Will be called in StreamBuffer immediately before first read."""</span></div>
+</span><span data-line="97">    <span class="nd">@abstractmethod</span>
+</span><span data-line="98">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="99"><span class="w">        </span><span class="sd">"""Set up source to be read and set some source info affected by open time like the time of</span>
+</span><span data-line="100"><span class="sd">        open. Will be called in StreamBuffer immediately before first read."""</span></div>
 
-</span><span data-line="100">
+</span><span data-line="101">
 <div class="viewcode-block" id="SourceReader.close">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.close">[docs]</a>
-</span><span data-line="101">    <span class="nd">@abstractmethod</span>
-</span><span data-line="102">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="103"><span class="w">        </span><span class="sd">"""Close and clean up source reader.</span>
-</span><span data-line="104"><span class="sd">        Will be called when StreamBuffer stops or if an exception is raised during read and append</span>
-</span><span data-line="105"><span class="sd">        loop.</span>
-</span><span data-line="106"><span class="sd">        """</span></div>
+</span><span data-line="102">    <span class="nd">@abstractmethod</span>
+</span><span data-line="103">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="104"><span class="w">        </span><span class="sd">"""Close and clean up source reader.</span>
+</span><span data-line="105"><span class="sd">        Will be called when StreamBuffer stops or if an exception is raised during read and append</span>
+</span><span data-line="106"><span class="sd">        loop.</span>
+</span><span data-line="107"><span class="sd">        """</span></div>
 
-</span><span data-line="107">
-</span><span data-line="108">    <span class="nd">@property</span>
-</span><span data-line="109">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span data-line="110"><span class="w">        </span><span class="sd">"""A dict with important source info. Default can be init_kwargs and open timestamp.</span>
-</span><span data-line="111">
-</span><span data-line="112"><span class="sd">        This info will be available in BufferReader after SourceReader has opened but any changes</span>
-</span><span data-line="113"><span class="sd">        made between open and close are not guaranteed to be visible. Any continuous status updates</span>
-</span><span data-line="114"><span class="sd">        should be included with read data instead.</span>
-</span><span data-line="115">
-</span><span data-line="116"><span class="sd">        :return: dict</span>
-</span><span data-line="117"><span class="sd">        """</span>
-</span><span data-line="118">        <span class="k">return</span> <span class="p">{}</span>
-</span><span data-line="119">
+</span><span data-line="108">
+</span><span data-line="109">    <span class="nd">@property</span>
+</span><span data-line="110">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span data-line="111"><span class="w">        </span><span class="sd">"""A dict with important source info. Default can be init_kwargs and open timestamp.</span>
+</span><span data-line="112">
+</span><span data-line="113"><span class="sd">        This info will be available in BufferReader after SourceReader has opened but any changes</span>
+</span><span data-line="114"><span class="sd">        made between open and close are not guaranteed to be visible. Any continuous status updates</span>
+</span><span data-line="115"><span class="sd">        should be included with read data instead.</span>
+</span><span data-line="116">
+</span><span data-line="117"><span class="sd">        :return: dict</span>
+</span><span data-line="118"><span class="sd">        """</span>
+</span><span data-line="119">        <span class="k">return</span> <span class="p">{}</span>
+</span><span data-line="120">
 <div class="viewcode-block" id="SourceReader.key">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.key">[docs]</a>
-</span><span data-line="120">    <span class="nd">@abstractmethod</span>
-</span><span data-line="121">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
-</span><span data-line="122"><span class="w">        </span><span class="sd">"""</span>
-</span><span data-line="123"><span class="sd">        Converts data into a comparable value to sort by</span>
-</span><span data-line="124">
-</span><span data-line="125"><span class="sd">        :param data: the return value of the 'read' method</span>
-</span><span data-line="126"><span class="sd">        :return: ComparableType</span>
-</span><span data-line="127"><span class="sd">        """</span>
-</span><span data-line="128">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-</span><span data-line="129">            <span class="s2">"Implement the 'key' method to convert data into a comparable value to sort by"</span>
-</span><span data-line="130">        <span class="p">)</span></div>
+</span><span data-line="121">    <span class="nd">@abstractmethod</span>
+</span><span data-line="122">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComparableType</span><span class="p">:</span>
+</span><span data-line="123"><span class="w">        </span><span class="sd">"""</span>
+</span><span data-line="124"><span class="sd">        Converts data into a comparable value to sort by</span>
+</span><span data-line="125">
+</span><span data-line="126"><span class="sd">        :param data: the return value of the 'read' method</span>
+</span><span data-line="127"><span class="sd">        :return: ComparableType</span>
+</span><span data-line="128"><span class="sd">        """</span>
+</span><span data-line="129">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+</span><span data-line="130">            <span class="s2">"Implement the 'key' method to convert data into a comparable value to sort by"</span>
+</span><span data-line="131">        <span class="p">)</span></div>
 
-</span><span data-line="131">
+</span><span data-line="132">
 <div class="viewcode-block" id="SourceReader.join_items">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.join_items">[docs]</a>
-</span><span data-line="132">    <span class="k">def</span><span class="w"> </span><span class="nf">join_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="133"><span class="w">        </span><span class="sd">"""(Optional) Join consecutive data items into one data item.</span>
-</span><span data-line="134">
-</span><span data-line="135"><span class="sd">        Implement together with ``slice_item`` to let ``BufferReader.range(...,</span>
-</span><span data-line="136"><span class="sd">        join=True)`` return the exact span asked for, as a single item (e.g. several</span>
-</span><span data-line="137"><span class="sd">        waveform chunks concatenated). Not abstract: sources whose items can't be</span>
-</span><span data-line="138"><span class="sd">        joined just don't override it.</span>
-</span><span data-line="139">
-</span><span data-line="140"><span class="sd">        :param items: non-empty list of data items, in key order</span>
-</span><span data-line="141"><span class="sd">        :return: one data item</span>
-</span><span data-line="142"><span class="sd">        """</span>
-</span><span data-line="143">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Implement 'join_items' to support range(join=True)"</span><span class="p">)</span></div>
+</span><span data-line="133">    <span class="k">def</span><span class="w"> </span><span class="nf">join_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span data-line="134"><span class="w">        </span><span class="sd">"""(Optional) Join consecutive data items into one data item.</span>
+</span><span data-line="135">
+</span><span data-line="136"><span class="sd">        Implement together with ``slice_item`` to let ``BufferReader.range(...,</span>
+</span><span data-line="137"><span class="sd">        join=True)`` return the exact span asked for, as a single item (e.g. several</span>
+</span><span data-line="138"><span class="sd">        waveform chunks concatenated). Not abstract: sources whose items can't be</span>
+</span><span data-line="139"><span class="sd">        joined just don't override it.</span>
+</span><span data-line="140">
+</span><span data-line="141"><span class="sd">        :param items: non-empty list of data items, in key order</span>
+</span><span data-line="142"><span class="sd">        :return: one data item</span>
+</span><span data-line="143"><span class="sd">        """</span>
+</span><span data-line="144">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Implement 'join_items' to support range(join=True)"</span><span class="p">)</span></div>
 
-</span><span data-line="144">
+</span><span data-line="145">
 <div class="viewcode-block" id="SourceReader.slice_item">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.slice_item">[docs]</a>
-</span><span data-line="145">    <span class="k">def</span><span class="w"> </span><span class="nf">slice_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="146"><span class="w">        </span><span class="sd">"""(Optional) The part of ``item`` whose keys fall within ``[start, stop]``.</span>
-</span><span data-line="147">
-</span><span data-line="148"><span class="sd">        ``None`` for a bound means unbounded on that side; an item that needs no</span>
-</span><span data-line="149"><span class="sd">        trimming can be returned as is. See ``join_items``. Must be pure (items in the</span>
-</span><span data-line="150"><span class="sd">        buffer are shared, never mutate them) and keyed on absolute keys: it is applied</span>
-</span><span data-line="151"><span class="sd">        once per bound, so a lone item is sliced twice (``start`` then ``stop``).</span>
-</span><span data-line="152">
-</span><span data-line="153"><span class="sd">        :param item: a data item as returned by ``read``</span>
-</span><span data-line="154"><span class="sd">        :return: a data item of the same kind, possibly shorter</span>
-</span><span data-line="155"><span class="sd">        """</span>
-</span><span data-line="156">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Implement 'slice_item' to support range(join=True)"</span><span class="p">)</span></div>
+</span><span data-line="146">    <span class="k">def</span><span class="w"> </span><span class="nf">slice_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+</span><span data-line="147"><span class="w">        </span><span class="sd">"""(Optional) The part of ``item`` whose keys fall within ``[start, stop]``.</span>
+</span><span data-line="148">
+</span><span data-line="149"><span class="sd">        ``None`` for a bound means unbounded on that side; an item that needs no</span>
+</span><span data-line="150"><span class="sd">        trimming can be returned as is. See ``join_items``. Must be pure (items in the</span>
+</span><span data-line="151"><span class="sd">        buffer are shared, never mutate them) and keyed on absolute keys: it is applied</span>
+</span><span data-line="152"><span class="sd">        once per bound, so a lone item is sliced twice (``start`` then ``stop``).</span>
+</span><span data-line="153">
+</span><span data-line="154"><span class="sd">        :param item: a data item as returned by ``read``</span>
+</span><span data-line="155"><span class="sd">        :return: a data item of the same kind, possibly shorter</span>
+</span><span data-line="156"><span class="sd">        """</span>
+</span><span data-line="157">        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Implement 'slice_item' to support range(join=True)"</span><span class="p">)</span></div>
 
-</span><span data-line="157">
-</span><span data-line="158">    <span class="nd">@property</span>
-</span><span data-line="159">    <span class="k">def</span><span class="w"> </span><span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="160"><span class="w">        </span><span class="sd">"""True if the source reader is closed, False if it's open.</span>
-</span><span data-line="161">
-</span><span data-line="162"><span class="sd">        Similar to io.IOBase.closed property.</span>
-</span><span data-line="163">
-</span><span data-line="164"><span class="sd">        :return: bool indicating whether the source is closed</span>
-</span><span data-line="165"><span class="sd">        """</span>
-</span><span data-line="166">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span>
-</span><span data-line="167">
-</span><span data-line="168">    <span class="nd">@property</span>
-</span><span data-line="169">    <span class="k">def</span><span class="w"> </span><span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-</span><span data-line="170"><span class="w">        </span><span class="sd">"""Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
-</span><span data-line="171"><span class="sd">        Useful when you know the period between data points.</span>
-</span><span data-line="172">
-</span><span data-line="173"><span class="sd">        For example if data only comes once every 10 seconds,</span>
-</span><span data-line="174"><span class="sd">        it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times</span>
-</span><span data-line="175"><span class="sd">        but every 10 seconds or even 1 second would be much more reasonable depending on the use</span>
-</span><span data-line="176"><span class="sd">        case. Not necessary if read is a blocking function that always returns a data point.</span>
-</span><span data-line="177">
-</span><span data-line="178"><span class="sd">        Default is None which delegates the sleep time to StreamBuffer's default.</span>
-</span><span data-line="179">
-</span><span data-line="180"><span class="sd">        :return: Optional[Union[int, float]] number of seconds to sleep</span>
-</span><span data-line="181"><span class="sd">        """</span>
-</span><span data-line="182">        <span class="k">return</span> <span class="kc">None</span>
-</span><span data-line="183">
-</span><span data-line="184">    <span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>  <span class="c1"># to microseconds</span>
-</span><span data-line="185">
+</span><span data-line="158">
+</span><span data-line="159">    <span class="nd">@property</span>
+</span><span data-line="160">    <span class="k">def</span><span class="w"> </span><span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="161"><span class="w">        </span><span class="sd">"""True if the source reader is closed, False if it's open.</span>
+</span><span data-line="162">
+</span><span data-line="163"><span class="sd">        Similar to io.IOBase.closed property.</span>
+</span><span data-line="164">
+</span><span data-line="165"><span class="sd">        :return: bool indicating whether the source is closed</span>
+</span><span data-line="166"><span class="sd">        """</span>
+</span><span data-line="167">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span>
+</span><span data-line="168">
+</span><span data-line="169">    <span class="nd">@property</span>
+</span><span data-line="170">    <span class="k">def</span><span class="w"> </span><span class="nf">sleep_time_on_read_none_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+</span><span data-line="171"><span class="w">        </span><span class="sd">"""Sets default sleep time for StreamBuffer when it reads None from SourceReader.</span>
+</span><span data-line="172"><span class="sd">        Useful when you know the period between data points.</span>
+</span><span data-line="173">
+</span><span data-line="174"><span class="sd">        For example if data only comes once every 10 seconds,</span>
+</span><span data-line="175"><span class="sd">        it would be inefficient to try and read again every 0.1 seconds and get None up to 100 times</span>
+</span><span data-line="176"><span class="sd">        but every 10 seconds or even 1 second would be much more reasonable depending on the use</span>
+</span><span data-line="177"><span class="sd">        case. Not necessary if read is a blocking function that always returns a data point.</span>
+</span><span data-line="178">
+</span><span data-line="179"><span class="sd">        Default is None which delegates the sleep time to StreamBuffer's default.</span>
+</span><span data-line="180">
+</span><span data-line="181"><span class="sd">        :return: Optional[Union[int, float]] number of seconds to sleep</span>
+</span><span data-line="182"><span class="sd">        """</span>
+</span><span data-line="183">        <span class="k">return</span> <span class="kc">None</span>
+</span><span data-line="184">
+</span><span data-line="185">    <span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span>  <span class="c1"># to microseconds</span>
+</span><span data-line="186">
 <div class="viewcode-block" id="SourceReader.get_timestamp">
 <a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.get_timestamp">[docs]</a>
-</span><span data-line="186">    <span class="nd">@classmethod</span>
-</span><span data-line="187">    <span class="k">def</span><span class="w"> </span><span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span><span data-line="188"><span class="w">        </span><span class="sd">"""Get timestamp of now as int microseconds</span>
-</span><span data-line="189">
-</span><span data-line="190"><span class="sd">        :return: timestamp in UTC microseconds</span>
-</span><span data-line="191"><span class="sd">        """</span>
-</span><span data-line="192">        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="bp">cls</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">)</span></div>
+</span><span data-line="187">    <span class="nd">@classmethod</span>
+</span><span data-line="188">    <span class="k">def</span><span class="w"> </span><span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span data-line="189"><span class="w">        </span><span class="sd">"""Get timestamp of now as int microseconds</span>
+</span><span data-line="190">
+</span><span data-line="191"><span class="sd">        :return: timestamp in UTC microseconds</span>
+</span><span data-line="192"><span class="sd">        """</span>
+</span><span data-line="193">        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="bp">cls</span><span class="o">.</span><span class="n">timestamp_seconds_to_unit_conversion</span><span class="p">)</span></div>
 
-</span><span data-line="193">
-</span><span data-line="194">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="195">        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-</span><span data-line="196">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span data-line="197">        <span class="k">return</span> <span class="bp">self</span>
-</span><span data-line="198">
-</span><span data-line="199">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="200">        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span><span data-line="201">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
-</span><span data-line="202">
-</span><span data-line="203">    <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span> <span class="o">=</span> <span class="fm">__enter__</span><span class="p">,</span> <span class="fm">__exit__</span>
-</span><span data-line="204">
-</span><span data-line="205">    <span class="k">def</span><span class="w"> </span><span class="nf">stream_buffer</span><span class="p">(</span>
-</span><span data-line="206">        <span class="bp">self</span><span class="p">,</span>
-</span><span data-line="207">        <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span data-line="208">        <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span data-line="209">        <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span data-line="210">    <span class="p">):</span>
-</span><span data-line="211">        <span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.stream_buffer</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamBuffer</span>
-</span><span data-line="212">
-</span><span data-line="213">        <span class="k">return</span> <span class="n">StreamBuffer</span><span class="p">(</span>
-</span><span data-line="214">            <span class="bp">self</span><span class="p">,</span>
-</span><span data-line="215">            <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span>
-</span><span data-line="216">            <span class="n">sleep_time_on_read_none_s</span><span class="o">=</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span>
-</span><span data-line="217">            <span class="n">auto_drop</span><span class="o">=</span><span class="n">auto_drop</span><span class="p">,</span>
-</span><span data-line="218">        <span class="p">)</span></div>
+</span><span data-line="194">
+</span><span data-line="195">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="196"><span class="w">        </span><span class="sd">"""Enter the context (start or open the resource) and return it."""</span>
+</span><span data-line="197">        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+</span><span data-line="198">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
+</span><span data-line="199">        <span class="k">return</span> <span class="bp">self</span>
+</span><span data-line="200">
+</span><span data-line="201">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="202"><span class="w">        </span><span class="sd">"""Leave the context (stop or close the resource)."""</span>
+</span><span data-line="203">        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span data-line="204">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="205">
+</span><span data-line="206">    <span class="n">enter</span><span class="p">,</span> <span class="n">exit</span> <span class="o">=</span> <span class="fm">__enter__</span><span class="p">,</span> <span class="fm">__exit__</span>
+</span><span data-line="207">
+<div class="viewcode-block" id="SourceReader.stream_buffer">
+<a class="viewcode-back" href="../../_autosummary/stream2py.source_reader.html#stream2py.source_reader.SourceReader.stream_buffer">[docs]</a>
+</span><span data-line="208">    <span class="k">def</span><span class="w"> </span><span class="nf">stream_buffer</span><span class="p">(</span>
+</span><span data-line="209">        <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="210">        <span class="n">maxlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span data-line="211">        <span class="n">sleep_time_on_read_none_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span data-line="212">        <span class="n">auto_drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span data-line="213">    <span class="p">):</span>
+</span><span data-line="214"><span class="w">        </span><span class="sd">"""A :class:`StreamBuffer` fed by this reader, holding up to ``maxlen`` items."""</span>
+</span><span data-line="215">        <span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.stream_buffer</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamBuffer</span>
+</span><span data-line="216">
+</span><span data-line="217">        <span class="k">return</span> <span class="n">StreamBuffer</span><span class="p">(</span>
+</span><span data-line="218">            <span class="bp">self</span><span class="p">,</span>
+</span><span data-line="219">            <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span>
+</span><span data-line="220">            <span class="n">sleep_time_on_read_none_s</span><span class="o">=</span><span class="n">sleep_time_on_read_none_s</span><span class="p">,</span>
+</span><span data-line="221">            <span class="n">auto_drop</span><span class="o">=</span><span class="n">auto_drop</span><span class="p">,</span>
+</span><span data-line="222">        <span class="p">)</span></div>
+</div>
 
-</span><span data-line="219">
-</span><span data-line="220">
-</span><span data-line="221"><span class="n">StreamItem</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">"StreamItem"</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
-</span><span data-line="222">
 </span><span data-line="223">
-</span><span data-line="224"><span class="k">class</span><span class="w"> </span><span class="nc">QuickSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
-</span><span data-line="225"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="226"><span class="sd">    A `SourceReader` with whose only required method is the read method.</span>
+</span><span data-line="224">
+</span><span data-line="225"><span class="n">StreamItem</span> <span class="o">=</span> <span class="n">NewType</span><span class="p">(</span><span class="s2">"StreamItem"</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
+</span><span data-line="226">
 </span><span data-line="227">
-</span><span data-line="228"><span class="sd">    - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)</span>
-</span><span data-line="229"><span class="sd">    - close does nothing</span>
-</span><span data-line="230"><span class="sd">    - info returns a `{`open_time`: ..., `open_instance`: ...}` dict</span>
-</span><span data-line="231"><span class="sd">    - key just returns the data itself</span>
-</span><span data-line="232"><span class="sd">    """</span>
-</span><span data-line="233">
-</span><span data-line="234">    <span class="n">read_idx</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="235">    <span class="n">open_time</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span data-line="236">    <span class="n">open_instance</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="228"><span class="k">class</span><span class="w"> </span><span class="nc">QuickSourceReader</span><span class="p">(</span><span class="n">SourceReader</span><span class="p">):</span>
+</span><span data-line="229"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="230"><span class="sd">    A `SourceReader` with whose only required method is the read method.</span>
+</span><span data-line="231">
+</span><span data-line="232"><span class="sd">    - open just sets an `open_time` attribute and a `read_idx` attribute (to 0)</span>
+</span><span data-line="233"><span class="sd">    - close does nothing</span>
+</span><span data-line="234"><span class="sd">    - info returns a `{`open_time`: ..., `open_instance`: ...}` dict</span>
+</span><span data-line="235"><span class="sd">    - key just returns the data itself</span>
+</span><span data-line="236"><span class="sd">    """</span>
 </span><span data-line="237">
-</span><span data-line="238">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">StreamItem</span><span class="p">]:</span>
-</span><span data-line="239">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span data-line="240">            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span><span data-line="241">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_data</span><span class="p">(</span><span class="n">_next</span><span class="p">):</span>
-</span><span data-line="242">                <span class="k">yield</span> <span class="n">_next</span>
-</span><span data-line="243">            <span class="k">else</span><span class="p">:</span>
-</span><span data-line="244">                <span class="bp">self</span><span class="o">.</span><span class="n">when_no_data</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
-</span><span data-line="245">
-</span><span data-line="246">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="247"><span class="w">        </span><span class="sd">"""Bool function indicating whether the data should be released in an iteration.</span>
-</span><span data-line="248">
-</span><span data-line="249"><span class="sd">        By default, all non-None data will be considered valid, but some streams</span>
-</span><span data-line="250"><span class="sd">        might indicate "empty data" in a different way.</span>
-</span><span data-line="251"><span class="sd">        In that case, `is_valid_data` can be used to adapt to the situation.</span>
+</span><span data-line="238">    <span class="n">read_idx</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="239">    <span class="n">open_time</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="240">    <span class="n">open_instance</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span data-line="241">
+</span><span data-line="242">    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">StreamItem</span><span class="p">]:</span>
+</span><span data-line="243">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span data-line="244">            <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span><span data-line="245">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_data</span><span class="p">(</span><span class="n">_next</span><span class="p">):</span>
+</span><span data-line="246">                <span class="k">yield</span> <span class="n">_next</span>
+</span><span data-line="247">            <span class="k">else</span><span class="p">:</span>
+</span><span data-line="248">                <span class="bp">self</span><span class="o">.</span><span class="n">when_no_data</span><span class="p">(</span><span class="n">_next</span><span class="p">)</span>
+</span><span data-line="249">
+</span><span data-line="250">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span data-line="251"><span class="w">        </span><span class="sd">"""Bool function indicating whether the data should be released in an iteration.</span>
 </span><span data-line="252">
-</span><span data-line="253"><span class="sd">        This filter function is meant to indicate "empty data", or "don't yield this</span>
-</span><span data-line="254"><span class="sd">        data" during iteration, but can also be used simply to filter out data that</span>
-</span><span data-line="255"><span class="sd">        we don't want to release in the iteration.</span>
-</span><span data-line="256"><span class="sd">        """</span>
-</span><span data-line="257">        <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-</span><span data-line="258">
-</span><span data-line="259">    <span class="k">def</span><span class="w"> </span><span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-</span><span data-line="260"><span class="w">        </span><span class="sd">"""Action taken when data is not valid (not yielded in iteration).</span>
-</span><span data-line="261"><span class="sd">        Usually, the action is to sleep for a fixed amount of seconds to give a</span>
-</span><span data-line="262"><span class="sd">        chance for the source data production to catch up, without hogging resources</span>
-</span><span data-line="263"><span class="sd">        by waiting.</span>
-</span><span data-line="264"><span class="sd">        The `when_no_data` can do much more though, and even use the source_reader</span>
-</span><span data-line="265"><span class="sd">        instance and/or the (non valid) data itself to decide what action to take.</span>
-</span><span data-line="266">
-</span><span data-line="267"><span class="sd">        For example, one may want to have when_no_data do some timing stats to decide</span>
-</span><span data-line="268"><span class="sd">        on the number of seconds to stop, or send an interrupt signal if too many</span>
-</span><span data-line="269"><span class="sd">        "non datas" happen in a row.</span>
-</span><span data-line="270"><span class="sd">        """</span>
-</span><span data-line="271">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
-</span><span data-line="272">
-</span><span data-line="273">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="274">        <span class="bp">self</span><span class="o">.</span><span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span data-line="275">        <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
-</span><span data-line="276">        <span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span> <span class="o">=</span> <span class="bp">self</span>
-</span><span data-line="277">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span data-line="278">
-</span><span data-line="279">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="280"><span class="w">        </span><span class="sd">"""A dummy close class"""</span>
-</span><span data-line="281">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="253"><span class="sd">        By default, all non-None data will be considered valid, but some streams</span>
+</span><span data-line="254"><span class="sd">        might indicate "empty data" in a different way.</span>
+</span><span data-line="255"><span class="sd">        In that case, `is_valid_data` can be used to adapt to the situation.</span>
+</span><span data-line="256">
+</span><span data-line="257"><span class="sd">        This filter function is meant to indicate "empty data", or "don't yield this</span>
+</span><span data-line="258"><span class="sd">        data" during iteration, but can also be used simply to filter out data that</span>
+</span><span data-line="259"><span class="sd">        we don't want to release in the iteration.</span>
+</span><span data-line="260"><span class="sd">        """</span>
+</span><span data-line="261">        <span class="k">return</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span><span data-line="262">
+</span><span data-line="263">    <span class="k">def</span><span class="w"> </span><span class="nf">when_no_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_next</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="264"><span class="w">        </span><span class="sd">"""Action taken when data is not valid (not yielded in iteration).</span>
+</span><span data-line="265"><span class="sd">        Usually, the action is to sleep for a fixed amount of seconds to give a</span>
+</span><span data-line="266"><span class="sd">        chance for the source data production to catch up, without hogging resources</span>
+</span><span data-line="267"><span class="sd">        by waiting.</span>
+</span><span data-line="268"><span class="sd">        The `when_no_data` can do much more though, and even use the source_reader</span>
+</span><span data-line="269"><span class="sd">        instance and/or the (non valid) data itself to decide what action to take.</span>
+</span><span data-line="270">
+</span><span data-line="271"><span class="sd">        For example, one may want to have when_no_data do some timing stats to decide</span>
+</span><span data-line="272"><span class="sd">        on the number of seconds to stop, or send an interrupt signal if too many</span>
+</span><span data-line="273"><span class="sd">        "non datas" happen in a row.</span>
+</span><span data-line="274"><span class="sd">        """</span>
+</span><span data-line="275">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sleep_time_on_iter_none_s</span><span class="p">)</span>
+</span><span data-line="276">
+</span><span data-line="277">    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="278">        <span class="bp">self</span><span class="o">.</span><span class="n">read_idx</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span data-line="279">        <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestamp</span><span class="p">()</span>
+</span><span data-line="280">        <span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span> <span class="o">=</span> <span class="bp">self</span>
+</span><span data-line="281">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">False</span>
 </span><span data-line="282">
-</span><span data-line="283">    <span class="nd">@property</span>
-</span><span data-line="284">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="285">        <span class="k">return</span> <span class="p">{</span>
-</span><span data-line="286">            <span class="s2">"open_time"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span><span class="p">,</span>
-</span><span data-line="287">            <span class="s2">"open_instance"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span><span class="p">),</span>
-</span><span data-line="288">        <span class="p">}</span>
-</span><span data-line="289">
-</span><span data-line="290">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">):</span>
-</span><span data-line="291">        <span class="k">return</span> <span class="n">data</span>
+</span><span data-line="283">    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="284"><span class="w">        </span><span class="sd">"""A dummy close class"""</span>
+</span><span data-line="285">        <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span data-line="286">
+</span><span data-line="287">    <span class="nd">@property</span>
+</span><span data-line="288">    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="289">        <span class="k">return</span> <span class="p">{</span>
+</span><span data-line="290">            <span class="s2">"open_time"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">open_time</span><span class="p">,</span>
+</span><span data-line="291">            <span class="s2">"open_instance"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_instance</span><span class="p">),</span>
+</span><span data-line="292">        <span class="p">}</span>
+</span><span data-line="293">
+</span><span data-line="294">    <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">StreamItem</span><span class="p">):</span>
+</span><span data-line="295">        <span class="k">return</span> <span class="n">data</span>
 </span></pre></div>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -474,7 +481,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>

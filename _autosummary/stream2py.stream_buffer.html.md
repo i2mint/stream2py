@@ -64,12 +64,24 @@ Manually drop items from buffer when auto_drop is False
   **n** – number of items to drop from the left side
 * **Returns:**
 
+#### enter()
+
+Enter the context (start or open the resource) and return it.
+
+#### exit(exc_type, exc_val, exc_tb)
+
+Leave the context (stop or close the resource).
+
 #### *property* is_running *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
 
 Checks if stop event has been set.
 
 * **Returns:**
   bool
+
+#### *property* join
+
+Join the thread that fills the buffer.
 
 #### mk_reader(\*\*read_kwargs)
 

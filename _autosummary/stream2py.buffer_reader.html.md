@@ -66,6 +66,22 @@ True
 True
 ```
 
+#### close()
+
+Close the resource.
+
+#### enter()
+
+Alias of `__enter__`.
+
+#### exit()
+
+Alias of `__exit__`.
+
+#### head(, peek=False)
+
+The first item in the buffer; with `peek=True` the read cursor is not moved.
+
 #### is_same_buffer(other_buffer_reader)
 
 Check if reader is looking at the same buffer
@@ -84,6 +100,14 @@ last seen item cursor
 #### *property* last_key
 
 key to last seen item cursor
+
+#### next(n=1, , peek=False, ignore_no_item_found=False, strict_n=False)
+
+Deprecated alias of [`read()`](#stream2py.buffer_reader.BufferReader.read).
+
+#### open()
+
+Open the resource.
 
 #### range(start, stop, step=None, , peek=False, ignore_no_item_found=None, only_new_items=False, start_le=False, stop_ge=False, join=False)
 

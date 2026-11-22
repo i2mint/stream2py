@@ -162,7 +162,7 @@ data-aria-dark="Switch to auto color mode">
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stream2py.sources.http.HTTPResponseReader" title="stream2py.sources.http.HTTPResponseReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HTTPResponseReader</span></code></a>(url, *[, method, ...])</p></td>
-<td><p></p></td>
+<td><p>Source reader that streams the raw bytes of an HTTP response.</p></td>
 </tr>
 </tbody>
 </table>
@@ -172,14 +172,13 @@ data-aria-dark="Switch to auto color mode">
 <dt class="sig sig-object py" id="stream2py.sources.http.HTTPResponseReader">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">stream2py.sources.http.</span></span><span class="sig-name descname"><span class="pre">HTTPResponseReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GET'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bytes'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_read_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/sources/http.html#HTTPResponseReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.sources.http.HTTPResponseReader" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="stream2py.source_reader.html#stream2py.source_reader.SourceReader" title="stream2py.source_reader.SourceReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceReader</span></code></a></p>
+<p>Source reader that streams the raw bytes of an HTTP response.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.sources.http.HTTPResponseReader.close">
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/sources/http.html#HTTPResponseReader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.sources.http.HTTPResponseReader.close" title="Link to this definition">#</a></dt>
-<dd><p>Close and clean up source reader.
-Will be called when StreamBuffer stops or if an exception is raised during read and append
-loop.</p>
+<dd><p>Close the resource.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -224,8 +223,7 @@ loop.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.sources.http.HTTPResponseReader.open">
 <span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/sources/http.html#HTTPResponseReader.open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.sources.http.HTTPResponseReader.open" title="Link to this definition">#</a></dt>
-<dd><p>Set up source to be read and set some source info affected by open time like the time of
-open. Will be called in StreamBuffer immediately before first read.</p>
+<dd><p>Open the resource.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -278,7 +276,7 @@ open. Will be called in StreamBuffer immediately before first read.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

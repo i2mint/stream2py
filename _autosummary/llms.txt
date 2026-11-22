@@ -12,7 +12,7 @@
 - [stream2py.simply](stream2py.simply.html.md): Helper Function to construct a SourceReader and StreamBuffer in one
 - [stream2py.source_reader](stream2py.source_reader.html.md): A SourceReader defines how to get data with the methods: open(), read(), and close(), and also how
 - [stream2py.sources](stream2py.sources.html.md): A few light weight (builtin-only ) source readers you can use
-- [stream2py.sources.http](stream2py.sources.http.html.md): | &#96;HTTPResponseReader&#96;(url, &#92;&#42;&#91;, method, ...&#93;)   |    |
+- [stream2py.sources.http](stream2py.sources.http.html.md): | &#96;HTTPResponseReader&#96;(url, &#92;&#42;&#91;, method, ...&#93;)   | Source reader that streams the raw bytes of an HT...
 - [stream2py.stream_buffer](stream2py.stream_buffer.html.md): A StreamBuffer has 2 jobs: First, it manages the open, read, and close of a SourceReader
 - [stream2py.stream_source](stream2py.stream_source.html.md): A BufferReader gives data access to any number of consumers and provides methods to seek data such
 - [stream2py.util](stream2py.util.html.md): Util functions. Functions that are used by, or can be used with, stream2py objects

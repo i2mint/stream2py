@@ -31,6 +31,14 @@ Raise ValueError if item key is not greater than last item key.
 * **Returns:**
   None
 
+#### clear()
+
+Remove all items.
+
+#### copy()
+
+A shallow copy with the same key.
+
 #### count(item)
 
 Return number of occurrences of item
@@ -47,6 +55,10 @@ Remove n items from the left
 
 Return last item with a key > k.  Raise ValueError if not found.
 Basically a tail function with a greater than check
+
+#### *classmethod* from_jdict(params_dict)
+
+Build from the dict made by [`to_jdict()`](#stream2py.utility.sorted_deque.SortedDeque.to_jdict).
 
 #### index(item)
 

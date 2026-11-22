@@ -104,9 +104,12 @@ data-aria-dark="Switch to auto color mode">
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque"><code class="docutils literal notranslate"><span class="pre">SortedDeque</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.append"><code class="docutils literal notranslate"><span class="pre">SortedDeque.append()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.clear"><code class="docutils literal notranslate"><span class="pre">SortedDeque.clear()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.copy"><code class="docutils literal notranslate"><span class="pre">SortedDeque.copy()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.count"><code class="docutils literal notranslate"><span class="pre">SortedDeque.count()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.drop"><code class="docutils literal notranslate"><span class="pre">SortedDeque.drop()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.find_last_gt"><code class="docutils literal notranslate"><span class="pre">SortedDeque.find_last_gt()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.from_jdict"><code class="docutils literal notranslate"><span class="pre">SortedDeque.from_jdict()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.index"><code class="docutils literal notranslate"><span class="pre">SortedDeque.index()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.maxlen"><code class="docutils literal notranslate"><span class="pre">SortedDeque.maxlen</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.range"><code class="docutils literal notranslate"><span class="pre">SortedDeque.range()</span></code></a></li>
@@ -195,6 +198,18 @@ Raise ValueError if item key is not greater than last item key.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.sorted_deque.SortedDeque.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/sorted_deque.html#SortedDeque.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.clear" title="Link to this definition">#</a></dt>
+<dd><p>Remove all items.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.sorted_deque.SortedDeque.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/sorted_deque.html#SortedDeque.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.copy" title="Link to this definition">#</a></dt>
+<dd><p>A shallow copy with the same key.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stream2py.utility.sorted_deque.SortedDeque.count">
 <span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/sorted_deque.html#SortedDeque.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.count" title="Link to this definition">#</a></dt>
 <dd><p>Return number of occurrences of item</p>
@@ -219,6 +234,12 @@ Raise ValueError if item key is not greater than last item key.</p>
 <span class="sig-name descname"><span class="pre">find_last_gt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/sorted_deque.html#SortedDeque.find_last_gt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.find_last_gt" title="Link to this definition">#</a></dt>
 <dd><p>Return last item with a key &gt; k.  Raise ValueError if not found.
 Basically a tail function with a greater than check</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.utility.sorted_deque.SortedDeque.from_jdict">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_jdict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/utility/sorted_deque.html#SortedDeque.from_jdict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.utility.sorted_deque.SortedDeque.from_jdict" title="Link to this definition">#</a></dt>
+<dd><p>Build from the dict made by <a class="reference internal" href="#stream2py.utility.sorted_deque.SortedDeque.to_jdict" title="stream2py.utility.sorted_deque.SortedDeque.to_jdict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_jdict()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -318,7 +339,7 @@ Basically a tail function with a greater than check</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

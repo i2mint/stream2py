@@ -5,12 +5,12 @@ Util functions. Functions that are used by, or can be used with, stream2py objec
 
 ### Functions
 
-| `forward_to_instance_enter`(obj)                             |                           |
-|--------------------------------------------------------------|---------------------------|
-| `forward_to_instance_exit`(obj, \*exception_info)            |                           |
-| [`identity`](#stream2py.util.identity)(x) | Returns the input, as is. |
-| `null_enter_func`(obj)                                       |                           |
-| `null_exit_func`(obj, \*exception_info)                      |                           |
+| [`forward_to_instance_enter`](#stream2py.util.forward_to_instance_enter)(obj)                  | Call `__enter__` on the instance a bound method belongs to.   |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| [`forward_to_instance_exit`](#stream2py.util.forward_to_instance_exit)(obj, \*exception_info) | Call `__exit__` on the instance a bound method belongs to.    |
+| [`identity`](#stream2py.util.identity)(x)                                     | Returns the input, as is.                                     |
+| [`null_enter_func`](#stream2py.util.null_enter_func)(obj)                            | An enter function that returns the object itself.             |
+| [`null_exit_func`](#stream2py.util.null_exit_func)(obj, \*exception_info)           | An exit function that does nothing.                           |
 
 ### Classes
 
@@ -88,7 +88,7 @@ Raised if an function isn’t a valid (context manager) \_\_enter_\_ function
 
 #### *static* is_valid(obj)
 
-Returns True if and only if obj is considered valid
+Whether `obj` is a valid function of this kind.
 
 ### *exception* stream2py.util.ExitFunctionValidation
 
@@ -98,7 +98,7 @@ Raised if an function isn’t a valid (context manager) \_\_exit_\_ function
 
 #### *static* is_valid(obj)
 
-Returns True if and only if obj is considered valid
+Whether `obj` is a valid function of this kind.
 
 ### *class* stream2py.util.Timer(egress=<function identity>)
 
@@ -160,6 +160,14 @@ The (egress-transformed) seconds since the timer was started.
 
 Raises `ValueError` if the timer is not running.
 
+#### start()
+
+Start the timer and return it.
+
+#### stop(\*args, \*\*kwargs)
+
+Stop (reset) the timer.
+
 ### *exception* stream2py.util.TypeValidationError
 
 Bases: [`TypeError`](https://docs.python.org/3/builtins/exceptions.html#TypeError)
@@ -173,6 +181,26 @@ Returns True if and only if obj is considered valid
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
+#### *classmethod* validate(obj, \*args, \*\*kwargs)
+
+Raise `cls(*args, **kwargs)` unless `obj` is valid.
+
+### stream2py.util.forward_to_instance_enter(obj)
+
+Call `__enter__` on the instance a bound method belongs to.
+
+### stream2py.util.forward_to_instance_exit(obj, \*exception_info)
+
+Call `__exit__` on the instance a bound method belongs to.
+
 ### stream2py.util.identity(x)
 
 Returns the input, as is.
+
+### stream2py.util.null_enter_func(obj)
+
+An enter function that returns the object itself.
+
+### stream2py.util.null_exit_func(obj, \*exception_info)
+
+An exit function that does nothing.

@@ -1,4 +1,4 @@
-> built 2026-10-20 11:28 UTC from 07dc7cf (master) · stream2py 1.0.48. Details: build_info.json
+> built 2026-11-22 17:23 UTC from 49cbec1 (master) · stream2py 1.0.49. Details: build_info.json
 
 # index.html.md
 
@@ -164,6 +164,22 @@ True
 True
 ```
 
+#### close()
+
+Close the resource.
+
+#### enter()
+
+Alias of `__enter__`.
+
+#### exit()
+
+Alias of `__exit__`.
+
+#### head(, peek=False)
+
+The first item in the buffer; with `peek=True` the read cursor is not moved.
+
 #### is_same_buffer(other_buffer_reader)
 
 Check if reader is looking at the same buffer
@@ -182,6 +198,14 @@ last seen item cursor
 #### *property* last_key
 
 key to last seen item cursor
+
+#### next(n=1, , peek=False, ignore_no_item_found=False, strict_n=False)
+
+Deprecated alias of [`read()`](_autosummary/stream2py.buffer_reader.html.md#stream2py.buffer_reader.BufferReader.read).
+
+#### open()
+
+Open the resource.
 
 #### range(start, stop, step=None, , peek=False, ignore_no_item_found=None, only_new_items=False, start_le=False, stop_ge=False, join=False)
 
@@ -531,6 +555,42 @@ Bases: [`Protocol`](https://docs.python.org/3/library/typing.html#typing.Protoco
 
 The interface for the StreamSource class.
 
+#### close()
+
+Close the resource.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
+#### *property* info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
+
+Information about the source.
+
+#### key(data)
+
+Sort key of `data`.
+
+* **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+#### open()
+
+Open the resource.
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
+#### read()
+
+Read the next item, or `None` if nothing is ready.
+
+* **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+#### *property* sleep_time_on_read_none_s *: [int](https://docs.python.org/3/builtins/functions.html#int)*
+
+Seconds to wait when `read` returns `None`.
+
 
 # _autosummary/stream2py.simply.html.md
 
@@ -701,6 +761,17 @@ Similar to io.IOBase.closed property.
 * **Returns:**
   bool indicating whether the source is closed
 
+#### enter()
+
+Enter the context (start or open the resource) and return it.
+
+#### exit(exc_type, exc_val, exc_tb)
+
+Leave the context (stop or close the resource).
+
+* **Return type:**
+  [`None`](https://docs.python.org/3/builtins/constants.html#None)
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds
@@ -794,6 +865,10 @@ once per bound, so a lone item is sliced twice (`start` then `stop`).
 * **Returns:**
   a data item of the same kind, possibly shorter
 
+#### stream_buffer(maxlen, sleep_time_on_read_none_s=None, auto_drop=True)
+
+A `StreamBuffer` fed by this reader, holding up to `maxlen` items.
+
 
 # _autosummary/stream2py.sources.html.md
 
@@ -815,18 +890,18 @@ A few light weight (builtin-only ) source readers you can use
 
 ### Classes
 
-| [`HTTPResponseReader`](_autosummary/stream2py.sources.http.html.md#stream2py.sources.http.HTTPResponseReader)(url, \*[, method, ...])   |    |
-|-----------------------------------------------------------------------------------------------|----|
+| [`HTTPResponseReader`](_autosummary/stream2py.sources.http.html.md#stream2py.sources.http.HTTPResponseReader)(url, \*[, method, ...])   | Source reader that streams the raw bytes of an HTTP response.   |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
 
 ### *class* stream2py.sources.http.HTTPResponseReader(url, , method='GET', headers=None, body='', response_format='bytes', response_read_args=(), encoding='')
 
 Bases: [`SourceReader`](_autosummary/stream2py.source_reader.html.md#stream2py.source_reader.SourceReader)
 
+Source reader that streams the raw bytes of an HTTP response.
+
 #### close()
 
-Close and clean up source reader.
-Will be called when StreamBuffer stops or if an exception is raised during read and append
-loop.
+Close the resource.
 
 #### *property* info *: [dict](https://docs.python.org/3/builtins/stdtypes.html#dict)*
 
@@ -860,8 +935,7 @@ Returns a slice of the data retrieved.
 
 #### open()
 
-Set up source to be read and set some source info affected by open time like the time of
-open. Will be called in StreamBuffer immediately before first read.
+Open the resource.
 
 #### read()
 
@@ -936,12 +1010,24 @@ Manually drop items from buffer when auto_drop is False
   **n** – number of items to drop from the left side
 * **Returns:**
 
+#### enter()
+
+Enter the context (start or open the resource) and return it.
+
+#### exit(exc_type, exc_val, exc_tb)
+
+Leave the context (stop or close the resource).
+
 #### *property* is_running *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
 
 Checks if stop event has been set.
 
 * **Returns:**
   bool
+
+#### *property* join
+
+Join the thread that fills the buffer.
 
 #### mk_reader(\*\*read_kwargs)
 
@@ -1022,6 +1108,10 @@ This will also stop the StreamBuffer. A closed source can be reopened by opening
 
 Sets custom buffer parameters.
 
+#### exit()
+
+Alias of `__exit__`.
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds
@@ -1088,12 +1178,12 @@ Util functions. Functions that are used by, or can be used with, stream2py objec
 
 ### Functions
 
-| `forward_to_instance_enter`(obj)                             |                           |
-|--------------------------------------------------------------|---------------------------|
-| `forward_to_instance_exit`(obj, \*exception_info)            |                           |
-| [`identity`](_autosummary/stream2py.util.html.md#stream2py.util.identity)(x) | Returns the input, as is. |
-| `null_enter_func`(obj)                                       |                           |
-| `null_exit_func`(obj, \*exception_info)                      |                           |
+| [`forward_to_instance_enter`](_autosummary/stream2py.util.html.md#stream2py.util.forward_to_instance_enter)(obj)                  | Call `__enter__` on the instance a bound method belongs to.   |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| [`forward_to_instance_exit`](_autosummary/stream2py.util.html.md#stream2py.util.forward_to_instance_exit)(obj, \*exception_info) | Call `__exit__` on the instance a bound method belongs to.    |
+| [`identity`](_autosummary/stream2py.util.html.md#stream2py.util.identity)(x)                                     | Returns the input, as is.                                     |
+| [`null_enter_func`](_autosummary/stream2py.util.html.md#stream2py.util.null_enter_func)(obj)                            | An enter function that returns the object itself.             |
+| [`null_exit_func`](_autosummary/stream2py.util.html.md#stream2py.util.null_exit_func)(obj, \*exception_info)           | An exit function that does nothing.                           |
 
 ### Classes
 
@@ -1171,7 +1261,7 @@ Raised if an function isn’t a valid (context manager) \_\_enter_\_ function
 
 #### *static* is_valid(obj)
 
-Returns True if and only if obj is considered valid
+Whether `obj` is a valid function of this kind.
 
 ### *exception* stream2py.util.ExitFunctionValidation
 
@@ -1181,7 +1271,7 @@ Raised if an function isn’t a valid (context manager) \_\_exit_\_ function
 
 #### *static* is_valid(obj)
 
-Returns True if and only if obj is considered valid
+Whether `obj` is a valid function of this kind.
 
 ### *class* stream2py.util.Timer(egress=<function identity>)
 
@@ -1243,6 +1333,14 @@ The (egress-transformed) seconds since the timer was started.
 
 Raises `ValueError` if the timer is not running.
 
+#### start()
+
+Start the timer and return it.
+
+#### stop(\*args, \*\*kwargs)
+
+Stop (reset) the timer.
+
 ### *exception* stream2py.util.TypeValidationError
 
 Bases: [`TypeError`](https://docs.python.org/3/builtins/exceptions.html#TypeError)
@@ -1256,9 +1354,29 @@ Returns True if and only if obj is considered valid
 * **Return type:**
   [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
 
+#### *classmethod* validate(obj, \*args, \*\*kwargs)
+
+Raise `cls(*args, **kwargs)` unless `obj` is valid.
+
+### stream2py.util.forward_to_instance_enter(obj)
+
+Call `__enter__` on the instance a bound method belongs to.
+
+### stream2py.util.forward_to_instance_exit(obj, \*exception_info)
+
+Call `__exit__` on the instance a bound method belongs to.
+
 ### stream2py.util.identity(x)
 
 Returns the input, as is.
+
+### stream2py.util.null_enter_func(obj)
+
+An enter function that returns the object itself.
+
+### stream2py.util.null_exit_func(obj, \*exception_info)
+
+An exit function that does nothing.
 
 
 # _autosummary/stream2py.utility.html.md
@@ -1320,6 +1438,21 @@ Bases: [`RWLock`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stre
 (('plc', 100000, 100000), 'new data')
 ```
 
+#### *property* key
+
+Sort key of `data`.
+
+#### reader_lock()
+
+Context manager yielding the deque under a shared (reader) lock.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`SortedDeque`](_autosummary/stream2py.utility.sorted_deque.html.md#stream2py.utility.sorted_deque.SortedDeque), [`None`](https://docs.python.org/3/builtins/constants.html#None), [`None`](https://docs.python.org/3/builtins/constants.html#None)]
+
+#### writer_lock()
+
+Context manager yielding the deque under the exclusive (writer) lock.
+
 
 # _autosummary/stream2py.utility.reader_writer_lock.html.md
 
@@ -1331,9 +1464,9 @@ READER-WRITER LOCK WITH PRIORITY FOR WRITERS
 
 | [`RWLock`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.RWLock)()                                       | Synchronization object used in a solution of so-called second readers-writers problem.   |
 |-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| [`RWLockTestCase`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.RWLockTestCase)([methodName])                   |                                                                                          |
-| [`Reader`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.Reader)(buffer_, rw_lock, init_sleep_time, ...) |                                                                                          |
-| [`Writer`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.Writer)(buffer_, rw_lock, init_sleep_time, ...) |                                                                                          |
+| [`RWLockTestCase`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.RWLockTestCase)([methodName])                   | Unit tests for [`RWLock`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.RWLock).                  |
+| [`Reader`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.Reader)(buffer_, rw_lock, init_sleep_time, ...) | Thread that copies a shared buffer under the read lock (used by the lock tests).         |
+| [`Writer`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.Writer)(buffer_, rw_lock, init_sleep_time, ...) | Thread that appends to a shared buffer under the write lock (used by the lock tests).    |
 
 ### *class* stream2py.utility.reader_writer_lock.RWLock
 
@@ -1364,13 +1497,49 @@ Communications of the ACM, 1971 (via [3])
 
 [3] [http://en.wikipedia.org/wiki/Readers-writers_problem](http://en.wikipedia.org/wiki/Readers-writers_problem)
 
+#### reader_acquire()
+
+Acquire the lock for reading (shared).
+
+#### reader_release()
+
+Release a read lock.
+
+#### writer_acquire()
+
+Acquire the lock for writing (exclusive).
+
+#### writer_release()
+
+Release the write lock.
+
 ### *class* stream2py.utility.reader_writer_lock.RWLockTestCase(methodName='runTest')
 
 Bases: [`TestCase`](https://docs.python.org/3/library/unittest.html#unittest.TestCase)
 
+Unit tests for [`RWLock`](_autosummary/stream2py.utility.reader_writer_lock.html.md#stream2py.utility.reader_writer_lock.RWLock).
+
+#### test_many_writers_priority()
+
+Check many writers priority.
+
+#### test_readers_nonexclusive_access()
+
+Check readers nonexclusive access.
+
+#### test_writer_priority()
+
+Check writer priority.
+
+#### test_writers_exclusive_access()
+
+Check writers exclusive access.
+
 ### *class* stream2py.utility.reader_writer_lock.Reader(buffer_, rw_lock, init_sleep_time, sleep_time)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
+
+Thread that copies a shared buffer under the read lock (used by the lock tests).
 
 #### buffer_read
 
@@ -1386,16 +1555,13 @@ Time of exit from the critical section
 
 #### run()
 
-Method representing the thread’s activity.
-
-You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.
+Thread body: wait, take the lock, do the work, release.
 
 ### *class* stream2py.utility.reader_writer_lock.Writer(buffer_, rw_lock, init_sleep_time, sleep_time, to_write)
 
 Bases: [`Thread`](https://docs.python.org/3/library/threading.html#threading.Thread)
+
+Thread that appends to a shared buffer under the write lock (used by the lock tests).
 
 #### entry_time
 
@@ -1407,12 +1573,7 @@ Time of exit from the critical section
 
 #### run()
 
-Method representing the thread’s activity.
-
-You may override this method in a subclass. The standard run() method
-invokes the callable object passed to the object’s constructor as the
-target argument, if any, with sequential and keyword arguments taken
-from the args and kwargs arguments, respectively.
+Thread body: wait, take the lock, do the work, release.
 
 
 # _autosummary/stream2py.utility.sorted_collection.html.md
@@ -1508,6 +1669,14 @@ bisect but with a simpler API and support for key functions.
  ('roger', 'young', 30)]
 ```
 
+#### clear()
+
+Remove all items.
+
+#### copy()
+
+A shallow copy with the same key.
+
 #### count(item)
 
 Return number of occurrences of item
@@ -1588,6 +1757,14 @@ Raise ValueError if item key is not greater than last item key.
 * **Returns:**
   None
 
+#### clear()
+
+Remove all items.
+
+#### copy()
+
+A shallow copy with the same key.
+
 #### count(item)
 
 Return number of occurrences of item
@@ -1604,6 +1781,10 @@ Remove n items from the left
 
 Return last item with a key > k.  Raise ValueError if not found.
 Basically a tail function with a greater than check
+
+#### *classmethod* from_jdict(params_dict)
+
+Build from the dict made by [`to_jdict()`](_autosummary/stream2py.utility.sorted_deque.html.md#stream2py.utility.sorted_deque.SortedDeque.to_jdict).
 
 #### index(item)
 
@@ -1646,12 +1827,14 @@ Typing hints
 
 ### Classes
 
-| [`ComparableType`](_autosummary/stream2py.utility.typing_hints.html.md#stream2py.utility.typing_hints.ComparableType)(\*args, \*\*kwargs)   |    |
-|---------------------------------------------------------------------------------------|----|
+| [`ComparableType`](_autosummary/stream2py.utility.typing_hints.html.md#stream2py.utility.typing_hints.ComparableType)(\*args, \*\*kwargs)   | Protocol for keys that support `<` and `>`.   |
+|---------------------------------------------------------------------------------------|-----------------------------------------------|
 
 ### *class* stream2py.utility.typing_hints.ComparableType(\*args, \*\*kwargs)
 
 Bases: [`Protocol`](https://docs.python.org/3/library/typing.html#typing.Protocol)
+
+Protocol for keys that support `<` and `>`.
 
 
 # about-this-build.html.md
@@ -1660,18 +1843,16 @@ Bases: [`Protocol`](https://docs.python.org/3/library/typing.html#typing.Protoco
 
 # About this build
 
-This documentation was built on **2026-10-20 11:28 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1"><code>07dc7cf</code></a> on branch <code>master</code>, for **stream2py 1.0.48** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 17:23 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/49cbec179f57217247e80a9d1908e7efa4ab2471"><code>49cbec1</code></a> on branch <code>master</code>, for **stream2py 1.0.49** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (1.0.48) is behind the latest release on PyPI (1.0.49): `pip install stream2py` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1"><code>07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/49cbec179f57217247e80a9d1908e7efa4ab2471"><code>49cbec179f57217247e80a9d1908e7efa4ab2471</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -1682,18 +1863,18 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/39414913420">39414913420</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45048944372">45048944372</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1</code> (in the history of the built commit) |
+| Event commit | <code>49cbec179f57217247e80a9d1908e7efa4ab2471</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.19  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -1709,14 +1890,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.49/">1.0.49</a>, newer than the documented version (1.0.48).
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.49/">1.0.49</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout 07dc7cfc7b24180f05ed284a67b4a1bf94a1bcc1
-pip install "epythet==0.2.19"
+git checkout 49cbec179f57217247e80a9d1908e7efa4ab2471
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

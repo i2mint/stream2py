@@ -47,6 +47,10 @@ This will also stop the StreamBuffer. A closed source can be reopened by opening
 
 Sets custom buffer parameters.
 
+#### exit()
+
+Alias of `__exit__`.
+
 #### *classmethod* get_timestamp()
 
 Get timestamp of now as int microseconds

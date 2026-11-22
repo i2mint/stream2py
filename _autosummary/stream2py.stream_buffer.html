@@ -105,7 +105,10 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer"><code class="docutils literal notranslate"><span class="pre">StreamBuffer</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.attach_reader"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.attach_reader()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.drop"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.drop()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.enter"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.enter()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.exit"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.exit()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.is_running"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.is_running</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.join"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.join</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.mk_reader"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.mk_reader()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.source_reader_info"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.source_reader_info</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.stream_buffer.StreamBuffer.start"><code class="docutils literal notranslate"><span class="pre">StreamBuffer.start()</span></code></a></li>
@@ -230,6 +233,18 @@ Second, it is a factory of BufferReaders instances for multiple consumers.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.stream_buffer.StreamBuffer.enter">
+<span class="sig-name descname"><span class="pre">enter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.enter" title="Link to this definition">#</a></dt>
+<dd><p>Enter the context (start or open the resource) and return it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.stream_buffer.StreamBuffer.exit">
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_tb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.exit" title="Link to this definition">#</a></dt>
+<dd><p>Leave the context (stop or close the resource).</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="stream2py.stream_buffer.StreamBuffer.is_running">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_running</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.is_running" title="Link to this definition">#</a></dt>
@@ -239,6 +254,12 @@ Second, it is a factory of BufferReaders instances for multiple consumers.</p>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stream2py.stream_buffer.StreamBuffer.join">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">join</span></span><a class="headerlink" href="#stream2py.stream_buffer.StreamBuffer.join" title="Link to this definition">#</a></dt>
+<dd><p>Join the thread that fills the buffer.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -326,7 +347,7 @@ Reader must be made after start() to have data from said start.</p>
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

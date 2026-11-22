@@ -29,3 +29,18 @@ Bases: [`RWLock`](stream2py.utility.reader_writer_lock.html.md#stream2py.utility
 ...
 (('plc', 100000, 100000), 'new data')
 ```
+
+#### *property* key
+
+Sort key of `data`.
+
+#### reader_lock()
+
+Context manager yielding the deque under a shared (reader) lock.
+
+* **Return type:**
+  [`Generator`](https://docs.python.org/3/library/typing.html#typing.Generator)[[`SortedDeque`](stream2py.utility.sorted_deque.html.md#stream2py.utility.sorted_deque.SortedDeque), [`None`](https://docs.python.org/3/builtins/constants.html#None), [`None`](https://docs.python.org/3/builtins/constants.html#None)]
+
+#### writer_lock()
+
+Context manager yielding the deque under the exclusive (writer) lock.

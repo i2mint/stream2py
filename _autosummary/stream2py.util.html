@@ -113,13 +113,20 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li><a class="reference internal" href="#stream2py.util.Timer"><code class="docutils literal notranslate"><span class="pre">Timer</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.util.Timer.elapsed"><code class="docutils literal notranslate"><span class="pre">Timer.elapsed()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.Timer.start"><code class="docutils literal notranslate"><span class="pre">Timer.start()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.Timer.stop"><code class="docutils literal notranslate"><span class="pre">Timer.stop()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#stream2py.util.TypeValidationError"><code class="docutils literal notranslate"><span class="pre">TypeValidationError</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.util.TypeValidationError.is_valid"><code class="docutils literal notranslate"><span class="pre">TypeValidationError.is_valid()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.TypeValidationError.validate"><code class="docutils literal notranslate"><span class="pre">TypeValidationError.validate()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#stream2py.util.forward_to_instance_enter"><code class="docutils literal notranslate"><span class="pre">forward_to_instance_enter()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.forward_to_instance_exit"><code class="docutils literal notranslate"><span class="pre">forward_to_instance_exit()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.util.identity"><code class="docutils literal notranslate"><span class="pre">identity()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.null_enter_func"><code class="docutils literal notranslate"><span class="pre">null_enter_func()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.util.null_exit_func"><code class="docutils literal notranslate"><span class="pre">null_exit_func()</span></code></a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -166,20 +173,20 @@ data-aria-dark="Switch to auto color mode">
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_to_instance_enter</span></code>(obj)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stream2py.util.forward_to_instance_enter" title="stream2py.util.forward_to_instance_enter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_to_instance_enter</span></code></a>(obj)</p></td>
+<td><p>Call <code class="docutils literal notranslate"><span class="pre">__enter__</span></code> on the instance a bound method belongs to.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_to_instance_exit</span></code>(obj, *exception_info)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stream2py.util.forward_to_instance_exit" title="stream2py.util.forward_to_instance_exit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward_to_instance_exit</span></code></a>(obj, *exception_info)</p></td>
+<td><p>Call <code class="docutils literal notranslate"><span class="pre">__exit__</span></code> on the instance a bound method belongs to.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#stream2py.util.identity" title="stream2py.util.identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identity</span></code></a>(x)</p></td>
 <td><p>Returns the input, as is.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_enter_func</span></code>(obj)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#stream2py.util.null_enter_func" title="stream2py.util.null_enter_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_enter_func</span></code></a>(obj)</p></td>
+<td><p>An enter function that returns the object itself.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_exit_func</span></code>(obj, *exception_info)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stream2py.util.null_exit_func" title="stream2py.util.null_exit_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">null_exit_func</span></code></a>(obj, *exception_info)</p></td>
+<td><p>An exit function that does nothing.</p></td>
 </tr>
 </tbody>
 </table>
@@ -269,7 +276,7 @@ special methods, they’ll have to wrap <code class="code docutils literal notra
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.util.EnterFunctionValidation.is_valid">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#EnterFunctionValidation.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.EnterFunctionValidation.is_valid" title="Link to this definition">#</a></dt>
-<dd><p>Returns True if and only if obj is considered valid</p>
+<dd><p>Whether <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a valid function of this kind.</p>
 </dd></dl>
 
 </dd></dl>
@@ -282,7 +289,7 @@ special methods, they’ll have to wrap <code class="code docutils literal notra
 <dl class="py method">
 <dt class="sig sig-object py" id="stream2py.util.ExitFunctionValidation.is_valid">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#ExitFunctionValidation.is_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.ExitFunctionValidation.is_valid" title="Link to this definition">#</a></dt>
-<dd><p>Returns True if and only if obj is considered valid</p>
+<dd><p>Whether <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a valid function of this kind.</p>
 </dd></dl>
 
 </dd></dl>
@@ -339,6 +346,18 @@ wall-clock timestamp; it is only meaningful as a reference point for a differenc
 <p>Raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if the timer is not running.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.util.Timer.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#Timer.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.Timer.start" title="Link to this definition">#</a></dt>
+<dd><p>Start the timer and return it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.util.Timer.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#Timer.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.Timer.stop" title="Link to this definition">#</a></dt>
+<dd><p>Stop (reset) the timer.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py exception">
@@ -357,12 +376,42 @@ wall-clock timestamp; it is only meaningful as a reference point for a differenc
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.util.TypeValidationError.validate">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#TypeValidationError.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.TypeValidationError.validate" title="Link to this definition">#</a></dt>
+<dd><p>Raise <code class="docutils literal notranslate"><span class="pre">cls(*args,</span> <span class="pre">**kwargs)</span></code> unless <code class="docutils literal notranslate"><span class="pre">obj</span></code> is valid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream2py.util.forward_to_instance_enter">
+<span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">forward_to_instance_enter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#forward_to_instance_enter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.forward_to_instance_enter" title="Link to this definition">#</a></dt>
+<dd><p>Call <code class="docutils literal notranslate"><span class="pre">__enter__</span></code> on the instance a bound method belongs to.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream2py.util.forward_to_instance_exit">
+<span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">forward_to_instance_exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">exception_info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#forward_to_instance_exit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.forward_to_instance_exit" title="Link to this definition">#</a></dt>
+<dd><p>Call <code class="docutils literal notranslate"><span class="pre">__exit__</span></code> on the instance a bound method belongs to.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="stream2py.util.identity">
 <span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.identity" title="Link to this definition">#</a></dt>
 <dd><p>Returns the input, as is.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream2py.util.null_enter_func">
+<span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">null_enter_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#null_enter_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.null_enter_func" title="Link to this definition">#</a></dt>
+<dd><p>An enter function that returns the object itself.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stream2py.util.null_exit_func">
+<span class="sig-prename descclassname"><span class="pre">stream2py.util.</span></span><span class="sig-name descname"><span class="pre">null_exit_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">exception_info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/util.html#null_exit_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.util.null_exit_func" title="Link to this definition">#</a></dt>
+<dd><p>An exit function that does nothing.</p>
 </dd></dl>
 
 </section>
@@ -407,7 +456,7 @@ wall-clock timestamp; it is only meaningful as a reference point for a differenc
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

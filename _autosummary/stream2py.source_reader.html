@@ -105,6 +105,8 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader"><code class="docutils literal notranslate"><span class="pre">SourceReader</span></code></a><ul>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.close"><code class="docutils literal notranslate"><span class="pre">SourceReader.close()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.closed"><code class="docutils literal notranslate"><span class="pre">SourceReader.closed</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.source_reader.SourceReader.enter"><code class="docutils literal notranslate"><span class="pre">SourceReader.enter()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.source_reader.SourceReader.exit"><code class="docutils literal notranslate"><span class="pre">SourceReader.exit()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.get_timestamp"><code class="docutils literal notranslate"><span class="pre">SourceReader.get_timestamp()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.info"><code class="docutils literal notranslate"><span class="pre">SourceReader.info</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.join_items"><code class="docutils literal notranslate"><span class="pre">SourceReader.join_items()</span></code></a></li>
@@ -113,6 +115,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.set_sleep_time_on_iter_none"><code class="docutils literal notranslate"><span class="pre">SourceReader.set_sleep_time_on_iter_none()</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.sleep_time_on_read_none_s"><code class="docutils literal notranslate"><span class="pre">SourceReader.sleep_time_on_read_none_s</span></code></a></li>
 <li><a class="reference internal" href="#stream2py.source_reader.SourceReader.slice_item"><code class="docutils literal notranslate"><span class="pre">SourceReader.slice_item()</span></code></a></li>
+<li><a class="reference internal" href="#stream2py.source_reader.SourceReader.stream_buffer"><code class="docutils literal notranslate"><span class="pre">SourceReader.stream_buffer()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -257,6 +260,23 @@ loop.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="stream2py.source_reader.SourceReader.enter">
+<span class="sig-name descname"><span class="pre">enter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.source_reader.SourceReader.enter" title="Link to this definition">#</a></dt>
+<dd><p>Enter the context (start or open the resource) and return it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.source_reader.SourceReader.exit">
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_tb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#stream2py.source_reader.SourceReader.exit" title="Link to this definition">#</a></dt>
+<dd><p>Leave the context (stop or close the resource).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="stream2py.source_reader.SourceReader.get_timestamp">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/source_reader.html#SourceReader.get_timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.get_timestamp" title="Link to this definition">#</a></dt>
 <dd><p>Get timestamp of now as int microseconds</p>
@@ -383,6 +403,14 @@ once per bound, so a lone item is sliced twice (<code class="docutils literal no
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="stream2py.source_reader.SourceReader.stream_buffer">
+<span class="sig-name descname"><span class="pre">stream_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time_on_read_none_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/stream2py/source_reader.html#SourceReader.stream_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stream2py.source_reader.SourceReader.stream_buffer" title="Link to this definition">#</a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">StreamBuffer</span></code> fed by this reader, holding up to <code class="docutils literal notranslate"><span class="pre">maxlen</span></code> items.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -427,7 +455,7 @@ once per bound, so a lone item is sliced twice (<code class="docutils literal no
     </div>
   </div>
 </footer>
-      <script src="../_static/documentation_options.js?v=386cd2aa"></script>
+      <script src="../_static/documentation_options.js?v=9c1456b3"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
