@@ -88,7 +88,7 @@ def mk_stream_buffer(
         sleep_time_on_read_none_s = sleep_time_on_read_none_seconds
         read_idx = 0
 
-        def open(self):
+        def open(self) -> None:
             self.read_idx = 0
             if open_stream is not None:
                 self.open_instance = open_stream()
@@ -102,7 +102,7 @@ def mk_stream_buffer(
 
             return read_data
 
-        def close(self):
+        def close(self) -> None:
             if close_stream is not None:
                 close_stream(self.open_instance)
 

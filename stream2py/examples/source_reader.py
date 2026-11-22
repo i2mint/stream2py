@@ -5,25 +5,25 @@ from stream2py import SourceReader
 class SimpleCounterString(SourceReader):
     """Count in range returning a string formatted as f's{count}'"""
 
-    def __init__(self, start, stop):
+    def __init__(self, start, stop) -> None:
         assert start < stop
         self.start = start
         self.stop = stop
         self.range_iterator = None
         self.open_count = 0
 
-    def open(self):
+    def open(self) -> None:
         self.open_count += 1
         self.range_iterator = iter(range(self.start, self.stop))
 
-    def read(self):
+    def read(self) -> str | None:
         value = next(self.range_iterator, None)
         if value is not None:
             return f's{value}'
         else:
             return None
 
-    def close(self):
+    def close(self) -> None:
         del self.range_iterator
         self.range_iterator = None
 

@@ -76,7 +76,7 @@ class SortedCollection(object):
 
     """
 
-    def __init__(self, iterable=(), key=None):
+    def __init__(self, iterable=(), key=None) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         self._given_key = key
         key = (lambda x: x) if key is None else key
@@ -88,16 +88,16 @@ class SortedCollection(object):
     def _getkey(self):
         return self._key
 
-    def _setkey(self, key):
+    def _setkey(self, key) -> None:
         if key is not self._key:
             self.__init__(self._items, key=key)
 
-    def _delkey(self):
+    def _delkey(self) -> None:
         self._setkey(None)
 
     key = property(_getkey, _setkey, _delkey, "key function")
 
-    def clear(self):
+    def clear(self) -> None:
         """Remove all items."""
         self.__init__([], self._key)
 
@@ -105,7 +105,7 @@ class SortedCollection(object):
         """A shallow copy with the same key."""
         return self.__class__(self, self._key)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of items."""
         return len(self._items)
 
@@ -121,7 +121,7 @@ class SortedCollection(object):
         """Iterate over the items in reverse."""
         return reversed(self._items)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Show the contents and key."""
         return "%s(%r, key=%s)" % (
             self.__class__.__name__,
@@ -133,7 +133,7 @@ class SortedCollection(object):
         """Pickle support: rebuild from items and key."""
         return self.__class__, (self._items, self._given_key)
 
-    def __contains__(self, item):
+    def __contains__(self, item) -> bool:
         """Whether the item is present (compared by key first)."""
         k = self._key(item)
         i = bisect_left(self._keys, k)
@@ -154,21 +154,21 @@ class SortedCollection(object):
         j = bisect_right(self._keys, k)
         return self._items[i:j].count(item)
 
-    def insert(self, item):
+    def insert(self, item) -> None:
         """Insert a new item.  If equal keys are found, add to the left"""
         k = self._key(item)
         i = bisect_left(self._keys, k)
         self._keys.insert(i, k)
         self._items.insert(i, item)
 
-    def insert_right(self, item):
+    def insert_right(self, item) -> None:
         """Insert a new item.  If equal keys are found, add to the right"""
         k = self._key(item)
         i = bisect_right(self._keys, k)
         self._keys.insert(i, k)
         self._items.insert(i, item)
 
-    def remove(self, item):
+    def remove(self, item) -> None:
         """Remove first occurence of item.  Raise ValueError if not found"""
         i = self.index(item)
         del self._keys[i]

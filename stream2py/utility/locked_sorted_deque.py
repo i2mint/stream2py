@@ -27,12 +27,12 @@ class RWLockSortedDeque(RWLock):
     (('plc', 100000, 100000), 'new data')
     """
 
-    def __init__(self, iterable=(), *, key=None, maxlen=None):
+    def __init__(self, iterable=(), *, key=None, maxlen=None) -> None:
         """Initialize the instance; see the class docstring for the arguments."""
         RWLock.__init__(self)
         self._sorted_deque = SortedDeque(iterable, key, maxlen)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of items."""
         return len(self._sorted_deque)
 
