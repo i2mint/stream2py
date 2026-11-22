@@ -18,6 +18,7 @@ from stream2py.utility.typing_hints import ComparableType
 
 
 class HTTPResponseReader(SourceReader):
+    """Source reader that streams the raw bytes of an HTTP response."""
     _request: urllib.request.Request
     _n_bytes_read: int
     _init_kwargs: dict
@@ -98,12 +99,14 @@ class HTTPResponseReader(SourceReader):
         # return self._data[data[0]:data[1]]
 
     def open(self):
+        """Open the resource."""
         request = urllib.request.Request(
             self._url, headers=self._init_kwargs["headers"]
         )
         self._response = urllib.request.urlopen(request)
 
     def close(self):
+        """Close the resource."""
         if self._response:
             self._response.__exit__()
             self._response = None

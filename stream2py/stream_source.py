@@ -64,9 +64,11 @@ class StreamSource(Source, metaclass=ABCMeta):
     _stream_buffer: StreamBuffer = None
 
     def __init__(self, *, reader_cls=BufferReader):
+        """Initialize the instance; see the class docstring for the arguments."""
         self._reader_cls = reader_cls
 
     def __iter__(self):
+        """Iterate over the items."""
         while True:
             _next = self.read()
             if _next is not None:
@@ -165,6 +167,7 @@ class StreamSource(Source, metaclass=ABCMeta):
         return int(time.time() * cls.timestamp_seconds_to_unit_conversion)
 
     def exit(self):
+        """Alias of ``__exit__``."""
         if self._stream_buffer:
             self._stream_buffer.stop()
         else:

@@ -20,6 +20,7 @@ class SortedDeque(SortedCollection):
     """
 
     def __init__(self, iterable=(), key=None, maxlen=None):
+        """Initialize the instance; see the class docstring for the arguments."""
         SortedCollection.__init__(self, iterable, key)
         self._keys = deque(self._keys, maxlen=maxlen)
         self._items = deque(self._items, maxlen=maxlen)
@@ -35,6 +36,7 @@ class SortedDeque(SortedCollection):
 
     @classmethod
     def from_jdict(cls, params_dict):
+        """Build from the dict made by :meth:`to_jdict`."""
         return cls(**params_dict)
 
     def _getmaxlen(self):
@@ -54,12 +56,15 @@ class SortedDeque(SortedCollection):
             self.__init__(self._items, key=key, maxlen=self._maxlen)
 
     def clear(self):
+        """Remove all items."""
         self.__init__([], self._key, self._maxlen)
 
     def copy(self):
+        """A shallow copy with the same key."""
         return self.__class__(self, self._key, self._maxlen)
 
     def __repr__(self):
+        """Show the contents and key."""
         return "%s(%r, key=%s, maxlen=%s)" % (
             self.__class__.__name__,
             list(self._items),  # Not sure if this is the best way to do this
@@ -68,9 +73,11 @@ class SortedDeque(SortedCollection):
         )
 
     def __reduce__(self):
+        """Pickle support: rebuild from items and key."""
         return self.__class__, (self._items, self._given_key, self._maxlen)
 
     def __contains__(self, item):
+        """Whether the item is present (compared by key first)."""
         k = self._key(item)
         i = bisect_left(self._keys, k)
         j = bisect_right(self._keys, k)

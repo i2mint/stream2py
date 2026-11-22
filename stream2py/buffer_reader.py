@@ -151,6 +151,7 @@ class BufferReader:
         self._read_kwargs_for_next = dict(self._read_kwargs, ignore_no_item_found=True)
 
     def __iter__(self):
+        """Iterate over the items."""
         while True:
             try:
                 _next = next(self)
@@ -382,6 +383,7 @@ class BufferReader:
         return item
 
     def head(self, *, peek=False):
+        """The first item in the buffer; with ``peek=True`` the read cursor is not moved."""
         with self._buffer.reader_lock() as reader:
             item = reader[0]
         if not peek:
@@ -490,6 +492,7 @@ class BufferReader:
             return next_item
 
     def next(self, n=1, *, peek=False, ignore_no_item_found=False, strict_n=False):
+        """Deprecated alias of :meth:`read`."""
         from warnings import warn
 
         warn(
@@ -501,20 +504,26 @@ class BufferReader:
         )
 
     def enter(self):
+        """Alias of ``__enter__``."""
         return self.open()
 
     def exit(self):
+        """Alias of ``__exit__``."""
         return self.close()
 
     def open(self):
+        """Open the resource."""
         return self
 
     def close(self):
+        """Close the resource."""
         if self.onclose:
             self.onclose()
 
     def __enter__(self):
+        """Enter the context (start or open the resource) and return it."""
         return self.enter()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Leave the context (stop or close the resource)."""
         return self.exit()

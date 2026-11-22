@@ -6,6 +6,10 @@ OpenInstance = Optional[Any]
 
 
 class ComparableType(Protocol):
-    def __lt__(self, other: Any) -> bool: ...
+    """Protocol for keys that support ``<`` and ``>``."""
 
-    def __gt__(self, other: Any) -> bool: ...
+    def __lt__(self, other: Any) -> bool:
+        """Less-than comparison."""
+
+    def __gt__(self, other: Any) -> bool:
+        """Greater-than comparison."""

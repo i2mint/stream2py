@@ -28,18 +28,22 @@ class RWLockSortedDeque(RWLock):
     """
 
     def __init__(self, iterable=(), *, key=None, maxlen=None):
+        """Initialize the instance; see the class docstring for the arguments."""
         RWLock.__init__(self)
         self._sorted_deque = SortedDeque(iterable, key, maxlen)
 
     def __len__(self):
+        """Number of items."""
         return len(self._sorted_deque)
 
     @property
     def key(self):
+        """Sort key of ``data``."""
         return self._sorted_deque.key
 
     @contextmanager
     def reader_lock(self) -> Generator[SortedDeque, None, None]:
+        """Context manager yielding the deque under a shared (reader) lock."""
         try:
             self.reader_acquire()
             yield self._sorted_deque
@@ -48,6 +52,7 @@ class RWLockSortedDeque(RWLock):
 
     @contextmanager
     def writer_lock(self):
+        """Context manager yielding the deque under the exclusive (writer) lock."""
         try:
             self.writer_acquire()
             yield self._sorted_deque
