@@ -140,8 +140,8 @@ class ExitFunctionValidation(TypeValidationError):
     @staticmethod
     def is_valid(obj):
         """Whether ``obj`` is a valid function of this kind."""
-        return callable(obj) and (
-            _callable_has_a_variadic_pos or _has_min_num_of_arguments(obj, 4)
+        return callable(obj) and bool(
+            _callable_has_a_variadic_pos(obj) or _has_min_num_of_arguments(obj, 4)
         )
 
 
