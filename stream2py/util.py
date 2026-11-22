@@ -58,14 +58,17 @@ class Timer:
     """
 
     def __init__(self, egress=identity):
+        """Initialize the instance; see the class docstring for the arguments."""
         self.egress = egress
         self.start_time = None
 
     def start(self):
+        """Start the timer and return it."""
         self.start_time = perf_counter()
         return self
 
     def stop(self, *args, **kwargs):
+        """Stop (reset) the timer."""
         self.start_time = None
 
     def elapsed(self):
@@ -95,15 +98,18 @@ class TypeValidationError(TypeError):
 
     @classmethod
     def validate(cls, obj, *args, **kwargs):
+        """Raise ``cls(*args, **kwargs)`` unless ``obj`` is valid."""
         if not cls.is_valid(obj):
             raise cls(*args, **kwargs)
 
 
 def null_enter_func(obj):
+    """An enter function that returns the object itself."""
     return obj
 
 
 def null_exit_func(obj, *exception_info):
+    """An exit function that does nothing."""
     return None
 
 
@@ -124,6 +130,7 @@ class EnterFunctionValidation(TypeValidationError):
 
     @staticmethod
     def is_valid(obj):
+        """Whether ``obj`` is a valid function of this kind."""
         return callable(obj) and _has_min_num_of_arguments(obj, 1)
 
 
@@ -132,6 +139,7 @@ class ExitFunctionValidation(TypeValidationError):
 
     @staticmethod
     def is_valid(obj):
+        """Whether ``obj`` is a valid function of this kind."""
         return callable(obj) and (
             _callable_has_a_variadic_pos or _has_min_num_of_arguments(obj, 4)
         )
@@ -190,6 +198,7 @@ class ContextualizeCall:
     """
 
     def __init__(self, func, enter_func=null_enter_func, exit_func=null_exit_func):
+        """Initialize the instance; see the class docstring for the arguments."""
         # validation
         if not callable(func):
             raise TypeError(f"First argument should be a callable, was: {func}")
@@ -211,17 +220,21 @@ class ContextualizeCall:
         wraps(func)(self)
 
     def __call__(self, *args, **kwargs):
+        """Call the wrapped function."""
         return self.func(*args, **kwargs)
 
     def __enter__(self):
+        """Enter the context (start or open the resource) and return it."""
         #         print(f'{type(self).__name__}.__enter__')
         return self.enter_func(self.func)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Leave the context (stop or close the resource)."""
         #         print(f'{type(self).__name__}.__exit__')
         return self.exit_func(self.func, exc_type, exc_val, exc_tb)
 
     def __getattr__(self, attrname):
+        """Forward unknown attributes to the wrapped function."""
         return getattr(self.func, attrname)
 
 
@@ -234,10 +247,12 @@ from functools import partial
 
 
 def forward_to_instance_enter(obj):
+    """Call ``__enter__`` on the instance a bound method belongs to."""
     return obj.__self__.__enter__()
 
 
 def forward_to_instance_exit(obj, *exception_info):
+    """Call ``__exit__`` on the instance a bound method belongs to."""
     return obj.__self__.__exit__(*exception_info)
 
 

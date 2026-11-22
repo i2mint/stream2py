@@ -180,10 +180,12 @@ class StreamBuffer:
         self._read_to_buffer_thread = None
 
     def __iter__(self):
+        """Iterate over the items."""
         reader = self.mk_reader()
         yield from iter(reader)
 
     def __next__(self):
+        """The next item."""
         if self._next_reader is None:
             self._next_reader = self.mk_reader()
         return next(self._next_reader)
@@ -264,13 +266,16 @@ class StreamBuffer:
 
     @property
     def join(self):
+        """Join the thread that fills the buffer."""
         return self._read_to_buffer_thread.join
 
     def __enter__(self):
+        """Enter the context (start or open the resource) and return it."""
         self.start()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Leave the context (stop or close the resource)."""
         self.stop()
 
     enter, exit = __enter__, __exit__
@@ -337,6 +342,7 @@ class StreamBuffer:
         # return self._mk_contextualized_iterator()
 
     def __del__(self):
+        """Stop the resource when garbage collected, ignoring errors."""
         try:
             self.__exit__(None, None, None)
         except Exception:

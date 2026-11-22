@@ -77,6 +77,7 @@ class SortedCollection(object):
     """
 
     def __init__(self, iterable=(), key=None):
+        """Initialize the instance; see the class docstring for the arguments."""
         self._given_key = key
         key = (lambda x: x) if key is None else key
         decorated = sorted((key(item), item) for item in iterable)
@@ -97,24 +98,31 @@ class SortedCollection(object):
     key = property(_getkey, _setkey, _delkey, "key function")
 
     def clear(self):
+        """Remove all items."""
         self.__init__([], self._key)
 
     def copy(self):
+        """A shallow copy with the same key."""
         return self.__class__(self, self._key)
 
     def __len__(self):
+        """Number of items."""
         return len(self._items)
 
     def __getitem__(self, i):
+        """The item at the given index."""
         return self._items[i]
 
     def __iter__(self):
+        """Iterate over the items."""
         return iter(self._items)
 
     def __reversed__(self):
+        """Iterate over the items in reverse."""
         return reversed(self._items)
 
     def __repr__(self):
+        """Show the contents and key."""
         return "%s(%r, key=%s)" % (
             self.__class__.__name__,
             self._items,
@@ -122,9 +130,11 @@ class SortedCollection(object):
         )
 
     def __reduce__(self):
+        """Pickle support: rebuild from items and key."""
         return self.__class__, (self._items, self._given_key)
 
     def __contains__(self, item):
+        """Whether the item is present (compared by key first)."""
         k = self._key(item)
         i = bisect_left(self._keys, k)
         j = bisect_right(self._keys, k)

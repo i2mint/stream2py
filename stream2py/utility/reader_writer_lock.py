@@ -31,6 +31,7 @@ class RWLock:
     """
 
     def __init__(self):
+        """Initialize the instance; see the class docstring for the arguments."""
         self.__read_switch = _LightSwitch()
         self.__write_switch = _LightSwitch()
         self.__no_readers = threading.Lock()
@@ -40,6 +41,7 @@ class RWLock:
         cases (see [2] for a discussion)"""
 
     def reader_acquire(self):
+        """Acquire the lock for reading (shared)."""
         self.__readers_queue.acquire()
         self.__no_readers.acquire()
         self.__read_switch.acquire(self.__no_writers)
@@ -47,13 +49,16 @@ class RWLock:
         self.__readers_queue.release()
 
     def reader_release(self):
+        """Release a read lock."""
         self.__read_switch.release(self.__no_writers)
 
     def writer_acquire(self):
+        """Acquire the lock for writing (exclusive)."""
         self.__write_switch.acquire(self.__no_readers)
         self.__no_writers.acquire()
 
     def writer_release(self):
+        """Release the write lock."""
         self.__no_writers.release()
         self.__write_switch.release(self.__no_readers)
 
@@ -93,6 +98,7 @@ import copy
 
 
 class Writer(threading.Thread):
+    """Thread that appends to a shared buffer under the write lock (used by the lock tests)."""
     def __init__(self, buffer_, rw_lock, init_sleep_time, sleep_time, to_write):
         """
         @param buffer_: common buffer_ shared by the readers and writers
@@ -116,6 +122,7 @@ class Writer(threading.Thread):
         """Time of exit from the critical section"""
 
     def run(self):
+        """Thread body: wait, take the lock, do the work, release."""
         time.sleep(self.__init_sleep_time)
         self.__rw_lock.writer_acquire()
         self.entry_time = time.time()
@@ -126,6 +133,7 @@ class Writer(threading.Thread):
 
 
 class Reader(threading.Thread):
+    """Thread that copies a shared buffer under the read lock (used by the lock tests)."""
     def __init__(self, buffer_, rw_lock, init_sleep_time, sleep_time):
         """
         @param buffer_: common buffer shared by the readers and writers
@@ -149,6 +157,7 @@ class Reader(threading.Thread):
         """Time of exit from the critical section"""
 
     def run(self):
+        """Thread body: wait, take the lock, do the work, release."""
         time.sleep(self.__init_sleep_time)
         self.__rw_lock.reader_acquire()
         self.entry_time = time.time()
@@ -159,7 +168,9 @@ class Reader(threading.Thread):
 
 
 class RWLockTestCase(unittest.TestCase):
+    """Unit tests for :class:`RWLock`."""
     def test_readers_nonexclusive_access(self):
+        """Check readers nonexclusive access."""
         (buffer_, rw_lock, threads) = self.__init_variables()
 
         threads.append(Reader(buffer_, rw_lock, 0, 0))
@@ -182,6 +193,7 @@ class RWLockTestCase(unittest.TestCase):
         self.assert_(threads[3].exit_time < threads[2].exit_time)
 
     def test_writers_exclusive_access(self):
+        """Check writers exclusive access."""
         (buffer_, rw_lock, threads) = self.__init_variables()
 
         threads.append(Writer(buffer_, rw_lock, 0, 0.4, 1))
@@ -197,6 +209,7 @@ class RWLockTestCase(unittest.TestCase):
         self.assert_(threads[1].exit_time <= threads[2].exit_time)
 
     def test_writer_priority(self):
+        """Check writer priority."""
         (buffer_, rw_lock, threads) = self.__init_variables()
 
         threads.append(Writer(buffer_, rw_lock, 0, 0, 1))
@@ -218,6 +231,7 @@ class RWLockTestCase(unittest.TestCase):
         self.assert_(threads[2].exit_time <= threads[4].entry_time)
 
     def test_many_writers_priority(self):
+        """Check many writers priority."""
         (buffer_, rw_lock, threads) = self.__init_variables()
 
         threads.append(Writer(buffer_, rw_lock, 0, 0, 1))

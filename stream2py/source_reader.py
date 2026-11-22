@@ -79,6 +79,7 @@ class SourceReader(Source, metaclass=ABCMeta):
     _closed = True  # SourceReader starts in closed state
 
     def __iter__(self):
+        """Iterate over the items."""
         while True:
             _next = self.read()
             if _next is not None:
@@ -192,11 +193,13 @@ class SourceReader(Source, metaclass=ABCMeta):
         return int(time.time() * cls.timestamp_seconds_to_unit_conversion)
 
     def __enter__(self):
+        """Enter the context (start or open the resource) and return it."""
         self.open()
         self._closed = False
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Leave the context (stop or close the resource)."""
         self.close()
         self._closed = True
 
@@ -208,6 +211,7 @@ class SourceReader(Source, metaclass=ABCMeta):
         sleep_time_on_read_none_s: Optional[Union[int, float]] = None,
         auto_drop=True,
     ):
+        """A :class:`StreamBuffer` fed by this reader, holding up to ``maxlen`` items."""
         from stream2py.stream_buffer import StreamBuffer
 
         return StreamBuffer(
