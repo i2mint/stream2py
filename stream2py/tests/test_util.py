@@ -217,3 +217,22 @@ def test_exit_function_validation_accepts_variadic_and_four_argument_functions()
     assert ExitFunctionValidation.is_valid(lambda obj, *info: None)
     assert ExitFunctionValidation.is_valid(lambda obj, a, b, c: None)
     assert not ExitFunctionValidation.is_valid(42)
+
+
+def test_exit_function_validation_counts_positional_parameters_only():
+    """Keyword-only and ``**kwargs`` parameters cannot receive ``__exit__``'s four
+    positional arguments (stream2py#39)."""
+    from stream2py.util import ExitFunctionValidation
+
+    assert ExitFunctionValidation.is_valid(lambda a, b, c, d: None)
+    assert ExitFunctionValidation.is_valid(lambda *args: None)
+    assert not ExitFunctionValidation.is_valid(lambda a, *, b, c, d: None)
+    assert not ExitFunctionValidation.is_valid(lambda a, b, c, **kw: None)
+
+
+def test_an_uninspectable_builtin_does_not_raise():
+    """A builtin without a signature is accepted, as before #36 (stream2py#39)."""
+    from stream2py.util import EnterFunctionValidation, ExitFunctionValidation
+
+    assert EnterFunctionValidation.is_valid(max)
+    assert ExitFunctionValidation.is_valid(max)

@@ -114,15 +114,25 @@ def null_exit_func(obj, *exception_info) -> None:
 
 
 def _has_min_num_of_arguments(func, mininum_n_args):
-    return len(signature(func).parameters) >= mininum_n_args
+    """Whether ``func`` can take ``mininum_n_args`` positional arguments: keyword-only
+    and ``**kwargs`` parameters do not count. A callable whose signature cannot be
+    inspected (some builtins) is given the benefit of the doubt."""
+    try:
+        params = signature(func).parameters.values()
+    except (ValueError, TypeError):
+        return True
+    positional = (Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD)
+    return sum(p.kind in positional for p in params) >= mininum_n_args
 
 
 def _callable_has_a_variadic_pos(func):
     """True if and only if the function has a variadic positional argument (i.e.
     *args)"""
-    return any(
-        x.kind == Parameter.VAR_POSITIONAL for x in signature(func).parameters.values()
-    )
+    try:
+        params = signature(func).parameters.values()
+    except (ValueError, TypeError):
+        return False
+    return any(x.kind == Parameter.VAR_POSITIONAL for x in params)
 
 
 class EnterFunctionValidation(TypeValidationError):
