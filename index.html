@@ -150,13 +150,15 @@ data-aria-dark="Switch to auto color mode">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">stream2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamBuffer</span>
 </span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">stream2py.examples.source_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleCounterString</span>
 </span><span data-line="3">
-</span><span data-line="4"><span class="n">source</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># a toy source that reads 's0', 's1', ...</span>
-</span><span data-line="5">
-</span><span data-line="6"><span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">buffer</span><span class="p">:</span>
-</span><span data-line="7">    <span class="n">saver</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>    <span class="c1"># one consumer, say, writing to disk</span>
-</span><span data-line="8">    <span class="n">plotter</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># another, drawing a live plot</span>
-</span><span data-line="9">    <span class="k">assert</span> <span class="p">(</span><span class="n">saver</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span> <span class="n">saver</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="o">==</span> <span class="p">(</span><span class="s1">'s0'</span><span class="p">,</span> <span class="s1">'s1'</span><span class="p">)</span>
-</span><span data-line="10">    <span class="k">assert</span> <span class="n">plotter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'s0'</span>  <span class="c1"># each reader has its own cursor</span>
+</span><span data-line="4"><span class="n">source</span> <span class="o">=</span> <span class="n">SimpleCounterString</span><span class="p">(</span>
+</span><span data-line="5">    <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">100</span>
+</span><span data-line="6"><span class="p">)</span>  <span class="c1"># a toy source that reads 's0', 's1', ...</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="k">with</span> <span class="n">StreamBuffer</span><span class="p">(</span><span class="n">source_reader</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="k">as</span> <span class="n">buffer</span><span class="p">:</span>
+</span><span data-line="9">    <span class="n">saver</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># one consumer, say, writing to disk</span>
+</span><span data-line="10">    <span class="n">plotter</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">mk_reader</span><span class="p">()</span>  <span class="c1"># another, drawing a live plot</span>
+</span><span data-line="11">    <span class="k">assert</span> <span class="p">(</span><span class="n">saver</span><span class="o">.</span><span class="n">next</span><span class="p">(),</span> <span class="n">saver</span><span class="o">.</span><span class="n">next</span><span class="p">())</span> <span class="o">==</span> <span class="p">(</span><span class="s2">"s0"</span><span class="p">,</span> <span class="s2">"s1"</span><span class="p">)</span>
+</span><span data-line="12">    <span class="k">assert</span> <span class="n">plotter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"s0"</span>  <span class="c1"># each reader has its own cursor</span>
 </span></pre></div>
 </div>
 <p>A real source is any object with <code class="docutils literal notranslate"><span class="pre">open</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">close</span></code> and a <code class="docutils literal notranslate"><span class="pre">key</span></code> to order reads by (the <code class="docutils literal notranslate"><span class="pre">stream2py.protocols.Source</span></code> protocol; plugins below ship ready-made ones), or, for quick cases, three functions given to <code class="docutils literal notranslate"><span class="pre">stream2py.simply.mk_stream_buffer</span></code>.</p>
@@ -203,7 +205,7 @@ data-aria-dark="Switch to auto color mode">
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 23:28 UTC from <a href="https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5">2ff08e0</a> (master) · stream2py 1.0.50 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-23 16:00 UTC from <a href="https://github.com/i2mint/stream2py/commit/a63e8d73ee3a36d1a07ceb1f572c74785ce40134">a63e8d7</a> (master) · stream2py 1.0.51 · <a href="about-this-build.html">about this build</a></p>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
     <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
@@ -238,7 +240,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="_static/documentation_options.js?v=7f3031e1"></script>
+      <script src="_static/documentation_options.js?v=db48b5f8"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>

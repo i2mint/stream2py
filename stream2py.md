@@ -1,4 +1,4 @@
-> built 2026-11-22 23:28 UTC from 2ff08e0 (master) · stream2py 1.0.50. Details: build_info.json
+> built 2026-11-23 16:00 UTC from a63e8d7 (master) · stream2py 1.0.51. Details: build_info.json
 
 # index.html.md
 
@@ -18,13 +18,15 @@ No dependencies (standard library only). [Documentation](https://i2mint.github.i
 from stream2py import StreamBuffer
 from stream2py.examples.source_reader import SimpleCounterString
 
-source = SimpleCounterString(start=0, stop=100)  # a toy source that reads 's0', 's1', ...
+source = SimpleCounterString(
+    start=0, stop=100
+)  # a toy source that reads 's0', 's1', ...
 
 with StreamBuffer(source_reader=source, maxlen=100) as buffer:
-    saver = buffer.mk_reader()    # one consumer, say, writing to disk
+    saver = buffer.mk_reader()  # one consumer, say, writing to disk
     plotter = buffer.mk_reader()  # another, drawing a live plot
-    assert (saver.next(), saver.next()) == ('s0', 's1')
-    assert plotter.next() == 's0'  # each reader has its own cursor
+    assert (saver.next(), saver.next()) == ("s0", "s1")
+    assert plotter.next() == "s0"  # each reader has its own cursor
 ```
 
 A real source is any object with `open`, `read`, `close` and a `key` to order reads by (the `stream2py.protocols.Source` protocol; plugins below ship ready-made ones), or, for quick cases, three functions given to `stream2py.simply.mk_stream_buffer`.
@@ -1904,7 +1906,7 @@ Protocol for keys that support `<` and `>`.
 
 # About this build
 
-This documentation was built on **2026-11-22 23:28 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5"><code>2ff08e0</code></a> on branch <code>master</code>, for **stream2py 1.0.50** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-23 16:00 UTC** from commit <a href="https://github.com/i2mint/stream2py/commit/a63e8d73ee3a36d1a07ceb1f572c74785ce40134"><code>a63e8d7</code></a> on branch <code>master</code>, for **stream2py 1.0.51** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -1913,7 +1915,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                         |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/stream2py/commit/2ff08e0ee38b044d26f6b0e8870b33415a8eedd5"><code>2ff08e0ee38b044d26f6b0e8870b33415a8eedd5</code></a> |
+| Commit              | <a href="https://github.com/i2mint/stream2py/commit/a63e8d73ee3a36d1a07ceb1f572c74785ce40134"><code>a63e8d73ee3a36d1a07ceb1f572c74785ce40134</code></a> |
 | Branch              | <code>master</code>                                                                                                                                     |
 | Tags at this commit | none                                                                                                                                                    |
 | Working tree        | clean                                                                                                                                                   |
@@ -1924,15 +1926,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/stream2py</code>                                                              |
-| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45083204841">45083204841</a>     |
+| Run          | <a href="https://github.com/i2mint/stream2py/actions/runs/45211045464">45211045464</a>     |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>2ff08e0ee38b044d26f6b0e8870b33415a8eedd5</code> (in the history of the built commit) |
+| Event commit | <code>a63e8d73ee3a36d1a07ceb1f572c74785ce40134</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.25  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -1951,14 +1953,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/stream2py/1.0.50/">1.0.50</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/stream2py/1.0.51/">1.0.51</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/stream2py && cd stream2py
-git checkout 2ff08e0ee38b044d26f6b0e8870b33415a8eedd5
-pip install "epythet==0.2.23"
+git checkout a63e8d73ee3a36d1a07ceb1f572c74785ce40134
+pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

@@ -278,179 +278,191 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="114">
 </span><span data-line="115">
 </span><span data-line="116"><span class="k">def</span><span class="w"> </span><span class="nf">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">mininum_n_args</span><span class="p">):</span>
-</span><span data-line="117">    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">mininum_n_args</span>
-</span><span data-line="118">
-</span><span data-line="119">
-</span><span data-line="120"><span class="k">def</span><span class="w"> </span><span class="nf">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-</span><span data-line="121"><span class="w">    </span><span class="sd">"""True if and only if the function has a variadic positional argument (i.e.</span>
-</span><span data-line="122"><span class="sd">    *args)"""</span>
-</span><span data-line="123">    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>
-</span><span data-line="124">        <span class="n">x</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-</span><span data-line="125">    <span class="p">)</span>
+</span><span data-line="117"><span class="w">    </span><span class="sd">"""Whether ``func`` can take ``mininum_n_args`` positional arguments: keyword-only</span>
+</span><span data-line="118"><span class="sd">    and ``**kwargs`` parameters do not count. A callable whose signature cannot be</span>
+</span><span data-line="119"><span class="sd">    inspected (some builtins) is given the benefit of the doubt."""</span>
+</span><span data-line="120">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="121">        <span class="n">params</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span data-line="122">    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+</span><span data-line="123">        <span class="k">return</span> <span class="kc">True</span>
+</span><span data-line="124">    <span class="n">positional</span> <span class="o">=</span> <span class="p">(</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_ONLY</span><span class="p">,</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">)</span>
+</span><span data-line="125">    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span> <span class="n">positional</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">mininum_n_args</span>
 </span><span data-line="126">
 </span><span data-line="127">
+</span><span data-line="128"><span class="k">def</span><span class="w"> </span><span class="nf">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span data-line="129"><span class="w">    </span><span class="sd">"""True if and only if the function has a variadic positional argument (i.e.</span>
+</span><span data-line="130"><span class="sd">    *args)"""</span>
+</span><span data-line="131">    <span class="k">try</span><span class="p">:</span>
+</span><span data-line="132">        <span class="n">params</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+</span><span data-line="133">    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+</span><span data-line="134">        <span class="k">return</span> <span class="kc">False</span>
+</span><span data-line="135">    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">params</span><span class="p">)</span>
+</span><span data-line="136">
+</span><span data-line="137">
 <div class="viewcode-block" id="EnterFunctionValidation">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.EnterFunctionValidation">[docs]</a>
-</span><span data-line="128"><span class="k">class</span><span class="w"> </span><span class="nc">EnterFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
-</span><span data-line="129"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __enter__ function"""</span>
-</span><span data-line="130">
+</span><span data-line="138"><span class="k">class</span><span class="w"> </span><span class="nc">EnterFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
+</span><span data-line="139"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __enter__ function"""</span>
+</span><span data-line="140">
 <div class="viewcode-block" id="EnterFunctionValidation.is_valid">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.EnterFunctionValidation.is_valid">[docs]</a>
-</span><span data-line="131">    <span class="nd">@staticmethod</span>
-</span><span data-line="132">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-</span><span data-line="133"><span class="w">        </span><span class="sd">"""Whether ``obj`` is a valid function of this kind."""</span>
-</span><span data-line="134">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+</span><span data-line="141">    <span class="nd">@staticmethod</span>
+</span><span data-line="142">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="143"><span class="w">        </span><span class="sd">"""Whether ``obj`` is a valid function of this kind."""</span>
+</span><span data-line="144">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 </div>
 
-</span><span data-line="135">
-</span><span data-line="136">
+</span><span data-line="145">
+</span><span data-line="146">
 <div class="viewcode-block" id="ExitFunctionValidation">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ExitFunctionValidation">[docs]</a>
-</span><span data-line="137"><span class="k">class</span><span class="w"> </span><span class="nc">ExitFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
-</span><span data-line="138"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __exit__ function"""</span>
-</span><span data-line="139">
+</span><span data-line="147"><span class="k">class</span><span class="w"> </span><span class="nc">ExitFunctionValidation</span><span class="p">(</span><span class="n">TypeValidationError</span><span class="p">):</span>
+</span><span data-line="148"><span class="w">    </span><span class="sd">"""Raised if an function isn't a valid (context manager) __exit__ function"""</span>
+</span><span data-line="149">
 <div class="viewcode-block" id="ExitFunctionValidation.is_valid">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ExitFunctionValidation.is_valid">[docs]</a>
-</span><span data-line="140">    <span class="nd">@staticmethod</span>
-</span><span data-line="141">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-</span><span data-line="142"><span class="w">        </span><span class="sd">"""Whether ``obj`` is a valid function of this kind."""</span>
-</span><span data-line="143">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span>
-</span><span data-line="144">            <span class="n">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-</span><span data-line="145">        <span class="p">)</span></div>
+</span><span data-line="150">    <span class="nd">@staticmethod</span>
+</span><span data-line="151">    <span class="k">def</span><span class="w"> </span><span class="nf">is_valid</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="152"><span class="w">        </span><span class="sd">"""Whether ``obj`` is a valid function of this kind."""</span>
+</span><span data-line="153">        <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span>
+</span><span data-line="154">            <span class="n">_callable_has_a_variadic_pos</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_has_min_num_of_arguments</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span data-line="155">        <span class="p">)</span></div>
 </div>
 
-</span><span data-line="146">
-</span><span data-line="147">
-</span><span data-line="148"><span class="c1"># TODO: If needed:</span>
-</span><span data-line="149"><span class="c1">#  A more general Contextualizer would proxy/delegate all methods (including special</span>
-</span><span data-line="150"><span class="c1">#  ones) to the wrapped</span>
+</span><span data-line="156">
+</span><span data-line="157">
+</span><span data-line="158"><span class="c1"># TODO: If needed:</span>
+</span><span data-line="159"><span class="c1">#  A more general Contextualizer would proxy/delegate all methods (including special</span>
+</span><span data-line="160"><span class="c1">#  ones) to the wrapped</span>
 <div class="viewcode-block" id="ContextualizeCall">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.ContextualizeCall">[docs]</a>
-</span><span data-line="151"><span class="k">class</span><span class="w"> </span><span class="nc">ContextualizeCall</span><span class="p">:</span>
-</span><span data-line="152"><span class="w">    </span><span class="sd">"""</span>
-</span><span data-line="153"><span class="sd">    Wraps a callable so that it also becomes a context manager.</span>
-</span><span data-line="154">
-</span><span data-line="155"><span class="sd">    Both enter and exit functions can be specified.</span>
-</span><span data-line="156">
-</span><span data-line="157"><span class="sd">    This can be used, for instance, when the proper use of a function depends on some</span>
-</span><span data-line="158"><span class="sd">    objects being "in context" (i.e. calling the enter/exit of some objects).</span>
-</span><span data-line="159">
-</span><span data-line="160"><span class="sd">    This happens, for instance, when we want to use a method that depends on its</span>
-</span><span data-line="161"><span class="sd">    instance being in context. For convenience, this use case is implemented by the</span>
-</span><span data-line="162"><span class="sd">    ``contextualize_with_instance`` function of this module.</span>
-</span><span data-line="163">
-</span><span data-line="164"><span class="sd">    Below is a simple doctest, but check out more significant tests in the tests folder.</span>
-</span><span data-line="165"><span class="sd">    You can also check out:</span>
+</span><span data-line="161"><span class="k">class</span><span class="w"> </span><span class="nc">ContextualizeCall</span><span class="p">:</span>
+</span><span data-line="162"><span class="w">    </span><span class="sd">"""</span>
+</span><span data-line="163"><span class="sd">    Wraps a callable so that it also becomes a context manager.</span>
+</span><span data-line="164">
+</span><span data-line="165"><span class="sd">    Both enter and exit functions can be specified.</span>
 </span><span data-line="166">
-</span><span data-line="167"><span class="sd">    This issue: https://github.com/i2mint/stream2py/issues/18</span>
-</span><span data-line="168">
-</span><span data-line="169"><span class="sd">    This wiki: https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</span>
-</span><span data-line="170">
-</span><span data-line="171"><span class="sd">    &gt;&gt;&gt; f = lambda x: x + 1</span>
-</span><span data-line="172"><span class="sd">    &gt;&gt;&gt; hasattr(f, '__enter__') and hasattr(f, '__exit__')</span>
-</span><span data-line="173"><span class="sd">    False</span>
-</span><span data-line="174"><span class="sd">    &gt;&gt;&gt; g = ContextualizeCall(f)</span>
-</span><span data-line="175"><span class="sd">    &gt;&gt;&gt; hasattr(g, '__enter__') and hasattr(g, '__exit__')</span>
-</span><span data-line="176"><span class="sd">    True</span>
-</span><span data-line="177"><span class="sd">    &gt;&gt;&gt; with g:</span>
-</span><span data-line="178"><span class="sd">    ...     print(g(2))</span>
-</span><span data-line="179"><span class="sd">    3</span>
+</span><span data-line="167"><span class="sd">    This can be used, for instance, when the proper use of a function depends on some</span>
+</span><span data-line="168"><span class="sd">    objects being "in context" (i.e. calling the enter/exit of some objects).</span>
+</span><span data-line="169">
+</span><span data-line="170"><span class="sd">    This happens, for instance, when we want to use a method that depends on its</span>
+</span><span data-line="171"><span class="sd">    instance being in context. For convenience, this use case is implemented by the</span>
+</span><span data-line="172"><span class="sd">    ``contextualize_with_instance`` function of this module.</span>
+</span><span data-line="173">
+</span><span data-line="174"><span class="sd">    Below is a simple doctest, but check out more significant tests in the tests folder.</span>
+</span><span data-line="175"><span class="sd">    You can also check out:</span>
+</span><span data-line="176">
+</span><span data-line="177"><span class="sd">    This issue: https://github.com/i2mint/stream2py/issues/18</span>
+</span><span data-line="178">
+</span><span data-line="179"><span class="sd">    This wiki: https://github.com/i2mint/stream2py/wiki/Forwarding-context-management</span>
 </span><span data-line="180">
-</span><span data-line="181"><span class="sd">    In the example above we get the default null enter and exit functions.</span>
-</span><span data-line="182"><span class="sd">    They do nothing.</span>
-</span><span data-line="183"><span class="sd">    Let's specify some that do something:</span>
-</span><span data-line="184">
-</span><span data-line="185"><span class="sd">    &gt;&gt;&gt; h = ContextualizeCall(f,</span>
-</span><span data-line="186"><span class="sd">    ...     enter_func=lambda self: print('entering...'),</span>
-</span><span data-line="187"><span class="sd">    ...     exit_func=lambda self, *errs: print('exiting...'),</span>
-</span><span data-line="188"><span class="sd">    ... )</span>
-</span><span data-line="189"><span class="sd">    &gt;&gt;&gt; with h:</span>
-</span><span data-line="190"><span class="sd">    ...     print(h(2))</span>
-</span><span data-line="191"><span class="sd">    entering...</span>
-</span><span data-line="192"><span class="sd">    3</span>
-</span><span data-line="193"><span class="sd">    exiting...</span>
+</span><span data-line="181"><span class="sd">    &gt;&gt;&gt; f = lambda x: x + 1</span>
+</span><span data-line="182"><span class="sd">    &gt;&gt;&gt; hasattr(f, '__enter__') and hasattr(f, '__exit__')</span>
+</span><span data-line="183"><span class="sd">    False</span>
+</span><span data-line="184"><span class="sd">    &gt;&gt;&gt; g = ContextualizeCall(f)</span>
+</span><span data-line="185"><span class="sd">    &gt;&gt;&gt; hasattr(g, '__enter__') and hasattr(g, '__exit__')</span>
+</span><span data-line="186"><span class="sd">    True</span>
+</span><span data-line="187"><span class="sd">    &gt;&gt;&gt; with g:</span>
+</span><span data-line="188"><span class="sd">    ...     print(g(2))</span>
+</span><span data-line="189"><span class="sd">    3</span>
+</span><span data-line="190">
+</span><span data-line="191"><span class="sd">    In the example above we get the default null enter and exit functions.</span>
+</span><span data-line="192"><span class="sd">    They do nothing.</span>
+</span><span data-line="193"><span class="sd">    Let's specify some that do something:</span>
 </span><span data-line="194">
-</span><span data-line="195"><span class="sd">    Note: A ``ContextualizeCall`` instance will delegate all other attributes to the</span>
-</span><span data-line="196"><span class="sd">    wrapped `func` except for special methods. If a user needs to also delegate these</span>
-</span><span data-line="197"><span class="sd">    special methods, they'll have to wrap `func` themselves.</span>
-</span><span data-line="198"><span class="sd">    """</span>
-</span><span data-line="199">
-</span><span data-line="200">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="201"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
-</span><span data-line="202">        <span class="c1"># validation</span>
-</span><span data-line="203">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-</span><span data-line="204">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</span><span data-line="205">        <span class="n">EnterFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
-</span><span data-line="206">            <span class="n">enter_func</span><span class="p">,</span>
-</span><span data-line="207">            <span class="sa">f</span><span class="s2">"Not a valid enter function (should be a callable with at least one arg): "</span>
-</span><span data-line="208">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-</span><span data-line="209">        <span class="p">)</span>
-</span><span data-line="210">        <span class="n">ExitFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
-</span><span data-line="211">            <span class="n">exit_func</span><span class="p">,</span>
-</span><span data-line="212">            <span class="sa">f</span><span class="s2">"Not a valid exit function (should be a callable with at least one arg or "</span>
-</span><span data-line="213">            <span class="sa">f</span><span class="s2">"varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-</span><span data-line="214">        <span class="p">)</span>
-</span><span data-line="215">        <span class="c1"># assignment</span>
-</span><span data-line="216">        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
-</span><span data-line="217">        <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span> <span class="o">=</span> <span class="n">enter_func</span>
-</span><span data-line="218">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span> <span class="o">=</span> <span class="n">exit_func</span>
-</span><span data-line="219">        <span class="c1"># wrapping self with attributes of func (signature, name, etc.)</span>
-</span><span data-line="220">        <span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
-</span><span data-line="221">
-</span><span data-line="222">    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span data-line="223"><span class="w">        </span><span class="sd">"""Call the wrapped function."""</span>
-</span><span data-line="224">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span data-line="225">
-</span><span data-line="226">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="227"><span class="w">        </span><span class="sd">"""Enter the context (start or open the resource) and return it."""</span>
-</span><span data-line="228">        <span class="c1">#         print(f'{type(self).__name__}.__enter__')</span>
-</span><span data-line="229">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
-</span><span data-line="230">
-</span><span data-line="231">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-</span><span data-line="232"><span class="w">        </span><span class="sd">"""Leave the context (stop or close the resource)."""</span>
-</span><span data-line="233">        <span class="c1">#         print(f'{type(self).__name__}.__exit__')</span>
-</span><span data-line="234">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
-</span><span data-line="235">
-</span><span data-line="236">    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
-</span><span data-line="237"><span class="w">        </span><span class="sd">"""Forward unknown attributes to the wrapped function."""</span>
-</span><span data-line="238">        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span></div>
-
-</span><span data-line="239">
-</span><span data-line="240">
-</span><span data-line="241"><span class="c1"># ---------------------------------------------------------------------------------------</span>
-</span><span data-line="242"><span class="c1"># Using these general objects for the particular case of having bound methods forward</span>
-</span><span data-line="243"><span class="c1"># their context</span>
-</span><span data-line="244"><span class="c1"># management to the instances they're bound to</span>
-</span><span data-line="245">
-</span><span data-line="246"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</span><span data-line="195"><span class="sd">    &gt;&gt;&gt; h = ContextualizeCall(f,</span>
+</span><span data-line="196"><span class="sd">    ...     enter_func=lambda self: print('entering...'),</span>
+</span><span data-line="197"><span class="sd">    ...     exit_func=lambda self, *errs: print('exiting...'),</span>
+</span><span data-line="198"><span class="sd">    ... )</span>
+</span><span data-line="199"><span class="sd">    &gt;&gt;&gt; with h:</span>
+</span><span data-line="200"><span class="sd">    ...     print(h(2))</span>
+</span><span data-line="201"><span class="sd">    entering...</span>
+</span><span data-line="202"><span class="sd">    3</span>
+</span><span data-line="203"><span class="sd">    exiting...</span>
+</span><span data-line="204">
+</span><span data-line="205"><span class="sd">    Note: A ``ContextualizeCall`` instance will delegate all other attributes to the</span>
+</span><span data-line="206"><span class="sd">    wrapped `func` except for special methods. If a user needs to also delegate these</span>
+</span><span data-line="207"><span class="sd">    special methods, they'll have to wrap `func` themselves.</span>
+</span><span data-line="208"><span class="sd">    """</span>
+</span><span data-line="209">
+</span><span data-line="210">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+</span><span data-line="211">        <span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">enter_func</span><span class="o">=</span><span class="n">null_enter_func</span><span class="p">,</span> <span class="n">exit_func</span><span class="o">=</span><span class="n">null_exit_func</span>
+</span><span data-line="212">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span data-line="213"><span class="w">        </span><span class="sd">"""Initialize the instance; see the class docstring for the arguments."""</span>
+</span><span data-line="214">        <span class="c1"># validation</span>
+</span><span data-line="215">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+</span><span data-line="216">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"First argument should be a callable, was: </span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</span><span data-line="217">        <span class="n">EnterFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+</span><span data-line="218">            <span class="n">enter_func</span><span class="p">,</span>
+</span><span data-line="219">            <span class="sa">f</span><span class="s2">"Not a valid enter function (should be a callable with at least one arg): "</span>
+</span><span data-line="220">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">enter_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="221">        <span class="p">)</span>
+</span><span data-line="222">        <span class="n">ExitFunctionValidation</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+</span><span data-line="223">            <span class="n">exit_func</span><span class="p">,</span>
+</span><span data-line="224">            <span class="sa">f</span><span class="s2">"Not a valid exit function (should be a callable with at least one arg or "</span>
+</span><span data-line="225">            <span class="sa">f</span><span class="s2">"varadic args): </span><span class="si">{</span><span class="n">exit_func</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+</span><span data-line="226">        <span class="p">)</span>
+</span><span data-line="227">        <span class="c1"># assignment</span>
+</span><span data-line="228">        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+</span><span data-line="229">        <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span> <span class="o">=</span> <span class="n">enter_func</span>
+</span><span data-line="230">        <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span> <span class="o">=</span> <span class="n">exit_func</span>
+</span><span data-line="231">        <span class="c1"># wrapping self with attributes of func (signature, name, etc.)</span>
+</span><span data-line="232">        <span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
+</span><span data-line="233">
+</span><span data-line="234">    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="235"><span class="w">        </span><span class="sd">"""Call the wrapped function."""</span>
+</span><span data-line="236">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span data-line="237">
+</span><span data-line="238">    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span data-line="239"><span class="w">        </span><span class="sd">"""Enter the context (start or open the resource) and return it."""</span>
+</span><span data-line="240">        <span class="c1">#         print(f'{type(self).__name__}.__enter__')</span>
+</span><span data-line="241">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enter_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">)</span>
+</span><span data-line="242">
+</span><span data-line="243">    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+</span><span data-line="244"><span class="w">        </span><span class="sd">"""Leave the context (stop or close the resource)."""</span>
+</span><span data-line="245">        <span class="c1">#         print(f'{type(self).__name__}.__exit__')</span>
+</span><span data-line="246">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
 </span><span data-line="247">
-</span><span data-line="248">
+</span><span data-line="248">    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
+</span><span data-line="249"><span class="w">        </span><span class="sd">"""Forward unknown attributes to the wrapped function."""</span>
+</span><span data-line="250">        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span></div>
+
+</span><span data-line="251">
+</span><span data-line="252">
+</span><span data-line="253"><span class="c1"># ---------------------------------------------------------------------------------------</span>
+</span><span data-line="254"><span class="c1"># Using these general objects for the particular case of having bound methods forward</span>
+</span><span data-line="255"><span class="c1"># their context</span>
+</span><span data-line="256"><span class="c1"># management to the instances they're bound to</span>
+</span><span data-line="257">
+</span><span data-line="258"><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</span><span data-line="259">
+</span><span data-line="260">
 <div class="viewcode-block" id="forward_to_instance_enter">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.forward_to_instance_enter">[docs]</a>
-</span><span data-line="249"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_enter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-</span><span data-line="250"><span class="w">    </span><span class="sd">"""Call ``__enter__`` on the instance a bound method belongs to."""</span>
-</span><span data-line="251">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span></div>
+</span><span data-line="261"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_enter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+</span><span data-line="262"><span class="w">    </span><span class="sd">"""Call ``__enter__`` on the instance a bound method belongs to."""</span>
+</span><span data-line="263">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span></div>
 
-</span><span data-line="252">
-</span><span data-line="253">
+</span><span data-line="264">
+</span><span data-line="265">
 <div class="viewcode-block" id="forward_to_instance_exit">
 <a class="viewcode-back" href="../../_autosummary/stream2py.util.html#stream2py.util.forward_to_instance_exit">[docs]</a>
-</span><span data-line="254"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_exit</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
-</span><span data-line="255"><span class="w">    </span><span class="sd">"""Call ``__exit__`` on the instance a bound method belongs to."""</span>
-</span><span data-line="256">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">exception_info</span><span class="p">)</span></div>
+</span><span data-line="266"><span class="k">def</span><span class="w"> </span><span class="nf">forward_to_instance_exit</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">exception_info</span><span class="p">):</span>
+</span><span data-line="267"><span class="w">    </span><span class="sd">"""Call ``__exit__`` on the instance a bound method belongs to."""</span>
+</span><span data-line="268">    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">exception_info</span><span class="p">)</span></div>
 
-</span><span data-line="257">
-</span><span data-line="258">
-</span><span data-line="259"><span class="n">contextualize_with_instance</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-</span><span data-line="260">    <span class="n">ContextualizeCall</span><span class="p">,</span>
-</span><span data-line="261">    <span class="n">enter_func</span><span class="o">=</span><span class="n">forward_to_instance_enter</span><span class="p">,</span>
-</span><span data-line="262">    <span class="n">exit_func</span><span class="o">=</span><span class="n">forward_to_instance_exit</span><span class="p">,</span>
-</span><span data-line="263"><span class="p">)</span>
-</span><span data-line="264"><span class="n">contextualize_with_instance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="265">    <span class="s2">"To be applied to a bound method. "</span>
-</span><span data-line="266">    <span class="s2">"Returns a callable that forwards context enters/exits to the bound instance. "</span>
-</span><span data-line="267">    <span class="s2">"See ``tests.test_util.test_contextualize_with_instance`` for and example use."</span>
-</span><span data-line="268"><span class="p">)</span>
+</span><span data-line="269">
+</span><span data-line="270">
+</span><span data-line="271"><span class="n">contextualize_with_instance</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+</span><span data-line="272">    <span class="n">ContextualizeCall</span><span class="p">,</span>
+</span><span data-line="273">    <span class="n">enter_func</span><span class="o">=</span><span class="n">forward_to_instance_enter</span><span class="p">,</span>
+</span><span data-line="274">    <span class="n">exit_func</span><span class="o">=</span><span class="n">forward_to_instance_exit</span><span class="p">,</span>
+</span><span data-line="275"><span class="p">)</span>
+</span><span data-line="276"><span class="n">contextualize_with_instance</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="277">    <span class="s2">"To be applied to a bound method. "</span>
+</span><span data-line="278">    <span class="s2">"Returns a callable that forwards context enters/exits to the bound instance. "</span>
+</span><span data-line="279">    <span class="s2">"See ``tests.test_util.test_contextualize_with_instance`` for and example use."</span>
+</span><span data-line="280"><span class="p">)</span>
 </span></pre></div>
         </article><button class="back-to-top" type="button">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -478,7 +490,7 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </footer>
-      <script src="../../_static/documentation_options.js?v=7f3031e1"></script>
+      <script src="../../_static/documentation_options.js?v=db48b5f8"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
